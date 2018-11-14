@@ -1,0 +1,13 @@
+# node
+node_modules/
+package-lock.json
+
+# after building
+lib/
+dist/
+
+# IDE
+nbproject/
+
+# other
+*.java

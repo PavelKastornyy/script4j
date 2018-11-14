@@ -1,0 +1,33 @@
+{
+    "name": "script4j",
+    "version": "0.1.0",
+    "description": "Script4J is a set of libraries that allows to write programs and libraries in TypeScript/JavaScript using Java API",
+    "author": "Pavel Kastornyy <pavelkastornyy@gmail.com>",
+    "license": "GNU General Public License, version 2, with the Classpath Exception",
+    "devDependencies": {
+        "gulp": "4.0.0",
+        "gulp-concat": "2.6.1",
+        "gulp-delete-lines": "0.0.7",
+        "gulp-replace": "1.0.0",
+        "gulp-insert": "0.5.0",
+        "gulp-typescript": "5.0.0-alpha.3",
+        "gulp-mocha": "6.0.0",
+        "gulp-if": "2.0.2",
+        "babel-core": "6.26.3",
+        "babel-register": "6.26.0",
+        "babel-preset-env": "1.7.0",
+        "babel-preset-stage-0": "6.24.1"
+    },
+    "dependencies": {},
+    "modules": [
+        "script4j.base"
+    ],
+    "scripts": {
+        "install-all": "npm install && gulp install-modules  && jsonlint -i package.json -t '    '",
+        "uninstall-all": "gulp uninstall-modules && rm -rf node_modules && rm -f package-lock.json",
+        "reinstall-all": "npm run uninstall-all && npm run install-all",
+        "build-all": "gulp build-modules",
+        "clean-all": "gulp clean-modules && rm -rf dist",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    }
+}
