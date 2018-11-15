@@ -1,11 +1,16 @@
 /*
- * Copyright (c) 2018 Pavel Kastornyy. All rights reserved.
+ * Copyright (c) 2018 Pavel Kastornyy. All rights reserved. The specified
+ * copyright does not cover application programming interface (API) and
+ * the documentation for this API, which were taken from other libraries.
+ * See NOTICE file for more information.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
+ * published by the Free Software Foundation. Copyright holder designates
+ * this particular file as subject to the "Classpath" exception as provided
+ * by copyright holder in the LICENSE file that accompanied this code.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,28 +24,14 @@
  *
  */
 
-import { assert } from 'chai';
-import {Class} from './../../../src/script4j/lang/Class';
-import 'mocha';
 
-describe('ClassTest', () => {
+import { AbstractError } from './../lang/AbstractError'
 
-    class TheTest {
+export class NoSuchElementError extends AbstractError {
 
-        constructor() {
-            let theClass: Class = new Class(null);
-        }
+    constructor(message: string) {
+        super(message);
+        // Set the prototype explicitly.
+        (<any>Object).setPrototypeOf(this, NoSuchElementError.prototype);
     }
-
-    it('getName_forClass_correctResult', () => {
-        assert.equal(TheTest.class().getName(), "TheTest");
-    });
-
-    it('getName_forInstance_correctResult', () => {
-        let test = new TheTest();
-        assert.equal(test.getClass().getName(), "TheTest");
-    });
-});
-
-
-
+}

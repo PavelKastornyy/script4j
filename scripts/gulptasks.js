@@ -146,7 +146,7 @@ export function runModuleTests(modulePath) {
 function resolvePaths(base, classes) {
     let result = [];
     for (let i = 0; i < classes.length; i++) {
-	result.push(base + "/" + classes[i]);
+	result.push(base + "/" + classes[i] + ".ts");
     }
     return result;
 }

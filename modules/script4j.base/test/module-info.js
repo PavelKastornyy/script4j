@@ -26,7 +26,23 @@ module.exports = {
     import: [
 	{
 	    classes: [
-		"Class"
+		"Class",
+                "Logger",
+                "LoggingLevel",
+                "LoggerFactory",
+                "Collection",
+                "List",
+                "ArrayList",
+                "Set",
+                "HashSet",
+                "Map",
+                "HashMap",
+                "Iterator",
+                "IndexOutOfBoundsError",
+                "IllegalArgumentError",
+                "IllegalStateError",
+                "NoSuchElementError",
+                "PrintWriter"
 	    ],
             from: "./script4j.base.4tests-${PROJECT.VERSION}"
 	},
@@ -47,7 +63,12 @@ module.exports = {
      * The order matters!
      */
     classes: [
-        'script4j/lang/ClassTest.ts',
-        'script4j/lang/ObjectTest.ts',
+        'script4j/lang/ClassTest',
+        'script4j/lang/ObjectTest',
+        'script4j/lang/StringTest',
+        'script4j/internal/logging/LoggerFactoryTest',
+        'script4j/util/ArrayListTest',
+        'script4j/util/HashSetTest',
+        'script4j/util/HashMapTest'
     ]
 };

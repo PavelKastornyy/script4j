@@ -1,11 +1,16 @@
 /*
- * Copyright (c) 2018 Pavel Kastornyy. All rights reserved.
+ * Copyright (c) 2018 Pavel Kastornyy. All rights reserved. The specified
+ * copyright does not cover application programming interface (API) and
+ * the documentation for this API, which were taken from other libraries.
+ * See NOTICE file for more information.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
+ * published by the Free Software Foundation. Copyright holder designates
+ * this particular file as subject to the "Classpath" exception as provided
+ * by copyright holder in the LICENSE file that accompanied this code.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,22 +24,14 @@
  *
  */
 
-import { assert } from 'chai';
-import 'mocha';
-import './../../../src/script4j/lang/Object';
 
-describe('ObjectTest', () => {
+import { Iterator } from './Iterator';
+import {Consumer} from './../util/function/Consumer';
+import './../lang/Object';
 
-    it('hashCode_defaultValue_inRange', () => {
-        let obj: Object = new Object();
-        assert.isAtLeast(obj.hashCode(), 0);
-        assert.isAtMost(obj.hashCode(), 4294967296);
-    });
+export interface Iterable<E> {
 
-    it('hashCode_severalCalls_similarResult', () => {
-        let obj: Object = new Object();
-        let firstHashCode = obj.hashCode();
-        let secondHashCode = obj.hashCode();
-        assert.equal(firstHashCode, secondHashCode);
-    });
-});
+    iterator(): Iterator<E>;
+
+    forEach(consumer: Consumer<E>): void;
+}

@@ -24,7 +24,7 @@
  *
  */
 
-import { Class } from "./Class";
+import { Class } from './Class';
 
 declare global {
 

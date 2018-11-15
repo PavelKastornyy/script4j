@@ -19,22 +19,21 @@
  *
  */
 
+import { LoggerFactory } from './../../../../src/script4j/internal/logging/LoggerFactory';
+import { Logger } from './../../../../src/script4j/internal/logging/Logger';
+import { PrintWriter } from './../../../../src/script4j/io/PrintWriter';
 import { assert } from 'chai';
 import 'mocha';
-import './../../../src/script4j/lang/Object';
 
-describe('ObjectTest', () => {
+describe('LoggerFactoryTest', () => {
 
-    it('hashCode_defaultValue_inRange', () => {
-        let obj: Object = new Object();
-        assert.isAtLeast(obj.hashCode(), 0);
-        assert.isAtMost(obj.hashCode(), 4294967296);
-    });
-
-    it('hashCode_severalCalls_similarResult', () => {
-        let obj: Object = new Object();
-        let firstHashCode = obj.hashCode();
-        let secondHashCode = obj.hashCode();
-        assert.equal(firstHashCode, secondHashCode);
+    it('getLogger_multipleCallWithSameClass_sameLogger', () => {
+        let logger1: Logger = LoggerFactory.getLogger(Number);
+        let logger2: Logger = LoggerFactory.getLogger(Number);
+        assert.isTrue(logger1.equals(logger2));
+        let logger3: Logger = LoggerFactory.getLogger(PrintWriter);
+        let logger4: Logger = LoggerFactory.getLogger(PrintWriter);
+        assert.isTrue(logger3.equals(logger4));
+        assert.isFalse(logger1.equals(logger4));
     });
 });

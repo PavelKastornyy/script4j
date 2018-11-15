@@ -19,22 +19,17 @@
  *
  */
 
+import './../../../src/script4j/lang/String';
 import { assert } from 'chai';
 import 'mocha';
-import './../../../src/script4j/lang/Object';
 
-describe('ObjectTest', () => {
-
-    it('hashCode_defaultValue_inRange', () => {
-        let obj: Object = new Object();
-        assert.isAtLeast(obj.hashCode(), 0);
-        assert.isAtMost(obj.hashCode(), 4294967296);
-    });
+describe('StringTest', () => {
 
     it('hashCode_severalCalls_similarResult', () => {
-        let obj: Object = new Object();
-        let firstHashCode = obj.hashCode();
-        let secondHashCode = obj.hashCode();
+        let s: string = "dfdfd";
+        let firstHashCode = s.hashCode();
+        let secondHashCode = s.hashCode();
         assert.equal(firstHashCode, secondHashCode);
     });
+
 });
