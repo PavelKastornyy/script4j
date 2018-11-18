@@ -19,22 +19,28 @@
  *
  */
 
-import { assert } from 'chai';
-import { describe } from 'mocha';
-import './../../../src/script4j/lang/Object';
+module.exports = {
 
-describe('ObjectTest', () => {
+    name: "script4jfx.base",
 
-    it('hashCode_defaultValue_inRange', () => {
-        let obj: Object = new Object();
-        assert.isAtLeast(obj.hashCode(), 0);
-        assert.isAtMost(obj.hashCode(), 4294967296);
-    });
+    import: {
+        modules: [
+            "script4j.base"
+        ]
+    },
 
-    it('hashCode_severalCalls_similarResult', () => {
-        let obj: Object = new Object();
-        let firstHashCode = obj.hashCode();
-        let secondHashCode = obj.hashCode();
-        assert.equal(firstHashCode, secondHashCode);
-    });
-});
+    /**
+     * The order matters!
+     */
+    classes: [
+
+
+    ],
+
+    export: {
+	packages: [
+	    
+	]
+    }
+};
+

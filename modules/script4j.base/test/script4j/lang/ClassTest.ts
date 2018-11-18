@@ -21,7 +21,7 @@
 
 import { assert } from 'chai';
 import {Class} from './../../../src/script4j/lang/Class';
-import 'mocha';
+import { describe } from 'mocha';
 
 describe('ClassTest', () => {
 

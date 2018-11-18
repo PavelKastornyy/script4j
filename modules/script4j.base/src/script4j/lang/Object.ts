@@ -101,4 +101,3 @@ declare global {
 (Object as any).prototype.getClass = function () {
     return new Class(this.constructor);
 };
-

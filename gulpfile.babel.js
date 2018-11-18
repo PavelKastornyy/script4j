@@ -19,10 +19,12 @@
  *
  */
 
-import { installModules, uninstallModules, buildModules, cleanModules } from './scripts/gulptasks';
+import { installModules, uninstallModules, buildModules, cleanModules, testModules } from './scripts/gulptasks';
 import gulp from 'gulp';
 
 gulp.task('install-modules', function(done){ installModules(); done() });
 gulp.task('uninstall-modules', function(done){ uninstallModules(); done() });
 gulp.task('build-modules', function(done){ buildModules(); done(); });
 gulp.task('clean-modules', function(done){ cleanModules(); done(); });
+gulp.task('test-modules', function(done){ testModules(); done(); });
+

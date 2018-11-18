@@ -21,7 +21,7 @@
 
 import './../../../src/script4j/lang/String';
 import { assert } from 'chai';
-import 'mocha';
+import { describe } from 'mocha';
 
 describe('StringTest', () => {
 

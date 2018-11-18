@@ -27,60 +27,46 @@ module.exports = {
      * The order matters!
      */
     classes: [
-        'script4j/lang/Class',
-        'script4j/lang/Object',
-        'script4j/lang/LooseObject',
-        'script4j/lang/String',
-        'script4j/util/Locale',
-        'script4j/util/function/Consumer',
-        'script4j/io/PrintWriter',
-        'script4j/lang/AbstractError',
-        'script4j/lang/IllegalArgumentError',
-        'script4j/lang/IllegalStateError',
-        'script4j/lang/IndexOutOfBoundsError',
-        'script4j/util/NoSuchElementError',
-        'script4j/lang/UnsupportedOperationError',
-        'script4j/util/Iterator',
-        'script4j/util/Iterable',
-        'script4j/util/Collection',
-        'script4j/util/Set',
-        'script4j/util/HashSet',
-        'script4j/util/List',
-        'script4j/util/ArrayList',
-        'script4j/util/Map',
-        'script4j/util/HashMap',
-        'script4j/internal/logging/LoggingLevel',
-        'script4j/internal/logging/Logger',
-        'script4j/internal/logging/LoggerFactory',
-        'script4j/lang/System'
+        'script4j.lang.Class',
+        'script4j.lang.Object',
+        'script4j.lang.LooseObject',
+        'script4j.lang.String',
+        'script4j.util.Locale',
+        'script4j.util.function.Consumer',
+        'script4j.io.PrintWriter',
+        'script4j.lang.AbstractError',
+        'script4j.lang.IllegalArgumentError',
+        'script4j.lang.IllegalStateError',
+        'script4j.lang.IndexOutOfBoundsError',
+        'script4j.util.NoSuchElementError',
+        'script4j.lang.UnsupportedOperationError',
+        'script4j.util.Iterator',
+        'script4j.util.Iterable',
+        'script4j.util.Collection',
+        'script4j.util.Set',
+        'script4j.util.HashSet',
+        'script4j.util.List',
+        'script4j.util.ArrayList',
+        'script4j.util.Map',
+        'script4j.util.HashMap',
+        'script4j.internal.logging.LoggingLevel',
+        'script4j.internal.logging.Logger',
+        'script4j.internal.logging.LoggerFactory',
+        'script4j.lang.System'
 
     ],
 
     export: {
-	classes: [
-	    "Class",
-            "AbstractError",
-            "Locale",
-            "Consumer",
-            "PrintWriter",
-            "IllegalArgumentError",
-            "IllegalStateError",
-            "IndexOutOfBoundsError",
-            "NoSuchElementError",
-            "UnsupportedOperationError",
-            "Collection",
-            "List",
-            "Set",
-            "Map",
-            "Iterator",
-            "ArrayList",
-            "HashSet",
-            "HashMapEntry",
-            "HashMap",
-            "Logger",
-            "LoggingLevel",
-            "LoggerFactory",
-            "System"
-	]
+	packages: [
+	    'script4j.io',
+            'script4j.lang',
+            'script4j.util',
+            'script4j.util.function',
+            'script4j.internal.logging'
+	],
+        exclude: [
+            'script4j.lang.Object',
+            'script4j.lang.String'
+        ]
     }
 };

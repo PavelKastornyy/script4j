@@ -23,7 +23,7 @@ import { LoggerFactory } from './../../../../src/script4j/internal/logging/Logge
 import { Logger } from './../../../../src/script4j/internal/logging/Logger';
 import { PrintWriter } from './../../../../src/script4j/io/PrintWriter';
 import { assert } from 'chai';
-import 'mocha';
+import { describe } from 'mocha';
 
 describe('LoggerFactoryTest', () => {
 

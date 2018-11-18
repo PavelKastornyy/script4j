@@ -21,54 +21,24 @@
 
 module.exports = {
 
-    name: "script4j.base.tests",
+    name: 'script4j.base.spec',
 
-    import: [
-	{
-	    classes: [
-		"Class",
-                "Logger",
-                "LoggingLevel",
-                "LoggerFactory",
-                "Collection",
-                "List",
-                "ArrayList",
-                "Set",
-                "HashSet",
-                "Map",
-                "HashMap",
-                "Iterator",
-                "IndexOutOfBoundsError",
-                "IllegalArgumentError",
-                "IllegalStateError",
-                "NoSuchElementError",
-                "PrintWriter"
-	    ],
-            from: "./script4j.base.4tests-${PROJECT.VERSION}"
-	},
-        {
-            classes: [
-                "assert"
-            ],
-            from: "chai"
-        },
-        {
-            classes: [
-                "'mocha'"
-            ]
-        }
-    ],
+    import: {
+        modules: [
+            'script4j.base.4spec', 'chai', 'mocha'
+        ]
+    },
 
     /**
      * The order matters!
      */
     classes: [
-        'script4j/lang/ClassTest',
-        'script4j/lang/ObjectTest',
-        'script4j/lang/StringTest',
-        'script4j/internal/logging/LoggerFactoryTest',
-        'script4j/util/ArrayListTest',
-        'script4j/util/HashSetTest',
-        'script4j/util/HashMapTest'
+        'script4j.lang.ClassTest',
+        'script4j.lang.ObjectTest',
+        'script4j.lang.StringTest',
+        'script4j.internal.logging.LoggerFactoryTest',
+        'script4j.util.ArrayListTest',
+        'script4j.util.HashSetTest',
+        'script4j.util.HashMapTest'
     ]
 };

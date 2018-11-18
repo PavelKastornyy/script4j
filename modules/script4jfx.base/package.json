@@ -1,9 +1,7 @@
 {
-    "name": "script4j.base",
+    "name": "script4jfx.base",
     "version": "0.1.0",
-    "description": "The base module of Script4J",
-    "main": "dist/script4j.base.js",
-    "types": "dist/script4j.base.ts",
+    "description": "The base module for FX of Script4J",
     "scripts": {
         "install-module": "npm install && jsonlint -i package.json -t '    '",
         "uninstall-module": "rm -rf node_modules && rm -f package-lock.json",
@@ -22,7 +20,10 @@
         "babel-preset-env": "1.7.0",
         "babel-preset-stage-0": "6.24.1",
         "chai": "4.2.0",
-        "mocha": "5.2.0"
+        "mocha": "5.2.0",
+        "script4j.base": "file:./../script4j.base"
     },
-    "dependencies": {}
+    "dependencies": {
+        "script4j.base": "file:./../script4j.base"
+    }
 }

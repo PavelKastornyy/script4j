@@ -20,7 +20,7 @@
  */
 
 import { assert } from 'chai';
-import 'mocha';
+import { describe } from 'mocha';
 import {ArrayList} from './../../../src/script4j/util/ArrayList';
 import {List} from './../../../src/script4j/util/List';
 import {Iterator} from './../../../src/script4j/util/Iterator';

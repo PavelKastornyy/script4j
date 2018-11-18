@@ -20,7 +20,7 @@
  */
 
 import { assert } from 'chai';
-import 'mocha';
+import { describe } from 'mocha';
 import {Set} from './../../../src/script4j/util/Set';
 import {HashSet} from './../../../src/script4j/util/HashSet';
 import {List} from './../../../src/script4j/util/List';

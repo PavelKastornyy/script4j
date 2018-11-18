@@ -24,7 +24,6 @@
  *
  */
 
-
  /**
   * This is base class for all errors.
   */

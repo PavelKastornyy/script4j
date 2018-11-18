@@ -507,7 +507,7 @@ export class HashMap<K, V> implements Map<K, V> {
     }
 }
 
-export module HashMap {
+export namespace HashMap {
 
     export class Entry<K, V> implements Map.Entry<K, V> {
 

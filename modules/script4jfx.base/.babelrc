@@ -19,22 +19,6 @@
  *
  */
 
-import { assert } from 'chai';
-import { describe } from 'mocha';
-import './../../../src/script4j/lang/Object';
-
-describe('ObjectTest', () => {
-
-    it('hashCode_defaultValue_inRange', () => {
-        let obj: Object = new Object();
-        assert.isAtLeast(obj.hashCode(), 0);
-        assert.isAtMost(obj.hashCode(), 4294967296);
-    });
-
-    it('hashCode_severalCalls_similarResult', () => {
-        let obj: Object = new Object();
-        let firstHashCode = obj.hashCode();
-        let secondHashCode = obj.hashCode();
-        assert.equal(firstHashCode, secondHashCode);
-    });
-});
+{
+  "presets": [ "env" ]
+}
