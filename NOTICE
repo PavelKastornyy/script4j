@@ -21,3 +21,10 @@
     version 2, with the Classpath Exception.
     http://openjdk.java.net/legal/gplv2+ce.html
 
+
+    OpenJFX
+
+    Script4J is using API and the documentation for this API, which were
+    taken from OpenJFX. OpenJFX is licensed under the GNU General Public License,
+    version 2, with the Classpath Exception.
+    http://openjdk.java.net/legal/gplv2+ce.html
