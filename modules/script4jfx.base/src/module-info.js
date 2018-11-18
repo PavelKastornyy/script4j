@@ -33,13 +33,37 @@ module.exports = {
      * The order matters!
      */
     classes: [
-
+        "script4jfx.beans.value.ChangeListener",
+        "script4jfx.beans.value.ObservableBooleanValue",
+        "script4jfx.beans.value.ObservableNumberValue",
+        "script4jfx.beans.value.ObservableStringValue",
+        "script4jfx.beans.value.ObservableValue",
+        "script4jfx.beans.value.WritableBooleanValue",
+        "script4jfx.beans.value.WritableNumberValue",
+        "script4jfx.beans.value.WritableStringValue",
+        "script4jfx.beans.value.WritableValue",
+        "script4jfx.beans.property.ReadOnlyProperty",
+        "script4jfx.beans.property.Property",
+        "script4jfx.beans.property.PropertyDelegate",
+        "script4jfx.beans.property.ReadOnlyStringProperty",
+        "script4jfx.beans.property.StringProperty",
+        "script4jfx.beans.property.SimpleStringProperty",
+        "script4jfx.beans.property.ReadOnlyNumberProperty",
+        "script4jfx.beans.property.NumberProperty",
+        "script4jfx.beans.property.SimpleNumberProperty",
+        "script4jfx.beans.property.ReadOnlyBooleanProperty",
+        "script4jfx.beans.property.BooleanProperty",
+        "script4jfx.beans.property.SimpleBooleanProperty",
+        "script4jfx.beans.property.ReadOnlyObjectProperty",
+        "script4jfx.beans.property.ObjectProperty",
+        "script4jfx.beans.property.SimpleObjectProperty",
 
     ],
 
     export: {
 	packages: [
-	    
+	    "script4jfx.beans.property",
+            "script4jfx.beans.value",
 	]
     }
 };
