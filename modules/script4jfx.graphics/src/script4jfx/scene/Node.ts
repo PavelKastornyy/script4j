@@ -24,15 +24,6 @@
  *
  */
 
-import {ChangeListener} from "./ChangeListener"
+abstract class Node {
 
-export interface ObservableValue<T> {
-
-    addListener(listener: ChangeListener<T>): void;
-
-    getValue(): T;
-
-    removeListener(listener: ChangeListener<T>): void;
 }
-
-

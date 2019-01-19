@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2018 Pavel Kastornyy. All rights reserved. The specified
- * copyright does not cover application programming interface (API) and
- * the documentation for this API, which were taken from other libraries.
- * See NOTICE file for more information.
+ * Copyright (c) 2018-2019 Pavel Kastornyy. All rights reserved.
+ * The specified copyright does not cover application programming interface
+ * (API) and the documentation for this API, which were taken from other
+ * libraries. See NOTICE file for more information.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *

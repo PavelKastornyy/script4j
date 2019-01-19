@@ -16,7 +16,8 @@
     "dependencies": {},
     "modules": [
         "script4j.base",
-        "script4jfx.base"
+        "script4jfx.base",
+        "script4jfx.graphics"
     ],
     "scripts": {
         "install-all": "npm install && gulp install-modules  && jsonlint -i package.json -t '    '",

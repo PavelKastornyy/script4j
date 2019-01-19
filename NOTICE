@@ -5,9 +5,9 @@
     Script4J is a set of libraries that allows to write programs and libraries
     in TypeScript/JavaScript using Java application programming interface (API).
 
-    Copyright (c) 2018 Pavel Kastornyy. The specified copyright does not cover
-    application programming interface (API) and the documentation for this API,
-    which were taken from other libraries (the libraries are listed below).
+    Copyright (c) 2018-2019 Pavel Kastornyy. The specified copyright does not
+    cover application programming interface (API) and the documentation for this
+    API, which were taken from other libraries (the libraries are listed below).
 
     Script4J is licensed under the GNU General Public License, version 2, with
     the Classpath Exception.

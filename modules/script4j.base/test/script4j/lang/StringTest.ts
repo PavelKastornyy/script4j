@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Pavel Kastornyy. All rights reserved.
+ * Copyright (c) 2018-2019 Pavel Kastornyy. All rights reserved.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
