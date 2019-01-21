@@ -36,6 +36,8 @@ module.exports = {
         'script4j.lang.ClassTest',
         'script4j.lang.ObjectTest',
         'script4j.lang.StringTest',
+        'script4j.lang.NumberTest',
+        'script4j.lang.BooleanTest',
         'script4j.internal.logging.LoggerFactoryTest',
         'script4j.util.ArrayListTest',
         'script4j.util.HashSetTest',

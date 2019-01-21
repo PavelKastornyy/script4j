@@ -21,6 +21,7 @@
 
 import { assert } from 'chai';
 import { describe } from 'mocha';
+import { it } from 'mocha';
 import {ArrayList} from './../../../src/script4j/util/ArrayList';
 import {List} from './../../../src/script4j/util/List';
 import {Iterator} from './../../../src/script4j/util/Iterator';

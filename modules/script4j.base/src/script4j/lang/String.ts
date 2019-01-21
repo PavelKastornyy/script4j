@@ -27,6 +27,19 @@
 import { LooseObject } from './LooseObject';
 import './Object'
 
+/**
+ * In JS there are primitive string and String object.
+ * A string primitive is parsed to a v8::String object. Hence, methods can be invoked directly on it.
+ * A String object, in the other hand, is parsed to a v8::StringObject which extends Object and, apart from being
+ * a full fledged object, serves as a wrapper for v8::String.
+ * See details here : https://stackoverflow.com/a/17256419/5057736
+ * That's why:
+ * typeof "abc"; //"string"
+ * typeof String("abc"); //"string"
+ * typeof new String("abc"); //"object"
+ * typeof (new String("abc")).valueOf(); //"string"
+ *
+ */
 declare global {
 
     interface StringConstructor {
@@ -39,12 +52,12 @@ declare global {
 }
 
 /**
- * In JS there are primitive string and String object. Primitive can not have propeties ->
+ * Primitive can not have propeties ->
  * it can not have saved hashCode. In order not to create String every time we need hash
  * we use this class to keep hashCodes for literals. The same way java does, as it creates
  * one instance for every string literal.
  */
-class LiteralStringHashCoder {
+class StringHashCodeKeeper {
 
     private static hashCodesByString: LooseObject<number> = {};
 
@@ -62,10 +75,20 @@ class LiteralStringHashCoder {
 }
 
 String.prototype.hashCode = function () {
-    let hashCode = LiteralStringHashCoder.getHashCode(this);
+    let hashCode = StringHashCodeKeeper.getHashCode(this);
     if (hashCode === null) {
-        hashCode = Math.floor(Math.random() * 4294967296);
-        LiteralStringHashCoder.setHashCode(this, hashCode);
+        hashCode = 0;
+        if (this.length === 0){
+            return hashCode;//don't save.
+        } else {
+            for (let i: number = 0; i < this.length; i++) {
+                hashCode = 31 * hashCode + this.charCodeAt(i);
+                if (hashCode > 2147483647) {
+                    hashCode = hashCode % 2147483647;
+                }
+            }
+            StringHashCodeKeeper.setHashCode(this, hashCode);
+        }
     }
     return hashCode;
- }
+}

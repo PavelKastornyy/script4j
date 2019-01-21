@@ -1,11 +1,16 @@
 /*
  * Copyright (c) 2018-2019 Pavel Kastornyy. All rights reserved.
+ * The specified copyright does not cover application programming interface
+ * (API) and the documentation for this API, which were taken from other
+ * libraries. See NOTICE file for more information.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
+ * published by the Free Software Foundation. Copyright holder designates
+ * this particular file as subject to the "Classpath" exception as provided
+ * by copyright holder in the LICENSE file that accompanied this code.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,30 +24,23 @@
  *
  */
 
-module.exports = {
+import './Object'
 
-    name: "script4jfx.grapchis",
+declare global {
 
-    import: {
-        modules: [
-            "script4j.base",
-	    "script4jfx.base",
-        ]
-    },
+    interface BooleanConstructor {
 
-    /**
-     * The order matters!
-     */
-    classes: [
-        "script4jfx.css.Styleable",
-        "script4jfx.scene.Node"
-
-    ],
-
-    export: {
-	packages: [
-
-	]
+        of(num: boolean): Boolean;
     }
-};
+
+    interface Boolean {
+
+        hashCode(): number;
+    }
+}
+
+Boolean.prototype.hashCode = function () {
+    return this ? 1231 : 1237;
+}
+
 

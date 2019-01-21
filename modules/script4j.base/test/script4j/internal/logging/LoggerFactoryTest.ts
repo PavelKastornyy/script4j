@@ -24,6 +24,7 @@ import { Logger } from './../../../../src/script4j/internal/logging/Logger';
 import { PrintWriter } from './../../../../src/script4j/io/PrintWriter';
 import { assert } from 'chai';
 import { describe } from 'mocha';
+import { it } from 'mocha';
 
 describe('LoggerFactoryTest', () => {
 

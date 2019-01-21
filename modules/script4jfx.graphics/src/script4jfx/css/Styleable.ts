@@ -24,34 +24,23 @@
  *
  */
 
-import { Styleable } from './../css/Styleable';
-import { EventTarget } from 'script4jfx.base';
-import { EventDispatchChain } from 'script4jfx.base';
-import { EventDispatcher } from 'script4jfx.base';
-import { ObjectProperty } from 'script4jfx.base';
-import { SimpleObjectProperty } from 'script4jfx.base';
+export interface Styleable {
 
-abstract class Node implements Styleable, EventTarget {
-
-    /**
-     * Specifies the event dispatcher for this node.
-     */
-    private readonly eventDispatcher: SimpleObjectProperty<EventDispatcher> = new SimpleObjectProperty();
-
-    constructor() {
-        this.eventDispatcher.setValue(null);
-    }
-
-
-    /**
-     * Gets the value of the property eventDispatcher.
-     */
-    public getEventDispatcher(): EventDispatcher {
-        return this.eventDispatcher.getValue();
-    }
-
-
-    public buildEventDispatchChain​(tail: EventDispatchChain) {
-
-    }
+//    getCssMetaData(): List<CssMetaData<? extends Styleable,​?>>;
+//
+//    getId(): String;
+//
+//    getPseudoClassStates(): ObservableSet<PseudoClass>;
+//
+//    getStyle(): String;
+//
+//    getStyleableParent(): Styleable;
+//
+//    getStyleClass(): ObservableList<String>;
+//
+//    /**
+//     * The type of this Styleable that is to be used in selector matching. This is analogous to an "element" in HTML.
+//     */
+//    getTypeSelector(): String;
 }
+

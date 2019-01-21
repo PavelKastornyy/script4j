@@ -19,33 +19,30 @@
  *
  */
 
-import './../../../src/script4j/lang/String';
+import './../../../src/script4j/lang/Number';
 import { assert } from 'chai';
 import { describe } from 'mocha';
 import { it } from 'mocha';
 
-describe('StringTest', () => {
+describe('NumberTest', () => {
 
     it('hashCode_severalCalls_similarResult', () => {
-        let s: string = "dfdfd";
-        let firstHashCode = s.hashCode();
-        let secondHashCode = s.hashCode();
+        let n: number = 100;
+        let firstHashCode: number = n.hashCode();
+        let secondHashCode: number = n.hashCode();
         assert.isNotNaN(firstHashCode);
         assert.isNotNull(firstHashCode);
         assert.equal(firstHashCode, secondHashCode);
     });
 
-    it('hashCode_inRange_correctResult', () => {
-        let s: string = "This code is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; \n\
-                without even the implied warranty of MERCHANTABILITY or * \n\
-                FITNESS FOR A PARTICULAR PURPOSE. Такой подход!";
-        let hash: number = s.hashCode();
-        assert.isNotNaN(hash);
-        assert.isNotNull(hash);
-        assert.isAtLeast(hash, -2147483648);
-        assert.isAtMost(hash, 2147483647);
+    it('hashCode_maxValue_correctResult', () => {
+        let n: number = 2147483650;
+        assert.equal(n.hashCode(), 3);
     });
 
-
-
+    it('hashCode_minValue_correctResult', () => {
+        let n: number = -2147483650;
+        assert.equal(n.hashCode(), -2);
+    });
 });
+

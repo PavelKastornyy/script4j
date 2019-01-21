@@ -24,34 +24,29 @@
  *
  */
 
-import { Styleable } from './../css/Styleable';
-import { EventTarget } from 'script4jfx.base';
-import { EventDispatchChain } from 'script4jfx.base';
-import { EventDispatcher } from 'script4jfx.base';
-import { ObjectProperty } from 'script4jfx.base';
-import { SimpleObjectProperty } from 'script4jfx.base';
+import './Object'
 
-abstract class Node implements Styleable, EventTarget {
+declare global {
 
-    /**
-     * Specifies the event dispatcher for this node.
-     */
-    private readonly eventDispatcher: SimpleObjectProperty<EventDispatcher> = new SimpleObjectProperty();
+    interface NumberConstructor {
 
-    constructor() {
-        this.eventDispatcher.setValue(null);
+        of(num:number):Number;
     }
 
+    interface Number {
 
-    /**
-     * Gets the value of the property eventDispatcher.
-     */
-    public getEventDispatcher(): EventDispatcher {
-        return this.eventDispatcher.getValue();
+        hashCode(): number;
     }
+}
 
-
-    public buildEventDispatchChain​(tail: EventDispatchChain) {
-
+Number.prototype.hashCode = function () {
+    let hashCode: number = Math.floor(this);//convert to int
+    if (this === 0) {
+        hashCode = 0;
+    } else if (this > 2147483647) {
+        hashCode = hashCode % 2147483647;
+    } else if (this < -2147483648) {
+        hashCode = hashCode % 2147483648;
     }
+    return hashCode;
 }

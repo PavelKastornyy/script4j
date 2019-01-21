@@ -30,6 +30,8 @@ module.exports = {
         'script4j.lang.Class',
         'script4j.lang.Object',
         'script4j.lang.LooseObject',
+        'script4j.lang.Boolean',
+        'script4j.lang.Number',
         'script4j.lang.String',
         'script4j.util.Locale',
         'script4j.util.function.Consumer',
@@ -52,7 +54,9 @@ module.exports = {
         'script4j.internal.logging.LoggingLevel',
         'script4j.internal.logging.Logger',
         'script4j.internal.logging.LoggerFactory',
-        'script4j.lang.System'
+        'script4j.lang.System',
+        'script4j.io.Serializable',
+        'script4j.util.EventObject'
 
     ],
 
@@ -66,6 +70,8 @@ module.exports = {
 	],
         exclude: [
             'script4j.lang.Object',
+            'script4j.lang.Number',
+            'script4j.lang.Boolean',
             'script4j.lang.String'
         ]
     }

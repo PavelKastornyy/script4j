@@ -478,7 +478,8 @@ export class HashMap<K, V> implements Map<K, V> {
     }
 
     private calculateBucket(hashCode: number): number {
-        return hashCode % this.capacity;
+        //hashCode can be negative
+        return Math.abs(hashCode) % this.capacity;
     }
 
     /**

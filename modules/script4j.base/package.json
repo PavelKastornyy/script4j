@@ -2,8 +2,8 @@
     "name": "script4j.base",
     "version": "0.1.0",
     "description": "The base module of Script4J",
-    "main": "dist/script4j.base.js",
-    "types": "dist/script4j.base.ts",
+    "main": "./dist/script4j.base.js",
+    "types": "./dist/script4j.base.ts",
     "scripts": {
         "install-module": "npm install && jsonlint -i package.json -t '    '",
         "uninstall-module": "rm -rf node_modules && rm -f package-lock.json",

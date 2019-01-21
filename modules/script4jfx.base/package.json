@@ -2,6 +2,8 @@
     "name": "script4jfx.base",
     "version": "0.1.0",
     "description": "The base module for FX of Script4J",
+    "main": "./dist/script4jfx.base.js",
+    "types": "./dist/script4jfx.base.ts",
     "scripts": {
         "install-module": "npm install && jsonlint -i package.json -t '    '",
         "uninstall-module": "rm -rf node_modules && rm -f package-lock.json",

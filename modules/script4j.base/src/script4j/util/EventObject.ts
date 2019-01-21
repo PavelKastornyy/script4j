@@ -1,11 +1,16 @@
 /*
  * Copyright (c) 2018-2019 Pavel Kastornyy. All rights reserved.
+ * The specified copyright does not cover application programming interface
+ * (API) and the documentation for this API, which were taken from other
+ * libraries. See NOTICE file for more information.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
+ * published by the Free Software Foundation. Copyright holder designates
+ * this particular file as subject to the "Classpath" exception as provided
+ * by copyright holder in the LICENSE file that accompanied this code.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,30 +24,21 @@
  *
  */
 
-module.exports = {
+import { Serializable } from './../io/Serializable';
 
-    name: "script4jfx.grapchis",
+export class EventObject implements Serializable {
 
-    import: {
-        modules: [
-            "script4j.base",
-	    "script4jfx.base",
-        ]
-    },
+    private readonly source: Object;
+
+    constructor(source: Object) {
+        this.source = source;
+    }
 
     /**
-     * The order matters!
+     * The object on which the Event initially occurred.
      */
-    classes: [
-        "script4jfx.css.Styleable",
-        "script4jfx.scene.Node"
-
-    ],
-
-    export: {
-	packages: [
-
-	]
+    public getSource(): Object {
+        return this.source;
     }
-};
+}
 

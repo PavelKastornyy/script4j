@@ -23,6 +23,8 @@
 
 import { assert } from 'chai';
 import { describe } from 'mocha';
+import { it } from 'mocha';
+import { beforeEach} from 'mocha';
 import { PropertyDelegate } from './../../../../src/script4jfx/beans/property/PropertyDelegate';
 
 describe('PropertyDelegateTest', () => {

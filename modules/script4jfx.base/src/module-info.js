@@ -58,12 +58,20 @@ module.exports = {
         "script4jfx.beans.property.ObjectProperty",
         "script4jfx.beans.property.SimpleObjectProperty",
 
+        "script4jfx.event.EventDispatchChain",
+        "script4jfx.event.EventDispatcher",
+        "script4jfx.event.EventHandler",
+        "script4jfx.event.EventTarget",
+        "script4jfx.event.Event",
+        "script4jfx.event.EventType"
+
     ],
 
     export: {
 	packages: [
 	    "script4jfx.beans.property",
             "script4jfx.beans.value",
+            "script4jfx.event",
 	]
     }
 };

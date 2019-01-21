@@ -19,33 +19,21 @@
  *
  */
 
-import './../../../src/script4j/lang/String';
+import './../../../src/script4j/lang/Boolean';
 import { assert } from 'chai';
 import { describe } from 'mocha';
 import { it } from 'mocha';
 
-describe('StringTest', () => {
+describe('BooleanTest', () => {
 
-    it('hashCode_severalCalls_similarResult', () => {
-        let s: string = "dfdfd";
-        let firstHashCode = s.hashCode();
-        let secondHashCode = s.hashCode();
-        assert.isNotNaN(firstHashCode);
-        assert.isNotNull(firstHashCode);
-        assert.equal(firstHashCode, secondHashCode);
+    it('hashCode_true_1231', () => {
+        let b: boolean = true;
+        assert.equal(b.hashCode(), 1231);
     });
 
-    it('hashCode_inRange_correctResult', () => {
-        let s: string = "This code is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; \n\
-                without even the implied warranty of MERCHANTABILITY or * \n\
-                FITNESS FOR A PARTICULAR PURPOSE. Такой подход!";
-        let hash: number = s.hashCode();
-        assert.isNotNaN(hash);
-        assert.isNotNull(hash);
-        assert.isAtLeast(hash, -2147483648);
-        assert.isAtMost(hash, 2147483647);
+    it('hashCode_false_1237', () => {
+        let b: boolean = false;
+        assert.equal(b.hashCode(), 1237);
     });
-
-
-
 });
+

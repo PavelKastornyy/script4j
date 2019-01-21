@@ -24,34 +24,24 @@
  *
  */
 
-import { Styleable } from './../css/Styleable';
-import { EventTarget } from 'script4jfx.base';
-import { EventDispatchChain } from 'script4jfx.base';
-import { EventDispatcher } from 'script4jfx.base';
-import { ObjectProperty } from 'script4jfx.base';
-import { SimpleObjectProperty } from 'script4jfx.base';
+import { EventDispatcher } from './EventDispatcher';
+import { Event } from './Event';
 
-abstract class Node implements Styleable, EventTarget {
+export interface EventDispatchChain {
 
     /**
-     * Specifies the event dispatcher for this node.
+     * Appends the specified EventDispatcher to this chain.
      */
-    private readonly eventDispatcher: SimpleObjectProperty<EventDispatcher> = new SimpleObjectProperty();
-
-    constructor() {
-        this.eventDispatcher.setValue(null);
-    }
-
+    append​(eventDispatcher: EventDispatcher): EventDispatchChain;
 
     /**
-     * Gets the value of the property eventDispatcher.
+     * Dispatches the specified event through this EventDispatchChain.
      */
-    public getEventDispatcher(): EventDispatcher {
-        return this.eventDispatcher.getValue();
-    }
+    dispatchEvent​(event: Event): Event;
 
-
-    public buildEventDispatchChain​(tail: EventDispatchChain) {
-
-    }
+    /**
+     * Prepends the specified EventDispatcher to this chain.
+     */
+    prepend​(eventDispatcher: EventDispatcher): EventDispatchChain;
 }
+

@@ -24,34 +24,36 @@
  *
  */
 
-import { Styleable } from './../css/Styleable';
-import { EventTarget } from 'script4jfx.base';
-import { EventDispatchChain } from 'script4jfx.base';
-import { EventDispatcher } from 'script4jfx.base';
-import { ObjectProperty } from 'script4jfx.base';
-import { SimpleObjectProperty } from 'script4jfx.base';
+import { Event } from './Event';
 
-abstract class Node implements Styleable, EventTarget {
+export class EventType<T extends Event> {
 
     /**
-     * Specifies the event dispatcher for this node.
+     * Constructs a new EventType with the specified super type and name.
      */
-    private readonly eventDispatcher: SimpleObjectProperty<EventDispatcher> = new SimpleObjectProperty();
+    constructor(​superType: EventType<T>, name: String) {
 
-    constructor() {
-        this.eventDispatcher.setValue(null);
     }
-
 
     /**
-     * Gets the value of the property eventDispatcher.
+     * Gets the name of this event type.
      */
-    public getEventDispatcher(): EventDispatcher {
-        return this.eventDispatcher.getValue();
+    public getName(): String {
+        return null;
     }
 
+    /**
+     * Gets the super type of this event type.
+     */
+    public getSuperType(): EventType<T> {
+        return null;
+    }
 
-    public buildEventDispatchChain​(tail: EventDispatchChain) {
-
+    /**
+     * Returns a string representation of this EventType object.
+     */
+    public toString(): String {
+        return null;
     }
 }
+
