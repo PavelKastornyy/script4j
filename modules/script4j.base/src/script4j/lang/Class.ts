@@ -43,10 +43,27 @@ import './Object';
  */
 export class Class {
 
+    private static constructors = new Array();
+
+    private static createdClasses = new Array();
+
     private construc: any;
 
     constructor(construc: any) {
         this.construc = construc;
+    }
+
+    public static forConstructor(construc: any): Class {
+        let index = Class.constructors.indexOf(construc);
+        let klass: Class = null;
+        if (index === -1) {
+            Class.constructors.push(construc);
+            klass = new Class(construc);
+            Class.createdClasses.push(klass);
+        } else {
+            klass = Class.createdClasses[index];
+        }
+        return klass;
     }
 
     /**

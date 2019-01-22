@@ -20,7 +20,8 @@
  */
 
 import { assert } from 'chai';
-import {Class} from './../../../src/script4j/lang/Class';
+import { Class } from './../../../src/script4j/lang/Class';
+import { ArrayList } from './../../../src/script4j/util/ArrayList';
 import { describe } from 'mocha';
 import { it } from 'mocha';
 
@@ -40,6 +41,10 @@ describe('ClassTest', () => {
     it('getName_forInstance_correctResult', () => {
         let test = new TheTest();
         assert.equal(test.getClass().getName(), "TheTest");
+    });
+
+    it('forConstructor_classByNameAndClassFromInstance_sameClassInstance', () => {
+        assert.equal(Class.forConstructor(ArrayList.class()), Class.forConstructor(new ArrayList().getClass()));
     });
 });
 

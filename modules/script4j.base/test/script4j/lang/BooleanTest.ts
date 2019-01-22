@@ -27,12 +27,12 @@ import { it } from 'mocha';
 describe('BooleanTest', () => {
 
     it('hashCode_true_1231', () => {
-        let b: boolean = true;
+        let b: Boolean = new Boolean(true);
         assert.equal(b.hashCode(), 1231);
     });
 
     it('hashCode_false_1237', () => {
-        let b: boolean = false;
+        let b: Boolean = new Boolean(false);
         assert.equal(b.hashCode(), 1237);
     });
 });

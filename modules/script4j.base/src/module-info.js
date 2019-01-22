@@ -42,6 +42,7 @@ module.exports = {
         'script4j.lang.IndexOutOfBoundsError',
         'script4j.util.NoSuchElementError',
         'script4j.lang.UnsupportedOperationError',
+        'script4j.lang.PrimitiveUsageError',
         'script4j.util.Iterator',
         'script4j.util.Iterable',
         'script4j.util.Collection',

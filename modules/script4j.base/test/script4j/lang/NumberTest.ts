@@ -27,7 +27,7 @@ import { it } from 'mocha';
 describe('NumberTest', () => {
 
     it('hashCode_severalCalls_similarResult', () => {
-        let n: number = 100;
+        let n: Number = new Number(100);
         let firstHashCode: number = n.hashCode();
         let secondHashCode: number = n.hashCode();
         assert.isNotNaN(firstHashCode);
@@ -36,13 +36,21 @@ describe('NumberTest', () => {
     });
 
     it('hashCode_maxValue_correctResult', () => {
-        let n: number = 2147483650;
+        let n: Number = new Number(2147483650);
         assert.equal(n.hashCode(), 3);
     });
 
     it('hashCode_minValue_correctResult', () => {
-        let n: number = -2147483650;
+        let n: Number = new Number(-2147483650);
         assert.equal(n.hashCode(), -2);
+    });
+
+    it('equals_sameNumber_true', () => {
+        assert.isTrue(new Number(200.5).equals(new Number(200.5)));
+    });
+
+    it('equals_differentNumber_false', () => {
+        assert.isFalse(new Number(200.5).equals(new Number(200.6)));
     });
 });
 

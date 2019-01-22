@@ -24,43 +24,18 @@
  *
  */
 
-import './Object'
-import {PrimitiveUsageError} from './PrimitiveUsageError';
+import { AbstractError } from './AbstractError'
 
-declare global {
+/**
+ * This erorr is thrown when there is an ettempt to use JavaScript primitives instead of JavaScript objects.
+ * For example, string instead of String.
+ */
+export class PrimitiveUsageError extends AbstractError {
 
-    interface BooleanConstructor {
-
-        of(num: boolean): Boolean;
-    }
-
-    interface Boolean {
-
-        hashCode(): number;
-
-        equals(obj: Object): boolean;
+    constructor(message: string) {
+        super(message);
+        // Set the prototype explicitly.
+        (<any>Object).setPrototypeOf(this, PrimitiveUsageError.prototype);
     }
 }
-
-Boolean.prototype.hashCode = function () {
-    if (typeof this === "boolean") {
-        throw new PrimitiveUsageError("Boolean Primitive was used instead of Boolean Object");
-    }
-    return this.valueOf() ? 1231 : 1237;
-}
-
-Number.prototype.equals = function(obj: Object): boolean {
-    if (typeof this === "boolean" || typeof obj === "boolean") {
-        throw new PrimitiveUsageError("Boolean Primitive was used instead of Boolean Object");
-    }
-    if (obj === null) {
-        return false;
-    } else if (obj.getClass() !== this.getClass()) {
-        return false;
-    } else {
-        let thatBool: Boolean = <Boolean>obj;
-        return this.valueOf() === thatBool.valueOf();
-    }
-}
-
 

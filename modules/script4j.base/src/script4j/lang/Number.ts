@@ -25,6 +25,7 @@
  */
 
 import './Object'
+import {PrimitiveUsageError} from './PrimitiveUsageError';
 
 declare global {
 
@@ -36,17 +37,41 @@ declare global {
     interface Number {
 
         hashCode(): number;
+
+        equals(obj: Object): boolean;
     }
 }
 
 Number.prototype.hashCode = function () {
-    let hashCode: number = Math.floor(this);//convert to int
-    if (this === 0) {
-        hashCode = 0;
-    } else if (this > 2147483647) {
-        hashCode = hashCode % 2147483647;
-    } else if (this < -2147483648) {
-        hashCode = hashCode % 2147483648;
+    if (typeof this === "number") {
+        throw new PrimitiveUsageError("Number Primitive was used instead of Number Object");
     }
-    return hashCode;
+    if ('__hashCodeValue' in this) {
+        return this.__hashCodeValue;
+    } else {
+        let hashCode: number = Math.floor(this);//convert to int
+        if (this === 0) {
+            hashCode = 0;
+        } else if (this > 2147483647) {
+            hashCode = hashCode % 2147483647;
+        } else if (this < -2147483648) {
+            hashCode = hashCode % 2147483648;
+        }
+        this.__hashCodeValue = hashCode;
+        return this.__hashCodeValue;
+    }
+}
+
+Number.prototype.equals = function(obj: Object): boolean {
+    if (typeof this === "number" || typeof obj === "number") {
+        throw new PrimitiveUsageError("Number Primitive was used instead of Number Object");
+    }
+    if (obj === null) {
+        return false;
+    } else if (obj.getClass() !== this.getClass()) {
+        return false;
+    } else {
+        let thatNumber: Number = <Number>obj;
+        return this.valueOf() === thatNumber.valueOf();
+    }
 }

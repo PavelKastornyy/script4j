@@ -25,6 +25,7 @@
  */
 
 import { LooseObject } from './LooseObject';
+import { PrimitiveUsageError } from './PrimitiveUsageError';
 import './Object'
 
 /**
@@ -38,7 +39,7 @@ import './Object'
  * typeof String("abc"); //"string"
  * typeof new String("abc"); //"object"
  * typeof (new String("abc")).valueOf(); //"string"
- *
+ * The same is about Number, Boolean.
  */
 declare global {
 
@@ -48,47 +49,50 @@ declare global {
 
     interface String {
         hashCode(): number;
+
+        equals(obj: Object): boolean;
     }
 }
 
 /**
- * Primitive can not have propeties ->
- * it can not have saved hashCode. In order not to create String every time we need hash
- * we use this class to keep hashCodes for literals. The same way java does, as it creates
- * one instance for every string literal.
+ * Primitive can not have propeties -> it can not have saved hashCode. So we can have only non primitive, as
+ * in Java.
  */
-class StringHashCodeKeeper {
-
-    private static hashCodesByString: LooseObject<number> = {};
-
-    public static setHashCode(str: string, int: number) {
-        this.hashCodesByString[str] = int;
-    }
-
-    public static getHashCode(str: string): number {
-        if (str in this.hashCodesByString) {
-            return this.hashCodesByString[str];
-        } else {
-            return null;
-        }
-    }
-}
 
 String.prototype.hashCode = function () {
-    let hashCode = StringHashCodeKeeper.getHashCode(this);
-    if (hashCode === null) {
-        hashCode = 0;
+    if (typeof this === "string") {
+        throw new PrimitiveUsageError("String Primitive was used instead of String Object");
+    }
+    if ('__hashCodeValue' in this) {
+        return this.__hashCodeValue;
+    } else {
         if (this.length === 0){
-            return hashCode;//don't save.
+            this.__hashCodeValue = 0;
         } else {
+            let hashCode = 0;
             for (let i: number = 0; i < this.length; i++) {
-                hashCode = 31 * hashCode + this.charCodeAt(i);
+                 hashCode = 31 * hashCode + this.charCodeAt(i);
                 if (hashCode > 2147483647) {
                     hashCode = hashCode % 2147483647;
                 }
+                hashCode *= this.charCodeAt(i) % 2 == 0 ? 1: -1;
             }
-            StringHashCodeKeeper.setHashCode(this, hashCode);
+            this.__hashCodeValue= hashCode;
         }
+        return this.__hashCodeValue;
     }
-    return hashCode;
+}
+
+String.prototype.equals = function(obj: Object): boolean {
+    if (typeof this === "string" || typeof obj === "string") {
+        throw new PrimitiveUsageError("String Primitive was used instead of String Object");
+    }
+    if (obj === null) {
+        return false;
+    } else if (obj.getClass() !== this.getClass()) {
+        return false;
+    } else {
+        let thatStr: String = <String>obj;
+        return this.valueOf() === thatStr.valueOf();
+    }
 }

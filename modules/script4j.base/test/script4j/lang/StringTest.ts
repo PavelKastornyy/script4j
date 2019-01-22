@@ -27,7 +27,7 @@ import { it } from 'mocha';
 describe('StringTest', () => {
 
     it('hashCode_severalCalls_similarResult', () => {
-        let s: string = "dfdfd";
+        let s: String = new String("dfdfd");
         let firstHashCode = s.hashCode();
         let secondHashCode = s.hashCode();
         assert.isNotNaN(firstHashCode);
@@ -36,9 +36,9 @@ describe('StringTest', () => {
     });
 
     it('hashCode_inRange_correctResult', () => {
-        let s: string = "This code is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; \n\
+        let s: String = new String("This code is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; \n\
                 without even the implied warranty of MERCHANTABILITY or * \n\
-                FITNESS FOR A PARTICULAR PURPOSE. Такой подход!";
+                FITNESS FOR A PARTICULAR PURPOSE. Такой подход!");
         let hash: number = s.hashCode();
         assert.isNotNaN(hash);
         assert.isNotNull(hash);
@@ -46,6 +46,11 @@ describe('StringTest', () => {
         assert.isAtMost(hash, 2147483647);
     });
 
+    it('equals_sameString_true', () => {
+        assert.isTrue(new String("javascript").equals(new String("javascript")));
+    });
 
-
+    it('equals_differentString_false', () => {
+        assert.isFalse(new String("javascript").equals(new String("typescript")));
+    });
 });
