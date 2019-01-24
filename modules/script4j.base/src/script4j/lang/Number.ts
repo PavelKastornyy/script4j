@@ -25,7 +25,7 @@
  */
 
 import './Object'
-import {PrimitiveUsageError} from './PrimitiveUsageError';
+import { PrimitiveUsageError } from './PrimitiveUsageError';
 
 declare global {
 
@@ -39,6 +39,8 @@ declare global {
         hashCode(): number;
 
         equals(obj: Object): boolean;
+
+        toHash(): number;
     }
 }
 
@@ -49,15 +51,8 @@ Number.prototype.hashCode = function () {
     if ('__hashCodeValue' in this) {
         return this.__hashCodeValue;
     } else {
-        let hashCode: number = Math.floor(this);//convert to int
-        if (this === 0) {
-            hashCode = 0;
-        } else if (this > 2147483647) {
-            hashCode = hashCode % 2147483647;
-        } else if (this < -2147483648) {
-            hashCode = hashCode % 2147483648;
-        }
-        this.__hashCodeValue = hashCode;
+        this.__hashCodeValue = Math.floor(this);//removes decimal
+        this.__hashCodeValue = this.__hashCodeValue | 0;////convert to int
         return this.__hashCodeValue;
     }
 }
@@ -68,7 +63,7 @@ Number.prototype.equals = function(obj: Object): boolean {
     }
     if (obj === null) {
         return false;
-    } else if (obj.getClass() !== this.getClass()) {
+    } else if (!(obj instanceof Number)) {
         return false;
     } else {
         let thatNumber: Number = <Number>obj;

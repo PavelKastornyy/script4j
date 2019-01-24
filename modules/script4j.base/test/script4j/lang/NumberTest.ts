@@ -23,6 +23,7 @@ import './../../../src/script4j/lang/Number';
 import { assert } from 'chai';
 import { describe } from 'mocha';
 import { it } from 'mocha';
+import { Integer } from './../../../src/script4j/lang/Integer';
 
 describe('NumberTest', () => {
 
@@ -35,14 +36,16 @@ describe('NumberTest', () => {
         assert.equal(firstHashCode, secondHashCode);
     });
 
-    it('hashCode_maxValue_correctResult', () => {
-        let n: Number = new Number(2147483650);
-        assert.equal(n.hashCode(), 3);
+    it('hashCode_maxValue_inRange', () => {
+        let n: Number = new Number(2147483650343);
+        assert.isAtLeast(n.hashCode(), Integer.MIN_VALUE);
+        assert.isAtMost(n.hashCode(), Integer.MAX_VALUE);
     });
 
     it('hashCode_minValue_correctResult', () => {
-        let n: Number = new Number(-2147483650);
-        assert.equal(n.hashCode(), -2);
+        let n: Number = new Number(-214748365003943);
+        assert.isAtLeast(n.hashCode(), Integer.MIN_VALUE);
+        assert.isAtMost(n.hashCode(), Integer.MAX_VALUE);
     });
 
     it('equals_sameNumber_true', () => {

@@ -25,7 +25,7 @@
  */
 
 import './Object'
-import {PrimitiveUsageError} from './PrimitiveUsageError';
+import { PrimitiveUsageError } from './PrimitiveUsageError';
 
 declare global {
 
@@ -49,13 +49,13 @@ Boolean.prototype.hashCode = function () {
     return this.valueOf() ? 1231 : 1237;
 }
 
-Number.prototype.equals = function(obj: Object): boolean {
+Boolean.prototype.equals = function(obj: Object): boolean {
     if (typeof this === "boolean" || typeof obj === "boolean") {
         throw new PrimitiveUsageError("Boolean Primitive was used instead of Boolean Object");
     }
     if (obj === null) {
         return false;
-    } else if (obj.getClass() !== this.getClass()) {
+    } else if (!(obj instanceof Boolean)) {
         return false;
     } else {
         let thatBool: Boolean = <Boolean>obj;

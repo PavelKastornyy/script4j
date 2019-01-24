@@ -22,6 +22,7 @@
 import { assert } from 'chai';
 import { Class } from './../../../src/script4j/lang/Class';
 import { ArrayList } from './../../../src/script4j/util/ArrayList';
+import { HashSet } from './../../../src/script4j/util/HashSet';
 import { describe } from 'mocha';
 import { it } from 'mocha';
 
@@ -45,6 +46,10 @@ describe('ClassTest', () => {
 
     it('forConstructor_classByNameAndClassFromInstance_sameClassInstance', () => {
         assert.equal(Class.forConstructor(ArrayList.class()), Class.forConstructor(new ArrayList().getClass()));
+    });
+
+    it('forConstructor_differentClasses_differentClassInstance', () => {
+        assert.notEqual(Class.forConstructor(ArrayList.class()), Class.forConstructor(HashSet.class()));
     });
 });
 

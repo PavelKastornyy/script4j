@@ -24,13 +24,14 @@ import { describe } from 'mocha';
 import { it } from 'mocha';
 import './../../../src/script4j/lang/Object';
 import { Class } from './../../../src/script4j/lang/Class';
+import { Integer } from './../../../src/script4j/lang/Integer';
 
 describe('ObjectTest', () => {
 
     it('hashCode_defaultValue_inRange', () => {
         let obj: Object = new Object();
-        assert.isAtLeast(obj.hashCode(), -2147483648);
-        assert.isAtMost(obj.hashCode(), 2147483647);
+        assert.isAtLeast(obj.hashCode(), Integer.MIN_VALUE);
+        assert.isAtMost(obj.hashCode(), Integer.MAX_VALUE);
     });
 
     it('hashCode_severalCalls_similarResult', () => {
@@ -45,8 +46,8 @@ describe('ObjectTest', () => {
         let secondHashCode = Number.hashCode();
         assert.isNotNaN(firstHashCode);
         assert.isNotNull(firstHashCode);
-        assert.isAtLeast(firstHashCode, -2147483648);
-        assert.isAtMost(firstHashCode, 2147483647);
+        assert.isAtLeast(firstHashCode, Integer.MIN_VALUE);
+        assert.isAtMost(firstHashCode, Integer.MAX_VALUE);
         assert.equal(firstHashCode, secondHashCode);
     });
 
@@ -55,8 +56,8 @@ describe('ObjectTest', () => {
         let secondHashCode = Class.hashCode();
         assert.isNotNaN(firstHashCode);
         assert.isNotNull(firstHashCode);
-        assert.isAtLeast(firstHashCode, -2147483648);
-        assert.isAtMost(firstHashCode, 2147483647);
+        assert.isAtLeast(firstHashCode, Integer.MIN_VALUE);
+        assert.isAtMost(firstHashCode, Integer.MAX_VALUE);
         assert.equal(firstHashCode, secondHashCode);
     });
 

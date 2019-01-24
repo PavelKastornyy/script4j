@@ -23,6 +23,7 @@ import './../../../src/script4j/lang/String';
 import { assert } from 'chai';
 import { describe } from 'mocha';
 import { it } from 'mocha';
+import { Integer } from './../../../src/script4j/lang/Integer';
 
 describe('StringTest', () => {
 
@@ -42,8 +43,8 @@ describe('StringTest', () => {
         let hash: number = s.hashCode();
         assert.isNotNaN(hash);
         assert.isNotNull(hash);
-        assert.isAtLeast(hash, -2147483648);
-        assert.isAtMost(hash, 2147483647);
+        assert.isAtLeast(hash, Integer.MIN_VALUE);
+        assert.isAtMost(hash, Integer.MAX_VALUE);
     });
 
     it('equals_sameString_true', () => {

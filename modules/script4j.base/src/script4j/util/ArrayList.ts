@@ -25,14 +25,14 @@
  */
 
 
-import { List } from './List';
+import { AbstractList } from './AbstractList';
 import { Iterator } from './Iterator';
 import { Consumer } from './../util/function/Consumer';
 import { IndexOutOfBoundsError } from './../lang/IndexOutOfBoundsError';
 import { NoSuchElementError } from './../util/NoSuchElementError';
 import { IllegalStateError } from './../lang/IllegalStateError';
 
-export class ArrayList<E> implements List<E> {
+export class ArrayList<E> extends AbstractList<E> {
 
     private ArrayListIterator = class <E> implements Iterator<E> {
 
@@ -74,7 +74,7 @@ export class ArrayList<E> implements List<E> {
     private array:E[] = [];
 
     constructor() {
-
+        super();
     }
 
     public add(obj: E): boolean {

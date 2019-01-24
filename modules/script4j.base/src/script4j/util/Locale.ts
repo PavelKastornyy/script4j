@@ -25,20 +25,20 @@
  */
 export class Locale {
 
-    private readonly language: string;
+    private readonly language: String;
 
-    private readonly country: string;
+    private readonly country: String;
 
-    constructor(language: string, country: string) {
+    constructor(language: String, country: String) {
         this.language = language;
         this.country = country;
     }
 
-    public getLanguage(): string {
+    public getLanguage(): String {
         return this.language;
     }
 
-    public getCountry(): string {
+    public getCountry(): String {
         return this.country;
     }
 }

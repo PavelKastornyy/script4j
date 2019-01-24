@@ -24,54 +24,40 @@
  *
  */
 
-
-import { AbstractSet } from './AbstractSet';
+import { AbstractCollection } from './AbstractCollection';
+import { Set } from './Set';
 import { Iterator } from './Iterator';
 import { Collection } from './Collection';
-import { Consumer } from './../util/function/Consumer';
-import { Map } from './Map';
-import { HashMap} from './HashMap';
 
-export class HashSet<E> extends AbstractSet<E> {
+export abstract class AbstractSet<E> extends AbstractCollection<E> implements Set<E> {
 
-    private readonly map: Map<E, Object> = new HashMap();
-
-    private readonly value: Object = new Object();
-
-    constructor() {
-       super();
+    public hashCode(): number {
+        let hashCode: number = 0;
+        let i: Iterator<E> = this.iterator();
+        while (i.hasNext()) {
+            let obj: E = i.next();
+            if (obj != null)
+                hashCode += obj.hashCode();
+                hashCode = hashCode | 0;//converto to int32
+        }
+        return hashCode;
     }
 
-    iterator(): Iterator<E> {
-        return this.map.keySet().iterator();
-    }
-
-    forEach(consumer: Consumer<E>): void {
-        this.map.keySet().forEach(consumer);
-    }
-
-    add(obj: E): boolean {
-        return (this.map.put(obj, this.value) == null);
-    }
-
-    clear(): void {
-        this.map.clear();
-    }
-
-    contains(obj: E): boolean {
-        return this.map.containsKey(obj);
-    }
-
-    isEmpty(): boolean {
-        return this.map.isEmpty();
-    }
-
-    remove(obj: E): void {
-        this.map.remove(obj);
-    }
-
-    size(): number {
-        return this.map.size();
+    public equals(obj: Object): boolean{
+        if (obj === null) {
+            return false;
+        }
+        if (obj === this) {
+            return true;
+        }
+        if (!(obj instanceof AbstractSet)) {
+            return false;
+        }
+        let colleciton: Collection<E> = <Collection<E>> obj;
+        if (colleciton.size() !== this.size()) {
+            return false;
+        }
+        return this.containsAll(colleciton);
     }
 }
 

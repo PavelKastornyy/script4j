@@ -25,6 +25,7 @@
  */
 
 import { Class } from './Class';
+import { Integer } from './../../../src/script4j/lang/Integer';
 
 declare global {
 
@@ -84,18 +85,12 @@ declare global {
     }
 };//semicolon!
 
-/**
- * Range from -2,147,483,648 .. 2,147,483,647.
- */
 (Object as any).prototype.hashCode = function () {
     if ('__hashCodeValue' in this) {
         return this.__hashCodeValue;
     } else {
-        this.__hashCodeValue = Math.floor(Math.random() * 2147483648);
+        this.__hashCodeValue = Math.floor(Math.random() * Integer.MAX_VALUE);
         this.__hashCodeValue *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
-        if (this.__hashCodeValue === 2147483648) {
-            this.__hashCodeValue--;
-        }
         return this.__hashCodeValue;
     }
 };

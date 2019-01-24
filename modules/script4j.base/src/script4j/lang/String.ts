@@ -71,11 +71,14 @@ String.prototype.hashCode = function () {
         } else {
             let hashCode = 0;
             for (let i: number = 0; i < this.length; i++) {
-                 hashCode = 31 * hashCode + this.charCodeAt(i);
-                if (hashCode > 2147483647) {
-                    hashCode = hashCode % 2147483647;
-                }
-                hashCode *= this.charCodeAt(i) % 2 == 0 ? 1: -1;
+                let char: number = this.charCodeAt(i);
+                //As in Java. The hash << 5 - hash is the same as hash * 31 + char but faster.
+                hashCode  = ((hashCode << 5) - hashCode) + char;
+                //An example: hash = 7264728162427 (which is 69B738AA07B in hex).
+                //hash | 0 will chop off everything above 32 bits (in this case, 69B) to leave
+                //738AA07B, which is 1938464891 in decimal.
+                //So you'll find that (hash | 0) === 1938464891.
+                hashCode = hashCode | 0;
             }
             this.__hashCodeValue= hashCode;
         }
@@ -89,7 +92,7 @@ String.prototype.equals = function(obj: Object): boolean {
     }
     if (obj === null) {
         return false;
-    } else if (obj.getClass() !== this.getClass()) {
+    } else if (!(obj instanceof String)) {
         return false;
     } else {
         let thatStr: String = <String>obj;

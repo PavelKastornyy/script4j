@@ -24,54 +24,35 @@
  *
  */
 
+import { Collection } from "./Collection";
+import { Consumer } from "./function/Consumer";
+import { Iterator } from "./Iterator";
 
-import { AbstractSet } from './AbstractSet';
-import { Iterator } from './Iterator';
-import { Collection } from './Collection';
-import { Consumer } from './../util/function/Consumer';
-import { Map } from './Map';
-import { HashMap} from './HashMap';
+export abstract class AbstractCollection<E> implements Collection<E> {
 
-export class HashSet<E> extends AbstractSet<E> {
+    abstract iterator(): Iterator<E>;
 
-    private readonly map: Map<E, Object> = new HashMap();
+    abstract forEach(consumer: Consumer<E>): void;
 
-    private readonly value: Object = new Object();
+    abstract add(obj: E): boolean;
 
-    constructor() {
-       super();
+    abstract clear(): void;
+
+    abstract contains(obj: E): boolean;
+
+    public containsAll(collection: Collection<any>): boolean {
+        let it: Iterator<any> = collection.iterator();
+        while (it.hasNext()) {
+            if (!this.contains(it.next()))
+                return false;
+        }
+        return true;
     }
 
-    iterator(): Iterator<E> {
-        return this.map.keySet().iterator();
-    }
+    abstract isEmpty(): boolean;
 
-    forEach(consumer: Consumer<E>): void {
-        this.map.keySet().forEach(consumer);
-    }
+    abstract remove(obj: E): void;
 
-    add(obj: E): boolean {
-        return (this.map.put(obj, this.value) == null);
-    }
-
-    clear(): void {
-        this.map.clear();
-    }
-
-    contains(obj: E): boolean {
-        return this.map.containsKey(obj);
-    }
-
-    isEmpty(): boolean {
-        return this.map.isEmpty();
-    }
-
-    remove(obj: E): void {
-        this.map.remove(obj);
-    }
-
-    size(): number {
-        return this.map.size();
-    }
+    abstract size(): number;
 }
 

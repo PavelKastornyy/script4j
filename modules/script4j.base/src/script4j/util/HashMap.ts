@@ -27,6 +27,7 @@
 
 import { Set } from './Set';
 import { Collection } from './Collection';
+import { AbstractCollection } from './AbstractCollection';
 import { Map } from './Map';
 import { Consumer } from './function/Consumer';
 import { List } from './List';
@@ -45,11 +46,12 @@ export class HashMap<K, V> implements Map<K, V> {
     /**
      * However, EntrySet is a field, but not a type, but we have access to private methods and fields of HashMap.
      */
-    private EntrySet = class <K> implements Set<Map.Entry<K, V>> {
+    private EntrySet = class<K> extends AbstractCollection<Map.Entry<K, V>> implements Set<Map.Entry<K, V>> {
 
         private readonly map: HashMap<K, V>;
 
         constructor(map: HashMap<K, V>) {
+            super();
             this.map = map;
         }
 
@@ -91,11 +93,12 @@ export class HashMap<K, V> implements Map<K, V> {
 
     };
 
-    private KeySet = class<K> implements Set<K> {
+    private KeySet = class<K> extends AbstractCollection<K> implements Set<K> {
 
         private readonly map: HashMap<K, V>;
 
         constructor(map: HashMap<K, V>) {
+            super();
             this.map = map;
         }
 
@@ -161,11 +164,12 @@ export class HashMap<K, V> implements Map<K, V> {
 
     };
 
-    private ValueCollection = class<V> implements Collection<V> {
+    private ValueCollection = class<V> extends AbstractCollection<V> {
 
         private readonly map: HashMap<K, V>;
 
         constructor(map: HashMap<K, V>) {
+            super();
             this.map = map;
         }
 

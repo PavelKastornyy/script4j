@@ -24,54 +24,16 @@
  *
  */
 
+export class Integer {
 
-import { AbstractSet } from './AbstractSet';
-import { Iterator } from './Iterator';
-import { Collection } from './Collection';
-import { Consumer } from './../util/function/Consumer';
-import { Map } from './Map';
-import { HashMap} from './HashMap';
+    public static readonly MAX_VALUE: number = 2147483647;
 
-export class HashSet<E> extends AbstractSet<E> {
+    public static readonly MIN_VALUE: number = -2147483648;
 
-    private readonly map: Map<E, Object> = new HashMap();
+    private constructor() {
 
-    private readonly value: Object = new Object();
-
-    constructor() {
-       super();
-    }
-
-    iterator(): Iterator<E> {
-        return this.map.keySet().iterator();
-    }
-
-    forEach(consumer: Consumer<E>): void {
-        this.map.keySet().forEach(consumer);
-    }
-
-    add(obj: E): boolean {
-        return (this.map.put(obj, this.value) == null);
-    }
-
-    clear(): void {
-        this.map.clear();
-    }
-
-    contains(obj: E): boolean {
-        return this.map.containsKey(obj);
-    }
-
-    isEmpty(): boolean {
-        return this.map.isEmpty();
-    }
-
-    remove(obj: E): void {
-        this.map.remove(obj);
-    }
-
-    size(): number {
-        return this.map.size();
     }
 }
+
+
 

@@ -21,7 +21,7 @@
 
 module.exports = {
 
-    name: "script4jfx.grapchis",
+    name: "script4jfx.graphics",
 
     import: {
         modules: [

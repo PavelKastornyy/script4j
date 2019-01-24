@@ -331,22 +331,26 @@ function distModuleFixer(data, module) {
     if (!("import" in module) || !("modules" in module.import)) {
         return data;
     }
-    let regExpStr = "from '(";
+    //let regExpStr = "^} from '(";
+    //[] is only for one character
+    let regExpStr = "^import (\\{$[\\s\\S]*^\\} from )*'(";
     let isFirst = true;
     for (let i = 0; i < module.import.modules.length; i++) {
         //if imported module is from script4j modules
         if (packageJson.modules.indexOf(module.import.modules[i]) > -1) {
             if (!isFirst) {
-                regExp +="|";
+                regExpStr += "|";
             }
             regExpStr += module.import.modules[i];
             isFirst = false;
         }
     }
-    regExpStr += ")'";
-    let regExp = new RegExp(regExpStr, "g");
-    data = data.replace(regExp, function(param, p1) {
-        return "from './" + p1 + "-" + packageJson.version + "'" ;
+    regExpStr += ")';";
+    let regExp = new RegExp(regExpStr, "gm");
+    data = data.replace(regExp, function(param, p1, p2) {
+        //param is the full expression: import ... 'module';
+        //p2 is the name of the module
+        return param.replace(p2, "./" + p2 + "-" + packageJson.version);
     })
     return data;
 }

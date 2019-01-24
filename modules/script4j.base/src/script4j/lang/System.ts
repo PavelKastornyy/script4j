@@ -47,9 +47,7 @@ export class System {
     }
 
     public static setProperty(key:String, value:String): String {
-        let previousValue = System.properties.get(key);
-        System.properties.put(key, value);
-        return previousValue;
+        return System.properties.put(key, value);
     }
 
     public static getProperty(key: String) {

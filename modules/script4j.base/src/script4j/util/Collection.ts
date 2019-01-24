@@ -35,6 +35,8 @@ export interface Collection<E> extends Iterable<E> {
 
     contains(obj: E): boolean;
 
+    containsAll(c: Collection<any>): boolean;
+
     isEmpty(): boolean;
 
     remove(obj: E): void;
