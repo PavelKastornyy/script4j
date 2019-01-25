@@ -60,9 +60,9 @@ export namespace System {
 
     export class PropertyKey {
 
-        public static readonly LOCALE: String = new String("script4j.util.Locale");
+        public static readonly LOCALE: string = "script4j.util.Locale";
 
-        public static readonly LOGGING_LEVEL: String = new String("script4j.internal.logging.LoggingLevel");
+        public static readonly LOGGING_LEVEL: string = "script4j.internal.logging.LoggingLevel";
 
     }
 

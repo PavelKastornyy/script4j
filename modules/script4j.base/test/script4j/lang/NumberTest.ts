@@ -36,14 +36,22 @@ describe('NumberTest', () => {
         assert.equal(firstHashCode, secondHashCode);
     });
 
+    it('hashCode_primitiveObject_similarResult', () => {
+        let n: Number = new Number(40000012.290);
+        let hashCode: number = n.hashCode();
+        assert.isNotNaN(hashCode);
+        assert.isNotNull(hashCode);
+        assert.equal(hashCode, n.valueOf().hashCode());
+    });
+
     it('hashCode_maxValue_inRange', () => {
-        let n: Number = new Number(2147483650343);
+        let n: number = 2147483650343;
         assert.isAtLeast(n.hashCode(), Integer.MIN_VALUE);
         assert.isAtMost(n.hashCode(), Integer.MAX_VALUE);
     });
 
     it('hashCode_minValue_correctResult', () => {
-        let n: Number = new Number(-214748365003943);
+        let n: number = -214748365003943;
         assert.isAtLeast(n.hashCode(), Integer.MIN_VALUE);
         assert.isAtMost(n.hashCode(), Integer.MAX_VALUE);
     });
@@ -53,7 +61,20 @@ describe('NumberTest', () => {
     });
 
     it('equals_differentNumber_false', () => {
-        assert.isFalse(new Number(200.5).equals(new Number(200.6)));
+        assert.isFalse(200.5.equals(201.5));
+    });
+
+    /**
+     * ToString we don't implment in number, but here we check how it works with Object.toString
+     */
+    it('toString_primitive_string', () => {
+        let n: number = 200;
+        assert.equal(n.toString(), "200");
+    });
+
+    it('toString_object_string', () => {
+        let n: Number = new Number(200);
+        assert.equal(n.toString(), "200");
     });
 });
 

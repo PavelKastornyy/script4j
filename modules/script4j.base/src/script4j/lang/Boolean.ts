@@ -25,7 +25,6 @@
  */
 
 import './Object'
-import { PrimitiveUsageError } from './PrimitiveUsageError';
 
 declare global {
 
@@ -39,28 +38,45 @@ declare global {
         hashCode(): number;
 
         equals(obj: Object): boolean;
+
+        toString(): string;
     }
 }
 
 Boolean.prototype.hashCode = function () {
-    if (typeof this === "boolean") {
-        throw new PrimitiveUsageError("Boolean Primitive was used instead of Boolean Object");
-    }
     return this.valueOf() ? 1231 : 1237;
 }
 
 Boolean.prototype.equals = function(obj: Object): boolean {
-    if (typeof this === "boolean" || typeof obj === "boolean") {
-        throw new PrimitiveUsageError("Boolean Primitive was used instead of Boolean Object");
-    }
     if (obj === null) {
         return false;
-    } else if (!(obj instanceof Boolean)) {
-        return false;
+    };
+    let thisBool = null;
+    let thatBool = null;
+    if (typeof this === "boolean") {
+        thisBool = this;
+    //it is a Number wrapper
     } else {
-        let thatBool: Boolean = <Boolean>obj;
-        return this.valueOf() === thatBool.valueOf();
+        thisBool = this.valueOf();
     }
+    if (typeof obj === "boolean") {
+        thatBool = obj;
+    } else if (obj instanceof Boolean) {
+        thatBool = obj.valueOf();
+    } else {
+        return false;
+    }
+    return thisBool === thatBool;
 }
 
+Boolean.prototype.toString = function(): string {
+    let bool: boolean;
+    if (typeof this === "boolean") {
+        bool = this;
+    //it is an Object
+    } else {
+        bool = this.valueOf();
+    }
+    return bool === true ? "true" : "false";
+}
 

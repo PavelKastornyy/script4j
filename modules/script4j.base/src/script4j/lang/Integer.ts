@@ -33,6 +33,14 @@ export class Integer {
     private constructor() {
 
     }
+
+    public static toHexString(i: number): string {
+        let hexString: string = i.toString(16);
+        if (hexString.length % 2) {
+          hexString = '0' + hexString;
+        }
+        return hexString;
+    }
 }
 
 

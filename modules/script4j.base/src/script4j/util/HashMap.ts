@@ -24,9 +24,10 @@
  *
  */
 
-
+import { AbstractMap } from './AbstractMap';
 import { Set } from './Set';
 import { Collection } from './Collection';
+import { AbstractSet } from './AbstractSet';
 import { AbstractCollection } from './AbstractCollection';
 import { Map } from './Map';
 import { Consumer } from './function/Consumer';
@@ -39,14 +40,14 @@ import { NoSuchElementError } from './NoSuchElementError';
 /**
  * Load factor is not supported.
  */
-export class HashMap<K, V> implements Map<K, V> {
+export class HashMap<K, V> extends AbstractMap<K, V> {
 
     public static readonly DEFAULT_CAPACITY: number = 16;
 
     /**
      * However, EntrySet is a field, but not a type, but we have access to private methods and fields of HashMap.
      */
-    private EntrySet = class<K> extends AbstractCollection<Map.Entry<K, V>> implements Set<Map.Entry<K, V>> {
+    private EntrySet = class<K> extends AbstractSet<Map.Entry<K, V>> implements Set<Map.Entry<K, V>> {
 
         private readonly map: HashMap<K, V>;
 
@@ -93,7 +94,7 @@ export class HashMap<K, V> implements Map<K, V> {
 
     };
 
-    private KeySet = class<K> extends AbstractCollection<K> implements Set<K> {
+    private KeySet = class<K> extends AbstractSet<K> implements Set<K> {
 
         private readonly map: HashMap<K, V>;
 
@@ -244,11 +245,12 @@ export class HashMap<K, V> implements Map<K, V> {
     /**
      * Array of list. Different objects can have equal hascode.
      */
-    private buckets: List<Map.Entry<K, V>>[];
+    private buckets: List<HashMap.Entry<K, V>>[];
 
     private capacity: number;
 
     constructor(capacity?: number) {
+        super();
         if (capacity === undefined) {
             this.capacity = HashMap.DEFAULT_CAPACITY;
         } else {
@@ -262,14 +264,15 @@ export class HashMap<K, V> implements Map<K, V> {
     }
 
     public containsKey(key: K): boolean {
-        let bucket: List<Map.Entry<K, V>> = this.resolveBucket(key.hashCode());
+        let keyHashCode: number = key.hashCode();
+        let bucket: List<HashMap.Entry<K, V>> = this.resolveBucket(keyHashCode);
         if (bucket === null) {
             return false;
         }
-        let mapEntry: Map.Entry<K, V> =  null;
+        let entry: HashMap.Entry<K, V> =  null;
         for (let i: number = 0; i < bucket.size(); i++) {
-            mapEntry = bucket.get(i);
-            if (this.checkIfKeysAreSimilar(key, mapEntry.getKey())) {
+            entry = bucket.get(i);
+            if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
                 return true;
             }
         }
@@ -294,28 +297,20 @@ export class HashMap<K, V> implements Map<K, V> {
     }
 
     public entrySet(): Set<Map.Entry<K, V>> {
-//        let result: Set<MapEntry<K, V>> = new HashSet<MapEntry<K, V>>();
-//        let bucket: List<MapEntry<K, V>>;
-//        for (let i: number = 0; i < this.capacity; i++) {
-//            bucket = this.buckets[i];
-//            if (bucket !== null) {
-//                bucket.forEach((entry: MapEntry<K, V>) => result.add(entry));
-//            }
-//        }
-//        return result;
         return new this.EntrySet(this);
     }
 
     public get(key: K): V {
-        let bucket: List<Map.Entry<K, V>> = this.resolveBucket(key.hashCode());
+        let keyHashCode = key.hashCode();
+        let bucket: List<HashMap.Entry<K, V>> = this.resolveBucket(keyHashCode);
         if (bucket === null) {
             return null;
         }
-        let mapEntry: Map.Entry<K, V> =  null;
+        let entry: HashMap.Entry<K, V> =  null;
         for (let i: number = 0; i < bucket.size(); i++) {
-            mapEntry = bucket.get(i);
-            if (this.checkIfKeysAreSimilar(key, mapEntry.getKey())) {
-                return mapEntry.getValue();
+            entry = bucket.get(i);
+            if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
+                return entry.getValue();
             }
         }
         return null;
@@ -338,25 +333,27 @@ export class HashMap<K, V> implements Map<K, V> {
 
     public put(key: K, value: V): V {
         let previousValue:V = null;
-        let bucketIndex: number = this.calculateBucket(key.hashCode());
-        let bucket: List<Map.Entry<K, V>> = this.buckets[bucketIndex];
+        let keyHashCode = key.hashCode();
+        let bucketIndex: number = this.calculateBucket(keyHashCode);
+        let bucket: List<HashMap.Entry<K, V>> = this.buckets[bucketIndex];
         if (bucket === null) {
-            bucket = new ArrayList<Map.Entry<K, V>>();
+            bucket = new ArrayList<HashMap.Entry<K, V>>();
             this.buckets[bucketIndex] = bucket;
         }
         //if entry with such key exists we take existing entry and replace value
         let entry: HashMap.Entry<K, V> = null;
+        let valueWasAdded = false;
         for (let i: number = 0; i < bucket.size(); i++) {
-            if (this.checkIfKeysAreSimilar(bucket.get(i).getKey(), key)) {
-                entry = <HashMap.Entry<K, V>> bucket.get(i);
+            entry = <HashMap.Entry<K, V>> bucket.get(i);
+            if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
                 previousValue = entry.getValue();
                 entry.setValue(value);
+                valueWasAdded = true;
                 break;
             }
         }
-        //if entry doesn't exist we create new
-        if (entry === null) {
-            entry = new HashMap.Entry<K, V>(key, value);
+        if (valueWasAdded === false) {
+            entry = new HashMap.Entry<K, V>(key, keyHashCode, value);
             bucket.add(entry);
         }
         return previousValue;
@@ -364,13 +361,14 @@ export class HashMap<K, V> implements Map<K, V> {
 
     public remove(key: K): V {
         let oldValue: V = null;
-        let bucketIndex: number = this.calculateBucket(key.hashCode());
-        let bucket: List<Map.Entry<K, V>> = this.buckets[bucketIndex];
+        let keyHashCode = key.hashCode();
+        let bucketIndex: number = this.calculateBucket(keyHashCode);
+        let bucket: List<HashMap.Entry<K, V>> = this.buckets[bucketIndex];
         if (bucket !== null) {
-            let entry: Map.Entry<K, V> = null;
+            let entry: HashMap.Entry<K, V> = null;
             for (let i: number = 0; i < bucket.size(); i++) {
                 entry = bucket.get(i);
-                if (this.checkIfKeysAreSimilar(entry.getKey(), key)) {
+                if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
                     oldValue = entry.getValue();
                     bucket.removeByIndex(i);
                     break;
@@ -476,7 +474,7 @@ export class HashMap<K, V> implements Map<K, V> {
         }(this);
     }
 
-    private resolveBucket(hashCode: number): List <Map.Entry < K, V>> {
+    private resolveBucket(hashCode: number): List <HashMap.Entry < K, V>> {
         let bucketIndex = this.calculateBucket(hashCode);
         return this.buckets[bucketIndex];
     }
@@ -487,10 +485,11 @@ export class HashMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * Returns true if hashCodes are equal and .equals returns true.
+     * Returns true if hashCodes are equal and .equals returns true. We pass hash for performance -> not to calculate
+     * them again.
      */
-    private checkIfKeysAreSimilar(key1: K, key2: K): boolean {
-        if (key1.hashCode() !== key2.hashCode()) {
+    private checkIfKeysAreSimilar(key1: K, key1Hash: number, key2: K, key2Hash: number): boolean {
+        if (key1Hash !== key2Hash) {
             return false;
         }
         if (key1.equals(key2)) {
@@ -503,8 +502,8 @@ export class HashMap<K, V> implements Map<K, V> {
     /**
      * Creates array and fill its with nulls, as Array.fill we can not use in NetBeans TypeScript plugin.
      */
-    private newBucketsArray(capacity: number): List<Map.Entry<K, V>>[] {
-        let result:List<Map.Entry<K, V>>[] = new Array(capacity);
+    private newBucketsArray(capacity: number): List<HashMap.Entry<K, V>>[] {
+        let result:List<HashMap.Entry<K, V>>[] = new Array(capacity);
         for (let i: number = 0; i < result.length; i++) {
             result[i] = null;
         }
@@ -518,10 +517,16 @@ export namespace HashMap {
 
         private readonly key: K;
 
+        private readonly keyHashCode: number;
+
+        /**
+         * This field is not readonly because we can change the value for the existring entry.
+         */
         private value: V;
 
-        constructor(key: K, value: V) {
+        constructor(key: K, keyHashCode: number, value: V) {
             this.key = key;
+            this.keyHashCode = keyHashCode;
             this.value = value;
         }
 
@@ -536,10 +541,10 @@ export namespace HashMap {
                 return false;
             }
             let other: HashMap.Entry<K, V> = <HashMap.Entry<K, V>>obj;
-            if (!this.key.equals(other.key)) {
+            if (!this.key.equals(other.getKey())) {
                 return false;
             }
-            if (!this.value.equals(other.value)) {
+            if (!this.value.equals(other.getValue())) {
                 return false;
             }
             return true;
@@ -547,6 +552,10 @@ export namespace HashMap {
 
         public getKey(): K {
             return this.key;
+        }
+
+        public getKeyHashCode(): number {
+            return this.keyHashCode;
         }
 
         public getValue(): V {
@@ -559,9 +568,14 @@ export namespace HashMap {
 
         public hashCode(): number {
             let result: number = 3;
-            result = 31 * result + this.key.hashCode();
+            result = 31 * result + this.keyHashCode;
             result = 31 * result + this.value.hashCode();
+            result = result | 0; //convert to int32
             return result;
+        }
+
+        public toString(): string {
+            return "Entry{" + "key=" + this.key.toString() + ", value=" + this.value.toString() + "}";
         }
     }
 }

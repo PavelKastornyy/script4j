@@ -61,7 +61,7 @@ export abstract class AbstractList<E> extends AbstractCollection<E> implements L
         //for performance we use iterators, but not get, because every list has its own impl.
         let thisIterator: Iterator<E> = this.iterator();
         let thatIterator: Iterator<any> = that.iterator();
-        while (thisIterator.hasNext() && thatIterator.hasNext()) {
+        while (thisIterator.hasNext()) {
             let thisElement: Object = thisIterator.next();
             let thatElement: Object = thatIterator.next();
             if (thisElement === null) {

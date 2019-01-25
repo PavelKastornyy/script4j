@@ -35,5 +35,19 @@ describe('BooleanTest', () => {
         let b: Boolean = new Boolean(false);
         assert.equal(b.hashCode(), 1237);
     });
+
+    it('toString_object_correctString', () => {
+        let a: Boolean = new Boolean(false);
+        let b: Boolean = new Boolean(true);
+        assert.equal(a.toString(), "false");
+        assert.equal(b.toString(), "true");
+    });
+
+    it('toString_primitive_correctString', () => {
+        let a: boolean = false;
+        let b: boolean = true;
+        assert.equal(a.toString(), "false");
+        assert.equal(b.toString(), "true");
+    });
 });
 

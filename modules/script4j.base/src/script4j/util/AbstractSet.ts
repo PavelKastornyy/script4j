@@ -36,9 +36,10 @@ export abstract class AbstractSet<E> extends AbstractCollection<E> implements Se
         let i: Iterator<E> = this.iterator();
         while (i.hasNext()) {
             let obj: E = i.next();
-            if (obj != null)
+            if (obj != null) {
                 hashCode += obj.hashCode();
                 hashCode = hashCode | 0;//converto to int32
+            }
         }
         return hashCode;
     }

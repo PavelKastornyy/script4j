@@ -25,7 +25,6 @@
  */
 
 import './Object'
-import { PrimitiveUsageError } from './PrimitiveUsageError';
 
 declare global {
 
@@ -40,33 +39,37 @@ declare global {
 
         equals(obj: Object): boolean;
 
-        toHash(): number;
+        /**
+         * We DON'T override this method for Number
+         */
+        //toString(): string
     }
 }
 
 Number.prototype.hashCode = function () {
-    if (typeof this === "number") {
-        throw new PrimitiveUsageError("Number Primitive was used instead of Number Object");
-    }
-    if ('__hashCodeValue' in this) {
-        return this.__hashCodeValue;
-    } else {
-        this.__hashCodeValue = Math.floor(this);//removes decimal
-        this.__hashCodeValue = this.__hashCodeValue | 0;////convert to int
-        return this.__hashCodeValue;
-    }
+    let hashCode: number = Math.floor(this);//removes decimal
+    hashCode = hashCode | 0;//convert to int
+    return hashCode;
 }
 
 Number.prototype.equals = function(obj: Object): boolean {
-    if (typeof this === "number" || typeof obj === "number") {
-        throw new PrimitiveUsageError("Number Primitive was used instead of Number Object");
-    }
     if (obj === null) {
         return false;
-    } else if (!(obj instanceof Number)) {
-        return false;
+    };
+    let thisNumber = null;
+    let thatNumber = null;
+    if (typeof this === "number") {
+        thisNumber = this;
+    //it is a Number wrapper
     } else {
-        let thatNumber: Number = <Number>obj;
-        return this.valueOf() === thatNumber.valueOf();
+        thisNumber = this.valueOf();
     }
+    if (typeof obj === "number") {
+        thatNumber = obj;
+    } else if (obj instanceof Number) {
+        thatNumber = obj.valueOf();
+    } else {
+        return false;
+    }
+    return thisNumber === thatNumber;
 }

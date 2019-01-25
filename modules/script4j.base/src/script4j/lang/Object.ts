@@ -73,7 +73,7 @@ declare global {
         */
         getClass(): Class;
 
-        //toString(): string;
+        toString(): string;
     }
 }
 
@@ -101,4 +101,8 @@ declare global {
 
 (Object as any).prototype.getClass = function () {
     return Class.forConstructor(this.constructor);
+};
+
+(Object as any).prototype.toString = function () {
+    return this.getClass().getName() + "@" + Integer.toHexString(this.hashCode());
 };

@@ -28,7 +28,7 @@ import { Integer } from './../../../src/script4j/lang/Integer';
 describe('StringTest', () => {
 
     it('hashCode_severalCalls_similarResult', () => {
-        let s: String = new String("dfdfd");
+        let s: string = "javascript/typescript";
         let firstHashCode = s.hashCode();
         let secondHashCode = s.hashCode();
         assert.isNotNaN(firstHashCode);
@@ -37,9 +37,9 @@ describe('StringTest', () => {
     });
 
     it('hashCode_inRange_correctResult', () => {
-        let s: String = new String("This code is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; \n\
+        let s: string = "This code is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; \n\
                 without even the implied warranty of MERCHANTABILITY or * \n\
-                FITNESS FOR A PARTICULAR PURPOSE. Такой подход!");
+                FITNESS FOR A PARTICULAR PURPOSE. Такой подход!";
         let hash: number = s.hashCode();
         assert.isNotNaN(hash);
         assert.isNotNull(hash);
@@ -48,10 +48,25 @@ describe('StringTest', () => {
     });
 
     it('equals_sameString_true', () => {
-        assert.isTrue(new String("javascript").equals(new String("javascript")));
+        assert.isTrue("javascript".equals("javascript"));
+    });
+
+    it('equals_sameStringPrimitiveAndObject_true', () => {
+        assert.isTrue("javascript".equals(new String("javascript")));
+        assert.isTrue((new String("javascript")).equals("javascript"));
     });
 
     it('equals_differentString_false', () => {
-        assert.isFalse(new String("javascript").equals(new String("typescript")));
+        assert.isFalse("javascript".equals("typescript"));
+    });
+
+    it('toString_primitive_string', () => {
+        let s: string = "javascript";
+        assert.equals(s.toString(), "javascript");
+    });
+
+    it('toString_object_string', () => {
+        let s: String = new String("javascript");
+        assert.equals(s.toString(), "javascript");
     });
 });

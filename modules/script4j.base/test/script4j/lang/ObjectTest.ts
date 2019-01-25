@@ -61,4 +61,15 @@ describe('ObjectTest', () => {
         assert.equal(firstHashCode, secondHashCode);
     });
 
+    it('toString_knownHashCode_correctString', () => {
+        let testObj1: Object = new class {
+            public hashCode():number {
+                return 255;
+            }
+        };
+        assert.equal(testObj1.toString(), "_class@ff");
+    });
+
+
+
 });

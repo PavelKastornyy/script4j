@@ -24,8 +24,6 @@
  *
  */
 
-import { LooseObject } from './LooseObject';
-import { PrimitiveUsageError } from './PrimitiveUsageError';
 import './Object'
 
 /**
@@ -51,51 +49,62 @@ declare global {
         hashCode(): number;
 
         equals(obj: Object): boolean;
+
+        toString(): string;
     }
 }
 
 /**
- * Primitive can not have propeties -> it can not have saved hashCode. So we can have only non primitive, as
- * in Java.
- */
-
+ * Primitive can not have propeties -> it can not have saved hashCode. Although this method doesn't save
+ * generated hash for next call (as it can be used also for primitives) it is clear, that long string are rare used
+ * for keys in map.
+*/
 String.prototype.hashCode = function () {
-    if (typeof this === "string") {
-        throw new PrimitiveUsageError("String Primitive was used instead of String Object");
-    }
-    if ('__hashCodeValue' in this) {
-        return this.__hashCodeValue;
+    let hashCode: number;
+    if (this.length === 0){
+        hashCode = 0;
     } else {
-        if (this.length === 0){
-            this.__hashCodeValue = 0;
-        } else {
-            let hashCode = 0;
-            for (let i: number = 0; i < this.length; i++) {
-                let char: number = this.charCodeAt(i);
-                //As in Java. The hash << 5 - hash is the same as hash * 31 + char but faster.
-                hashCode  = ((hashCode << 5) - hashCode) + char;
-                //An example: hash = 7264728162427 (which is 69B738AA07B in hex).
-                //hash | 0 will chop off everything above 32 bits (in this case, 69B) to leave
-                //738AA07B, which is 1938464891 in decimal.
-                //So you'll find that (hash | 0) === 1938464891.
-                hashCode = hashCode | 0;
-            }
-            this.__hashCodeValue= hashCode;
+        for (let i: number = 0; i < this.length; i++) {
+            let char: number = this.charCodeAt(i);
+            //As in Java. The hash << 5 - hash is the same as hash * 31 + char but faster.
+            hashCode  = ((hashCode << 5) - hashCode) + char;
+            //An example: hash = 7264728162427 (which is 69B738AA07B in hex).
+            //hash | 0 will chop off everything above 32 bits (in this case, 69B) to leave
+            //738AA07B, which is 1938464891 in decimal.
+            //So you'll find that (hash | 0) === 1938464891.
+            hashCode = hashCode | 0;
         }
-        return this.__hashCodeValue;
     }
+    return hashCode;
 }
 
 String.prototype.equals = function(obj: Object): boolean {
-    if (typeof this === "string" || typeof obj === "string") {
-        throw new PrimitiveUsageError("String Primitive was used instead of String Object");
-    }
     if (obj === null) {
         return false;
-    } else if (!(obj instanceof String)) {
-        return false;
+    };
+    let thisStr = null;
+    let thatStr = null;
+    if (typeof this === "string") {
+        thisStr = this;
+    //it is a String wrapper
     } else {
-        let thatStr: String = <String>obj;
-        return this.valueOf() === thatStr.valueOf();
+        thisStr = this.valueOf();
+    }
+    if (typeof obj === "string") {
+        thatStr = obj;
+    } else if (obj instanceof String) {
+        thatStr = obj.valueOf();
+    } else {
+        return false;
+    }
+    return thisStr === thatStr;
+}
+
+String.prototype.toString = function(): string {
+    if (typeof this === "string") {
+        return this
+    //it is a String wrapper
+    } else {
+        return this.valueOf();
     }
 }
