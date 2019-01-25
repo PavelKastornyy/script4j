@@ -24,12 +24,39 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue";
 
-export interface ObservableNumberValue extends ObservableValue<number> {
+import { StringProperty } from './StringProperty';
+import { ObservableValue } from "./../value/ObservableValue";
+import { ChangeListener } from "./../value/ChangeListener";
 
-    /**
-     * Returns the current value of this ObservableIntegerValue.
-     */
-    get(): number;
+export abstract class StringPropertyBase extends StringProperty {
+
+    public bind(observable: ObservableValue<string>): void {
+        this.getDelegate().bind(observable);
+    }
+
+    public isBound(): boolean {
+        return this.getDelegate().isBound();
+    }
+
+    public unbind(): void {
+        this.getDelegate().unbind();
+    }
+
+    public addListener(listener: ChangeListener<string>): void {
+        this.getDelegate().addListener(listener);
+    }
+
+    public getValue(): string {
+        return this.getDelegate().getValue();
+    }
+
+    public removeListener(listener: ChangeListener<string>): void {
+        this.getDelegate().removeListener(listener);
+    }
+
+    public get(): string {
+        return this.getValue();
+    }
 }
+

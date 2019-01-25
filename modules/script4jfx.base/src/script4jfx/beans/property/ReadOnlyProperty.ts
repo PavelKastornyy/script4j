@@ -28,4 +28,14 @@ import { ObservableValue } from "./../value/ObservableValue";
 
 export interface ReadOnlyProperty<T> extends ObservableValue<T> {
 
+    /**
+     * Returns the Object that contains this property.
+     */
+    getBean(): Object;
+
+    /**
+     * Returns the name of this property.
+     */
+    getName(): string;
+
 }

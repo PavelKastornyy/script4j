@@ -24,32 +24,17 @@
  *
  */
 
-
 import { ReadOnlyProperty } from "./ReadOnlyProperty";
-import { PropertyDelegate } from "./PropertyDelegate";
 import { ChangeListener } from "./../value/ChangeListener";
+import { ObjectExpression } from "./../binding/ObjectExpression";
 
-export abstract class ReadOnlyObjectProperty<T> implements ReadOnlyObjectProperty<T> {
+export abstract class ReadOnlyObjectProperty<T> extends ObjectExpression<T> implements ReadOnlyProperty<T> {
 
-    private readonly delegate: PropertyDelegate<T>;
+    public abstract getBean(): Object;
 
-    constructor() {
-        this.delegate = new PropertyDelegate<T>(this);
-    }
+    public abstract getName(): string;
 
-    public addListener(listener: ChangeListener<T>): void {
-        this.delegate.addListener(listener);
-    }
+    public abstract addListener(listener: ChangeListener<T>): void;
 
-    public getValue(): T {
-        return this.delegate.getValue();
-    }
-
-    public removeListener(listener: ChangeListener<T>): void {
-        this.delegate.removeListener(listener);
-    }
-
-    protected getDelegate(): PropertyDelegate<T> {
-        return this.delegate;
-    }
+    public abstract removeListener(listener: ChangeListener<T>): void;
 }

@@ -24,33 +24,17 @@
  *
  */
 
-
 import { ReadOnlyProperty } from "./ReadOnlyProperty";
-import { PropertyDelegate } from "./PropertyDelegate";
 import { ChangeListener } from "./../value/ChangeListener";
+import { NumberExpression } from "./../binding/NumberExpression";
 
+export abstract class ReadOnlyNumberProperty extends NumberExpression implements ReadOnlyProperty<number> {
 
-export abstract class ReadOnlyNumberProperty implements ReadOnlyProperty<number> {
+    public abstract getBean(): Object;
 
-    private readonly delegate: PropertyDelegate<number>;
+    public abstract getName(): string;
 
-    constructor() {
-        this.delegate = new PropertyDelegate<number>(this);
-    }
+    public abstract addListener(listener: ChangeListener<number>): void;
 
-    public addListener(listener: ChangeListener<number>): void {
-        this.delegate.addListener(listener);
-    }
-
-    public getValue(): number {
-        return this.delegate.getValue();
-    }
-
-    public removeListener(listener: ChangeListener<number>): void {
-        this.delegate.removeListener(listener);
-    }
-
-    protected getDelegate(): PropertyDelegate<number> {
-        return this.delegate;
-    }
+    public abstract removeListener(listener: ChangeListener<number>): void;
 }

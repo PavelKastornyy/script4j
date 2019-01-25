@@ -24,12 +24,47 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue";
+import { SimpleNumberProperty } from './SimpleNumberProperty';
+import { ReadOnlyNumberPropertyBase } from './ReadOnlyNumberPropertyBase';
+import { ReadOnlyNumberProperty } from './ReadOnlyNumberProperty';
 
-export interface ObservableNumberValue extends ObservableValue<number> {
+export class ReadOnlyNumberWrapper extends SimpleNumberProperty {
 
-    /**
-     * Returns the current value of this ObservableIntegerValue.
-     */
-    get(): number;
+    private readOnlyProperty: ReadOnlyNumberPropertyBase;
+
+    constructor(initialValue: number, bean: Object, name: string) {
+        super(initialValue, bean, name);
+    }
+
+    public getReadOnlyProperty(): ReadOnlyNumberProperty {
+        if (this.readOnlyProperty == null) {
+            this.readOnlyProperty = new ReadOnlyNumberWrapper.ReadOnlyPropertyImpl(this);
+        }
+        return this.readOnlyProperty;
+    }
+}
+
+export namespace ReadOnlyNumberWrapper {
+
+    export class ReadOnlyPropertyImpl extends ReadOnlyNumberPropertyBase {
+
+        private readonly wrapped: ReadOnlyNumberWrapper;
+
+        constructor(wrapped: ReadOnlyNumberWrapper) {
+            super();
+            this.wrapped = wrapped;
+        }
+
+        public get(): number {
+            return this.wrapped.get();
+        }
+
+        public getBean(): Object {
+            return this.wrapped.getBean();
+        }
+
+        public getName(): string {
+            return this.wrapped.getName();
+        }
+    };
 }

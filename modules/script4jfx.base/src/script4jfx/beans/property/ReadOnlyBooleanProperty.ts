@@ -26,31 +26,16 @@
 
 
 import { ReadOnlyProperty } from "./ReadOnlyProperty";
-import { PropertyDelegate } from "./PropertyDelegate";
 import { ChangeListener } from "./../value/ChangeListener";
+import { BooleanExpression } from "./../binding/BooleanExpression";
 
+export abstract class ReadOnlyBooleanProperty extends BooleanExpression implements ReadOnlyProperty<boolean> {
 
-export abstract class ReadOnlyBooleanProperty implements ReadOnlyProperty<boolean> {
+    public abstract getBean(): Object;
 
-    private readonly delegate: PropertyDelegate<boolean>;
+    public abstract getName(): string;
 
-    constructor() {
-        this.delegate = new PropertyDelegate<boolean>(this);
-    }
+    public abstract addListener(listener: ChangeListener<boolean>): void;
 
-    public addListener(listener: ChangeListener<boolean>): void {
-        this.delegate.addListener(listener);
-    }
-
-    public getValue(): boolean {
-        return this.delegate.getValue();
-    }
-
-    public removeListener(listener: ChangeListener<boolean>): void {
-        this.delegate.removeListener(listener);
-    }
-
-    protected getDelegate(): PropertyDelegate<boolean> {
-        return this.delegate;
-    }
+    public abstract removeListener(listener: ChangeListener<boolean>): void;
 }

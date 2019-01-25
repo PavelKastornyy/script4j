@@ -32,20 +32,14 @@ import { ObservableValue } from "./../value/ObservableValue";
 
 export abstract class NumberProperty extends ReadOnlyNumberProperty implements Property<number>, WritableNumberValue {
 
-    public bind(observable: ObservableValue<number>): void {
-        this.getDelegate().bind(observable);
-    }
+    public abstract bind(observable: ObservableValue<number>): void;
+
+    public abstract isBound(): boolean;
+
+    public abstract unbind(): void;
 
     public bindBidirectional(other: Property<number>): void {
         this.getDelegate().bindBidirectional(other);
-    }
-
-    public isBound(): boolean {
-        return this.getDelegate().isBound();
-    }
-
-    public unbind(): void {
-        this.getDelegate().unbind();
     }
 
     public unbindBidirectional(other: Property<number>): void {

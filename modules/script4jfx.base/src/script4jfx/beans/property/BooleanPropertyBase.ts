@@ -24,12 +24,35 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue";
+import { BooleanProperty } from './BooleanProperty';
+import { ObservableValue } from './../value/ObservableValue';
+import { ChangeListener } from "./../value/ChangeListener";
 
-export interface ObservableNumberValue extends ObservableValue<number> {
+export abstract class BooleanPropertyBase extends BooleanProperty {
 
-    /**
-     * Returns the current value of this ObservableIntegerValue.
-     */
-    get(): number;
+    public bind(observable: ObservableValue<boolean>): void {
+        this.getDelegate().bind(observable);
+    }
+
+    public isBound(): boolean {
+        return this.getDelegate().isBound();
+    }
+
+    public unbind(): void {
+        this.getDelegate().unbind();
+    }
+
+    public addListener(listener: ChangeListener<boolean>): void {
+        this.getDelegate().addListener(listener);
+    }
+
+    public removeListener(listener: ChangeListener<boolean>): void {
+        this.getDelegate().removeListener(listener);
+    }
+
+    public get(): boolean {
+        return this.getValue();
+    }
 }
+
+

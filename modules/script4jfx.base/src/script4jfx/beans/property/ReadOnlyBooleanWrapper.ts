@@ -24,37 +24,47 @@
  *
  */
 
+import { SimpleBooleanProperty } from './SimpleBooleanProperty';
+import { ReadOnlyBooleanPropertyBase } from './ReadOnlyBooleanPropertyBase';
+import { ReadOnlyBooleanProperty } from './ReadOnlyBooleanProperty';
 
-import { NumberPropertyBase } from "./NumberPropertyBase";
-import { PropertyDelegate } from './PropertyDelegate';
+export class ReadOnlyBooleanWrapper extends SimpleBooleanProperty {
 
-export class SimpleNumberProperty extends NumberPropertyBase {
+    private readOnlyProperty: ReadOnlyBooleanPropertyBase;
 
-    constructor(initialValue: number, bean: Object, name: string) {
-        super();
-        let delegate: PropertyDelegate<number> = this.getDelegate();
-        if (initialValue !== undefined) {
-            delegate.setValue(initialValue);
-        }
-        if (bean !== undefined) {
-            delegate.setBean(bean);
-        }
-        if (name !== undefined) {
-            delegate.setName(name);
-        }
+    constructor(initialValue: boolean, bean: Object, name: string) {
+        super(initialValue, bean, name);
     }
 
-    /**
-     * Returns the Object that contains this property.
-     */
-    getBean(): Object {
-        return this.getDelegate().getBean();
+    public getReadOnlyProperty(): ReadOnlyBooleanProperty {
+        if (this.readOnlyProperty == null) {
+            this.readOnlyProperty = new ReadOnlyBooleanWrapper.ReadOnlyPropertyImpl(this);
+        }
+        return this.readOnlyProperty;
     }
+}
 
-    /**
-     * Returns the name of this property.
-     */
-    getName(): string {
-        return this.getDelegate().getName();
-    }
+export namespace ReadOnlyBooleanWrapper {
+
+    export class ReadOnlyPropertyImpl extends ReadOnlyBooleanPropertyBase {
+
+        private readonly wrapped: ReadOnlyBooleanWrapper;
+
+        constructor(wrapped: ReadOnlyBooleanWrapper) {
+            super();
+            this.wrapped = wrapped;
+        }
+
+        public get(): boolean {
+            return this.wrapped.get();
+        }
+
+        public getBean(): Object {
+            return this.wrapped.getBean();
+        }
+
+        public getName(): string {
+            return this.wrapped.getName();
+        }
+    };
 }

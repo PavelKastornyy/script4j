@@ -24,12 +24,13 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue";
+import { ObservableValue } from './ObservableValue';
 
-export interface ObservableNumberValue extends ObservableValue<number> {
-
+export interface ObservableObjectValue<T> extends ObservableValue<T> {
+    
     /**
-     * Returns the current value of this ObservableIntegerValue.
+     * Returns the current value of this ObservableObjectValue<T>.
      */
-    get(): number;
+    get(): T;
 }
+

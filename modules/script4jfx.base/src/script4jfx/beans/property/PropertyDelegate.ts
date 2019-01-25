@@ -42,6 +42,10 @@ import { IllegalArgumentError } from "script4j.base";
  */
 export class PropertyDelegate<T> implements Property<T>, WritableValue<T> {
 
+    private bean: Object;
+
+    private name: string;
+
     /**
      * These are listeners that were created somewhere else and which listen this property.
      */
@@ -72,8 +76,8 @@ export class PropertyDelegate<T> implements Property<T>, WritableValue<T> {
      */
     private readonly delegator: ReadOnlyProperty<T>;
 
-    constructor(delegator: ReadOnlyProperty<T>) {
-        this.delegator = delegator;
+    constructor(delegator: Object) {
+        this.delegator = <ReadOnlyProperty<T>> delegator;
     }
 
     public addListener(listener: ChangeListener<T>): void {
@@ -90,7 +94,7 @@ export class PropertyDelegate<T> implements Property<T>, WritableValue<T> {
 
     /**
      * With unidirectional binding property can be bound only to one value, because property always
-     * must be eqaul that value. However, if we bind to several values, then property can be not
+     * must be equal that value. However, if we bind to several values, then property can be not
      * equal to some of them -> it is impossible state.
      */
     public bind(observable: ObservableValue<T>): void {
@@ -168,6 +172,22 @@ export class PropertyDelegate<T> implements Property<T>, WritableValue<T> {
         this.internalSelfListenersByValue.values().forEach((listener) => {
             listener(this.delegator, oldValue, value);
         });
+    }
+
+    public getBean(): Object {
+        return this.bean;
+    }
+
+    public setBean(bean: Object) {
+        this.bean = bean;
+    }
+
+    public getName(): string {
+        return this.name;
+    }
+
+    public setName(name: string) {
+        this.name = name;
     }
 
     private createInternalForeignListener(): ChangeListener<T> {

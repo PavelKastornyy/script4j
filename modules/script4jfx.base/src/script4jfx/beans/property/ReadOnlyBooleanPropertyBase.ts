@@ -24,12 +24,17 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue";
+import { ReadOnlyBooleanProperty } from './ReadOnlyBooleanProperty';
+import { ChangeListener } from "./../value/ChangeListener";
 
-export interface ObservableNumberValue extends ObservableValue<number> {
+export abstract class ReadOnlyBooleanPropertyBase extends ReadOnlyBooleanProperty {
 
-    /**
-     * Returns the current value of this ObservableIntegerValue.
-     */
-    get(): number;
+    public addListener(listener: ChangeListener<boolean>): void {
+        this.getDelegate().addListener(listener);
+    }
+
+    public removeListener(listener: ChangeListener<boolean>): void {
+        this.getDelegate().removeListener(listener);
+    }
 }
+

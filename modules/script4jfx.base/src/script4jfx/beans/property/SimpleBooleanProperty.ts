@@ -25,8 +25,36 @@
  */
 
 
-import { BooleanProperty } from "./BooleanProperty";
+import { BooleanPropertyBase } from "./BooleanPropertyBase";
+import { PropertyDelegate } from './PropertyDelegate';
 
-export class SimpleBooleanProperty extends BooleanProperty {
+export class SimpleBooleanProperty extends BooleanPropertyBase {
 
+    constructor(initialValue: boolean, bean: Object, name: string) {
+        super();
+        let delegate: PropertyDelegate<boolean> = this.getDelegate();
+        if (initialValue !== undefined) {
+            delegate.setValue(initialValue);
+        }
+        if (bean !== undefined) {
+            delegate.setBean(bean);
+        }
+        if (name !== undefined) {
+            delegate.setName(name);
+        }
+    }
+
+    /**
+     * Returns the Object that contains this property.
+     */
+    getBean(): Object {
+        return this.getDelegate().getBean();
+    }
+
+    /**
+     * Returns the name of this property.
+     */
+    getName(): string {
+        return this.getDelegate().getName();
+    }
 }

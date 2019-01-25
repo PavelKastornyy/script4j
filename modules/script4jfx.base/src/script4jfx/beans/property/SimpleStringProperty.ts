@@ -24,8 +24,36 @@
  *
  */
 
-import { StringProperty } from "./StringProperty";
+import { StringPropertyBase } from './StringPropertyBase';
+import { PropertyDelegate } from './PropertyDelegate';
 
-export class SimpleStringProperty extends StringProperty {
+export class SimpleStringProperty extends StringPropertyBase {
 
+    constructor(initialValue: string, bean: Object, name: string) {
+        super();
+        let delegate: PropertyDelegate<string> = this.getDelegate();
+        if (initialValue !== undefined) {
+            delegate.setValue(initialValue);
+        }
+        if (bean !== undefined) {
+            delegate.setBean(bean);
+        }
+        if (name !== undefined) {
+            delegate.setName(name);
+        }
+    }
+
+    /**
+     * Returns the Object that contains this property.
+     */
+    getBean(): Object {
+        return this.getDelegate().getBean();
+    }
+
+    /**
+     * Returns the name of this property.
+     */
+    getName(): string {
+        return this.getDelegate().getName();
+    }
 }

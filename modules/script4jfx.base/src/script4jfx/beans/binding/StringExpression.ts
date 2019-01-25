@@ -24,12 +24,31 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue";
+import { PropertyDelegate } from "./../property/PropertyDelegate";
+import { ObservableStringValue } from "./../value/ObservableStringValue";
+import { ChangeListener } from "./../value/ChangeListener";
 
-export interface ObservableNumberValue extends ObservableValue<number> {
+export abstract class StringExpression implements ObservableStringValue {
 
-    /**
-     * Returns the current value of this ObservableIntegerValue.
-     */
-    get(): number;
+    private readonly delegate: PropertyDelegate<string>;
+
+    constructor() {
+        this.delegate = new PropertyDelegate<string>(this);
+    }
+
+    public abstract get(): string;
+
+    public abstract addListener(listener: ChangeListener<string>): void;
+
+    public abstract removeListener(listener: ChangeListener<string>): void;
+
+    public getValue(): string {
+        return this.getDelegate().getValue();
+    }
+
+    protected getDelegate(): PropertyDelegate<string> {
+        return this.delegate;
+    }
 }
+
+

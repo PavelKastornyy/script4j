@@ -32,20 +32,14 @@ import { ObservableValue } from "./../value/ObservableValue";
 
 export abstract class StringProperty extends ReadOnlyStringProperty implements Property<string>, WritableStringValue {
 
-    public bind(observable: ObservableValue<string>): void {
-        this.getDelegate().bind(observable);
-    }
+    public abstract bind(observable: ObservableValue<string>): void;
+
+    public abstract isBound(): boolean;
+
+    public abstract unbind(): void;
 
     public bindBidirectional(other: Property<string>): void {
         this.getDelegate().bindBidirectional(other);
-    }
-
-    public isBound(): boolean {
-        return this.getDelegate().isBound();
-    }
-
-    public unbind(): void {
-        this.getDelegate().unbind();
     }
 
     public unbindBidirectional(other: Property<string>): void {

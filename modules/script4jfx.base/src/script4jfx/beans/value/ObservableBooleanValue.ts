@@ -28,4 +28,9 @@ import { ObservableValue } from "./ObservableValue";
 
 export interface ObservableBooleanValue extends ObservableValue<boolean> {
 
+    /**
+     * Returns the current value of this ObservableBooleanValue.
+     */
+    get(): boolean;
+
 }

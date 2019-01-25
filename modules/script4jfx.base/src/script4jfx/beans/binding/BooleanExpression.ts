@@ -24,12 +24,31 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue";
+import { PropertyDelegate } from "./../property/PropertyDelegate";
+import { ObservableBooleanValue } from "./../value/ObservableBooleanValue";
+import { ChangeListener } from "./../value/ChangeListener";
 
-export interface ObservableNumberValue extends ObservableValue<number> {
+export abstract class BooleanExpression implements ObservableBooleanValue {
 
-    /**
-     * Returns the current value of this ObservableIntegerValue.
-     */
-    get(): number;
+    private readonly delegate: PropertyDelegate<boolean>;
+
+    constructor() {
+        this.delegate = new PropertyDelegate<boolean>(this);
+    }
+
+    public abstract get(): boolean;
+
+    public abstract addListener(listener: ChangeListener<boolean>): void;
+
+    public abstract removeListener(listener: ChangeListener<boolean>): void;
+
+    public getValue(): boolean {
+        return this.getDelegate().getValue();
+    }
+
+    protected getDelegate(): PropertyDelegate<boolean> {
+        return this.delegate;
+    }
 }
+
+

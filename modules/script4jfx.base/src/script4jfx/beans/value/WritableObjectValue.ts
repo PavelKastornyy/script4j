@@ -24,12 +24,18 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue";
-
-export interface ObservableNumberValue extends ObservableValue<number> {
+import { WritableValue } from './WritableValue';
+export interface WritableObjectValue<T> extends WritableValue<T> {
 
     /**
-     * Returns the current value of this ObservableIntegerValue.
+     * Get the wrapped value.
      */
-    get(): number;
+    get(): T;
+
+    /**
+     * Set the wrapped value.
+     */
+    set​(value: T): void;
+
 }
+

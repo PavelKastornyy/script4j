@@ -32,20 +32,14 @@ import { ObservableValue } from "./../value/ObservableValue";
 
 export abstract class BooleanProperty extends ReadOnlyBooleanProperty implements Property<boolean>, WritableBooleanValue {
 
-    public bind(observable: ObservableValue<boolean>): void {
-        this.getDelegate().bind(observable);
-    }
+    public abstract bind(observable: ObservableValue<boolean>): void;
+
+    public abstract isBound(): boolean;
+
+    public abstract unbind(): void;
 
     public bindBidirectional(other: Property<boolean>): void {
         this.getDelegate().bindBidirectional(other);
-    }
-
-    public isBound(): boolean {
-        return this.getDelegate().isBound();
-    }
-
-    public unbind(): void {
-        this.getDelegate().unbind();
     }
 
     public unbindBidirectional(other: Property<boolean>): void {
