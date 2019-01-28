@@ -29,6 +29,7 @@ import { ReadOnlyStringProperty } from "./ReadOnlyStringProperty";
 import { Property } from "./Property";
 import { WritableStringValue } from "./../value/WritableStringValue";
 import { ObservableValue } from "./../value/ObservableValue";
+import { Bindings } from './../binding/Bindings';
 
 export abstract class StringProperty extends ReadOnlyStringProperty implements Property<string>, WritableStringValue {
 
@@ -38,15 +39,17 @@ export abstract class StringProperty extends ReadOnlyStringProperty implements P
 
     public abstract unbind(): void;
 
+    public abstract set(value: string);
+
     public bindBidirectional(other: Property<string>): void {
-        this.getDelegate().bindBidirectional(other);
+        Bindings.bindBidirectional(this, other);
     }
 
     public unbindBidirectional(other: Property<string>): void {
-        this.getDelegate().unbindBidirectional(other);
+        Bindings.unbindBidirectional(this, other);
     }
 
     public setValue(value: string): void {
-        this.getDelegate().setValue(value);
+        this.set(value);
     }
 }

@@ -24,16 +24,13 @@
  *
  */
 
-import { PropertyDelegate } from "./../property/PropertyDelegate";
 import { ObservableObjectValue } from "./../value/ObservableObjectValue";
 import { ChangeListener } from "./../value/ChangeListener";
 
 export abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
 
-    private readonly delegate: PropertyDelegate<T>;
-
     constructor() {
-        this.delegate = new PropertyDelegate<T>(this);
+
     }
 
     public abstract get(): T;
@@ -43,11 +40,7 @@ export abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
     public abstract removeListener(listener: ChangeListener<T>): void;
 
     public getValue(): T {
-        return this.getDelegate().getValue();
-    }
-
-    protected getDelegate(): PropertyDelegate<T> {
-        return this.delegate;
+        return this.get();
     }
 }
 

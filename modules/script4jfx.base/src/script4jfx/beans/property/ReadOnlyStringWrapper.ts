@@ -42,6 +42,13 @@ export class ReadOnlyStringWrapper extends SimpleStringProperty {
         }
         return this.readOnlyProperty;
     }
+
+    protected fireValueChangedEvent(): void {
+        super.fireValueChangedEvent();
+        if (this.readOnlyProperty !== null) {
+            (<any>this.readOnlyProperty).fireValueChangedEvent();
+        }
+    }
 }
 
 export namespace ReadOnlyStringWrapper {

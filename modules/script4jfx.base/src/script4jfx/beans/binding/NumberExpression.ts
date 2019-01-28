@@ -24,17 +24,10 @@
  *
  */
 
-import { PropertyDelegate } from "./../property/PropertyDelegate";
 import { ObservableNumberValue } from "./../value/ObservableNumberValue";
 import { ChangeListener } from "./../value/ChangeListener";
 
 export abstract class NumberExpression implements ObservableNumberValue {
-
-    private readonly delegate: PropertyDelegate<number>;
-
-    constructor() {
-        this.delegate = new PropertyDelegate<number>(this);
-    }
 
     public abstract get(): number;
 
@@ -43,11 +36,7 @@ export abstract class NumberExpression implements ObservableNumberValue {
     public abstract removeListener(listener: ChangeListener<number>): void;
 
     public getValue(): number {
-        return this.getDelegate().getValue();
-    }
-
-    protected getDelegate(): PropertyDelegate<number> {
-        return this.delegate;
+        return this.get();
     }
 }
 

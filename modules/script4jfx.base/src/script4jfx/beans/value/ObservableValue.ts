@@ -24,12 +24,17 @@
  *
  */
 
-import {ChangeListener} from "./ChangeListener"
+import { ChangeListener } from "./ChangeListener";
 
 export interface ObservableValue<T> {
 
     addListener(listener: ChangeListener<T>): void;
 
+    /**
+     * Type of getValue() is always equal to type of get() because Object classes are not assignable to their
+     * primitives. For example, 'String` is not assignable to `string`. The same is also fot set() and
+     * setValue().
+     */
     getValue(): T;
 
     removeListener(listener: ChangeListener<T>): void;

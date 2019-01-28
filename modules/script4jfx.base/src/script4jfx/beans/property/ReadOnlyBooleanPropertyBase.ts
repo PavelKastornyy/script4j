@@ -26,15 +26,27 @@
 
 import { ReadOnlyBooleanProperty } from './ReadOnlyBooleanProperty';
 import { ChangeListener } from "./../value/ChangeListener";
+import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
 
 export abstract class ReadOnlyBooleanPropertyBase extends ReadOnlyBooleanProperty {
 
+    private delegate: PropertyDelegate<boolean>;
+
+    constructor() {
+        super();
+        this.delegate = PropertyDelegate.newInstance<boolean>(this);
+    }
+
     public addListener(listener: ChangeListener<boolean>): void {
-        this.getDelegate().addListener(listener);
+        PropertyDelegate.addListener(this.delegate, listener);
     }
 
     public removeListener(listener: ChangeListener<boolean>): void {
-        this.getDelegate().removeListener(listener);
+        PropertyDelegate.removeListener(this.delegate, listener);
+    }
+
+    protected fireValueChangedEvent(): void {
+        PropertyDelegate.fireValueChangedEvent(this.delegate);
     }
 }
 

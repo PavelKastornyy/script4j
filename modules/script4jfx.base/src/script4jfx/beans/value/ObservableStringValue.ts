@@ -26,9 +26,6 @@
 
 import { ObservableValue } from "./ObservableValue";
 
-/**
- * String in JS is primitive, so we don't extends ObservableObjectValue
- */
 export interface ObservableStringValue extends ObservableValue<string> {
 
     /**

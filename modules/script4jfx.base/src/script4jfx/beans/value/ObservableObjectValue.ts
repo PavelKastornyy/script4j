@@ -27,7 +27,7 @@
 import { ObservableValue } from './ObservableValue';
 
 export interface ObservableObjectValue<T> extends ObservableValue<T> {
-    
+
     /**
      * Returns the current value of this ObservableObjectValue<T>.
      */

@@ -24,17 +24,10 @@
  *
  */
 
-import { PropertyDelegate } from "./../property/PropertyDelegate";
 import { ObservableBooleanValue } from "./../value/ObservableBooleanValue";
 import { ChangeListener } from "./../value/ChangeListener";
 
 export abstract class BooleanExpression implements ObservableBooleanValue {
-
-    private readonly delegate: PropertyDelegate<boolean>;
-
-    constructor() {
-        this.delegate = new PropertyDelegate<boolean>(this);
-    }
 
     public abstract get(): boolean;
 
@@ -43,11 +36,7 @@ export abstract class BooleanExpression implements ObservableBooleanValue {
     public abstract removeListener(listener: ChangeListener<boolean>): void;
 
     public getValue(): boolean {
-        return this.getDelegate().getValue();
-    }
-
-    protected getDelegate(): PropertyDelegate<boolean> {
-        return this.delegate;
+        return this.get();
     }
 }
 

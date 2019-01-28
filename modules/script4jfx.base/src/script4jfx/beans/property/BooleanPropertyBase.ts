@@ -27,31 +27,47 @@
 import { BooleanProperty } from './BooleanProperty';
 import { ObservableValue } from './../value/ObservableValue';
 import { ChangeListener } from "./../value/ChangeListener";
+import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
 
 export abstract class BooleanPropertyBase extends BooleanProperty {
 
+    private delegate: PropertyDelegate<boolean>;
+
+    constructor() {
+        super();
+        this.delegate = PropertyDelegate.newInstance<boolean>(this);
+    }
+
     public bind(observable: ObservableValue<boolean>): void {
-        this.getDelegate().bind(observable);
+        PropertyDelegate.bind(this.delegate, observable);
     }
 
     public isBound(): boolean {
-        return this.getDelegate().isBound();
+        return PropertyDelegate.isBound(this.delegate);
     }
 
     public unbind(): void {
-        this.getDelegate().unbind();
+        PropertyDelegate.unbind(this.delegate);
     }
 
     public addListener(listener: ChangeListener<boolean>): void {
-        this.getDelegate().addListener(listener);
+        PropertyDelegate.addListener(this.delegate, listener);
     }
 
     public removeListener(listener: ChangeListener<boolean>): void {
-        this.getDelegate().removeListener(listener);
+        PropertyDelegate.removeListener(this.delegate, listener);
     }
 
     public get(): boolean {
-        return this.getValue();
+        return PropertyDelegate.get(this.delegate);
+    }
+
+    public set(value: boolean) {
+        PropertyDelegate.set(this.delegate, value);
+    }
+
+    protected fireValueChangedEvent(): void {
+        PropertyDelegate.fireValueChangedEvent(this.delegate);
     }
 }
 

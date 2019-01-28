@@ -24,32 +24,17 @@
  *
  */
 
+import { Property } from './../property/Property';
+import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
 
-import { ReadOnlyNumberProperty } from "./ReadOnlyNumberProperty";
-import { Property } from "./Property";
-import { WritableNumberValue } from "./../value/WritableNumberValue";
-import { ObservableValue } from "./../value/ObservableValue";
-import { Bindings } from './../binding/Bindings';
+export class Bindings {
 
-export abstract class NumberProperty extends ReadOnlyNumberProperty implements Property<number>, WritableNumberValue {
-
-    public abstract bind(observable: ObservableValue<number>): void;
-
-    public abstract isBound(): boolean;
-
-    public abstract unbind(): void;
-
-    public abstract set(value: number);
-
-    public bindBidirectional(other: Property<number>): void {
-        Bindings.bindBidirectional(this, other);
+    public static bindBidirectional<T>​(property1: Property<T>, property2: Property<T>): void {
+        PropertyDelegate.bindBidirectional(property1, property2);
     }
 
-    public unbindBidirectional(other: Property<number>): void {
-        Bindings.unbindBidirectional(this, other);
-    }
-
-    public setValue(value: number): void {
-        this.set(value);
+    public static unbindBidirectional<T>​(property1: Property<T>, property2: Property<T>): void {
+        PropertyDelegate.unbindBidirectional(property1, property2);
     }
 }
+

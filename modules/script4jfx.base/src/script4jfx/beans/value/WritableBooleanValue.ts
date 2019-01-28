@@ -28,4 +28,7 @@ import { WritableValue } from "./WritableValue";
 
 export interface WritableBooleanValue extends WritableValue<boolean> {
 
+    get(): boolean;
+
+    set(value: boolean);
 }

@@ -33,6 +33,7 @@ module.exports = {
      * The order matters!
      */
     classes: [
-        'script4jfx.beans.property.PropertyDelegateTest'
+        //'script4jfx.beans.property.PropertyDelegateTest',
+        'script4jfx.beans.property.SimpleStringPropertyTest'
     ]
 };

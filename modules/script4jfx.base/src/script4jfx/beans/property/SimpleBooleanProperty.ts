@@ -26,21 +26,23 @@
 
 
 import { BooleanPropertyBase } from "./BooleanPropertyBase";
-import { PropertyDelegate } from './PropertyDelegate';
 
 export class SimpleBooleanProperty extends BooleanPropertyBase {
 
-    constructor(initialValue: boolean, bean: Object, name: string) {
+    private readonly bean: Object;
+
+    private readonly name: string;
+
+    constructor(initialValue?: boolean, bean?: Object, name?: string) {
         super();
-        let delegate: PropertyDelegate<boolean> = this.getDelegate();
         if (initialValue !== undefined) {
-            delegate.setValue(initialValue);
+            this.set(initialValue);
         }
         if (bean !== undefined) {
-            delegate.setBean(bean);
+            this.bean = bean;
         }
         if (name !== undefined) {
-            delegate.setName(name);
+            this.name = name;
         }
     }
 
@@ -48,13 +50,13 @@ export class SimpleBooleanProperty extends BooleanPropertyBase {
      * Returns the Object that contains this property.
      */
     getBean(): Object {
-        return this.getDelegate().getBean();
+        return this.bean;
     }
 
     /**
      * Returns the name of this property.
      */
     getName(): string {
-        return this.getDelegate().getName();
+        return this.name;
     }
 }

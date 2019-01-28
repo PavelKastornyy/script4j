@@ -28,4 +28,7 @@ import { WritableValue } from "./WritableValue";
 
 export interface WritableNumberValue extends WritableValue<number> {
 
+    get(): number;
+
+    set(value: number);
 }

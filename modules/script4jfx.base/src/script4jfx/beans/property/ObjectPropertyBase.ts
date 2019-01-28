@@ -27,39 +27,47 @@
 import {ObjectProperty} from './ObjectProperty';
 import { ObservableValue } from './../value/ObservableValue';
 import { ChangeListener } from "./../value/ChangeListener";
+import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
 
 export abstract class ObjectPropertyBase<T> extends ObjectProperty<T> {
 
-    public get(): T {
-        return this.getDelegate().getValue();
-    }
+    private delegate: PropertyDelegate<T>;
 
-    public set(obj: T): void {
-        this.getDelegate().setValue(obj);
+    constructor() {
+        super();
+        this.delegate = PropertyDelegate.newInstance<T>(this);
     }
 
     public bind(observable: ObservableValue<T>): void {
-        this.getDelegate().bind(observable);
+        PropertyDelegate.bind(this.delegate, observable);
     }
 
     public isBound(): boolean {
-        return this.getDelegate().isBound();
+        return PropertyDelegate.isBound(this.delegate);
     }
 
     public unbind(): void {
-        this.getDelegate().unbind();
+        PropertyDelegate.unbind(this.delegate);
     }
 
     public addListener(listener: ChangeListener<T>): void {
-        this.getDelegate().addListener(listener);
-    }
-
-    public getValue(): T {
-        return this.getDelegate().getValue();
+        PropertyDelegate.addListener(this.delegate, listener);
     }
 
     public removeListener(listener: ChangeListener<T>): void {
-        this.getDelegate().removeListener(listener);
+        PropertyDelegate.removeListener(this.delegate, listener);
+    }
+
+    public get(): T {
+        return PropertyDelegate.get(this.delegate);
+    }
+
+    public set(value: T) {
+        PropertyDelegate.set(this.delegate, value);
+    }
+
+    protected fireValueChangedEvent(): void {
+        PropertyDelegate.fireValueChangedEvent(this.delegate);
     }
 }
 

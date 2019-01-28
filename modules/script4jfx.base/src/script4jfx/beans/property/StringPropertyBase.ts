@@ -26,37 +26,49 @@
 
 
 import { StringProperty } from './StringProperty';
-import { ObservableValue } from "./../value/ObservableValue";
-import { ChangeListener } from "./../value/ChangeListener";
+import { ObservableValue } from './../value/ObservableValue';
+import { ChangeListener } from './../value/ChangeListener';
+import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
 
 export abstract class StringPropertyBase extends StringProperty {
 
+    private delegate: PropertyDelegate<string>;
+
+    constructor() {
+        super();
+        this.delegate = PropertyDelegate.newInstance<string>(this);
+    }
+
     public bind(observable: ObservableValue<string>): void {
-        this.getDelegate().bind(observable);
+        PropertyDelegate.bind(this.delegate, observable);
     }
 
     public isBound(): boolean {
-        return this.getDelegate().isBound();
+        return PropertyDelegate.isBound(this.delegate);
     }
 
     public unbind(): void {
-        this.getDelegate().unbind();
+        PropertyDelegate.unbind(this.delegate);
     }
 
     public addListener(listener: ChangeListener<string>): void {
-        this.getDelegate().addListener(listener);
-    }
-
-    public getValue(): string {
-        return this.getDelegate().getValue();
+        PropertyDelegate.addListener(this.delegate, listener);
     }
 
     public removeListener(listener: ChangeListener<string>): void {
-        this.getDelegate().removeListener(listener);
+        PropertyDelegate.removeListener(this.delegate, listener);
     }
 
     public get(): string {
-        return this.getValue();
+        return PropertyDelegate.get(this.delegate);
+    }
+
+    public set(value: string) {
+        PropertyDelegate.set(this.delegate, value);
+    }
+
+    protected fireValueChangedEvent(): void {
+        PropertyDelegate.fireValueChangedEvent(this.delegate);
     }
 }
 

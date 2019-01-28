@@ -25,6 +25,7 @@
  */
 
 import { ObservableValue } from "./ObservableValue";
+import {ChangeListener} from "./ChangeListener"
 
 export interface ObservableNumberValue extends ObservableValue<number> {
 

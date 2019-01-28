@@ -27,31 +27,47 @@
 import { NumberProperty } from './NumberProperty';
 import { ObservableValue } from './../value/ObservableValue';
 import { ChangeListener } from "./../value/ChangeListener";
+import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
 
 export abstract class NumberPropertyBase extends NumberProperty {
 
+    private delegate: PropertyDelegate<number>;
+
+    constructor() {
+        super();
+        this.delegate = PropertyDelegate.newInstance<number>(this);
+    }
+
     public bind(observable: ObservableValue<number>): void {
-        this.getDelegate().bind(observable);
+        PropertyDelegate.bind(this.delegate, observable);
     }
 
     public isBound(): boolean {
-        return this.getDelegate().isBound();
+        return PropertyDelegate.isBound(this.delegate);
     }
 
     public unbind(): void {
-        this.getDelegate().unbind();
+        PropertyDelegate.unbind(this.delegate);
     }
 
     public addListener(listener: ChangeListener<number>): void {
-        this.getDelegate().addListener(listener);
+        PropertyDelegate.addListener(this.delegate, listener);
     }
 
     public removeListener(listener: ChangeListener<number>): void {
-        this.getDelegate().removeListener(listener);
+        PropertyDelegate.removeListener(this.delegate, listener);
     }
 
     public get(): number {
-        return this.getValue();
+        return PropertyDelegate.get(this.delegate);
+    }
+
+    public set(value: number) {
+        PropertyDelegate.set(this.delegate, value);
+    }
+
+    protected fireValueChangedEvent(): void {
+        PropertyDelegate.fireValueChangedEvent(this.delegate);
     }
 }
 

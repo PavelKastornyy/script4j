@@ -25,17 +25,11 @@
  */
 
 import { WritableValue } from './WritableValue';
+
 export interface WritableObjectValue<T> extends WritableValue<T> {
 
-    /**
-     * Get the wrapped value.
-     */
     get(): T;
 
-    /**
-     * Set the wrapped value.
-     */
     set​(value: T): void;
-
 }
 

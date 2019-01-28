@@ -26,15 +26,27 @@
 
 import { ReadOnlyNumberProperty } from './ReadOnlyNumberProperty';
 import { ChangeListener } from "./../value/ChangeListener";
+import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
 
 export abstract class ReadOnlyNumberPropertyBase extends ReadOnlyNumberProperty {
 
+    private delegate: PropertyDelegate<number>;
+
+    constructor() {
+        super();
+        this.delegate = PropertyDelegate.newInstance<number>(this);
+    }
+
     public addListener(listener: ChangeListener<number>): void {
-        this.getDelegate().addListener(listener);
+        PropertyDelegate.addListener(this.delegate, listener);
     }
 
     public removeListener(listener: ChangeListener<number>): void {
-        this.getDelegate().removeListener(listener);
+        PropertyDelegate.removeListener(this.delegate, listener);
+    }
+
+    protected fireValueChangedEvent(): void {
+        PropertyDelegate.fireValueChangedEvent(this.delegate);
     }
 }
 

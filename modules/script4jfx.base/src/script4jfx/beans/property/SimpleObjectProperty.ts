@@ -25,21 +25,23 @@
  */
 
 import { ObjectPropertyBase } from "./ObjectPropertyBase";
-import { PropertyDelegate } from './PropertyDelegate';
 
 export class SimpleObjectProperty<T> extends ObjectPropertyBase<T> {
 
-    constructor(initialValue: T, bean: Object, name: string) {
+    private readonly bean: Object;
+
+    private readonly name: string;
+
+    constructor(initialValue?: T, bean?: Object, name?: string) {
         super();
-        let delegate: PropertyDelegate<T> = this.getDelegate();
         if (initialValue !== undefined) {
-            delegate.setValue(initialValue);
+            this.set(initialValue);
         }
         if (bean !== undefined) {
-            delegate.setBean(bean);
+            this.bean = bean;
         }
         if (name !== undefined) {
-            delegate.setName(name);
+            this.name = name;
         }
     }
 
@@ -47,13 +49,13 @@ export class SimpleObjectProperty<T> extends ObjectPropertyBase<T> {
      * Returns the Object that contains this property.
      */
     getBean(): Object {
-        return this.getDelegate().getBean();
+        return this.bean;
     }
 
     /**
      * Returns the name of this property.
      */
     getName(): string {
-        return this.getDelegate().getName();
+        return this.name;
     }
 }

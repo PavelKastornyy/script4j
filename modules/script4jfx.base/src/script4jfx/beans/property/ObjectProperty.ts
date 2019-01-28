@@ -29,6 +29,7 @@ import { ReadOnlyObjectProperty } from "./ReadOnlyObjectProperty";
 import { Property } from "./Property";
 import { WritableObjectValue } from "./../value/WritableObjectValue";
 import { ObservableValue } from "./../value/ObservableValue";
+import { Bindings } from './../binding/Bindings';
 
 export abstract class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implements Property<T>,
     WritableObjectValue<T> {
@@ -44,14 +45,14 @@ export abstract class ObjectProperty<T> extends ReadOnlyObjectProperty<T> implem
     public abstract unbind(): void;
 
     public bindBidirectional(other: Property<T>): void {
-        this.getDelegate().bindBidirectional(other);
+        Bindings.bindBidirectional(this, other);
     }
 
     public unbindBidirectional(other: Property<T>): void {
-        this.getDelegate().unbindBidirectional(other);
+        Bindings.unbindBidirectional(this, other);
     }
 
     public setValue(value: T): void {
-        this.getDelegate().setValue(value);
+        this.set(value);
     }
 }

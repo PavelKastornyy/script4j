@@ -29,6 +29,7 @@ import { ReadOnlyBooleanProperty } from "./ReadOnlyBooleanProperty";
 import { Property } from "./Property";
 import { WritableBooleanValue } from "./../value/WritableBooleanValue";
 import { ObservableValue } from "./../value/ObservableValue";
+import { Bindings } from './../binding/Bindings';
 
 export abstract class BooleanProperty extends ReadOnlyBooleanProperty implements Property<boolean>, WritableBooleanValue {
 
@@ -38,15 +39,17 @@ export abstract class BooleanProperty extends ReadOnlyBooleanProperty implements
 
     public abstract unbind(): void;
 
+    public abstract set(value: boolean);
+
     public bindBidirectional(other: Property<boolean>): void {
-        this.getDelegate().bindBidirectional(other);
+        Bindings.bindBidirectional(this, other);
     }
 
     public unbindBidirectional(other: Property<boolean>): void {
-        this.getDelegate().unbindBidirectional(other);
+        Bindings.unbindBidirectional(this, other);
     }
 
     public setValue(value: boolean): void {
-        this.getDelegate().setValue(value);
+        this.set(value);
     }
 }
