@@ -30,9 +30,9 @@ module.exports = {
     },
 
     /**
-     * The order matters!
+     * Order matters!
      */
     classes: [
-        
+
     ]
 };

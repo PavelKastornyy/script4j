@@ -31,15 +31,19 @@ export interface Collection<E> extends Iterable<E> {
 
     add(obj: E): boolean;
 
+    addAll(c: Collection<E>): boolean;
+
     clear(): void;
 
     contains(obj: E): boolean;
 
-    containsAll(c: Collection<any>): boolean;
+    containsAll(c: Collection<E>): boolean;
 
     isEmpty(): boolean;
 
-    remove(obj: E): void;
+    remove(obj: E): boolean;
+
+    removeAll(c: Collection<E>): boolean;
 
     size(): number;
 }

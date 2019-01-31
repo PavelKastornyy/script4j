@@ -237,14 +237,4 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
             other.removeListener(foreignListener);
         }
     }
-
-//    private createInternalSelfListener(other: Property<T>): ChangeListener<T> {
-//        return (observable: ObservableValue<T>, oldValue: T, newValue: T) => {
-//            //no bind see ES6 var https://hackernoon.com/javascript-es6-arrow-functions-and-lexical-this-f2a3e2a5e8c4
-//            //we need to stop cyclic setting value
-//            if (!newValue.equals(other.getValue())) {
-//                other.setValue(newValue);
-//            }
-//        };
-//    }
 }

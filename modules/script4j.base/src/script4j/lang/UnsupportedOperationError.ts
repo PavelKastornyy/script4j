@@ -29,7 +29,7 @@ import { AbstractError } from './AbstractError'
 
 export class UnsupportedOperationError extends AbstractError {
 
-    constructor(message: string) {
+    constructor(message?: string) {
         super(message);
         // Set the prototype explicitly.
         (<any>Object).setPrototypeOf(this, UnsupportedOperationError.prototype);

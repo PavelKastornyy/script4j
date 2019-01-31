@@ -27,7 +27,6 @@
 
 import { AbstractSet } from './AbstractSet';
 import { Iterator } from './Iterator';
-import { Collection } from './Collection';
 import { Consumer } from './../util/function/Consumer';
 import { Map } from './Map';
 import { HashMap} from './HashMap';
@@ -66,8 +65,10 @@ export class HashSet<E> extends AbstractSet<E> {
         return this.map.isEmpty();
     }
 
-    remove(obj: E): void {
+    remove(obj: E): boolean {
+        let prevSize = this.size();
         this.map.remove(obj);
+        return (prevSize !== this.size());
     }
 
     size(): number {

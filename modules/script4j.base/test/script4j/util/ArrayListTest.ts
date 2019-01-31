@@ -36,7 +36,7 @@ describe('ArrayListTest', () => {
     let obj3: Object = new Object();
 
     it('add_objects_addsObject', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         assert.equal(list.size(), 1);
         assert.isTrue(list.get(0).equals(obj1));
@@ -47,7 +47,7 @@ describe('ArrayListTest', () => {
     });
 
     it('clear_clearsArray_emptyArray', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         assert.equal(list.size(), 0);
         list.add(obj1);
         assert.equal(list.size(), 1);
@@ -56,91 +56,102 @@ describe('ArrayListTest', () => {
     });
 
     it('contains_differentObjects_checks', () => {
-        let list: List<Object> = new ArrayList();
-        assert.equal(list.contains(obj1), false);
+        let list: List<Object> = new ArrayList<Object>();
+        assert.isFalse(list.contains(obj1));
         list.add(obj1);
-        assert.equal(list.contains(obj1), true);
-        assert.equal(list.contains(obj2), false);
+        assert.isTrue(list.contains(obj1));
+        assert.isFalse(list.contains(obj2));
         list.add(obj2);
-        assert.equal(list.contains(obj2), true);
+        assert.isTrue(list.contains(obj2));
         list.clear()
-        assert.equal(list.contains(obj1), false);
-        assert.equal(list.contains(obj2), false);
+        assert.isFalse(list.contains(obj1));
+        assert.isFalse(list.contains(obj2));
     });
 
     it('isEmpty_state_checks', () => {
-        let list: List<Object> = new ArrayList();
-        assert.equal(list.isEmpty(), true);
+        let list: List<Object> = new ArrayList<Object>();
+        assert.isTrue(list.isEmpty());
         list.add(obj1);
-        assert.equal(list.isEmpty(), false);
+        assert.isFalse(list.isEmpty());
         list.clear();
-        assert.equal(list.isEmpty(), true);
+        assert.isTrue(list.isEmpty());
     });
 
     it('remove_shiftingObjects_removesObjects', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         list.add(obj2);
         list.add(obj3);
-        list.remove(obj2);
-        assert.equal(list.get(0).equals(obj1), true);
-        assert.equal(list.get(1).equals(obj3), true);
+        assert.isTrue(list.remove(obj2));
+        assert.isTrue(list.get(0).equals(obj1));
+        assert.isTrue(list.get(1).equals(obj3));
         assert.equal(list.size(), 2);
         list.remove(obj3);
-        assert.equal(list.get(0).equals(obj1), true);
+        assert.isTrue(list.get(0).equals(obj1));
         assert.equal(list.size(), 1);
     });
 
     it('addByIndex_shiftingObjects_addsObject', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         list.addByIndex(0, obj2);
-        assert.equal(list.get(0).equals(obj2), true);
-        assert.equal(list.get(1).equals(obj1), true);
+        assert.isTrue(list.get(0).equals(obj2));
+        assert.isTrue(list.get(1).equals(obj1));
         assert.equal(list.size(), 2);
         list.addByIndex(1, obj3);
-        assert.equal(list.get(0).equals(obj2), true);
-        assert.equal(list.get(1).equals(obj3), true);
-        assert.equal(list.get(2).equals(obj1), true);
+        assert.isTrue(list.get(0).equals(obj2));
+        assert.isTrue(list.get(1).equals(obj3));
+        assert.isTrue(list.get(2).equals(obj1));
         assert.equal(list.size(), 3);
     });
 
     it('get_outOfRange_IndexOutOfBoundsError', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         assert.throws(() => list.get(0), IndexOutOfBoundsError);
         list.add(obj1);
         assert.throws(() => list.get(2), IndexOutOfBoundsError);
     });
 
     it('removeByIndex_shiftingObjects_removesObjects', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         list.add(obj2);
         list.add(obj3);
-        list.removeByIndex(1);
-        assert.equal(list.get(0).equals(obj1), true);
-        assert.equal(list.get(1).equals(obj3), true);
+        assert.equal(list.removeByIndex(1), obj2);
+        assert.isTrue(list.get(0).equals(obj1));
+        assert.isTrue(list.get(1).equals(obj3));
         assert.equal(list.size(), 2);
         list.removeByIndex(0);
-        assert.equal(list.get(0).equals(obj3), true);
+        assert.isTrue(list.get(0).equals(obj3));
         assert.equal(list.size(), 1);
     });
 
     it('set_shiftingObjects_setsObjects', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         list.set(0, obj2);
-        assert.equal(list.get(0).equals(obj2), true);
+        assert.isTrue(list.get(0).equals(obj2));
         assert.equal(list.size(), 1);
         list.add(obj3);
         list.set(1, obj1);
-        assert.equal(list.get(0).equals(obj2), true);
-        assert.equal(list.get(1).equals(obj1), true);
+        assert.isTrue(list.get(0).equals(obj2));
+        assert.isTrue(list.get(1).equals(obj1));
         assert.equal(list.size(), 2);
     });
 
+    it('subList_correctRange_subList', () => {
+        let list: List<Object> = new ArrayList<Object>();
+        list.add(obj1);
+        list.add(obj2);
+        list.add(obj3);
+        let subList: List<Object> = list.subList(1, 3);
+        assert.isTrue(subList.get(0).equals(obj2));
+        assert.isTrue(subList.get(1).equals(obj3));
+        assert.equal(subList.size(), 2);
+    });
+
     it('indexOf_objectExists_findsIndex', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         list.add(obj2);
         list.add(obj3);
@@ -150,40 +161,40 @@ describe('ArrayListTest', () => {
     });
 
     it('indexOf_objectNotExists_returnsNotFound', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         list.add(obj2);
         assert.equal(list.indexOf(obj3), -1);
     });
 
     it('iterator_hasNext_checks', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         let iterator: Iterator<Object> = list.iterator();
-        assert.equal(iterator.hasNext(), false);
+        assert.isFalse(iterator.hasNext());
         list.add(obj1);
-        assert.equal(iterator.hasNext(), true);
+        assert.isTrue(iterator.hasNext());
         list.clear()
-        assert.equal(iterator.hasNext(), false);
+        assert.isFalse(iterator.hasNext());
     });
 
     it('iterator_nextWithElement_returnsElement', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         let iterator: Iterator<Object> = list.iterator();
         list.add(obj1);
-        assert.equal(iterator.next().equals(obj1), true);
+        assert.isTrue(iterator.next().equals(obj1));
     });
 
     it('iterator_nextWithNoElement_NoSuchElementError', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         let iterator: Iterator<Object> = list.iterator();
         assert.throws(() => iterator.next(), NoSuchElementError);
         list.add(obj1);
-        assert.equal(iterator.next().equals(obj1), true);
+        assert.isTrue(iterator.next().equals(obj1));
         assert.throws(() => iterator.next(), NoSuchElementError);
     });
 
     it('iterator_removeAfterNext_removesElement', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         let iterator: Iterator<Object> = list.iterator();
         list.add(obj1);
         iterator.next();
@@ -192,7 +203,7 @@ describe('ArrayListTest', () => {
     });
 
     it('iterator_removesCorrectElement_removesElement', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         let iterator: Iterator<Object> = list.iterator();
         list.add(obj1);
         list.add(obj2);
@@ -201,27 +212,27 @@ describe('ArrayListTest', () => {
         iterator.next();
         iterator.remove();
         assert.equal(list.size(), 2);
-        assert.equal(list.get(0).equals(obj1), true);
-        assert.equal(list.get(1).equals(obj3), true);
+        assert.isTrue(list.get(0).equals(obj1));
+        assert.isTrue(list.get(1).equals(obj3));
     });
 
     it('iterator_removeWithoutNext_IllegalStateError', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         let iterator: Iterator<Object> = list.iterator();
         list.add(obj1);
         assert.throws(() => iterator.remove(), IllegalStateError);
     });
 
     it('forEach_severalObjects_callsConsumer', () => {
-        let list: List<Object> = new ArrayList();
+        let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         list.add(obj2);
         let arr: Object[] = [];
         list.forEach((e: Object) => {
             arr.push(e);
         });
-        assert.equal(list.get(0).equals(arr[0]), true);
-        assert.equal(list.get(1).equals(arr[1]), true);
+        assert.isTrue(list.get(0).equals(arr[0]));
+        assert.isTrue(list.get(1).equals(arr[1]));
         assert.equal(arr.length, 2);
     });
 

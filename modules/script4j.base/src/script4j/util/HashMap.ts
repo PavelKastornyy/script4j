@@ -84,8 +84,10 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
             return this.map.isEmpty();
         }
 
-        public remove(obj: Map.Entry<K, V>): void {
+        public remove(obj: Map.Entry<K, V>): boolean {
+            let prevSize = this.size();
             this.map.remove(obj.getKey());
+            return (prevSize !== this.size())
         }
 
         public size(): number {
@@ -155,8 +157,10 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
             return this.map.isEmpty();
         }
 
-        public remove(obj: K): void {
+        public remove(obj: K): boolean {
+            let prevSize = this.size();
             this.map.remove(obj);
+            return (prevSize !== this.size())
         }
 
         public size(): number {
@@ -226,7 +230,8 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
             return this.map.isEmpty();
         }
 
-        public remove(obj: V): void {
+        public remove(obj: V): boolean {
+            let prevSize = this.size();
             let iterator: Iterator<V> = this.iterator();
             while (iterator.hasNext()) {
                 if (iterator.next().equals(obj)) {
@@ -234,6 +239,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
                     break;
                 }
             }
+            return (prevSize !== this.size());
         }
 
         public size(): number {

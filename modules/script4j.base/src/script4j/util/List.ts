@@ -37,5 +37,7 @@ export interface List<E> extends Collection<E> {
 
     set(index: number, obj: E): void;
 
+    subList​(fromIndex: number, toIndex: number): List<E>;
+
     indexOf(obj: E): number;
 }

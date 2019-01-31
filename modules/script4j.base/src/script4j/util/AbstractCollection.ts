@@ -30,29 +30,56 @@ import { Iterator } from "./Iterator";
 
 export abstract class AbstractCollection<E> implements Collection<E> {
 
-    abstract iterator(): Iterator<E>;
+    public abstract iterator(): Iterator<E>;
 
-    abstract forEach(consumer: Consumer<E>): void;
+    public abstract forEach(consumer: Consumer<E>): void;
 
-    abstract add(obj: E): boolean;
+    public abstract add(obj: E): boolean;
 
-    abstract clear(): void;
+    public abstract clear(): void;
 
-    abstract contains(obj: E): boolean;
+    public abstract contains(obj: E): boolean;
 
-    public containsAll(collection: Collection<any>): boolean {
-        let it: Iterator<any> = collection.iterator();
+    public abstract isEmpty(): boolean;
+
+    public abstract remove(obj: E): boolean;
+
+    public abstract size(): number;
+
+    public addAll(collection: Collection<E>): boolean {
+        let result: boolean = false;
+        let it: Iterator<E> = collection.iterator();
         while (it.hasNext()) {
-            if (!this.contains(it.next()))
+            if (this.add(it.next())) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public containsAll(collection: Collection<E>): boolean {
+        let it: Iterator<E> = collection.iterator();
+        while (it.hasNext()) {
+            if (!this.contains(it.next())) {
                 return false;
+            }
         }
         return true;
     }
 
-    abstract isEmpty(): boolean;
-
-    abstract remove(obj: E): void;
-
-    abstract size(): number;
+    public removeAll(collection: Collection<E>): boolean {
+        let result: boolean = false;
+        //we iterate this collection because we need all occurances, but fot that collection
+        //we use contains which makes search until the first occurance + we use iterator.
+        let it: Iterator<E> = this.iterator();
+        while (it.hasNext()) {
+            let obj: E = it.next();
+            if (collection.contains(obj)) {
+                it.remove()
+                result = true;
+            }
+        }
+        return result;
+    }
 }
 

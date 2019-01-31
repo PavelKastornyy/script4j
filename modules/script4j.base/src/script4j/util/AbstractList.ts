@@ -27,6 +27,7 @@
 import { AbstractCollection } from './AbstractCollection';
 import { List } from './List';
 import { Iterator } from './Iterator';
+import { Collection } from './Collection';
 
 export abstract class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 
@@ -34,15 +35,17 @@ export abstract class AbstractList<E> extends AbstractCollection<E> implements L
         super();
     }
 
-    abstract addByIndex(index: number, obj: E): void;
+    public abstract addByIndex(index: number, obj: E): void;
 
-    abstract get(index: number): E;
+    public abstract get(index: number): E;
 
-    abstract removeByIndex(index: number): void;
+    public abstract removeByIndex(index: number): E;
 
-    abstract set(index: number, obj: E): void;
+    public abstract set(index: number, obj: E): E;
 
-    abstract indexOf(obj: E): number;
+    public abstract indexOf(obj: E): number;
+
+    public abstract subList​(fromIndex: number, toIndex: number): List<E>;
 
     public equals(obj: Object): boolean {
         if (obj === null) {

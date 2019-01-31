@@ -30,10 +30,11 @@ module.exports = {
     },
 
     /**
-     * The order matters!
+     * Order matters!
      */
     classes: [
         //'script4jfx.beans.property.PropertyDelegateTest',
-        'script4jfx.beans.property.SimpleStringPropertyTest'
+        "script4jfx.beans.property.SimpleStringPropertyTest",
+        "script4jfx.internal.collections.ObservableArrayListImplTest"
     ]
 };

@@ -29,7 +29,7 @@ import { AbstractError } from './../lang/AbstractError'
 
 export class NoSuchElementError extends AbstractError {
 
-    constructor(message: string) {
+    constructor(message?: string) {
         super(message);
         // Set the prototype explicitly.
         (<any>Object).setPrototypeOf(this, NoSuchElementError.prototype);

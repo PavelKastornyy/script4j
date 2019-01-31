@@ -24,14 +24,15 @@
  *
  */
 
+import { Collection } from 'script4j.base';
+import { ObservableList } from './ObservableList';
+import { ObservableArrayListImpl } from './../internal/collections/ObservableArrayListImpl';
 
-import { AbstractError } from './AbstractError'
+export class FXCollections {
 
-export class IllegalArgumentError extends AbstractError {
-
-    constructor(message?: string) {
-        super(message);
-        // Set the prototype explicitly.
-        (<any>Object).setPrototypeOf(this, IllegalArgumentError.prototype);
+    static observableArrayList<E>(​col: Collection<E>): ObservableList<E> {
+        return new ObservableArrayListImpl(col);
     }
 }
+
+

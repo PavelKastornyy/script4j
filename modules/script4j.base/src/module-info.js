@@ -24,7 +24,7 @@ module.exports = {
     name: "script4j.base",
 
     /**
-     * The order matters!
+     * Order matters!
      */
     classes: [
         'script4j.lang.Class',

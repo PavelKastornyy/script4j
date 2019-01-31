@@ -30,7 +30,7 @@ module.exports = {
     },
 
     /**
-     * The order matters!
+     * Order matters!
      */
     classes: [
         'script4j.lang.ClassTest',

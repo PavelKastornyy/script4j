@@ -30,7 +30,7 @@ module.exports = {
     },
 
     /**
-     * The order matters!
+     * Order matters!
      */
     classes: [
         "script4jfx.beans.value.ChangeListener",
@@ -81,8 +81,13 @@ module.exports = {
         "script4jfx.event.EventHandler",
         "script4jfx.event.EventTarget",
         "script4jfx.event.Event",
-        "script4jfx.event.EventType"
-
+        "script4jfx.event.EventType",
+        "script4jfx.collections.ListChangeListener",
+        "script4jfx.collections.ObservableList",
+        "script4jfx.internal.collections.ListChangeListenerChange",
+        "script4jfx.internal.collections.ObservableListImpl",
+        "script4jfx.internal.collections.ObservableArrayListImpl",
+        "script4jfx.collections.FXCollections",
     ],
 
     export: {

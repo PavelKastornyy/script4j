@@ -26,6 +26,7 @@
 
 
 import { AbstractList } from './AbstractList';
+import { List } from './List';
 import { Iterator } from './Iterator';
 import { Consumer } from './../util/function/Consumer';
 import { IndexOutOfBoundsError } from './../lang/IndexOutOfBoundsError';
@@ -89,8 +90,14 @@ export class ArrayList<E> extends AbstractList<E> {
     public contains(obj: E): boolean {
         //we can not use here this.array.indexOf because we need to check equality.
         for (let i: number = 0; i < this.array.length; i++) {
-            if (this.array[i].equals(obj)) {
-                return true;
+            if (this.array[i] === null) {
+                if (obj === null) {
+                    return true;
+                }
+            } else {
+                if (obj !== null && this.array[i].equals(obj)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -114,10 +121,13 @@ export class ArrayList<E> extends AbstractList<E> {
         }
     }
 
-    public remove(obj: E): void {
+    public remove(obj: E): boolean {
         let index = this.indexOf(obj);
         if (index > -1) {
            this.array.splice(index, 1);
+           return true;
+        } else {
+            return false;
         }
     }
 
@@ -135,20 +145,42 @@ export class ArrayList<E> extends AbstractList<E> {
         return this.array[index];
     }
 
-    public removeByIndex(index: number): void {
-        this.checkIndexIsInRange(index);
+    public removeByIndex(index: number): E {
+        let previous: E = this.get(index);
         this.array.splice(index, 1);
+        return previous;
     }
 
-    public set(index: number, obj: E): void {
-        this.checkIndexIsInRange(index);
+    public set(index: number, obj: E): E {
+        let previous: E = this.get(index);
         this.array[index] = obj;
+        return previous;
+    }
+
+    public subList​(fromIndex: number, toIndex: number): List<E> {
+        this.checkIndexIsInRange(fromIndex);
+        if (toIndex !== 0) {
+            //-1 as toIndex is exclusive
+            this.checkIndexIsInRange(toIndex - 1);
+        }
+        let result: List<E> = new ArrayList<E>();
+        for (let index: number = fromIndex; index < toIndex; index++) {
+            result.add(this.array[index]);
+        }
+        return result;
     }
 
     public indexOf(obj: E): number {
         for (let i: number = 0; i < this.size(); i++) {
-            if (this.get(i).equals(obj)) {
-                return i;
+            let checkObject = this.get(i);
+            if (checkObject === null) {
+                if (obj === null) {
+                    return i;
+                }
+            } else {
+                if (obj !== null && checkObject.equals(obj)) {
+                    return i;
+                }
             }
         }
         return -1;

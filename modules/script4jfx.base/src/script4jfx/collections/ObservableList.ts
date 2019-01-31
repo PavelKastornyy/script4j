@@ -24,14 +24,19 @@
  *
  */
 
+import { List } from 'script4j.base';
+import { ListChangeListener } from './ListChangeListener';
 
-import { AbstractError } from './AbstractError'
+export interface ObservableList<E> extends List<E> {
 
-export class IllegalArgumentError extends AbstractError {
+    /**
+     * Add a listener to this observable list.
+     */
+    addListener​(listener: ListChangeListener<E>): void;
 
-    constructor(message?: string) {
-        super(message);
-        // Set the prototype explicitly.
-        (<any>Object).setPrototypeOf(this, IllegalArgumentError.prototype);
-    }
+    /**
+     * Tries to remove a listener from this observable list.
+     */
+    removeListener​(listener: ListChangeListener<E>): void;
 }
+

@@ -29,7 +29,7 @@
   */
 export abstract class AbstractError extends Error implements Object {
 
-    constructor(message: string) {
+    constructor(message?: string) {
         super(message);
     }
 

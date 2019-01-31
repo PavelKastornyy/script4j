@@ -29,7 +29,7 @@ import { AbstractError } from './AbstractError'
 
 export class IllegalStateError extends AbstractError {
 
-    constructor(message: string) {
+    constructor(message?: string) {
         super(message);
         // Set the prototype explicitly.
         (<any>Object).setPrototypeOf(this, IllegalStateError.prototype);
