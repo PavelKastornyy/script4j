@@ -111,23 +111,23 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
 
                 private readonly map: HashMap<K, V>;
 
-                private readonly iterator: Iterator<Map.Entry<K, V>>;
+                private readonly delegate: Iterator<Map.Entry<K, V>>;
 
                 constructor(map: HashMap<K, V>) {
                     this.map = map;
-                    this.iterator = this.map.iterator();
+                    this.delegate = this.map.iterator();
                 }
 
                 public hasNext(): boolean {
-                    return this.iterator.hasNext();
+                    return this.delegate.hasNext();
                 }
 
                 public next(): K {
-                    return this.iterator.next().getKey();
+                    return this.delegate.next().getKey();
                 }
 
                 public remove(): void {
-                    this.iterator.remove();
+                    this.delegate.remove();
                 }
 
             }(this.map);
@@ -184,23 +184,23 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
 
                 private readonly map: HashMap<K, V>;
 
-                private readonly iterator: Iterator<Map.Entry<K, V>>;
+                private readonly delegate: Iterator<Map.Entry<K, V>>;
 
                 constructor(map: HashMap<K, V>) {
                     this.map = map;
-                    this.iterator = this.map.iterator();
+                    this.delegate = this.map.iterator();
                 }
 
                 public hasNext(): boolean {
-                    return this.iterator.hasNext();
+                    return this.delegate.hasNext();
                 }
 
                 public next(): V {
-                    return this.iterator.next().getValue();
+                    return this.delegate.next().getValue();
                 }
 
                 public remove(): void {
-                    this.iterator.remove();
+                    this.delegate.remove();
                 }
 
             }(this.map);
@@ -255,6 +255,11 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
 
     private capacity: number;
 
+    /**
+     * For perfomance we save current size in this variable.
+     */
+    private currentSize: number = 0;
+
     constructor(capacity?: number) {
         super();
         if (capacity === undefined) {
@@ -267,10 +272,11 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
 
     public clear(): void {
         this.buckets = this.newBucketsArray(this.capacity);
+        this.currentSize = 0;
     }
 
     public containsKey(key: K): boolean {
-        let keyHashCode: number = key.hashCode();
+        let keyHashCode = (key !== null) ? key.hashCode() : 0;
         let bucket: List<HashMap.Entry<K, V>> = this.resolveBucket(keyHashCode);
         if (bucket === null) {
             return false;
@@ -307,7 +313,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
     }
 
     public get(key: K): V {
-        let keyHashCode = key.hashCode();
+        let keyHashCode = (key !== null) ? key.hashCode() : 0;
         let bucket: List<HashMap.Entry<K, V>> = this.resolveBucket(keyHashCode);
         if (bucket === null) {
             return null;
@@ -323,14 +329,11 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
     }
 
     public isEmpty(): boolean {
-        let bucket: List<Map.Entry<K, V>> = null;
-        for (let i: number = 0; i < this.buckets.length; i++) {
-            bucket = this.buckets[i];
-            if (bucket !== null && !bucket.isEmpty()) {
-                return false;
-            }
+        if (this.currentSize === 0) {
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     public keySet(): Set<K> {
@@ -339,7 +342,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
 
     public put(key: K, value: V): V {
         let previousValue:V = null;
-        let keyHashCode = key.hashCode();
+        let keyHashCode = (key !== null) ? key.hashCode() : 0;
         let bucketIndex: number = this.calculateBucket(keyHashCode);
         let bucket: List<HashMap.Entry<K, V>> = this.buckets[bucketIndex];
         if (bucket === null) {
@@ -348,26 +351,27 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
         }
         //if entry with such key exists we take existing entry and replace value
         let entry: HashMap.Entry<K, V> = null;
-        let valueWasAdded = false;
+        let valueWasReplaced = false;
         for (let i: number = 0; i < bucket.size(); i++) {
             entry = <HashMap.Entry<K, V>> bucket.get(i);
             if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
                 previousValue = entry.getValue();
                 entry.setValue(value);
-                valueWasAdded = true;
+                valueWasReplaced = true;
                 break;
             }
         }
-        if (valueWasAdded === false) {
+        if (valueWasReplaced === false) {
             entry = new HashMap.Entry<K, V>(key, keyHashCode, value);
             bucket.add(entry);
+            this.currentSize++;
         }
         return previousValue;
     }
 
     public remove(key: K): V {
         let oldValue: V = null;
-        let keyHashCode = key.hashCode();
+        let keyHashCode = (key !== null) ? key.hashCode() : 0;
         let bucketIndex: number = this.calculateBucket(keyHashCode);
         let bucket: List<HashMap.Entry<K, V>> = this.buckets[bucketIndex];
         if (bucket !== null) {
@@ -377,6 +381,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
                 if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
                     oldValue = entry.getValue();
                     bucket.removeByIndex(i);
+                    this.currentSize--;
                     break;
                 }
             }
@@ -389,15 +394,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
     }
 
     public size(): number {
-        let size: number = 0;
-        let bucket: List<Map.Entry<K, V>>;
-        for (let i: number = 0; i < this.capacity; i++) {
-            bucket = this.buckets[i];
-            if (bucket !== null) {
-                size += bucket.size();
-            }
-        }
-        return size;
+        return this.currentSize;
     }
 
     public values(): Collection<V> {
@@ -459,6 +456,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
                 }
                 this.nextWasCalled = false;
                 this.currentBucket.removeByIndex(this.currentEntryIndex);
+                this.map.currentSize--;
                 this.currentEntryIndex--;
                 if (this.currentBucket.isEmpty()) {
                     this.map.buckets[this.currentBucketIndex] = null;

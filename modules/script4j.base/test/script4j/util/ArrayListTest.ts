@@ -121,7 +121,7 @@ describe('ArrayListTest', () => {
         assert.isTrue(list.get(0).equals(obj1));
         assert.isTrue(list.get(1).equals(obj3));
         assert.equal(list.size(), 2);
-        list.removeByIndex(0);
+        assert.isTrue(list.removeByIndex(0).equals(obj1));
         assert.isTrue(list.get(0).equals(obj3));
         assert.equal(list.size(), 1);
     });
@@ -133,7 +133,7 @@ describe('ArrayListTest', () => {
         assert.isTrue(list.get(0).equals(obj2));
         assert.equal(list.size(), 1);
         list.add(obj3);
-        list.set(1, obj1);
+        assert.isTrue(list.set(1, obj1).equals(obj3))
         assert.isTrue(list.get(0).equals(obj2));
         assert.isTrue(list.get(1).equals(obj1));
         assert.equal(list.size(), 2);

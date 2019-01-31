@@ -23,10 +23,6 @@ import { assert } from 'chai';
 import { describe } from 'mocha';
 import { it } from 'mocha';
 import { beforeEach} from 'mocha';
-import { PropertyDelegate } from './../../../../src/script4jfx/internal/beans/property/PropertyDelegate';
-import { ChangeListener } from "./../../../../src/script4jfx/beans/value/ChangeListener";
-import { ObservableValue } from "./../../../../src/script4jfx/beans/value/ObservableValue";
-import { Property } from "./../../../../src/script4jfx/beans/property/Property";
 import { SimpleStringProperty } from "./../../../../src/script4jfx/beans/property/SimpleStringProperty";
 
 describe('SimpleStringPropertyTest', () => {

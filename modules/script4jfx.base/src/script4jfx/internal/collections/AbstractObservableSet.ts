@@ -24,48 +24,52 @@
  *
  */
 
-import { ObservableList } from './../../collections/ObservableList';
-import { ListChangeListener } from './../../collections/ListChangeListener';
-import { List } from 'script4j.base';
-import { ArrayList } from 'script4j.base';
+import { ObservableSet } from './../../collections/ObservableSet';
+import { SetChangeListener } from './../../collections/SetChangeListener';
 import { Collection } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { Consumer } from 'script4j.base';
 import { Set } from 'script4j.base';
 import { HashSet } from 'script4j.base';
 
-export abstract class ObservableListImpl<E> implements ObservableList<E> {
+export abstract class AbstractObservableSet<E> implements ObservableSet<E> {
 
-    private listeners: Set<ListChangeListener<E>> = new HashSet<ListChangeListener<E>>();
+    private listeners: Set<SetChangeListener<E>> = new HashSet<SetChangeListener<E>>();
 
     public constructor() {
         //
     }
 
-    public addListener​(listener: ListChangeListener<E>): void {
+    public addListener​(listener: SetChangeListener<E>): void {
         this.listeners.add(listener);
     }
 
-    public removeListener​(listener: ListChangeListener<E>): void {
+    public removeListener​(listener: SetChangeListener<E>): void {
         this.listeners.remove(listener);
     }
 
-    public abstract addByIndex(index: number, obj: E): void;
-
-    public get(index: number): E {
-        return this.getList().get(index);
+    public hashCode(): number {
+        return this.getSet().hashCode();
     }
 
-    public abstract removeByIndex(index: number): void;
-
-    public abstract set(index: number, obj: E): void;
-
-    public subList​(fromIndex: number, toIndex: number): List<E> {
-        return this.getList().subList(fromIndex, toIndex);
+    public equals(obj: Object): boolean {
+        return this.getSet().equals(obj);
     }
 
-    public indexOf(obj: E): number {
-        return this.getList().indexOf(obj);
+    public toString(): string {
+        return this.getSet().toString();
+    }
+
+    public contains(obj: E): boolean {
+        return this.getSet().contains(obj);
+    }
+
+    public containsAll(c: Collection<E>): boolean {
+        return this.getSet().containsAll(c);
+    }
+
+    public isEmpty(): boolean {
+        return this.getSet().isEmpty();
     }
 
     public abstract add(obj: E): boolean;
@@ -74,44 +78,26 @@ export abstract class ObservableListImpl<E> implements ObservableList<E> {
 
     public abstract clear(): void;
 
-    public contains(obj: E): boolean {
-        return this.getList().contains(obj);
-    }
-
-    public containsAll(c: Collection<E>): boolean {
-        return this.getList().containsAll(c);
-    }
-
-    public isEmpty(): boolean {
-        return this.getList().isEmpty();
-    }
-
     public abstract remove(obj: E): boolean;
 
     public abstract removeAll(c: Collection<E>): boolean;
 
-    public size(): number {
-        return this.getList().size();
-    }
-
     public abstract iterator(): Iterator<E>;
 
+    public size(): number {
+        return this.getSet().size();
+    }
+
     public forEach(consumer: Consumer<E>): void {
-        this.getList().forEach(consumer);
+        this.getSet().forEach(consumer);
     }
 
-    protected abstract getList(): List<E>;
+    protected abstract getSet(): Set<E>;
 
-    protected getListeners(): Set<ListChangeListener<E>> {
-        return this.listeners;
-    }
-
-    protected fireChangeEvent(event: ListChangeListener.Change<E>) {
+    protected fireChangeEvent(event: SetChangeListener.Change<E>) {
         this.listeners.forEach((listener) => {
             listener(event);
         });
     }
 }
-
-
 

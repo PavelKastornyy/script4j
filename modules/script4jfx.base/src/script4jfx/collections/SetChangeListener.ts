@@ -24,26 +24,58 @@
  *
  */
 
-import { Collection } from 'script4j.base';
-import { ObservableList } from './ObservableList';
-import { ObservableArrayList } from './../internal/collections/ObservableArrayList';
-import { Set } from 'script4j.base';
 import { ObservableSet } from './ObservableSet';
-import { ObservableHashSet } from './../internal/collections/ObservableHashSet';
 
-export class FXCollections {
-
-    static observableArrayList<E>(​col: Collection<E>): ObservableList<E> {
-        return new ObservableArrayList(col);
-    }
+ /**
+ * Functional interface.
+ */
+export interface SetChangeListener<E> {
 
     /**
-     * Constructs an ObservableSet that is backed by the specified set.
+     * Called after a change has been made to an ObservableSet. This method is called on every
+     * elementary change (add/remove) once. This means, complex changes like removeAll(Collection)
+     * or clear() may result in more than one call of onChanged method.
      */
-    static observableSet<E>​(set: Set<E>): ObservableSet<E> {
-        return new ObservableHashSet(set);
-    }
-
+    ​(c: SetChangeListener.Change<E>): void;
 }
 
 
+export namespace SetChangeListener {
+
+    export abstract class Change<E> {
+
+        private readonly set: ObservableSet<E>;
+
+        public constructor​(set: ObservableSet<E>) {
+            this.set = set;
+        }
+
+        /**
+         * An observable set that is associated with the change.
+         */
+        public getSet(): ObservableSet<E> {
+            return this.set;
+        }
+
+        /**
+         * Get the new element.
+         */
+        public abstract getElementAdded(): E;
+
+        /**
+         * Get the old element.
+         */
+        public abstract getElementRemoved(): E;
+
+        /**
+         * If this change is a result of add operation.
+         */
+        public abstract wasAdded(): boolean;
+
+        /**
+         * If this change is a result of removal operation.
+         */
+        public abstract wasRemoved(): boolean;
+
+    }
+}

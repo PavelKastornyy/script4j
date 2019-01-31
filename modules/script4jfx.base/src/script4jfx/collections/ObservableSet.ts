@@ -24,20 +24,20 @@
  *
  */
 
+import { Set } from 'script4j.base';
+import { SetChangeListener } from './SetChangeListener';
 
-import { Collection } from './Collection';
+export interface ObservableSet<E> extends Set<E> {
 
-export interface List<E> extends Collection<E> {
+    /**
+     * Add a listener to this observable set.
+     */
+    addListener​(listener: SetChangeListener<E>): void;
 
-    addByIndex(index: number, obj: E): void;
+    /**
+     * Tries to removed a listener from this observable set.
+     */
+    removeListener​(listener: SetChangeListener<E>): void;
 
-    get(index: number): E;
-
-    removeByIndex(index: number): E;
-
-    set(index: number, obj: E): E;
-
-    subList​(fromIndex: number, toIndex: number): List<E>;
-
-    indexOf(obj: E): number;
 }
+

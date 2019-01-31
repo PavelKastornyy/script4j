@@ -35,6 +35,7 @@ module.exports = {
     classes: [
         //'script4jfx.beans.property.PropertyDelegateTest',
         "script4jfx.beans.property.SimpleStringPropertyTest",
-        "script4jfx.internal.collections.ObservableArrayListImplTest"
+        "script4jfx.internal.collections.ObservableArrayListTest",
+        "script4jfx.internal.collections.ObservableHashSetTest",
     ]
 };

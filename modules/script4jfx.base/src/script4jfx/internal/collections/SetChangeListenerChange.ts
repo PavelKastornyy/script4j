@@ -24,55 +24,66 @@
  *
  */
 
+import { SetChangeListener } from './../../collections/SetChangeListener';
+import { ObservableSet } from './../../collections/ObservableSet';
 
-import { AbstractSet } from './AbstractSet';
-import { Iterator } from './Iterator';
-import { Consumer } from './../util/function/Consumer';
-import { Map } from './Map';
-import { HashMap} from './HashMap';
+export class SetChangeListenerChange<E> extends SetChangeListener.Change<E> {
 
-export class HashSet<E> extends AbstractSet<E> {
+    private elementAdded: E = null;
 
-    private readonly map: Map<E, Object> = new HashMap();
+    private elementRemoved: E = null;
 
-    private readonly value: Object = new Object();
+    private added: boolean = false;
 
-    constructor() {
-       super();
+    private removed: boolean = false;
+
+    public constructor​(set: ObservableSet<E>) {
+        super(set);
     }
 
-    iterator(): Iterator<E> {
-        return this.map.keySet().iterator();
+    /**
+     * Get the new element.
+     */
+    public getElementAdded(): E {
+        return this.elementAdded;
     }
 
-    forEach(consumer: Consumer<E>): void {
-        this.map.keySet().forEach(consumer);
+    public setElementAdded(e: E): void {
+        this.elementAdded = e;
     }
 
-    add(obj: E): boolean {
-        return (this.map.put(obj, this.value) === null);
+    /**
+     * Get the old element.
+     */
+    public getElementRemoved(): E {
+        return this.elementRemoved;
     }
 
-    clear(): void {
-        this.map.clear();
+    public setElementRemoved(e: E): void {
+        this.elementRemoved = e;
     }
 
-    contains(obj: E): boolean {
-        return this.map.containsKey(obj);
+    /**
+     * If this change is a result of add operation.
+     */
+    public wasAdded(): boolean {
+        return this.added;
     }
 
-    isEmpty(): boolean {
-        return this.map.isEmpty();
+    public setAdded(added: boolean): void {
+        this.added = added;
     }
 
-    remove(obj: E): boolean {
-        let prevSize = this.size();
-        this.map.remove(obj);
-        return (prevSize !== this.size());
+    /**
+     * If this change is a result of removal operation.
+     */
+    public wasRemoved(): boolean {
+        return this.removed;
     }
 
-    size(): number {
-        return this.map.size();
+    public setRemoved(removed: boolean): void {
+        this.removed = removed;
     }
+
 }
 

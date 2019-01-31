@@ -24,14 +24,14 @@
  *
  */
 
-import { ObservableListImpl } from './ObservableListImpl';
+import { AbstractObservableList } from './AbstractObservableList';
 import { ListChangeListenerChange } from './ListChangeListenerChange';
 import { List } from 'script4j.base';
 import { ArrayList } from 'script4j.base';
 import { Collection } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 
-export class ObservableArrayListImpl<E> extends ObservableListImpl<E> {
+export class ObservableArrayList<E> extends AbstractObservableList<E> {
 
     private readonly list: List<E> = new ArrayList<E>();
 
@@ -49,10 +49,9 @@ export class ObservableArrayListImpl<E> extends ObservableListImpl<E> {
         this.fireChangeEvent(change);
     }
 
-    public removeByIndex(index: number): void {
+    public removeByIndex(index: number): E {
         let prevSize: number = this.list.size();
-        let prevValue: E = this.list.get(index);
-        this.list.removeByIndex(index);
+        let prevValue: E = this.list.removeByIndex(index);
         if (prevSize !== this.list.size()) {
             let change: ListChangeListenerChange<E> = this.createInitialChange();
             let node: ListChangeListenerChange.Node<E> = change.newNode();
@@ -61,17 +60,18 @@ export class ObservableArrayListImpl<E> extends ObservableListImpl<E> {
             node.getRemoved().add(prevValue);
             this.fireChangeEvent(change);
         }
+        return prevValue;
     }
 
-    public set(index: number, obj: E): void {
-        let prevValue: E = this.list.get(index);
-        this.list.set(index, obj);
+    public set(index: number, obj: E): E {
+        let prevValue: E = this.list.set(index, obj);
         let change: ListChangeListenerChange<E> = this.createInitialChange();
         let node: ListChangeListenerChange.Node<E> = change.newNode();
         node.setFrom(index);
         node.setTo(index + 1);
         node.getRemoved().add(prevValue);
         this.fireChangeEvent(change);
+        return prevValue;
     }
 
     public add(obj: E): boolean {
@@ -125,16 +125,24 @@ export class ObservableArrayListImpl<E> extends ObservableListImpl<E> {
         node.setTo(index);
         node.getRemoved().add(obj);
         this.fireChangeEvent(change);
+        return true;
     }
 
+    /**
+     *  When removeAll in every change to/from are equal and counted this way - every change node
+     *  has indexes according to list that is result after all previous change nodes.
+     *  For example, list ["A", "B", "C", "D", "E"], if we list.removeAll("A", "B", "E") then we will have two changes:
+     *  1) FROM:0, TO:0, Removed: [A, B];
+     *  2) FROM:2, TO:2, Removed: [E] (2 because we consider "E" in ["C", "D", "E"];
+     */
     public removeAll(collection: Collection<E>): boolean {
         //step 0 we select all elements we need to delete
-        let selected: List<ObservableArrayListImpl.IndexAndValue<E>>
-            = new ArrayList<ObservableArrayListImpl.IndexAndValue<E>>();
+        let selected: List<ObservableArrayList.IndexAndValue<E>>
+            = new ArrayList<ObservableArrayList.IndexAndValue<E>>();
         for (let i: number = 0; i < this.list.size(); i++) {
             let value: E = this.list.get(i);
             if (collection.contains(value)) {
-                selected.add(new ObservableArrayListImpl.IndexAndValue(i, value));
+                selected.add(new ObservableArrayList.IndexAndValue(i, value));
             }
         }
         //step 1 we remove elements and create one change event with one or many nodes.
@@ -143,8 +151,8 @@ export class ObservableArrayListImpl<E> extends ObservableListImpl<E> {
         if (selected.size() > 0) {
             change = this.createInitialChange();
         }
-        let currentIndexAndValue: ObservableArrayListImpl.IndexAndValue<E> = null;
-        let nextIndexAndValue: ObservableArrayListImpl.IndexAndValue<E> = null;
+        let currentIndexAndValue: ObservableArrayList.IndexAndValue<E> = null;
+        let nextIndexAndValue: ObservableArrayList.IndexAndValue<E> = null;
         let currentChangeNode: ListChangeListenerChange.Node<E> = null;
         for (let i: number = 0; i < selected.size(); i++) {
             currentIndexAndValue = selected.get(i);
@@ -157,12 +165,6 @@ export class ObservableArrayListImpl<E> extends ObservableListImpl<E> {
             //now we see, if we start a change node
             if (currentChangeNode === null) {
                 currentChangeNode = change.newNode();
-                //in every change to/from are equal and counted this way - every change node
-                //has indexes according to list that is result after all previous change nodes.
-                //for example, list ["A", "B", "C", "D", "E"], if we list.removeAll("A", "B", "E")
-                //then we will have two nodes:
-                //1)FROM:0, TO:0, Removed: [A, B];
-                //2) FROM:2, TO:2, Removed: [E] (2 because we conside "E" in ["C", "D", "E"]
                 currentChangeNode.setFrom(currentIndexAndValue.getIndex() - i);
                 currentChangeNode.setTo(currentIndexAndValue.getIndex() - i);
             }
@@ -183,32 +185,32 @@ export class ObservableArrayListImpl<E> extends ObservableListImpl<E> {
     public iterator(): Iterator<E> {
         return new class implements Iterator<E> {
 
-            private readonly iterator: Iterator<E>;
+            private readonly delegate: Iterator<E>;
 
-            private readonly impl: ObservableArrayListImpl<E>
+            private readonly impl: ObservableArrayList<E>
 
             private index: number = -1;
 
             private currentElement: E = null;
 
-            constructor(impl: ObservableArrayListImpl<E>) {
+            constructor(impl: ObservableArrayList<E>) {
                 this.impl = impl;
-                this.iterator = impl.list.iterator();
+                this.delegate = impl.list.iterator();
             }
 
             public hasNext(): boolean {
-                return this.iterator.hasNext();
+                return this.delegate.hasNext();
             }
 
             public next(): E {
                 this.index++;
-                this.currentElement = this.iterator.next();
+                this.currentElement = this.delegate.next();
                 return this.currentElement;
             }
 
             remove(): void {
                 let prevSize: number = this.impl.size();
-                this.iterator.remove();
+                this.delegate.remove();
                 if (prevSize !== this.impl.size()) {
                     let change: ListChangeListenerChange<E> = this.impl.createInitialChange();
                     let node: ListChangeListenerChange.Node<E> = change.newNode();
@@ -231,7 +233,7 @@ export class ObservableArrayListImpl<E> extends ObservableListImpl<E> {
     }
 }
 
-export namespace ObservableArrayListImpl {
+export namespace ObservableArrayList {
 
     export class IndexAndValue<E> {
 
