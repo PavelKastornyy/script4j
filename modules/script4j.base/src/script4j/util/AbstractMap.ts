@@ -95,5 +95,18 @@ export abstract class AbstractMap<K,V> implements Map<K,V> {
         }
         return true;
     }
+
+    public toString(): string {
+        let result: string = "{";
+        let comma: string = "";
+        let iterator: Iterator<Map.Entry<K, V>> = this.entrySet().iterator();
+        while (iterator.hasNext()) {
+            let entry: Map.Entry<K, V> = iterator.next();
+            result += comma + entry.getKey().toString() + "=" + entry.getValue().toString();
+            comma = ", ";
+        }
+        result += "}";
+        return result;
+    }
 }
 

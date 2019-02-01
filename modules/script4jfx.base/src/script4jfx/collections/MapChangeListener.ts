@@ -24,38 +24,64 @@
  *
  */
 
-import { Collection } from 'script4j.base';
-import { ObservableList } from './ObservableList';
-import { ObservableArrayList } from './../internal/collections/ObservableArrayList';
-import { Set } from 'script4j.base';
-import { Map } from 'script4j.base';
-import { ObservableSet } from './ObservableSet';
 import { ObservableMap } from './ObservableMap';
-import { ObservableSetWrapper } from './../internal/collections/ObservableSetWrapper';
-import { ObservableMapWrapper } from './../internal/collections/ObservableMapWrapper';
 
-export class FXCollections {
-
-    /**
-     * Creates a new observable array list and adds a content of collection col to it.
-     */
-    static observableArrayList<E>(​col: Collection<E>): ObservableList<E> {
-        return new ObservableArrayList(col);
-    }
+ /**
+ * Functional interface.
+ */
+export interface MapChangeListener<K, V> {
 
     /**
-     * Constructs an ObservableSet that is backed by the specified set.
+     * Called after a change has been made to an ObservableMap.
      */
-    static observableSet<E>​(set: Set<E>): ObservableSet<E> {
-        return new ObservableSetWrapper(set);
-    }
-
-    /**
-     * Constructs an ObservableMap that is backed by the specified map.
-     */
-    static observableMap<K, ​V>​(map: Map<K, ​V>): ObservableMap<K,​ V> {
-        return new ObservableMapWrapper(map);
-    }
+    ​(change: MapChangeListener.Change<K, V>): void;
 }
 
+export namespace MapChangeListener {
+
+    export abstract class Change<K,​V> {
+
+        private readonly map: ObservableMap<K,​V>;
+
+        /**
+         * Constructs a change associated with a map.
+         */
+        public constructor​(map: ObservableMap<K,​V>) {
+            this.map = map;
+        }
+
+        /**
+         * An observable map that is associated with the change.
+         */
+        public getMap(): ObservableMap<K,​V> {
+            return this.map;
+        }
+
+        /**
+         * A key associated with the change.
+         */
+        public abstract getKey(): K;
+
+        /**
+         * Get the new value of the key.
+         */
+        public abstract getValueAdded(): V;
+
+        /**
+         * Get the old value of the key.
+         */
+        public abstract getValueRemoved(): V;
+
+        /**
+         * If this change is a result of add operation.
+         */
+        public abstract wasAdded(): boolean;
+
+        /**
+         * If this change is a result of removal operation.
+         */
+        public abstract wasRemoved(): boolean;
+
+    }
+}
 

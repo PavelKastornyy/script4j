@@ -33,7 +33,7 @@ import { Consumer } from 'script4j.base';
 import { Set } from 'script4j.base';
 import { HashSet } from 'script4j.base';
 
-export abstract class AbstractObservableList<E> implements ObservableList<E> {
+export abstract class AbstractObservableListBase<E> implements ObservableList<E> {
 
     private listeners: Set<ListChangeListener<E>> = new HashSet<ListChangeListener<E>>();
 

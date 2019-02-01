@@ -30,7 +30,7 @@ import { FXCollections } from './../../../../src/script4jfx/collections/FXCollec
 import { ObservableSet } from './../../../../src/script4jfx/collections/ObservableSet';
 import { SetChangeListener } from './../../../../src/script4jfx/collections/SetChangeListener';
 
-describe('ObservableHashSetTest', () => {
+describe('ObservableSetWrapperTest', () => {
 
     let set: ObservableSet<string> = null;
 
@@ -51,9 +51,9 @@ describe('ObservableHashSetTest', () => {
     });
 
     it('add_addingOneElement_correctEvent', () => {
-        let change: SetChangeListener.Change<string> = null;
-        set.addListener((ch) => {
-            change = ch;
+        let counter: number = 0;
+        set.addListener((change) => {
+            counter++;
             assert.isTrue(change.wasAdded());
             assert.isFalse(change.wasRemoved());
             assert.isTrue(change.getElementAdded().equals("X"));
@@ -61,37 +61,34 @@ describe('ObservableHashSetTest', () => {
             assert.equal(change.getSet().size(), 6);
         });
         assert.isTrue(set.add("X"));
-        assert.isNotNull(change);
+        assert.equals(counter, 1);
     });
 
     it('addAll_addingTwoElements_correctEvent', () => {
-        let change0: SetChangeListener.Change<string> = null;
-        let change1: SetChangeListener.Change<string> = null;
+        let counter: number = 0;
         let temp0: Set<string> = new HashSet<string>();
         let temp1: Set<string> = new HashSet<string>();
-        set.addListener((ch) => {
-            if (change0 === null) {
-                change0 = ch;
-                assert.isTrue(change0.wasAdded());
-                assert.isFalse(change0.wasRemoved());
-                temp1.add(change0.getElementAdded());
-                assert.isNull(change0.getElementRemoved());
-                assert.equal(change0.getSet().size(), 6);
+        set.addListener((change) => {
+            counter++;
+            if (counter === 1) {
+                assert.isTrue(change.wasAdded());
+                assert.isFalse(change.wasRemoved());
+                temp1.add(change.getElementAdded());
+                assert.isNull(change.getElementRemoved());
+                assert.equal(change.getSet().size(), 6);
             } else {
-                change1 = ch;
-                assert.isTrue(change1.wasAdded());
-                assert.isFalse(change1.wasRemoved());
-                temp1.add(change1.getElementAdded());
-                assert.isNull(change1.getElementRemoved());
-                assert.equal(change1.getSet().size(), 7);
+                assert.isTrue(change.wasAdded());
+                assert.isFalse(change.wasRemoved());
+                temp1.add(change.getElementAdded());
+                assert.isNull(change.getElementRemoved());
+                assert.equal(change.getSet().size(), 7);
             }
         });
         temp0.add("X");
         temp0.add("Z");
         assert.isTrue(set.addAll(temp0));
         assert.isTrue(temp0.equals(temp1));
-        assert.isNotNull(change0);
-        assert.isNotNull(change1);
+        assert.equals(counter, 2);
     });
 
     it('addAll_addingTwoElements_elementsWereAdded', () => {
@@ -105,9 +102,9 @@ describe('ObservableHashSetTest', () => {
     });
 
     it('remove_addingOneElement_correctEvent', () => {
-        let change: SetChangeListener.Change<string> = null;
-        set.addListener((ch) => {
-            change = ch;
+        let counter: number = 0;
+        set.addListener((change) => {
+            counter++;
             assert.isFalse(change.wasAdded());
             assert.isTrue(change.wasRemoved());
             assert.isNull(change.getElementAdded());
@@ -115,37 +112,34 @@ describe('ObservableHashSetTest', () => {
             assert.equal(change.getSet().size(), 4);
         });
         assert.isTrue(set.remove("C"));
-        assert.isNotNull(change);
+        assert.equals(counter, 1);
     });
 
     it('removeAll_removingTwoElements_correctEvent', () => {
-        let change0: SetChangeListener.Change<string> = null;
-        let change1: SetChangeListener.Change<string> = null;
+        let counter: number = 0;
         let temp0: Set<string> = new HashSet<string>();
         let temp1: Set<string> = new HashSet<string>();
-        set.addListener((ch) => {
-            if (change0 === null) {
-                change0 = ch;
-                assert.isFalse(change0.wasAdded());
-                assert.isTrue(change0.wasRemoved());
-                temp1.add(change0.getElementRemoved());
-                assert.isNull(change0.getElementAdded());
-                assert.equal(change0.getSet().size(), 4);
+        set.addListener((change) => {
+            counter++;
+            if (counter === 1) {
+                assert.isFalse(change.wasAdded());
+                assert.isTrue(change.wasRemoved());
+                temp1.add(change.getElementRemoved());
+                assert.isNull(change.getElementAdded());
+                assert.equal(change.getSet().size(), 4);
             } else {
-                change1 = ch;
-                assert.isFalse(change1.wasAdded());
-                assert.isTrue(change1.wasRemoved());
-                temp1.add(change1.getElementRemoved());
-                assert.isNull(change1.getElementAdded());
-                assert.equal(change1.getSet().size(), 3);
+                assert.isFalse(change.wasAdded());
+                assert.isTrue(change.wasRemoved());
+                temp1.add(change.getElementRemoved());
+                assert.isNull(change.getElementAdded());
+                assert.equal(change.getSet().size(), 3);
             }
         });
         temp0.add("C");
         temp0.add("E");
         assert.isTrue(set.removeAll(temp0));
         assert.isTrue(temp0.equals(temp1));
-        assert.isNotNull(change0);
-        assert.isNotNull(change1);
+        assert.equals(counter, 2);
     });
 
     it('removeAll_removingTwoElements_elementsWereRemoved', () => {
@@ -159,24 +153,22 @@ describe('ObservableHashSetTest', () => {
     });
 
     it('iterator_removingTwoElements_correctEvent', () => {
-        let change0: SetChangeListener.Change<string> = null;
-        let change1: SetChangeListener.Change<string> = null;
+        let counter: number = 0;
         let temp: Set<string> = new HashSet<string>();
-        set.addListener((ch) => {
-            if (change0 === null) {
-                change0 = ch;
-                assert.isFalse(change0.wasAdded());
-                assert.isTrue(change0.wasRemoved());
-                temp.add(change0.getElementRemoved());
-                assert.isNull(change0.getElementAdded());
-                assert.equal(change0.getSet().size(), 4);
+        set.addListener((change) => {
+            counter++;
+            if (counter === 1) {
+                assert.isFalse(change.wasAdded());
+                assert.isTrue(change.wasRemoved());
+                temp.add(change.getElementRemoved());
+                assert.isNull(change.getElementAdded());
+                assert.equal(change.getSet().size(), 4);
             } else {
-                change1 = ch;
-                assert.isFalse(change1.wasAdded());
-                assert.isTrue(change1.wasRemoved());
-                temp.add(change1.getElementRemoved());
-                assert.isNull(change1.getElementAdded());
-                assert.equal(change1.getSet().size(), 3);
+                assert.isFalse(change.wasAdded());
+                assert.isTrue(change.wasRemoved());
+                temp.add(change.getElementRemoved());
+                assert.isNull(change.getElementAdded());
+                assert.equal(change.getSet().size(), 3);
             }
         });
         let iterator: Iterator<string> = set.iterator();
@@ -188,8 +180,7 @@ describe('ObservableHashSetTest', () => {
         }
         assert.isTrue(temp.contains("B"));
         assert.isTrue(temp.contains("C"));
-        assert.isNotNull(change0);
-        assert.isNotNull(change1);
+        assert.equals(counter, 2);
     });
 
     it('iterator_removingTwoElements_elementsWereRemoved', () => {

@@ -24,23 +24,23 @@
  *
  */
 
-import { AbstractObservableSet } from './AbstractObservableSet';
+import { AbstractObservableSetBase } from './AbstractObservableSetBase';
 import { Set } from 'script4j.base';
 import { HashSet } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { Collection } from 'script4j.base';
 import { SetChangeListenerChange } from './SetChangeListenerChange';
 
-export class ObservableHashSet<E> extends AbstractObservableSet<E> {
+/**
+ * This is wrapper, because it can work with any type of sets.
+ */
+export class ObservableSetWrapper<E> extends AbstractObservableSetBase<E> {
 
-    /**
-     * We don't know what set will be passed as argument.
-     */
-    private readonly set: Set<E> = new HashSet<E>();
+    private readonly set: Set<E>;
 
     public constructor(set: Set<E>) {
         super();
-        this.set.addAll(set);
+        this.set = set;
     }
 
     public add(obj: E): boolean {
@@ -92,7 +92,6 @@ export class ObservableHashSet<E> extends AbstractObservableSet<E> {
 
     public clear(): void {
         let iterator: Iterator<E> = this.iterator();
-        //this is set, only one occurance
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
@@ -104,11 +103,11 @@ export class ObservableHashSet<E> extends AbstractObservableSet<E> {
 
             private readonly delegate: Iterator<E>;
 
-            private readonly impl: ObservableHashSet<E>
+            private readonly impl: ObservableSetWrapper<E>
 
             private currentElement: E = null;
 
-            constructor(impl: ObservableHashSet<E>) {
+            constructor(impl: ObservableSetWrapper<E>) {
                 this.impl = impl;
                 this.delegate = impl.set.iterator();
             }
@@ -123,14 +122,12 @@ export class ObservableHashSet<E> extends AbstractObservableSet<E> {
             }
 
             remove(): void {
-                let prevSize: number = this.impl.size();
                 this.delegate.remove();
-                if (prevSize !== this.impl.size()) {
-                    let event: SetChangeListenerChange<E> = new SetChangeListenerChange<E>(this.impl);
-                    event.setRemoved(true);
-                    event.setElementRemoved(this.currentElement);
-                    this.impl.fireChangeEvent(event);
-                }
+                //if we have not exception it means element was removed.
+                let event: SetChangeListenerChange<E> = new SetChangeListenerChange<E>(this.impl);
+                event.setRemoved(true);
+                event.setElementRemoved(this.currentElement);
+                this.impl.fireChangeEvent(event);
             }
         }(this);
     }

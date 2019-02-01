@@ -24,38 +24,20 @@
  *
  */
 
-import { Collection } from 'script4j.base';
-import { ObservableList } from './ObservableList';
-import { ObservableArrayList } from './../internal/collections/ObservableArrayList';
-import { Set } from 'script4j.base';
 import { Map } from 'script4j.base';
-import { ObservableSet } from './ObservableSet';
-import { ObservableMap } from './ObservableMap';
-import { ObservableSetWrapper } from './../internal/collections/ObservableSetWrapper';
-import { ObservableMapWrapper } from './../internal/collections/ObservableMapWrapper';
+import { MapChangeListener } from './MapChangeListener';
 
-export class FXCollections {
+export interface ObservableMap<K,​V> extends Map<K,​V> {
 
     /**
-     * Creates a new observable array list and adds a content of collection col to it.
+     * Add a listener to this observable map.
      */
-    static observableArrayList<E>(​col: Collection<E>): ObservableList<E> {
-        return new ObservableArrayList(col);
-    }
+    addListener​(listener: MapChangeListener<K, V>): void;
 
     /**
-     * Constructs an ObservableSet that is backed by the specified set.
+     * Tries to removed a listener from this observable map.
      */
-    static observableSet<E>​(set: Set<E>): ObservableSet<E> {
-        return new ObservableSetWrapper(set);
-    }
+    removeListener​(listener: MapChangeListener<K, V>): void;
 
-    /**
-     * Constructs an ObservableMap that is backed by the specified map.
-     */
-    static observableMap<K, ​V>​(map: Map<K, ​V>): ObservableMap<K,​ V> {
-        return new ObservableMapWrapper(map);
-    }
+
 }
-
-

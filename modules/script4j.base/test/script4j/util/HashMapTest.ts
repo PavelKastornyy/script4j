@@ -120,7 +120,7 @@ describe('HashMapTest', () => {
     });
 
     it('containsValue_valueExistString_true', () => {
-        let map: Map<Object, String> = new HashMap<Object, String>(4);
+        let map: Map<Object, string> = new HashMap<Object, string>(4);
         map.put(notEqualObj1, "foo");
         map.put(notEqualObj2, "boo");
         assert.equal(map.size(), 2);
@@ -129,7 +129,7 @@ describe('HashMapTest', () => {
     });
 
     it('containsValue_valueNotExistString_false', () => {
-        let map: Map<Object, String> = new HashMap<Object, String>(4);
+        let map: Map<Object, string> = new HashMap<Object, string>(4);
         map.put(notEqualObj1, "foo");
         map.put(notEqualObj2, "boo");
         assert.equal(map.size(), 2);
@@ -137,7 +137,7 @@ describe('HashMapTest', () => {
     });
 
     it('containsValue_valueExistNumber_true', () => {
-        let map: Map<Object, Number> = new HashMap<Object, Number>(4);
+        let map: Map<Object, number> = new HashMap<Object, number>(4);
         map.put(notEqualObj1, 1);
         map.put(notEqualObj2, 2);
         assert.equal(map.size(), 2);
@@ -146,7 +146,7 @@ describe('HashMapTest', () => {
     });
 
     it('containsValue_valueNotExistNumber_false', () => {
-        let map: Map<Object, Number> = new HashMap<Object, Number>(4);
+        let map: Map<Object, number> = new HashMap<Object, number>(4);
         map.put(notEqualObj1, 100);
         map.put(notEqualObj2, 200);
         assert.equal(map.size(), 2);
@@ -154,16 +154,16 @@ describe('HashMapTest', () => {
     });
 
     it('entries_emptyMap_emptySet', () => {
-        let map: Map<Object, String> = new HashMap<Object, String>(4);
-        let set: Set<Map.Entry<Object, String>> = map.entrySet();
+        let map: Map<Object, string> = new HashMap<Object, string>(4);
+        let set: Set<Map.Entry<Object, string>> = map.entrySet();
         assert.equal(set.size(), 0);
     });
 
     it('entries_nonEmptyMap_returnsEntries', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         map.put("foo", notEqualObj1);
-        let set: Set<Map.Entry<String, Object>> = map.entrySet();
-        let entry: Map.Entry<String, Object> = set.iterator().next();
+        let set: Set<Map.Entry<string, Object>> = map.entrySet();
+        let entry: Map.Entry<string, Object> = set.iterator().next();
         assert.isTrue(entry.getKey().equals("foo"));
         assert.equal(entry.getValue(), notEqualObj1);
         map.put("doo", notEqualObj2);
@@ -172,13 +172,13 @@ describe('HashMapTest', () => {
     });
 
     it('get_objectsNotExist_returnsNull', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         assert.equal(map.get("foo"), null);
         assert.equal(map.get("doo"), null);
     });
 
     it('get_objectsExist_returnsObjects', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         map.put("foo", notEqualObj1);
         map.put("doo", notEqualObj2);
         assert.equal(map.get("foo"), notEqualObj1);
@@ -186,33 +186,33 @@ describe('HashMapTest', () => {
     });
 
     it('isEmpty_objectsWereNotAdded_true', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         assert.isTrue(map.isEmpty());
     });
 
     it('isEmpty_objectsWereAdded_false', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         map.put("foo", notEqualObj1);
         assert.isFalse(map.isEmpty());
     });
 
     it('keys_objectsWereNotAdded_emptySet', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         assert.isTrue(map.keySet().isEmpty());
     });
 
     it('keys_objectsWereAdded_correctKeys', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         map.put("foo", notEqualObj1);
         map.put("doo", notEqualObj2);
-        let keys: Set<String>  = map.keySet();
+        let keys: Set<string>  = map.keySet();
         assert.isTrue(keys.contains("foo"));
         assert.isTrue(keys.contains("doo"));
         assert.equal(keys.size(), 2);
     });
 
     it('put_keyExists_oldValue', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         map.put("foo", notEqualObj1);
         assert.equal(map.size(), 1);
         assert.equal(map.get("foo"), notEqualObj1);
@@ -223,12 +223,12 @@ describe('HashMapTest', () => {
     });
 
     it('remove_keyNotExists_null', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         assert.equal(map.remove("foo"), null);
     });
 
     it('remove_keysExist_returnsValue', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         map.put("foo", notEqualObj1);
         map.put("doo", notEqualObj2);
         assert.equal(map.remove("foo"), notEqualObj1);
@@ -241,18 +241,26 @@ describe('HashMapTest', () => {
 
 
     it('values_objectsWereNotAdded_emptyCollection', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         assert.isTrue(map.values().isEmpty());
     });
 
     it('values_objectsWereAdded_correctValues', () => {
-        let map: Map<String, Object> = new HashMap<String, Object>(4);
+        let map: Map<string, Object> = new HashMap<string, Object>(4);
         map.put("foo", notEqualObj1);
         map.put("doo", notEqualObj2);
         let values: Collection<Object>  = map.values();
         assert.isTrue(values.contains(notEqualObj1));
         assert.isTrue(values.contains(notEqualObj2));
         assert.equal(values.size(), 2);
+    });
+
+    it('toString_objectsWereAdded_correctString', () => {
+        let map: Map<number, string> = new HashMap<number, string>();
+        map.put(1, "A");
+        map.put(2, "B");
+        map.put(3, "C");
+        assert.equal(map.toString(), "{1=A, 2=B, 3=C}");
     });
 
 

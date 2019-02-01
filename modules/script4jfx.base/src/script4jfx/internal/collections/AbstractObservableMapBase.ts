@@ -24,80 +24,82 @@
  *
  */
 
-import { ObservableSet } from './../../collections/ObservableSet';
-import { SetChangeListener } from './../../collections/SetChangeListener';
-import { Collection } from 'script4j.base';
-import { Iterator } from 'script4j.base';
-import { Consumer } from 'script4j.base';
+import { ObservableMap } from './../../collections/ObservableMap';
 import { Set } from 'script4j.base';
+import { Map } from 'script4j.base';
 import { HashSet } from 'script4j.base';
+import { Collection } from 'script4j.base';
+import { MapChangeListener } from './../../collections/MapChangeListener';
 
-export abstract class AbstractObservableSet<E> implements ObservableSet<E> {
+export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K, V> {
 
-    private listeners: Set<SetChangeListener<E>> = new HashSet<SetChangeListener<E>>();
+    private listeners: Set<MapChangeListener<K, V>> = new HashSet<MapChangeListener<K, V>>();
 
     public constructor() {
         //
     }
 
-    public addListener​(listener: SetChangeListener<E>): void {
+    public addListener​(listener: MapChangeListener<K, V>): void {
         this.listeners.add(listener);
     }
 
-    public removeListener​(listener: SetChangeListener<E>): void {
+    public removeListener​(listener: MapChangeListener<K, V>): void {
         this.listeners.remove(listener);
     }
 
-    public hashCode(): number {
-        return this.getSet().hashCode();
+    public containsKey(key: K): boolean {
+        return this.getMap().containsKey(key);
     }
 
-    public equals(obj: Object): boolean {
-        return this.getSet().equals(obj);
+    public containsValue(value: V): boolean {
+        return this.getMap().containsValue(value);
     }
 
-    public toString(): string {
-        return this.getSet().toString();
-    }
-
-    public contains(obj: E): boolean {
-        return this.getSet().contains(obj);
-    }
-
-    public containsAll(c: Collection<E>): boolean {
-        return this.getSet().containsAll(c);
+    public get(key: K): V {
+        return this.getMap().get(key);
     }
 
     public isEmpty(): boolean {
-        return this.getSet().isEmpty();
+        return this.getMap().isEmpty();
     }
 
-    public abstract add(obj: E): boolean;
+    public size(): number {
+        return this.getMap().size();
+    }
 
-    public abstract addAll(c: Collection<E>): boolean;
+    public hashCode(): number {
+        return this.getMap().hashCode();
+    }
+
+    public equals(obj: Object): boolean {
+        return this.getMap().equals(obj);
+    }
+
+    public toString(): string {
+        return this.getMap().toString();
+    }
 
     public abstract clear(): void;
 
-    public abstract remove(obj: E): boolean;
+    public abstract entrySet(): Set<Map.Entry<K, V>>;
 
-    public abstract removeAll(c: Collection<E>): boolean;
+    public abstract keySet(): Set<K>;
 
-    public abstract iterator(): Iterator<E>;
+    public abstract put(key: K, value: V): V;
 
-    public size(): number {
-        return this.getSet().size();
+    public abstract remove(key: K): V;
+
+    public abstract values(): Collection<V>;
+
+    protected abstract getMap(): Map<K, V>;
+
+    protected getListeners(): Set<MapChangeListener<K, V>> {
+        return this.listeners;
     }
 
-    public forEach(consumer: Consumer<E>): void {
-        this.getSet().forEach(consumer);
-    }
-
-    protected abstract getSet(): Set<E>;
-
-    protected fireChangeEvent(event: SetChangeListener.Change<E>) {
+    protected fireChangeEvent(event: MapChangeListener.Change<K, V>) {
         this.listeners.forEach((listener) => {
             listener(event);
         });
     }
 }
-

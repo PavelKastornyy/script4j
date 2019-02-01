@@ -47,7 +47,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
     /**
      * However, EntrySet is a field, but not a type, but we have access to private methods and fields of HashMap.
      */
-    private EntrySet = class<K> extends AbstractSet<Map.Entry<K, V>> implements Set<Map.Entry<K, V>> {
+    private static EntrySet = class<K, V> extends AbstractSet<Map.Entry<K, V>> {
 
         private readonly map: HashMap<K, V>;
 
@@ -96,7 +96,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
 
     };
 
-    private KeySet = class<K> extends AbstractSet<K> implements Set<K> {
+    private static KeySet = class<K, V> extends AbstractSet<K> {
 
         private readonly map: HashMap<K, V>;
 
@@ -169,7 +169,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
 
     };
 
-    private ValueCollection = class<V> extends AbstractCollection<V> {
+    private static ValueCollection = class<K, V> extends AbstractCollection<V> {
 
         private readonly map: HashMap<K, V>;
 
@@ -309,7 +309,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
     }
 
     public entrySet(): Set<Map.Entry<K, V>> {
-        return new this.EntrySet(this);
+        return new HashMap.EntrySet<K,V>(this);
     }
 
     public get(key: K): V {
@@ -337,7 +337,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
     }
 
     public keySet(): Set<K> {
-        return new this.KeySet(this);
+        return new HashMap.KeySet(this);
     }
 
     public put(key: K, value: V): V {
@@ -398,7 +398,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
     }
 
     public values(): Collection<V> {
-        return new this.ValueCollection(this);
+        return new HashMap.ValueCollection<K, V>(this);
     }
 
     private iterator(): Iterator<Map.Entry<K, V>> {
@@ -571,11 +571,11 @@ export namespace HashMap {
         }
 
         public hashCode(): number {
-            let result: number = 3;
-            result = 31 * result + this.keyHashCode;
-            result = 31 * result + this.value.hashCode();
-            result = result | 0; //convert to int32
-            return result;
+            let hash: number = 3;
+            hash = 31 * hash + this.keyHashCode;
+            hash = 31 * hash + this.value.hashCode();
+            hash = hash | 0; //convert to int32
+            return hash;
         }
 
         public toString(): string {

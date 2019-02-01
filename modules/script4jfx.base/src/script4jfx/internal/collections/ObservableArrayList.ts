@@ -24,14 +24,14 @@
  *
  */
 
-import { AbstractObservableList } from './AbstractObservableList';
+import { AbstractObservableListBase } from './AbstractObservableListBase';
 import { ListChangeListenerChange } from './ListChangeListenerChange';
 import { List } from 'script4j.base';
 import { ArrayList } from 'script4j.base';
 import { Collection } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 
-export class ObservableArrayList<E> extends AbstractObservableList<E> {
+export class ObservableArrayList<E> extends AbstractObservableListBase<E> {
 
     private readonly list: List<E> = new ArrayList<E>();
 
@@ -209,16 +209,14 @@ export class ObservableArrayList<E> extends AbstractObservableList<E> {
             }
 
             remove(): void {
-                let prevSize: number = this.impl.size();
                 this.delegate.remove();
-                if (prevSize !== this.impl.size()) {
-                    let change: ListChangeListenerChange<E> = this.impl.createInitialChange();
-                    let node: ListChangeListenerChange.Node<E> = change.newNode();
-                    node.setFrom(0);
-                    node.setTo(0);
-                    node.getRemoved().add(this.currentElement);
-                    this.impl.fireChangeEvent(change);
-                }
+                //if we have not exception it means element was removed
+                let change: ListChangeListenerChange<E> = this.impl.createInitialChange();
+                let node: ListChangeListenerChange.Node<E> = change.newNode();
+                node.setFrom(0);
+                node.setTo(0);
+                node.getRemoved().add(this.currentElement);
+                this.impl.fireChangeEvent(change);
             }
         }(this);
     }
