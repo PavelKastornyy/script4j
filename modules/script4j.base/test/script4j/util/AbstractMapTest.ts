@@ -73,4 +73,13 @@ describe('AbstractMapTest', () => {
         map2.put("second", 2);
         assert.isFalse(map1.equals(map2));
     });
+
+    it('toString_objectsWereAdded_correctString', () => {
+        let map: Map<number, string> = new HashMap<number, string>();
+        map.put(1, "A");
+        map.put(2, "B");
+        map.put(3, "C");
+        assert.isTrue(map.toString().equals("{1=A, 2=B, 3=C}"));
+    });
+
 });

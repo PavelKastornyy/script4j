@@ -89,6 +89,16 @@ export abstract class AbstractList<E> extends AbstractCollection<E> implements L
         return hashCode;
     }
 
-
+    public toString(): string {
+        let comma:string = "";
+        let result: string = "[";
+        for (let i: number = 0; i < this.size(); i++) {
+            let value: E = this.get(i);
+            result += comma + (value === null ? "null" : value.toString());
+            comma = ", ";
+        }
+        result += "]";
+        return result;
+    }
 }
 

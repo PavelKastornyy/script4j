@@ -73,4 +73,12 @@ describe('AbstractSetTest', () => {
         set2.add("second");
         assert.isFalse(set1.equals(set2));
     });
+
+    it('toString_nullAndNotNull_correctString', () => {
+        let set: Set<String> = new HashSet<String>();
+        set.add("first");
+        set.add(null);
+        let s: string = set.toString();
+        assert.isTrue(s.equals("[first, null]") || s.equals("[null, first]"));
+    });
 });

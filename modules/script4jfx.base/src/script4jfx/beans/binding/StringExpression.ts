@@ -26,6 +26,7 @@
 
 import { ObservableStringValue } from "./../value/ObservableStringValue";
 import { ChangeListener } from "./../value/ChangeListener";
+import { Objects } from 'script4j.base';
 
 export abstract class StringExpression implements ObservableStringValue {
 
@@ -37,6 +38,10 @@ export abstract class StringExpression implements ObservableStringValue {
 
     public getValue(): string {
         return this.get();
+    }
+
+    public toString(): string {
+        return this.getClass().getName() + "{value=" + (this.get() === null ? "null" : this.get().toString()) + "}";
     }
 }
 

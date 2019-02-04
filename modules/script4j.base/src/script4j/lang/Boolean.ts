@@ -44,7 +44,14 @@ declare global {
 }
 
 Boolean.prototype.hashCode = function () {
-    return this.valueOf() ? 1231 : 1237;
+    let thisBool = null;
+    if (typeof this === "boolean") {
+        thisBool = this;
+    //it is a Boolean wrapper
+    } else {
+        thisBool = this.valueOf();
+    }
+    return thisBool ? 1231 : 1237;
 }
 
 Boolean.prototype.equals = function(obj: Object): boolean {
@@ -55,7 +62,7 @@ Boolean.prototype.equals = function(obj: Object): boolean {
     let thatBool = null;
     if (typeof this === "boolean") {
         thisBool = this;
-    //it is a Number wrapper
+    //it is a Boolean wrapper
     } else {
         thisBool = this.valueOf();
     }

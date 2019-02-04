@@ -31,6 +31,7 @@ import { Iterator } from 'script4j.base';
 import { Consumer } from 'script4j.base';
 import { Set } from 'script4j.base';
 import { HashSet } from 'script4j.base';
+import { Objects } from 'script4j.base';
 
 export abstract class AbstractObservableSetBase<E> implements ObservableSet<E> {
 
@@ -48,16 +49,9 @@ export abstract class AbstractObservableSetBase<E> implements ObservableSet<E> {
         this.listeners.remove(listener);
     }
 
-    public hashCode(): number {
-        return this.getSet().hashCode();
-    }
-
-    public equals(obj: Object): boolean {
-        return this.getSet().equals(obj);
-    }
-
     public toString(): string {
-        return this.getSet().toString();
+        return this.getClass().getName()
+                + "{set=" + (this.getSet() === null ? "null" : this.getSet().toString()) + "}";
     }
 
     public contains(obj: E): boolean {

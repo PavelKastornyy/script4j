@@ -254,14 +254,4 @@ describe('HashMapTest', () => {
         assert.isTrue(values.contains(notEqualObj2));
         assert.equal(values.size(), 2);
     });
-
-    it('toString_objectsWereAdded_correctString', () => {
-        let map: Map<number, string> = new HashMap<number, string>();
-        map.put(1, "A");
-        map.put(2, "B");
-        map.put(3, "C");
-        assert.equal(map.toString(), "{1=A, 2=B, 3=C}");
-    });
-
-
 });

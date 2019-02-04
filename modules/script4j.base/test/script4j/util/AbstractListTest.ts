@@ -73,4 +73,12 @@ describe('AbstractListTest', () => {
         list2.add("second");
         assert.isFalse(list1.equals(list2));
     });
+
+    it('toString_nullAndNotNull_correctString', () => {
+        let list: List<String> = new ArrayList<String>();
+        list.add("first");
+        list.add(null);
+        list.add("third");
+        assert.isTrue(list.toString().equals("[first, null, third]"));
+    });
 });

@@ -34,6 +34,7 @@ module.exports = {
         'script4j.lang.Integer',
         'script4j.lang.Number',
         'script4j.lang.String',
+        'script4j.util.Objects',
         'script4j.util.Locale',
         'script4j.util.function.Consumer',
         'script4j.io.PrintWriter',

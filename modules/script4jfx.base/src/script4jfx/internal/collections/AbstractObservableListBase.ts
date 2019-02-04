@@ -32,6 +32,7 @@ import { Iterator } from 'script4j.base';
 import { Consumer } from 'script4j.base';
 import { Set } from 'script4j.base';
 import { HashSet } from 'script4j.base';
+import { Objects } from 'script4j.base';
 
 export abstract class AbstractObservableListBase<E> implements ObservableList<E> {
 
@@ -81,16 +82,9 @@ export abstract class AbstractObservableListBase<E> implements ObservableList<E>
         this.getList().forEach(consumer);
     }
 
-    public hashCode(): number {
-        return this.getList().hashCode();
-    }
-
-    public equals(obj: Object): boolean {
-        return this.getList().equals(obj);
-    }
-
     public toString(): string {
-        return this.getList().toString();
+        return this.getClass().getName()
+                + "{list=" + (this.getList() === null ? "null" : this.getList().toString()) + "}";
     }
 
     public abstract addByIndex(index: number, obj: E): void;

@@ -24,28 +24,42 @@
  *
  */
 
-import { ObservableObjectValue } from "./../value/ObservableObjectValue";
-import { ChangeListener } from "./../value/ChangeListener";
-import { Objects } from 'script4j.base';
+import './../lang/Object';
 
-export abstract class ObjectExpression<T> implements ObservableObjectValue<T> {
+export class Objects {
 
-    constructor() {
-
+    /**
+     * Returns the hash code of a non-null argument and 0 for a null argument.
+     */
+    public static hashCode​(obj: Object): number {
+        if (obj === null) {
+            return 0;
+        } else {
+            return obj.hashCode();
+        }
     }
 
-    public abstract get(): T;
+    /**
+     * Returns true if the arguments are equal to each other and false otherwise. Consequently, if both arguments
+     * are null, true is returned and if exactly one argument is null, false is returned. Otherwise, equality is
+     * determined by using the equals method of the first argument.
+     */
 
-    public abstract addListener(listener: ChangeListener<T>): void;
-
-    public abstract removeListener(listener: ChangeListener<T>): void;
-
-    public getValue(): T {
-        return this.get();
-    }
-
-    public toString(): string {
-        return this.getClass().getName() + "{value=" + (this.get() === null ? "null" : this.get().toString()) + "}";
+    public static equals​(a: Object, b: Object): boolean {
+        if (a === null) {
+            if (b === null) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (b === null) {
+                return false;
+            } else {
+                return a.equals(b);
+            }
+        }
     }
 }
+
 

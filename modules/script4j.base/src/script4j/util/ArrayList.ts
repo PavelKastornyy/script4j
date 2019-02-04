@@ -187,17 +187,6 @@ export class ArrayList<E> extends AbstractList<E> {
         //return this.array.indexOf(obj, 0); WRONG
     }
 
-    public toString(): string {
-        let elementsStr:string = "";
-        for (let i: number = 0; i < this.array.length; i++) {
-            if (i > 0){
-                elementsStr +=",";
-            }
-            elementsStr += i + "=" + this.array[i];
-        }
-        return "ArrayList{" + elementsStr + '}';
-    }
-
     private checkIndexIsInRange(index: number): void {
         if (index >= this.size() || index < 0) {
             throw new IndexOutOfBoundsError("Index is " + index + " but the length is " + this.size());

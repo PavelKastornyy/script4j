@@ -26,6 +26,7 @@
 
 import { ObservableBooleanValue } from "./../value/ObservableBooleanValue";
 import { ChangeListener } from "./../value/ChangeListener";
+import { Objects } from 'script4j.base';
 
 export abstract class BooleanExpression implements ObservableBooleanValue {
 
@@ -37,6 +38,10 @@ export abstract class BooleanExpression implements ObservableBooleanValue {
 
     public getValue(): boolean {
         return this.get();
+    }
+
+    public toString(): string {
+        return this.getClass().getName() + "{value=" + (this.get() === null ? "null" : this.get().toString()) + "}";
     }
 }
 

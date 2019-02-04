@@ -60,5 +60,18 @@ export abstract class AbstractSet<E> extends AbstractCollection<E> implements Se
         }
         return this.containsAll(colleciton);
     }
+
+    public toString(): string {
+        let result: string = "[";
+        let comma: string = "";
+        let iterator: Iterator<E> = this.iterator();
+        while (iterator.hasNext()) {
+            let value: E = iterator.next();
+            result += comma + (value === null ? "null" : value.toString());
+            comma = ", ";
+        }
+        result += "]";
+        return result;
+    }
 }
 

@@ -30,6 +30,7 @@ import { Map } from 'script4j.base';
 import { HashSet } from 'script4j.base';
 import { Collection } from 'script4j.base';
 import { MapChangeListener } from './../../collections/MapChangeListener';
+import { Objects } from 'script4j.base';
 
 export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K, V> {
 
@@ -67,16 +68,9 @@ export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K
         return this.getMap().size();
     }
 
-    public hashCode(): number {
-        return this.getMap().hashCode();
-    }
-
-    public equals(obj: Object): boolean {
-        return this.getMap().equals(obj);
-    }
-
     public toString(): string {
-        return this.getMap().toString();
+        return this.getClass().getName()
+                + "{map=" + (this.getMap() === null ? "null" : this.getMap().toString()) + "}";
     }
 
     public abstract clear(): void;
