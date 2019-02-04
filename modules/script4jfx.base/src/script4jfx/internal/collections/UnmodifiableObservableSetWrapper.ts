@@ -24,74 +24,77 @@
  *
  */
 
+import { AbstractObservableSetBase } from './AbstractObservableSetBase';
 import { ObservableSet } from './../../collections/ObservableSet';
 import { SetChangeListener } from './../../collections/SetChangeListener';
+import { UnsupportedOperationError } from 'script4j.base';
 import { Collection } from 'script4j.base';
 import { Iterator } from 'script4j.base';
-import { Consumer } from 'script4j.base';
 import { Set } from 'script4j.base';
-import { List } from 'script4j.base';
-import { ArrayList } from 'script4j.base';
 
-export abstract class AbstractObservableSetBase<E> implements ObservableSet<E> {
+export class UnmodifiableObservableSetWrapper<E> extends AbstractObservableSetBase<E> {
 
-    private listeners: List<SetChangeListener<E>> = new ArrayList<SetChangeListener<E>>();
+    private readonly set: ObservableSet<E>;
 
-    public constructor() {
-        //
+    public constructor(set: ObservableSet<E>) {
+        super();
+        this.set = set;
     }
 
     public addListener​(listener: SetChangeListener<E>): void {
-        this.listeners.add(listener);
+        this.set.addListener(listener);
     }
 
     public removeListener​(listener: SetChangeListener<E>): void {
-        this.listeners.remove(listener);
+        this.set.removeListener(listener);
     }
 
-    public toString(): string {
-        return this.getClass().getName()
-                + "{set=" + (this.getSet() === null ? "null" : this.getSet().toString()) + "}";
+    public add(obj: E): boolean {
+        throw new UnsupportedOperationError();
     }
 
-    public contains(obj: E): boolean {
-        return this.getSet().contains(obj);
+    public addAll(c: Collection<E>): boolean {
+        throw new UnsupportedOperationError();
     }
 
-    public containsAll(c: Collection<E>): boolean {
-        return this.getSet().containsAll(c);
+    public clear(): void {
+        throw new UnsupportedOperationError();
     }
 
-    public isEmpty(): boolean {
-        return this.getSet().isEmpty();
+    public remove(obj: E): boolean {
+        throw new UnsupportedOperationError();
     }
 
-    public abstract add(obj: E): boolean;
-
-    public abstract addAll(c: Collection<E>): boolean;
-
-    public abstract clear(): void;
-
-    public abstract remove(obj: E): boolean;
-
-    public abstract removeAll(c: Collection<E>): boolean;
-
-    public abstract iterator(): Iterator<E>;
-
-    public size(): number {
-        return this.getSet().size();
+    public removeAll(c: Collection<E>): boolean {
+        throw new UnsupportedOperationError();
     }
 
-    public forEach(consumer: Consumer<E>): void {
-        this.getSet().forEach(consumer);
+    public iterator(): Iterator<E> {
+
+        return new class<E> implements Iterator<E> {
+
+            private readonly delegate: Iterator<E> = null;
+
+            constructor(delegate: Iterator<E>) {
+                this.delegate = delegate;
+            }
+
+            hasNext(): boolean {
+                return this.delegate.hasNext();
+            }
+
+            next(): E {
+                return this.delegate.next();
+            }
+
+            remove(): void {
+                throw new UnsupportedOperationError();
+            }
+        }(this.set.iterator());
     }
 
-    protected abstract getSet(): Set<E>;
-
-    protected fireChangeEvent(event: SetChangeListener.Change<E>) {
-        this.listeners.forEach((listener) => {
-            listener(event);
-        });
+    protected getSet(): Set<E> {
+        return this.set;
     }
 }
 

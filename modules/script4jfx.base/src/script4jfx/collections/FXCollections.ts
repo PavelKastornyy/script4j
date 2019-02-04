@@ -25,14 +25,17 @@
  */
 
 import { Collection } from 'script4j.base';
-import { ObservableList } from './ObservableList';
 import { ObservableArrayList } from './../internal/collections/ObservableArrayList';
 import { Set } from 'script4j.base';
 import { Map } from 'script4j.base';
+import { ObservableList } from './ObservableList';
 import { ObservableSet } from './ObservableSet';
 import { ObservableMap } from './ObservableMap';
 import { ObservableSetWrapper } from './../internal/collections/ObservableSetWrapper';
 import { ObservableMapWrapper } from './../internal/collections/ObservableMapWrapper';
+import { UnmodifiableObservableListWrapper } from './../internal/collections/UnmodifiableObservableListWrapper';
+import { UnmodifiableObservableSetWrapper } from './../internal/collections/UnmodifiableObservableSetWrapper';
+import { UnmodifiableObservableMapWrapper } from './../internal/collections/UnmodifiableObservableMapWrapper';
 
 export class FXCollections {
 
@@ -56,6 +59,28 @@ export class FXCollections {
     static observableMap<K, ​V>​(map: Map<K, ​V>): ObservableMap<K,​ V> {
         return new ObservableMapWrapper(map);
     }
+
+    /**
+     * Creates and returns unmodifiable wrapper list on top of provided observable list.
+     */
+    static unmodifiableObservableList<E>​(list: ObservableList<E>): ObservableList<E> {
+        return new UnmodifiableObservableListWrapper(list);
+    }
+
+    /**
+     * Constructs a read-only interface to the specified ObservableMap.
+     */
+    static unmodifiableObservableMap<K,​ V>​(map: ObservableMap<K,​V>): ObservableMap<K,​ V> {
+        return new UnmodifiableObservableMapWrapper(map);
+    }
+
+    /**
+     * Creates and returns unmodifiable wrapper on top of provided observable set.
+     */
+    static unmodifiableObservableSet<E>​(set: ObservableSet<E>): ObservableSet<E> {
+        return new UnmodifiableObservableSetWrapper(set);
+    }
+
 }
 
 

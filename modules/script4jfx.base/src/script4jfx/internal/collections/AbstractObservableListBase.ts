@@ -31,12 +31,11 @@ import { Collection } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { Consumer } from 'script4j.base';
 import { Set } from 'script4j.base';
-import { HashSet } from 'script4j.base';
-import { Objects } from 'script4j.base';
+import { ArrayList } from 'script4j.base';
 
 export abstract class AbstractObservableListBase<E> implements ObservableList<E> {
 
-    private listeners: Set<ListChangeListener<E>> = new HashSet<ListChangeListener<E>>();
+    private listeners: List<ListChangeListener<E>> = new ArrayList<ListChangeListener<E>>();
 
     public constructor() {
         //
@@ -106,10 +105,6 @@ export abstract class AbstractObservableListBase<E> implements ObservableList<E>
     public abstract iterator(): Iterator<E>;
 
     protected abstract getList(): List<E>;
-
-    protected getListeners(): Set<ListChangeListener<E>> {
-        return this.listeners;
-    }
 
     protected fireChangeEvent(event: ListChangeListener.Change<E>) {
         this.listeners.forEach((listener) => {

@@ -38,5 +38,6 @@ module.exports = {
         "script4jfx.internal.collections.ObservableArrayListTest",
         "script4jfx.internal.collections.ObservableSetWrapperTest",
         "script4jfx.internal.collections.ObservableMapWrapperTest",
+        "script4jfx.internal.collections.UnmodifiableObservableMapWrapperTest",
     ]
 };

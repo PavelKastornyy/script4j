@@ -97,6 +97,9 @@ module.exports = {
         "script4jfx.internal.collections.MapChangeListenerChange",
         "script4jfx.internal.collections.AbstractObservableMapBase",
         "script4jfx.internal.collections.ObservableMapWrapper",
+        "script4jfx.internal.collections.UnmodifiableObservableMapWrapper",
+        "script4jfx.internal.collections.UnmodifiableObservableListWrapper",
+        "script4jfx.internal.collections.UnmodifiableObservableSetWrapper",
         "script4jfx.collections.FXCollections",
     ],
 

@@ -27,14 +27,14 @@
 import { ObservableMap } from './../../collections/ObservableMap';
 import { Set } from 'script4j.base';
 import { Map } from 'script4j.base';
-import { HashSet } from 'script4j.base';
+import { ArrayList } from 'script4j.base';
 import { Collection } from 'script4j.base';
 import { MapChangeListener } from './../../collections/MapChangeListener';
-import { Objects } from 'script4j.base';
+import { List } from 'script4j.base';
 
 export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K, V> {
 
-    private listeners: Set<MapChangeListener<K, V>> = new HashSet<MapChangeListener<K, V>>();
+    private listeners: List<MapChangeListener<K, V>> = new ArrayList<MapChangeListener<K, V>>();
 
     public constructor() {
         //
@@ -86,10 +86,6 @@ export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K
     public abstract values(): Collection<V>;
 
     protected abstract getMap(): Map<K, V>;
-
-    protected getListeners(): Set<MapChangeListener<K, V>> {
-        return this.listeners;
-    }
 
     protected fireChangeEvent(event: MapChangeListener.Change<K, V>) {
         this.listeners.forEach((listener) => {
