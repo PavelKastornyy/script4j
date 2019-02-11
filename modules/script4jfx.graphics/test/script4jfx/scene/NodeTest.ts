@@ -19,20 +19,31 @@
  *
  */
 
-module.exports = {
+import { assert } from 'chai';
+import { describe } from 'mocha';
+import { it } from 'mocha';
+import { beforeEach} from 'mocha';
+//import { jsdom } from 'jsdom';
+import { Node } from './../../../src/script4jfx/scene/Node';
+import {ArrayList} from 'script4j.base';
 
-    name: 'script4jfx.graphics.spec',
+describe('NodeTest', () => {
 
-    import: {
-        modules: [
-            'script4jfx.graphics.4spec', 'script4j.base', 'script4jfx.base', 'chai', 'mocha'
-        ]
-    },
+//    const { JSDOM } = jsdom;
+//    const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
 
-    /**
-     * Order matters!
-     */
-    classes: [
-        "script4jfx.scene.NodeTest"
-    ]
-};
+    beforeEach(function() {
+
+    });
+
+    it('test', () => {
+        //console.log(dom.window.document.querySelector("p").textContent); // "Hello world"
+        let l:ArrayList<string> = new ArrayList<string>();
+        console.log(l);
+        console.log("test");
+    });
+});
+
+
+
+

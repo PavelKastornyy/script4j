@@ -56,20 +56,23 @@ describe('UnmodifiableObservableMapWrapperTest', () => {
         assert.equals(unmodifiableMap.size(), 5);
     });
 
-    it('put_elementsExist_correctValue', () => {
+    it('put_keyNotExists_UnsupportedOperationError', () => {
         assert.throws(() => unmodifiableMap.put(6, "F"), UnsupportedOperationError);
         assert.equals(unmodifiableMap.size(), 5);
     });
 
-    it('EntrySetWrapper#iterator_removingEntry_error', () => {
+    it('EntrySetWrapper#iterator_removingEntry_UnsupportedOperationError', () => {
         let iterator: Iterator<Map.Entry<number, string>> = unmodifiableMap.entrySet().iterator();
+        let removeWasCalled: boolean = false;
         while (iterator.hasNext()) {
             let key: number = iterator.next().getKey();
             if (key === 3) {
                 assert.throws(() => iterator.remove(), UnsupportedOperationError);
+                removeWasCalled = true;
             }
         }
         assert.equals(unmodifiableMap.size(), 5);
+        assert.isTrue(removeWasCalled);
     });
 });
 

@@ -33,26 +33,11 @@ import {HashMap} from './../../../src/script4j/util/HashMap';
 
 describe('HashMapTest', () => {
 
-    let notEqualObj1: Object = new class {
+    let notEqualObj1: Object = new String("one");
 
-        public hashCode():number {
-            return 1;
-        }
-    };
+    let notEqualObj2: Object = new String("two");
 
-    let notEqualObj2: Object = new class {
-
-        public hashCode():number {
-            return 2;
-        }
-    };
-
-    let notEqualObj3: Object =  new class {
-
-        public hashCode():number {
-            return 333;
-        }
-    };
+    let notEqualObj3: Object =  new String("three");
 
     class EqualObject {
 

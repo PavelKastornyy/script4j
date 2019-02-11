@@ -30,8 +30,9 @@ import { EventDispatchChain } from 'script4jfx.base';
 import { EventDispatcher } from 'script4jfx.base';
 import { ObjectProperty } from 'script4jfx.base';
 import { SimpleObjectProperty } from 'script4jfx.base';
+import { FXCollections } from 'script4jfx.base';
 
-abstract class Node implements Styleable, EventTarget {
+export abstract class Node implements Styleable, EventTarget {
 
     /**
      * Specifies the event dispatcher for this node.
@@ -52,6 +53,6 @@ abstract class Node implements Styleable, EventTarget {
 
 
     public buildEventDispatchChain​(tail: EventDispatchChain) {
-
+        let o = FXCollections.observableMap(null);
     }
 }

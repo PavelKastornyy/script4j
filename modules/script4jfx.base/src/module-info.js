@@ -107,6 +107,7 @@ module.exports = {
 	packages: [
 	    "script4jfx.beans.property",
             "script4jfx.beans.value",
+            "script4jfx.collections",
             "script4jfx.event",
 	]
     }

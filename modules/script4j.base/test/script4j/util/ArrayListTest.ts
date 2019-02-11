@@ -31,9 +31,9 @@ import {IllegalStateError} from './../../../src/script4j/lang/IllegalStateError'
 
 describe('ArrayListTest', () => {
 
-    let obj1: Object = new Object();
-    let obj2: Object = new Object();
-    let obj3: Object = new Object();
+    let obj1: Object = new String("one");
+    let obj2: Object = new String("two");
+    let obj3: Object = new String("three");
 
     it('add_objects_addsObject', () => {
         let list: List<Object> = new ArrayList<Object>();

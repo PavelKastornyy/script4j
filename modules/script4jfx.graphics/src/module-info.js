@@ -36,12 +36,11 @@ module.exports = {
     classes: [
         "script4jfx.css.Styleable",
         "script4jfx.scene.Node"
-
     ],
 
     export: {
 	packages: [
-
+            "script4jfx.scene",
 	]
     }
 };
