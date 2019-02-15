@@ -20,8 +20,6 @@
  */
 
 import gulp from 'gulp';
-import gulpif from 'gulp-if';
-import mocha from 'gulp-mocha';
 import fs from 'fs';
 import packageJson from './../package.json'
 const execSync = require('child_process').execSync;
@@ -184,13 +182,9 @@ function runModuleTests(modulePath) {
     let typescriptPath = modulePath + TEST_PATH;
     let module = require(typescriptPath + 'module-info.js');
     let testFile = modulePath + TEMP_PATH + module.name + ".js";
-    return gulp.src([testFile], { read: false })
-        .pipe(mocha({
-            reporter: 'spec',
-            require: [
-                'babel-core/register',
-            ]
-    }));
+    execSync('mocha ' + testFile + ' --compilers js:@babel/register' + ' --require ' + modulePath +'/register.js',
+                {stdio: 'inherit', shell: true});
+    return gulp.src([testFile], { read: false });
 }
 
 function copyToMainDist(modulePath) {

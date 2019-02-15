@@ -16,13 +16,8 @@
     "license": "GNU General Public License, version 2, with the Classpath Exception",
     "devDependencies": {
         "gulp": "4.0.0",
-        "gulp-mocha": "6.0.0",
-        "babel-core": "6.26.3",
-        "babel-register": "6.26.0",
-        "babel-preset-env": "1.7.0",
-        "babel-preset-stage-0": "6.24.1",
         "chai": "4.2.0",
-        "mocha": "5.2.0"
-    },
-    "dependencies": {}
+        "mocha": "5.2.0",
+        "typescript": "3.3.3"
+    }
 }
