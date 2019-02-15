@@ -182,7 +182,7 @@ function runModuleTests(modulePath) {
     let typescriptPath = modulePath + TEST_PATH;
     let module = require(typescriptPath + 'module-info.js');
     let testFile = modulePath + TEMP_PATH + module.name + ".js";
-    execSync('mocha ' + testFile + ' --compilers js:@babel/register' + ' --require ' + modulePath +'/register.js',
+    execSync('mocha ' + testFile + ' --require ' + __dirname +'/babelregister.js',
                 {stdio: 'inherit', shell: true});
     return gulp.src([testFile], { read: false });
 }

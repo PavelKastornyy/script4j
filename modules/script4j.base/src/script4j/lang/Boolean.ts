@@ -43,7 +43,40 @@ declare global {
     }
 }
 
-Boolean.prototype.hashCode = function () {
+const defineBoolean = (name, value) => {
+    Object.defineProperty(Boolean.prototype, name, {
+        value,
+        writable: true,
+        configurable: true,
+        enumerable: false,
+    });
+}
+
+defineBoolean("equals", function(obj: Object) {
+    if (obj === null) {
+        return false;
+    };
+    if (typeof this === "boolean") {
+        if (typeof obj === "boolean") {
+            return this === obj;
+        } else if (obj instanceof Boolean) {
+            return this === obj.valueOf();
+        } else {
+            return false;
+        }
+    //it is a Boolean wrapper
+    } else {
+        if (typeof obj === "boolean") {
+            return this.valueOf() === obj;
+        } else if (obj instanceof Boolean) {
+            return this.valueOf() === obj.valueOf();
+        } else {
+            return false;
+        }
+    }
+});
+
+defineBoolean("hashCode", function () {
     let thisBool = null;
     if (typeof this === "boolean") {
         thisBool = this;
@@ -52,31 +85,9 @@ Boolean.prototype.hashCode = function () {
         thisBool = this.valueOf();
     }
     return thisBool ? 1231 : 1237;
-}
+});
 
-Boolean.prototype.equals = function(obj: Object): boolean {
-    if (obj === null) {
-        return false;
-    };
-    let thisBool = null;
-    let thatBool = null;
-    if (typeof this === "boolean") {
-        thisBool = this;
-    //it is a Boolean wrapper
-    } else {
-        thisBool = this.valueOf();
-    }
-    if (typeof obj === "boolean") {
-        thatBool = obj;
-    } else if (obj instanceof Boolean) {
-        thatBool = obj.valueOf();
-    } else {
-        return false;
-    }
-    return thisBool === thatBool;
-}
-
-Boolean.prototype.toString = function(): string {
+defineBoolean("toString", function() {
     let bool: boolean;
     if (typeof this === "boolean") {
         bool = this;
@@ -85,5 +96,5 @@ Boolean.prototype.toString = function(): string {
         bool = this.valueOf();
     }
     return bool === true ? "true" : "false";
-}
+});
 

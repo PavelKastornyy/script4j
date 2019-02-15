@@ -19,8 +19,5 @@
  *
  */
 
-require('@babel/register')({
-    rootMode: "upward",
-    ignore: [/node_modules/]
-});
-require('./../../scripts/gulpmodule');
+require('./../../scripts/babelregister');
+require('./tasks');

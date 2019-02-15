@@ -25,7 +25,7 @@
  */
 
 import { Class } from './Class';
-import { Integer } from './../../../src/script4j/lang/Integer';
+import { Integer } from './Integer';
 
 declare global {
 
@@ -77,32 +77,49 @@ declare global {
     }
 }
 
-(Object as any).prototype.equals = function (obj: Object) {
+const defineObject = (name, value) => {
+    Object.defineProperty(Object.prototype, name, {
+        value,
+        writable: true,
+        configurable: true,
+        enumerable: false,
+    });
+}
+
+defineObject("equals", function (obj: Object) {
     if (obj === this) {
         return true;
     } else {
         return false;
     }
-};//semicolon!
+});
 
-(Object as any).prototype.hashCode = function () {
+defineObject("hashCode", function () {
     if ('__hashCodeValue' in this) {
         return this.__hashCodeValue;
     } else {
         this.__hashCodeValue = Math.floor(Math.random() * Integer.MAX_VALUE);
-        this.__hashCodeValue *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+        this.__hashCodeValue *= Math.random() >= 0.5 ? 1 : -1;
         return this.__hashCodeValue;
     }
-};
+});
 
-(Object as any).prototype.class = function () {
+//we save this function as other libraries will need this variant istead of ours
+const objectPrototypeToString = Object.prototype.toString;
+
+defineObject("toString", function () {
+    if (this.getClass().getName() === "Function") {
+        return objectPrototypeToString.call(this);
+    } else {
+        return this.getClass().getName() + "@" + Integer.toHexString(this.hashCode());
+    }
+});
+
+defineObject("class", function () {
     return Class.forConstructor(this);
-};
+});
 
-(Object as any).prototype.getClass = function () {
+defineObject("getClass", function () {
     return Class.forConstructor(this.constructor);
-};
+});
 
-(Object as any).prototype.toString = function () {
-    return this.getClass().getName() + "@" + Integer.toHexString(this.hashCode());
-};

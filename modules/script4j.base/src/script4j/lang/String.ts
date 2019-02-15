@@ -54,12 +54,45 @@ declare global {
     }
 }
 
+const defineString = (name, value) => {
+    Object.defineProperty(String.prototype, name, {
+        value,
+        writable: true,
+        configurable: true,
+        enumerable: false,
+    });
+}
+
+defineString("equals", function(obj: Object) {
+    if (obj === null) {
+        return false;
+    };
+    if (typeof this === "string") {
+        if (typeof obj === "string") {
+            return this === obj;
+        } else if (obj instanceof String) {
+            return this === obj.valueOf();
+        } else {
+            return false;
+        }
+    //this is object
+    } else {
+        if (typeof obj === "string") {
+            return this.valueOf() === obj;
+        } else if (obj instanceof String) {
+            return this.valueOf() === obj.valueOf();
+        } else {
+            return false;
+        }
+    }
+});
+
 /**
  * Primitive can not have propeties -> it can not have saved hashCode. Although this method doesn't save
  * generated hash for next call (as it can be used also for primitives) it is clear, that long string are rare used
  * for keys in map.
 */
-String.prototype.hashCode = function () {
+defineString("hashCode", function () {
     let hashCode: number;
     if (this.length === 0){
         hashCode = 0;
@@ -76,35 +109,13 @@ String.prototype.hashCode = function () {
         }
     }
     return hashCode;
-}
+});
 
-String.prototype.equals = function(obj: Object): boolean {
-    if (obj === null) {
-        return false;
-    };
-    let thisStr = null;
-    let thatStr = null;
-    if (typeof this === "string") {
-        thisStr = this;
-    //it is a String wrapper
-    } else {
-        thisStr = this.valueOf();
-    }
-    if (typeof obj === "string") {
-        thatStr = obj;
-    } else if (obj instanceof String) {
-        thatStr = obj.valueOf();
-    } else {
-        return false;
-    }
-    return thisStr === thatStr;
-}
-
-String.prototype.toString = function(): string {
+defineString("toString", function() {
     if (typeof this === "string") {
         return this
     //it is a String wrapper
     } else {
         return this.valueOf();
     }
-}
+});

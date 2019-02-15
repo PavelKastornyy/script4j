@@ -19,27 +19,7 @@
  *
  */
 
-import { assert } from 'chai';
-import { describe } from 'mocha';
-import { it } from 'mocha';
-import { beforeEach} from 'mocha';
-import { JSDOM } from 'jsdom';
-import { Node } from './../../../src/script4jfx/scene/Node';
-import {ArrayList} from 'script4j.base';
-
-describe('NodeTest', () => {
-
-    //const { JSDOM } = jsdom;
-    const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
-
-    beforeEach(function() {
-
-    });
-
-    it('test', () => {
-        console.log(dom.window.document.querySelector("p").textContent); // "Hello world"
-        let l:ArrayList<string> = new ArrayList<string>();
-        console.log(l);
-        console.log("test");
-    });
+require('@babel/register')({
+    rootMode: "upward",
+    ignore: [/node_modules/]
 });

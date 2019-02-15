@@ -25,7 +25,12 @@ module.exports = {
 
     import: {
         modules: [
-            'script4jfx.graphics.4spec', 'script4j.base', 'script4jfx.base', 'chai', 'mocha'
+            'script4jfx.graphics.4spec',
+            'script4j.base',
+            'script4jfx.base',
+            'chai',
+            'mocha',
+            'jsdom'
         ]
     },
 

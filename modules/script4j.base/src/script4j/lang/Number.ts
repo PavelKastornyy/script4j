@@ -46,30 +46,40 @@ declare global {
     }
 }
 
-Number.prototype.hashCode = function () {
-    let hashCode: number = Math.floor(this);//removes decimal
-    hashCode = hashCode | 0;//convert to int
-    return hashCode;
+const defineNumber = (name, value) => {
+    Object.defineProperty(Number.prototype, name, {
+        value,
+        writable: true,
+        configurable: true,
+        enumerable: false,
+    });
 }
 
-Number.prototype.equals = function(obj: Object): boolean {
+defineNumber("equals", function(obj: Object) {
     if (obj === null) {
         return false;
     };
-    let thisNumber = null;
-    let thatNumber = null;
     if (typeof this === "number") {
-        thisNumber = this;
-    //it is a Number wrapper
+        if (typeof obj === "number") {
+            return this === obj;
+        } else if (obj instanceof Number) {
+            return this === obj.valueOf();
+        } else {
+            return false;
+        }
     } else {
-        thisNumber = this.valueOf();
+        if (typeof obj === "number") {
+            return this.valueOf() === obj;
+        } else if (obj instanceof Number) {
+            return this.valueOf() === obj.valueOf();
+        } else {
+            return false;
+        }
     }
-    if (typeof obj === "number") {
-        thatNumber = obj;
-    } else if (obj instanceof Number) {
-        thatNumber = obj.valueOf();
-    } else {
-        return false;
-    }
-    return thisNumber === thatNumber;
-}
+});
+
+defineNumber("hashCode", function () {
+    let hashCode: number = Math.floor(this);//removes decimal
+    hashCode = hashCode | 0;//convert to int
+    return hashCode;
+});

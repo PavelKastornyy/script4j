@@ -1,45 +1,32 @@
+/*
+ * Copyright (c) 2018-2019 Pavel Kastornyy. All rights reserved.
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
+
 module.exports = function (api) {
     api.cache(true);
-    console.log("Point XXX");
     return {
         babelrcRoots: [
             '.',
-            './modules/script4j.base',
-            './modules/script4jfx.base',
-            './modules/script4jfx.graphics'
+            './modules/*'
         ],
 	ignore: [/node_modules/],
         presets: ["@babel/preset-env"]
     };
 }
-
-
-
-
-//    const path = require('path');
-//
-//    const aliases = {
-//        'script4j.base': __dirname + '/modules/script4j.base',
-//        'script4jfx.base': __dirname + '/modules/script4jfx.base'
-//    };
-//
-//
-//    const plugins = [
-//    [
-//      'module-resolver',
-//      {
-//        // https://github.com/tleunen/babel-plugin-module-resolver/issues/338
-//        // There seem to be a bug with module-resolver with a mono-repo setup:
-//        // It doesn't resolve paths correctly when using root/alias combo, so we
-//        // use this function instead.
-//        resolvePath(sourcePath) {
-//            console.log(sourcePath + "**" + path);
-//          //  console.log(aliases);
-//            // This will return undefined if aliases has not key for the sourcePath,
-//          //  in which case module-resolver will fallback on its default behaviour.
-//          return aliases[sourcePath];
-//        },
-//      },
-//    ]
-//];
-    //throw new Error();
