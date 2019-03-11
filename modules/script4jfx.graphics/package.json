@@ -4,21 +4,16 @@
     "description": "The graphics module for FX of Script4J",
     "main": "./dist/script4jfx.graphics.js",
     "types": "./dist/script4jfx.graphics.ts",
-    "scripts": {
-        "install-module": "npm install && jsonlint -i package.json -t '    '",
-        "uninstall-module": "rm -rf node_modules && rm -f package-lock.json",
-        "reinstall-module": "npm run uninstall-module && npm run install-module",
-        "build-module": "gulp build-module",
-        "clean-module": "gulp clean-module",
-        "test-module": "gulp test-module --experimental-modules"
-    },
     "author": "Pavel Kastornyy <pavelkastornyy@gmail.com>",
     "license": "GNU General Public License, version 2, with the Classpath Exception",
     "devDependencies": {
         "gulp": "4.0.0",
         "chai": "4.2.0",
+        "@types/chai": "4.1.7",
         "mocha": "5.2.0",
         "typescript": "3.3.3",
+        "jsonlint": "1.6.3",
+        "@types/jsdom": "12.2.2",
         "jsdom": "13.2.0",
         "script4j.base": "file:./../script4j.base",
         "script4jfx.base": "file:./../script4jfx.base"
@@ -26,5 +21,13 @@
     "dependencies": {
         "script4j.base": "file:./../script4j.base",
         "script4jfx.base": "file:./../script4jfx.base"
+    },
+    "scripts": {
+        "install-module": "npm install && npx jsonlint -i package.json -t '    '",
+        "uninstall-module": "npx gulp uninstall-module",
+        "reinstall-module": "npm run uninstall-module && npm run install-module",
+        "build-module": "npx gulp build-module",
+        "clean-module": "npx gulp clean-module",
+        "test-module": "npx gulp test-module --experimental-modules"
     }
 }

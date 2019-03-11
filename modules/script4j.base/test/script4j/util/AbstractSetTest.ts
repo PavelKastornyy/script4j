@@ -35,7 +35,7 @@ describe('AbstractSetTest', () => {
         set2.add("first");
         set2.add("second");
         assert.isNotNaN(set1.hashCode());
-        assert.isFinite(set1.hashCode())
+        assert.isDefined(set1.hashCode())
         assert.isNotNull(set1.hashCode())
         assert.equal(set1.hashCode(), set2.hashCode());
     });
@@ -48,7 +48,8 @@ describe('AbstractSetTest', () => {
         set1.add("third");
         set2.add("first");
         set2.add("second");
-        assert.isFinite(set1.hashCode())
+        assert.isNotNaN(set1.hashCode());
+        assert.isDefined(set1.hashCode())
         assert.isNotNull(set1.hashCode())
         assert.notEqual(set1.hashCode(), set2.hashCode());
     });

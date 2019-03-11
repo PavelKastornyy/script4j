@@ -61,7 +61,7 @@ describe('ObservableSetWrapperTest', () => {
             assert.equal(change.getSet().size(), 6);
         });
         assert.isTrue(set.add("X"));
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('addAll_addingTwoElements_correctEvent', () => {
@@ -88,7 +88,7 @@ describe('ObservableSetWrapperTest', () => {
         temp0.add("Z");
         assert.isTrue(set.addAll(temp0));
         assert.isTrue(temp0.equals(temp1));
-        assert.equals(counter, 2);
+        assert.equal(counter, 2);
     });
 
     it('addAll_addingTwoElements_elementsWereAdded', () => {
@@ -112,7 +112,7 @@ describe('ObservableSetWrapperTest', () => {
             assert.equal(change.getSet().size(), 4);
         });
         assert.isTrue(set.remove("C"));
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('removeAll_removingTwoElements_correctEvent', () => {
@@ -139,7 +139,7 @@ describe('ObservableSetWrapperTest', () => {
         temp0.add("E");
         assert.isTrue(set.removeAll(temp0));
         assert.isTrue(temp0.equals(temp1));
-        assert.equals(counter, 2);
+        assert.equal(counter, 2);
     });
 
     it('removeAll_removingTwoElements_elementsWereRemoved', () => {
@@ -180,7 +180,7 @@ describe('ObservableSetWrapperTest', () => {
         }
         assert.isTrue(temp.contains("B"));
         assert.isTrue(temp.contains("C"));
-        assert.equals(counter, 2);
+        assert.equal(counter, 2);
     });
 
     it('iterator_removingTwoElements_elementsWereRemoved', () => {
@@ -209,13 +209,13 @@ describe('ObservableSetWrapperTest', () => {
 
         });
         set.clear();
-        assert.equals(counter, 5);
+        assert.equal(counter, 5);
         assert.isTrue(temp.contains("A"));
         assert.isTrue(temp.contains("B"));
         assert.isTrue(temp.contains("C"));
         assert.isTrue(temp.contains("D"));
         assert.isTrue(temp.contains("E"));
-        assert.equals(temp.size(), 5);
+        assert.equal(temp.size(), 5);
 
     });
 

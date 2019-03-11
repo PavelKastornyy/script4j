@@ -25,7 +25,7 @@
  */
 
 
-import {Map} from './../../util/Map';
+import { Map } from './../../util/Map';
 import { HashMap } from './../../util/HashMap';
 import { Logger } from './Logger';
 import { LoggingLevel } from './LoggingLevel';

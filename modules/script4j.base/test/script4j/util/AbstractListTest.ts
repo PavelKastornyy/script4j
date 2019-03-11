@@ -35,7 +35,7 @@ describe('AbstractListTest', () => {
         list2.add("first");
         list2.add("second");
         assert.isNotNaN(list1.hashCode());
-        assert.isFinite(list1.hashCode())
+        assert.isDefined(list1.hashCode())
         assert.isNotNull(list1.hashCode())
         assert.equal(list1.hashCode(), list2.hashCode());
     });
@@ -48,7 +48,8 @@ describe('AbstractListTest', () => {
         list1.add("third");
         list2.add("first");
         list2.add("second");
-        assert.isFinite(list1.hashCode())
+        assert.isNotNaN(list1.hashCode());
+        assert.isDefined(list1.hashCode())
         assert.isNotNull(list1.hashCode())
         assert.notEqual(list1.hashCode(), list2.hashCode());
     });

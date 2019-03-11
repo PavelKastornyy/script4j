@@ -23,13 +23,16 @@ import gulp from 'gulp';
 import fs from 'fs';
 import packageJson from './../package.json'
 const execSync = require('child_process').execSync;
+import path from 'path';
+import rimraf from 'rimraf';
 
-const MODULES_PATH = __dirname + '/../modules/';
-const MAIN_DIST_PATH = __dirname + '/../dist/';
-const TEMP_PATH = '/tmp/';
-const DIST_PATH = '/dist/';
-const SRC_PATH = '/src/';
-const TEST_PATH = '/test/'
+const MODULES_PATH = __dirname + path.sep + '..' + path.sep + 'modules';
+const TEMP_FOLDER = 'tmp';
+const DIST_FOLDER = 'dist';
+const SRC_FOLDER = 'src';
+const TEST_FOLDER = 'test';
+const MAIN_DIST_PATH = __dirname + path.sep + '..' + path.sep + DIST_FOLDER;
+
 const MODULE_TYPE = {
     PRODUCTION : 1,
     TESTING: 2,
@@ -38,17 +41,25 @@ const MODULE_TYPE = {
 
 export function installModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
-	execSync('cd ' + MODULES_PATH + packageJson.modules[i] + ' && npm install',
-		{stdio: 'inherit', shell: true});
+        const MODULE_PATH = MODULES_PATH + path.sep + packageJson.modules[i];
+        //when we need npm install in another folder we do : 	//npm --prefix ./some_project install ./some_project
+        execSync('npm run --prefix "' + MODULE_PATH + '" install-module', {stdio: 'inherit', shell: true});
     }
+}
+
+export function uninstallModule(modulePath) {
+    uninstallNodeProject(modulePath);
 }
 
 export function uninstallModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
-	execSync('cd ' + MODULES_PATH + packageJson.modules[i]
-                + ' && rm -rf node_modules && rm -f package-lock.json',
-		{stdio: 'inherit', shell: true});
+	uninstallModule(MODULES_PATH + path.sep + packageJson.modules[i]);
     }
+}
+
+export function uninstallAll() {
+    uninstallNodeProject(__dirname + path.sep + '..');
+    uninstallModules();
 }
 
 export function buildModule(modulePath) {
@@ -57,29 +68,57 @@ export function buildModule(modulePath) {
 
 export function buildModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
-	buildModule(MODULES_PATH + packageJson.modules[i]);
+	buildModule(MODULES_PATH + path.sep + packageJson.modules[i]);
     }
 }
 
 export function cleanModule(modulePath) {
-    execSync('rm -rf ' + modulePath + DIST_PATH + ' && rm -rf ' + modulePath + TEMP_PATH,
-            {stdio: 'inherit', shell: true});
+    cleanNodeProject(modulePath);
 }
 
 export function cleanModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
-	cleanModule(MODULES_PATH + packageJson.modules[i]);
+	cleanModule(MODULES_PATH + path.sep + packageJson.modules[i]);
     }
+}
+
+export function cleanAll() {
+    cleanNodeProject(__dirname + path.sep + '..');
+    cleanModules();
 }
 
 export function testModule(modulePath) {
     doBuildModule(modulePath, MODULE_TYPE.TESTING);
     doBuildModule(modulePath, MODULE_TYPE.TESTS);
-    return runModuleTests(modulePath);
+    runModuleTests(modulePath);
 }
 
 export function testModules() {
-    console.log("NOT IMPLEMENTED YET");
+    for (let i = 0; i < packageJson.modules.length; i++) {
+	testModule(MODULES_PATH + path.sep + packageJson.modules[i]);
+    }
+}
+
+function uninstallNodeProject(projectPath) {
+    const NODE_MODULES_PATH = projectPath + path.sep + 'node_modules';
+    const PACKAGE_LOCK_PATH = projectPath + path.sep + 'package-lock.json';
+    if (fs.existsSync(NODE_MODULES_PATH)) {
+        rimraf.sync(NODE_MODULES_PATH);
+    }
+    if (fs.existsSync(PACKAGE_LOCK_PATH)) {
+        fs.unlinkSync(PACKAGE_LOCK_PATH);
+    }
+}
+
+function cleanNodeProject(projectPath) {
+    const MODULE_DIST_PATH = projectPath + path.sep + DIST_FOLDER;
+    const MODULE_TEMP_PATH = projectPath + path.sep + TEMP_FOLDER;
+    if (fs.existsSync(MODULE_DIST_PATH)) {
+        rimraf.sync(MODULE_DIST_PATH);
+    }
+    if (fs.existsSync(MODULE_TEMP_PATH)) {
+        rimraf.sync(MODULE_TEMP_PATH);
+    }
 }
 
 function doBuildModule(modulePath, moduleType) {
@@ -89,21 +128,21 @@ function doBuildModule(modulePath, moduleType) {
     let targetFolderPath = null;
     let testedModuleName = null;
     if (moduleType !== MODULE_TYPE.TESTS) {
-        typescriptPath = modulePath + SRC_PATH;
+        typescriptPath = modulePath + path.sep + SRC_FOLDER;
     } else {
-        typescriptPath = modulePath + TEST_PATH;
+        typescriptPath = modulePath + path.sep + TEST_FOLDER;
     }
-    let module = require(typescriptPath + 'module-info.js');
+    let module = require(typescriptPath + path.sep + 'module-info.js');
     if (moduleType === MODULE_TYPE.PRODUCTION) {
         moduleTsFileName = module.name + '.ts';
         moduleJsFileName = module.name + '.js';
-        targetFolderPath = modulePath + DIST_PATH;
+        targetFolderPath = modulePath + path.sep + DIST_FOLDER;
     } else if (moduleType === MODULE_TYPE.TESTING) {
         moduleTsFileName = module.name + '.4spec.ts';
-        targetFolderPath = modulePath + TEMP_PATH;
+        targetFolderPath = modulePath + path.sep + TEMP_FOLDER;
     } else if (moduleType === MODULE_TYPE.TESTS) {
         moduleTsFileName = module.name + '.ts';
-        targetFolderPath = modulePath + TEMP_PATH;
+        targetFolderPath = modulePath + path.sep + TEMP_FOLDER;
         testedModuleName = resolve4SpecModuleName(module.name);
     }
     try {
@@ -113,7 +152,7 @@ function doBuildModule(modulePath, moduleType) {
         for (let i = 0; i < module.classes.length; i++) {
             let classFullName = module.classes[i];
             extractClassesToExport(module, classFullName, classesToExport);
-            let data = fs.readFileSync(typescriptPath + classFullName.replace(/\./g, "/") + ".ts", 'utf8');
+            let data = fs.readFileSync(typescriptPath + path.sep + classFullName.replace(/\./g, "/") + ".ts", 'utf8');
             extractClassesToImport(data, classesToImport, moduleType, testedModuleName);
             //now we can remove import lines from data
             data = removeImportLines(data);
@@ -136,11 +175,13 @@ function doBuildModule(modulePath, moduleType) {
                 if (err) throw err;
             });
         }
-        fs.writeFileSync(targetFolderPath + moduleTsFileName, totalData, { flag: 'w' }, function(err) {
+        fs.writeFileSync(targetFolderPath + path.sep + moduleTsFileName, totalData, { flag: 'w' }, function(err) {
             if(err) return console.error(err);
         });
         //now we can compile, we don't use gulp-typescript as wee need more controll.
-        execSync('tsc ' + targetFolderPath + moduleTsFileName + ' --target ES6 --removeComments --moduleResolution Node',
+        //+ ' --typeRoots ./node_modules/@types',
+        execSync('npx tsc "' + targetFolderPath + path.sep + moduleTsFileName
+                        + '" --target ES6 --removeComments --moduleResolution Node',
                 {stdio: 'inherit', shell: true});
         if (moduleType === MODULE_TYPE.PRODUCTION) {
             if (!fs.existsSync(MAIN_DIST_PATH)){
@@ -148,17 +189,15 @@ function doBuildModule(modulePath, moduleType) {
                     if (err) throw err;
                 });
             }
-            let distTsFilePath = MAIN_DIST_PATH + module.name + '-' + packageJson.version + '.ts';
-            let distJsFilePath = MAIN_DIST_PATH + module.name + '-' + packageJson.version + '.js'
-            makeDistFile(targetFolderPath + moduleTsFileName, distTsFilePath, distModuleFixer, module);
-            makeDistFile(targetFolderPath + moduleJsFileName, distJsFilePath, distModuleFixer, module);
+            let distTsFilePath = MAIN_DIST_PATH + path.sep + module.name + '-' + packageJson.version + '.ts';
+            let distJsFilePath = MAIN_DIST_PATH + path.sep + module.name + '-' + packageJson.version + '.js'
+            makeDistFile(targetFolderPath + path.sep + moduleTsFileName, distTsFilePath, distModuleFixer, module);
+            makeDistFile(targetFolderPath + path.sep + moduleJsFileName, distJsFilePath, distModuleFixer, module);
         }
 
     } catch(e) {
         console.log('Error:', e.stack);
     }
-    //return something in order not to call done() manually
-    return gulp.src(targetFolderPath + moduleTsFileName);
 }
 
 /**
@@ -179,16 +218,15 @@ mocha ---> running the tests
         test results
  */
 function runModuleTests(modulePath) {
-    let typescriptPath = modulePath + TEST_PATH;
-    let module = require(typescriptPath + 'module-info.js');
-    let testFile = modulePath + TEMP_PATH + module.name + ".js";
-    execSync('mocha ' + testFile + ' --require ' + __dirname +'/babelregister.js',
+    let typescriptPath = modulePath + path.sep + TEST_FOLDER;
+    let module = require(typescriptPath + path.sep + 'module-info.js');
+    let testFilePath = modulePath + path.sep + TEMP_FOLDER + path.sep + module.name + ".js";
+    let babelRegisterPath = __dirname + path.sep + 'babelregister.js';
+    //With npx you can invoke locally installed utilities like globally installed utilities 
+    //(but you must begin the command with npx). 
+    //mocha can be called ONLY witin project folder, so we have to use `cd`
+    execSync('cd "' + modulePath + '" && npx mocha "' + testFilePath + '" --require "' + babelRegisterPath + '"',
                 {stdio: 'inherit', shell: true});
-    return gulp.src([testFile], { read: false });
-}
-
-function copyToMainDist(modulePath) {
-
 }
 
 function removeImportLines(data) {

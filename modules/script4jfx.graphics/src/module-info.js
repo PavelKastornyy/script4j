@@ -35,6 +35,7 @@ module.exports = {
      */
     classes: [
         "script4jfx.css.Styleable",
+        "script4jfx.scene.input.InputEvent",
         "script4jfx.scene.Node"
     ],
 

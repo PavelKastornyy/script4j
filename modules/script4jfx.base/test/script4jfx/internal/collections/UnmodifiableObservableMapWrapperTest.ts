@@ -53,12 +53,12 @@ describe('UnmodifiableObservableMapWrapperTest', () => {
     });
 
     it('size_elementsExist_correctValue', () => {
-        assert.equals(unmodifiableMap.size(), 5);
+        assert.equal(unmodifiableMap.size(), 5);
     });
 
     it('put_keyNotExists_UnsupportedOperationError', () => {
         assert.throws(() => unmodifiableMap.put(6, "F"), UnsupportedOperationError);
-        assert.equals(unmodifiableMap.size(), 5);
+        assert.equal(unmodifiableMap.size(), 5);
     });
 
     it('EntrySetWrapper#iterator_removingEntry_UnsupportedOperationError', () => {
@@ -71,7 +71,7 @@ describe('UnmodifiableObservableMapWrapperTest', () => {
                 removeWasCalled = true;
             }
         }
-        assert.equals(unmodifiableMap.size(), 5);
+        assert.equal(unmodifiableMap.size(), 5);
         assert.isTrue(removeWasCalled);
     });
 });

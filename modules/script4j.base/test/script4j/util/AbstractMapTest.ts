@@ -36,7 +36,7 @@ describe('AbstractMapTest', () => {
         map2.put("second", 2);
         assert.isNotNaN(map1.hashCode());
         assert.isNotNull(map1.hashCode())
-        assert.isFinite(map1.hashCode())
+        assert.isDefined(map1.hashCode())
         assert.equal(map1.hashCode(), map2.hashCode());
     });
 

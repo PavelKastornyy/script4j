@@ -13,7 +13,9 @@
         "@babel/register": "7.0.0",
         "@babel/preset-env": "7.3.1",
         "@babel/cli": "7.2.3",
-        "typescript": "3.3.3"
+        "typescript": "3.3.3",
+        "jsonlint": "1.6.3",
+        "rimraf": "2.6.3"
     },
     "dependencies": {},
     "modules": [
@@ -22,11 +24,11 @@
         "script4jfx.graphics"
     ],
     "scripts": {
-        "install-all": "npm install && gulp install-modules  && jsonlint -i package.json -t '    '",
-        "uninstall-all": "gulp uninstall-modules && rm -rf node_modules && rm -f package-lock.json",
+        "install-all": "npm install && npx jsonlint -i package.json -t '    ' && npx gulp install-modules",
+        "uninstall-all": "npx gulp uninstall-all",
         "reinstall-all": "npm run uninstall-all && npm run install-all",
-        "build-all": "gulp build-modules",
-        "clean-all": "gulp clean-modules && rm -rf dist",
-        "test-all": "gulp test-modules"
+        "build-all": "npx gulp build-modules",
+        "clean-all": "npx gulp clean-all",
+        "test-all": "npx gulp test-modules"
     }
 }

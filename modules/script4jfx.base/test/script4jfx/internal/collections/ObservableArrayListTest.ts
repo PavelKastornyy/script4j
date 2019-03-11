@@ -67,7 +67,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getRemovedSize(), 0);
         });
         list.addByIndex(1, "X");
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('removeByIndex_removingOneElement_correctEvent', () => {
@@ -87,7 +87,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getAddedSize(), 0);
         });
         assert.isTrue(list.removeByIndex(1).equals("B"));
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('removeByIndex_removingOneElement_correctSize', () => {
@@ -113,7 +113,7 @@ describe('ObservableArrayListTest', () => {
             assert.isTrue(change.getAddedSubList().get(0).equals("X"));
         });
         assert.isTrue(list.set(1, "X").equals("B"));;
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('set_replacingExistingElement_elementIsReplaced', () => {
@@ -138,7 +138,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getRemovedSize(), 0);
         });
         list.add("X");
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('add_addingOneElement_elementWasAdded', () => {
@@ -168,7 +168,7 @@ describe('ObservableArrayListTest', () => {
         temp.add("X");
         temp.add("Z");
         list.addAll(temp);
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('addAll_addingTwoElements_elementsWereAdded', () => {
@@ -198,7 +198,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getAddedSize(), 0);
         });
         list.clear();
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('clear_clearingExistingElements_emptyList', () => {
@@ -224,7 +224,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getAddedSize(), 0);
         });
         list.remove("B");
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('remove_removingOneElement_correctSize', () => {
@@ -267,7 +267,7 @@ describe('ObservableArrayListTest', () => {
         temp.add("B");
         temp.add("E");
         assert.isTrue(list.removeAll(temp));
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
     it('iterator_removeOneElement_correctEvent', () => {
@@ -291,7 +291,7 @@ describe('ObservableArrayListTest', () => {
         iterator.next();
         iterator.next();//removing B
         iterator.remove();
-        assert.equals(counter, 1);
+        assert.equal(counter, 1);
     });
 
 });

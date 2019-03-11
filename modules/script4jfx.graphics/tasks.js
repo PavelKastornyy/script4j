@@ -19,11 +19,12 @@
  *
  */
 
-import {buildModule, cleanModule, testModule} from './../../scripts/gulptasks';
+import {buildModule, cleanModule, uninstallModule, testModule} from './../../scripts/gulptasks';
 import gulp from 'gulp';
 
-gulp.task('build-module', function() {
-    return buildModule(__dirname);
+gulp.task('build-module', function(done) {
+    buildModule(__dirname);
+    done();
 });
 
 gulp.task('clean-module', function(done) {
@@ -31,6 +32,12 @@ gulp.task('clean-module', function(done) {
     done();
 });
 
-gulp.task('test-module', function() {
-    return testModule(__dirname);
+gulp.task('uninstall-module', function(done) {
+    uninstallModule(__dirname);
+    done();
+});
+
+gulp.task('test-module', function(done) {
+    testModule(__dirname);
+    done();
 });

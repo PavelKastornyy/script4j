@@ -62,11 +62,11 @@ describe('StringTest', () => {
 
     it('toString_primitive_string', () => {
         let s: string = "javascript";
-        assert.equals(s.toString(), "javascript");
+        assert.equal(s.toString(), "javascript");
     });
 
     it('toString_object_string', () => {
         let s: String = new String("javascript");
-        assert.equals(s.toString(), "javascript");
+        assert.equal(s.toString(), "javascript");
     });
 });

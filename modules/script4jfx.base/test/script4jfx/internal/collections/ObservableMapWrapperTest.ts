@@ -74,8 +74,8 @@ describe('ObservableMapWrapperTest', () => {
             }
         }
         assert.isTrue(expected.equals(actual));
-        assert.equals(counter, 2);
-        assert.equals(map.size(), 3);
+        assert.equal(counter, 2);
+        assert.equal(map.size(), 3);
     });
 
     it('clear_removingAllElements_correctEvent', () => {
@@ -90,9 +90,9 @@ describe('ObservableMapWrapperTest', () => {
             assert.equal(change.getMap().size(), 5 - counter);
         });
         map.clear();
-        assert.equals(counter, 5);
-        assert.equals(map.size(), 0);
-        assert.equals(mapCopy.size(), 5);
+        assert.equal(counter, 5);
+        assert.equal(map.size(), 0);
+        assert.equal(mapCopy.size(), 5);
     });
 
     it('KeySetWrapper#iterator_removingTwoElements_correctEvents', () => {
@@ -125,8 +125,8 @@ describe('ObservableMapWrapperTest', () => {
             }
         }
         assert.isTrue(expected.equals(actual));
-        assert.equals(counter, 2);
-        assert.equals(map.size(), 3);
+        assert.equal(counter, 2);
+        assert.equal(map.size(), 3);
     });
 
     it('put_keyExists_correctEvent', () => {
@@ -140,8 +140,8 @@ describe('ObservableMapWrapperTest', () => {
             assert.equal(change.getMap().size(), 5);
         });
         map.put(1, "X");
-        assert.equals(counter, 1);
-        assert.equals(map.size(), 5);
+        assert.equal(counter, 1);
+        assert.equal(map.size(), 5);
     });
 
     it('put_keyNotExists_correctEvent', () => {
@@ -155,8 +155,8 @@ describe('ObservableMapWrapperTest', () => {
             assert.equal(change.getMap().size(), 6);
         });
         map.put(10, "X");
-        assert.equals(counter, 1);
-        assert.equals(map.size(), 6);
+        assert.equal(counter, 1);
+        assert.equal(map.size(), 6);
     });
 
     it('remove_elementExists_correctEvent', () => {
@@ -171,8 +171,8 @@ describe('ObservableMapWrapperTest', () => {
             assert.equal(change.getMap().size(), 5 - counter);
         });
         assert.isTrue(map.remove(2).equals("B"))
-        assert.equals(counter, 1);
-        assert.equals(map.size(), 4);
+        assert.equal(counter, 1);
+        assert.equal(map.size(), 4);
     });
 
     it('ValueCollectionWrapper#iterator_removingTwoElements_correctEvents', () => {
@@ -205,8 +205,8 @@ describe('ObservableMapWrapperTest', () => {
             }
         }
         assert.isTrue(expected.equals(actual));
-        assert.equals(counter, 2);
-        assert.equals(map.size(), 3);
+        assert.equal(counter, 2);
+        assert.equal(map.size(), 3);
     });
 });
 
