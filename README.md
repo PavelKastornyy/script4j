@@ -28,7 +28,12 @@ Built for production ES2015 module can have much more classes then it exports. S
 to test all classes, even those which are not exported. To do it a special ES2015 module is created for being tested.
 This module exports all the classes it has.
 
-To test a module run the following commands:
+To test all modules run the following command:
+```
+npm run test-all
+```
+
+To test one module run the following commands:
 ```
 cd modules/<module-name>
 npm run test-module
