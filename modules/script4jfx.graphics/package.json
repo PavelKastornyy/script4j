@@ -15,6 +15,8 @@
         "jsonlint": "1.6.3",
         "@types/jsdom": "12.2.2",
         "jsdom": "13.2.0",
+        "jquery": "3.3.1",
+        "@types/jquery": "3.3.29",
         "script4j.base": "file:./../script4j.base",
         "script4jfx.base": "file:./../script4jfx.base"
     },

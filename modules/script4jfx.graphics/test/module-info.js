@@ -30,7 +30,8 @@ module.exports = {
             'script4jfx.base',
             'chai',
             'mocha',
-            'jsdom'
+            'jsdom',
+            'jquery'
         ]
     },
 
@@ -38,6 +39,7 @@ module.exports = {
      * Order matters!
      */
     classes: [
-        "script4jfx.scene.NodeTest"
+        "script4jfx.scene.input.KeyCodeTest",
+        "script4jfx.scene.NodeTest",
     ]
 };

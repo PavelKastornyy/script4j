@@ -36,12 +36,15 @@ module.exports = {
     classes: [
         "script4jfx.css.Styleable",
         "script4jfx.scene.input.InputEvent",
+        "script4jfx.scene.input.KeyCode",
+        "script4jfx.scene.input.KeyEvent",
         "script4jfx.scene.Node"
     ],
 
     export: {
 	packages: [
             "script4jfx.scene",
+            "script4jfx.scene.input",
 	]
     }
 };

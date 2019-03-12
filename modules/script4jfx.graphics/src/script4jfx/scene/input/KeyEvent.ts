@@ -25,6 +25,7 @@
  */
 
 import { InputEvent} from './InputEvent';
+import { KeyCode } from './KeyCode';
 import { EventType } from 'script4jfx.base';
 import { EventTarget } from 'script4jfx.base';
 

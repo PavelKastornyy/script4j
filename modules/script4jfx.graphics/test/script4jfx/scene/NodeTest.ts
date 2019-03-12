@@ -25,22 +25,23 @@ import { it } from 'mocha';
 import { beforeEach} from 'mocha';
 import { JSDOM } from 'jsdom';
 import { DOMWindow } from 'jsdom';
-
 import { Node } from './../../../src/script4jfx/scene/Node';
-import {ArrayList} from 'script4j.base';
+import { ArrayList } from 'script4j.base';
 import { FXCollections } from 'script4jfx.base';
+import * as jquery from 'jquery';
 
 describe('NodeTest', () => {
 
     //const { JSDOM } = jsdom;
-    let dom: JSDOM = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
-    let window: DOMWindow = dom.window;
+    const dom: JSDOM = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+    const window: DOMWindow = dom.window;
+    const $:JQueryStatic  = require("jquery")(window);
 
     beforeEach(function() {
         console.log("aaa");
     });
 
-    it('test', () => {
+    it('testMouseEvent', () => {
         const document: Document = dom.window.document;
         const div: Element = document.createElement('div');
         document.body.appendChild(div);
@@ -53,5 +54,33 @@ describe('NodeTest', () => {
         const event: Event = document.createEvent('CustomEvent');
         event.initEvent('click', true, true);
         div.dispatchEvent(event);
+    });
+    
+    it('testKeyboardEvent', () => {
+        const document: Document = dom.window.document;
+        const div: Element = document.createElement('div');
+        document.body.appendChild(div);
+
+        div.addEventListener('keydown', function (e: KeyboardEvent) {
+          console.log('I was keydown.');
+          console.log(e);
+          console.log(e.keyCode);
+        });
+        
+        div.addEventListener('keypress', function (e: KeyboardEvent) {
+          console.log('I was pressed.');
+          console.log(e);
+          console.log(e.keyCode);
+        });
+
+        var event1 = new window.KeyboardEvent("keydown", {key: "z", char: "z", keyCode: 90} as any);
+        var event2 = new window.KeyboardEvent("keypress", {key: "z", char: "z", keyCode: 90} as any);
+        //document.dispatchEvent(event);
+        div.dispatchEvent(event1);
+        div.dispatchEvent(event2);
+    });  
+    
+    it('testjQuery', () => {
+        console.log($("p").html());
     });
 });
