@@ -19,25 +19,10 @@
  *
  */
 
-import {buildModule, cleanModule, uninstallModule, testModule} from './../../scripts/gulptasks';
+import { buildModule, cleanModule, uninstallModule, testModule } from './../../scripts/gulptasks';
 import gulp from 'gulp';
 
-gulp.task('build-module', function(done) {
-    buildModule(__dirname);
-    done();
-});
-
-gulp.task('clean-module', function(done) {
-    cleanModule(__dirname);
-    done();
-});
-
-gulp.task('uninstall-module', function(done) {
-    uninstallModule(__dirname);
-    done();
-});
-
-gulp.task('test-module', function(done) {
-    testModule(__dirname);
-    done();
-});
+gulp.task('build-module', function(done) { buildModule(__dirname); done(); });
+gulp.task('clean-module', function(done) { cleanModule(__dirname); done(); });
+gulp.task('uninstall-module', function(done) { uninstallModule(__dirname); done();});
+gulp.task('test-module', function(done) { testModule(__dirname); done(); });

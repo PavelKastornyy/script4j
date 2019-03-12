@@ -87,10 +87,35 @@ export function cleanAll() {
     cleanModules();
 }
 
+/**
+ Mocha doesn't support ES6. So, we do this way:
+
+        spec files written in
+        plain ES6 JavaScript
+             |
+             |
+mocha ---> reading the files
+             |
+babel ---> compiles the files
+           from ES6 to ES5
+             |
+mocha ---> running the tests
+             |
+             |
+        test results
+ */
 export function testModule(modulePath) {
     doBuildModule(modulePath, MODULE_TYPE.TESTING);
     doBuildModule(modulePath, MODULE_TYPE.TESTS);
-    runModuleTests(modulePath);
+    let typescriptPath = modulePath + path.sep + TEST_FOLDER;
+    let module = require(typescriptPath + path.sep + 'module-info.js');
+    let testFilePath = modulePath + path.sep + TEMP_FOLDER + path.sep + module.name + ".js";
+    let babelRegisterPath = __dirname + path.sep + 'babelregister.js';
+    //With npx you can invoke locally installed utilities like globally installed utilities 
+    //(but you must begin the command with npx). 
+    //mocha can be called ONLY witin project folder, so we have to use `cd`
+    execSync('cd "' + modulePath + '" && npx mocha "' + testFilePath + '" --require "' + babelRegisterPath + '"',
+                {stdio: 'inherit', shell: true});
 }
 
 export function testModules() {
@@ -121,6 +146,40 @@ function cleanNodeProject(projectPath) {
     }
 }
 
+class ClassDescriptor {
+
+    /**
+     * 
+     * @param {type} module
+     * @param {type} pkg
+     * @param {type} name - Short name.
+     * @param {type} alias
+     * @returns {ClassDescriptor}
+     */
+    constructor(module, pkg, name, alias) {
+        this.module = module;
+        this.package = pkg;
+        this.name = name;
+        this.alias = alias;
+    }
+    
+    getName() {
+        return this.name;
+    }
+    
+    getAlias() {
+        return this.alias;
+    }
+    
+    getModule() {
+        return this.module;
+    }
+    
+    getPackage() {
+        return this.package;
+    }
+}
+
 function doBuildModule(modulePath, moduleType) {
     let typescriptPath = null;
     let moduleTsFileName = null;
@@ -132,26 +191,28 @@ function doBuildModule(modulePath, moduleType) {
     } else {
         typescriptPath = modulePath + path.sep + TEST_FOLDER;
     }
-    let module = require(typescriptPath + path.sep + 'module-info.js');
+    let moduleInfo = require(typescriptPath + path.sep + 'module-info.js');
     if (moduleType === MODULE_TYPE.PRODUCTION) {
-        moduleTsFileName = module.name + '.ts';
-        moduleJsFileName = module.name + '.js';
+        moduleTsFileName = moduleInfo.name + '.ts';
+        moduleJsFileName = moduleInfo.name + '.js';
         targetFolderPath = modulePath + path.sep + DIST_FOLDER;
     } else if (moduleType === MODULE_TYPE.TESTING) {
-        moduleTsFileName = module.name + '.4spec.ts';
+        moduleTsFileName = moduleInfo.name + '.4spec.ts';
         targetFolderPath = modulePath + path.sep + TEMP_FOLDER;
     } else if (moduleType === MODULE_TYPE.TESTS) {
-        moduleTsFileName = module.name + '.ts';
+        moduleTsFileName = moduleInfo.name + '.ts';
         targetFolderPath = modulePath + path.sep + TEMP_FOLDER;
-        testedModuleName = resolve4SpecModuleName(module.name);
+        testedModuleName = resolve4SpecModuleName(moduleInfo.name);
     }
     try {
+        //array of ClassDescriptor
         let classesToExport = [];
-        let classesToImport = [];//name = moduleName + . + className
+        //array of ClassDescriptor
+        let classesToImport = [];
         let totalData = '';
-        for (let i = 0; i < module.classes.length; i++) {
-            let classFullName = module.classes[i];
-            extractClassesToExport(module, classFullName, classesToExport);
+        for (let i = 0; i < moduleInfo.classes.length; i++) {
+            let classFullName = moduleInfo.classes[i];
+            extractClassesToExport(moduleInfo, classFullName, classesToExport);
             let data = fs.readFileSync(typescriptPath + path.sep + classFullName.replace(/\./g, "/") + ".ts", 'utf8');
             extractClassesToImport(data, classesToImport, moduleType, testedModuleName);
             //now we can remove import lines from data
@@ -165,7 +226,7 @@ function doBuildModule(modulePath, moduleType) {
                     + '========================================= */\n\n';
         }
         if (classesToImport.length > 0) {
-            totalData = buildImport(module, classesToImport, moduleType) + totalData;
+            totalData = buildImport(moduleInfo, classesToImport, moduleType) + totalData;
         }
         if (classesToExport.length > 0 && (moduleType === MODULE_TYPE.PRODUCTION)) {
             totalData += buildExport(classesToExport);
@@ -189,44 +250,15 @@ function doBuildModule(modulePath, moduleType) {
                     if (err) throw err;
                 });
             }
-            let distTsFilePath = MAIN_DIST_PATH + path.sep + module.name + '-' + packageJson.version + '.ts';
-            let distJsFilePath = MAIN_DIST_PATH + path.sep + module.name + '-' + packageJson.version + '.js'
-            makeDistFile(targetFolderPath + path.sep + moduleTsFileName, distTsFilePath, distModuleFixer, module);
-            makeDistFile(targetFolderPath + path.sep + moduleJsFileName, distJsFilePath, distModuleFixer, module);
+            let distTsFilePath = MAIN_DIST_PATH + path.sep + moduleInfo.name + '-' + packageJson.version + '.ts';
+            let distJsFilePath = MAIN_DIST_PATH + path.sep + moduleInfo.name + '-' + packageJson.version + '.js'
+            makeDistFile(targetFolderPath + path.sep + moduleTsFileName, distTsFilePath, fixDistModule, moduleInfo);
+            makeDistFile(targetFolderPath + path.sep + moduleJsFileName, distJsFilePath, fixDistModule, moduleInfo);
         }
 
     } catch(e) {
         console.log('Error:', e.stack);
     }
-}
-
-/**
- Mocha doesn't support ES6. So, we do this way:
-
-        spec files written in
-        plain ES6 JavaScript
-             |
-             |
-mocha ---> reading the files
-             |
-babel ---> compiles the files
-           from ES6 to ES5
-             |
-mocha ---> running the tests
-             |
-             |
-        test results
- */
-function runModuleTests(modulePath) {
-    let typescriptPath = modulePath + path.sep + TEST_FOLDER;
-    let module = require(typescriptPath + path.sep + 'module-info.js');
-    let testFilePath = modulePath + path.sep + TEMP_FOLDER + path.sep + module.name + ".js";
-    let babelRegisterPath = __dirname + path.sep + 'babelregister.js';
-    //With npx you can invoke locally installed utilities like globally installed utilities 
-    //(but you must begin the command with npx). 
-    //mocha can be called ONLY witin project folder, so we have to use `cd`
-    execSync('cd "' + modulePath + '" && npx mocha "' + testFilePath + '" --require "' + babelRegisterPath + '"',
-                {stdio: 'inherit', shell: true});
 }
 
 function removeImportLines(data) {
@@ -246,20 +278,19 @@ function removeExportLines(data) {
     return data;
 }
 
-function extractClassesToExport(module, classFullName, classesToExport) {
+function extractClassesToExport(moduleInfo, classFullName, classesToExport) {
     let lastDotIndex = classFullName.lastIndexOf(".");
     let classShortName = classFullName.substr(lastDotIndex + 1);
     let classPackage = classFullName.substr(0, lastDotIndex);
-    if (!("export" in module) || !("packages" in module.export)) {
+    if (!("export" in moduleInfo) || !("packages" in moduleInfo.export)) {
         return;
     }
-    if (module.export.packages.indexOf(classPackage) > -1) {
-        if ('exclude' in module.export) {
-            if (module.export.exclude.indexOf(classFullName) == -1) {
-                classesToExport.push(classShortName);
-            }
+    if (moduleInfo.export.packages.indexOf(classPackage) > -1) {
+        if ('exclude' in moduleInfo.export && moduleInfo.export.exclude.indexOf(classFullName) !== -1) {
+            return;
         } else {
-            classesToExport.push(classShortName);
+            let klass = new ClassDescriptor(moduleInfo.name, classPackage, classShortName, null);
+            classesToExport.push(klass);
         }
     }
 }
@@ -267,25 +298,51 @@ function extractClassesToExport(module, classFullName, classesToExport) {
 function extractClassesToImport(data, classesToImport, moduleType, testedModuleName) {
     let importRegExp = /^import.*$\n/gm;
     let classAndModuleRegExp = /\{\s*(\w+)\s*\}\s+from\s+["']([\w\.\/]+)["']/;
+    let asteriskAndModuleRegExp = /\s*\*\s+as\s+(.+)\s+from\s+["']([\w\.\/]+)["']/;
     let importExecResult;
+    let className = null;
+    let alias = null;
+    let moduleName = null;
     do {
         importExecResult = importRegExp.exec(data);
         if (importExecResult) {
             let arr = importExecResult[0].match(classAndModuleRegExp);
             if (arr !== null) {
+                className = arr[1];
+                moduleName = arr[2];
+            } else {
+                arr = importExecResult[0].match(asteriskAndModuleRegExp);
+                if (arr !== null) {
+                    className = "*";
+                    alias = arr[1];
+                    moduleName = arr[2];
+                }
+            }
+            if (arr !== null) {
                 let shouldAddClass = true;
                 //there are two types of import - import within module and import from other module
                 //this is internal import (within module)
-                if (arr[2].startsWith("./")) {
+                if (moduleName.startsWith("./")) {
                     if (moduleType === MODULE_TYPE.PRODUCTION || moduleType === MODULE_TYPE.TESTING) {
                         shouldAddClass = false;
                     } else {
-                        arr[2] = testedModuleName;
+                        moduleName = testedModuleName;
                     }
                 }
-                let classNameWithModule = arr[2] + "." + arr[1];
-                if (shouldAddClass && classesToImport.indexOf(classNameWithModule) === -1) {
-                    classesToImport.push(classNameWithModule);
+                if (shouldAddClass) {
+                    let klass = new ClassDescriptor(moduleName, null, className, alias);
+                    //now check if such class is in array already
+                    let classIsInArray = false;
+                    for (let z = 0; z < classesToImport.length; z++) {
+                        if (classesToImport[z].getModule() === klass.getModule() &&
+                            classesToImport[z].getName() === klass.getName()) {
+                            classIsInArray = true;
+                            break;
+                        }
+                    }
+                    if (!classIsInArray) {
+                        classesToImport.push(klass);
+                    }
                 }
             }
         }
@@ -302,10 +359,7 @@ function buildImport(module, classesToImport, moduleType) {
         dataHolder[module.import.modules[i]] = [];
     }
     for (let i = 0; i < classesToImport.length; i++) {
-        let lastDotIndex = classesToImport[i].lastIndexOf(".");
-        let classShortName = classesToImport[i].substr(lastDotIndex + 1);
-        let moduleName = classesToImport[i].substr(0, lastDotIndex);
-        dataHolder[moduleName].push(classShortName);
+        dataHolder[classesToImport[i].getModule()].push(classesToImport[i]);
     }
     let result = "";
     for (let i = 0; i < module.import.modules.length; i++) {
@@ -314,13 +368,17 @@ function buildImport(module, classesToImport, moduleType) {
         let moduleName = module.import.modules[i];
         if (dataHolder[moduleName].length === 0) {
             importStr += "'" + moduleName + "'";
+        
+        } else if (dataHolder[moduleName].length === 1 && dataHolder[moduleName][0].getName() === "*") {
+            let klass = dataHolder[moduleName][0];
+            importStr += klass.getName() + " as " + klass.getAlias() + " from '" + klass.getModule() + "'";
         } else {
             importStr += "{\n"
             for (let z = 0; z < dataHolder[moduleName].length; z++) {
                 if (z > 0) {
                     importStr += ",\n";
                 }
-                importStr += "    " + dataHolder[moduleName][z];
+                importStr += "    " + dataHolder[moduleName][z].getName();
             }
             //we need to show where to look for 4spec module.
             if (moduleType === MODULE_TYPE.TESTS && moduleName === resolve4SpecModuleName(module.name)) {
@@ -341,7 +399,7 @@ function buildExport(classesToExport) {
         if (n > 0) {
             exportStr += ",";
         }
-        exportStr += "\n    " + classesToExport[n];
+        exportStr += "\n    " + classesToExport[n].getName();
     }
     return "\nexport {" + exportStr + "\n}";
 }
@@ -359,13 +417,15 @@ function makeDistFile(src, dest, fixer, module) {
   fs.writeFileSync(dest, data, { flag: 'w' });
 }
 
-function distModuleFixer(data, module) {
+function fixDistModule(data, module) {
     if (!("import" in module) || !("modules" in module.import)) {
         return data;
     }
     //let regExpStr = "^} from '(";
     //[] is only for one character
-    let regExpStr = "^import (\\{$[\\s\\S]*^\\} from )*'(";
+    //*? - non greedy
+    //?: non capturing group
+    let regExpStr = "^import (?:[\\S\\s\\w]*? from )'(";
     let isFirst = true;
     for (let i = 0; i < module.import.modules.length; i++) {
         //if imported module is from script4j modules
@@ -379,10 +439,10 @@ function distModuleFixer(data, module) {
     }
     regExpStr += ")';";
     let regExp = new RegExp(regExpStr, "gm");
-    data = data.replace(regExp, function(param, p1, p2) {
+    data = data.replace(regExp, function(param, p1) {
         //param is the full expression: import ... 'module';
         //p2 is the name of the module
-        return param.replace(p2, "./" + p2 + "-" + packageJson.version);
+        return param.replace(p1, "./" + p1 + "-" + packageJson.version);
     })
     return data;
 }
