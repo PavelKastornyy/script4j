@@ -165,12 +165,12 @@ describe('ObservableMapWrapperTest', () => {
             counter++;
             assert.isFalse(change.wasAdded());
             assert.isTrue(change.wasRemoved());
-            assert.isTrue(change.getKey().equals(1));
+            assert.isTrue(change.getKey().equals(2));
             assert.isTrue(change.getValueRemoved().equals("B"));
             assert.isNull(change.getValueAdded());
             assert.equal(change.getMap().size(), 5 - counter);
         });
-        assert.isTrue(map.remove(2).equals("B"))
+        assert.isTrue(map.remove(2).equals("B"));
         assert.equal(counter, 1);
         assert.equal(map.size(), 4);
     });

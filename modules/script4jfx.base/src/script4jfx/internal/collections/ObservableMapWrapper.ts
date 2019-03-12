@@ -346,7 +346,7 @@ export class ObservableMapWrapper<K, V> extends AbstractObservableMapBase<K, V> 
 
     public remove(key: K): V {
         let prevSize: number = this.map.size();
-        let prevValue: V = this.map.get(key);
+        let prevValue: V = this.map.remove(key);
         if (prevSize > this.map.size()) {
             this.fireRemovedChangeEvent(key, prevValue);
         }
