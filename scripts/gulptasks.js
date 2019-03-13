@@ -43,6 +43,7 @@ export function installModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
         const MODULE_PATH = MODULES_PATH + path.sep + packageJson.modules[i];
         //when we need npm install in another folder we do : 	//npm --prefix ./some_project install ./some_project
+        //we call every module install-module command as it can have modifications
         execSync('npm run --prefix "' + MODULE_PATH + '" install-module', {stdio: 'inherit', shell: true});
     }
 }
@@ -53,13 +54,15 @@ export function uninstallModule(modulePath) {
 
 export function uninstallModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
-	uninstallModule(MODULES_PATH + path.sep + packageJson.modules[i]);
+	const MODULE_PATH = MODULES_PATH + path.sep + packageJson.modules[i];
+        //we call every module uninstall-module command as it can have modifications
+        execSync('npm run --prefix "' + MODULE_PATH + '" uninstall-module', {stdio: 'inherit', shell: true});
     }
 }
 
 export function uninstallAll() {
-    uninstallNodeProject(__dirname + path.sep + '..');
     uninstallModules();
+    uninstallNodeProject(__dirname + path.sep + '..');
 }
 
 export function buildModule(modulePath) {
@@ -68,7 +71,9 @@ export function buildModule(modulePath) {
 
 export function buildModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
-	buildModule(MODULES_PATH + path.sep + packageJson.modules[i]);
+        const MODULE_PATH = MODULES_PATH + path.sep + packageJson.modules[i];
+        //we call every module build-module command as it can have modifications
+        execSync('npm run --prefix "' + MODULE_PATH + '" build-module', {stdio: 'inherit', shell: true});
     }
 }
 
@@ -78,13 +83,15 @@ export function cleanModule(modulePath) {
 
 export function cleanModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
-	cleanModule(MODULES_PATH + path.sep + packageJson.modules[i]);
+	const MODULE_PATH = MODULES_PATH + path.sep + packageJson.modules[i];
+        //we call every module clean-module command as it can have modifications
+        execSync('npm run --prefix "' + MODULE_PATH + '" clean-module', {stdio: 'inherit', shell: true});
     }
 }
 
 export function cleanAll() {
-    cleanNodeProject(__dirname + path.sep + '..');
     cleanModules();
+    cleanNodeProject(__dirname + path.sep + '..');
 }
 
 /**
@@ -120,7 +127,9 @@ export function testModule(modulePath) {
 
 export function testModules() {
     for (let i = 0; i < packageJson.modules.length; i++) {
-	testModule(MODULES_PATH + path.sep + packageJson.modules[i]);
+	const MODULE_PATH = MODULES_PATH + path.sep + packageJson.modules[i];
+        //we call every module test-module command as it can have modifications
+        execSync('npm run --prefix "' + MODULE_PATH + '" test-module', {stdio: 'inherit', shell: true});
     }
 }
 
@@ -442,7 +451,7 @@ function fixDistModule(data, module) {
     data = data.replace(regExp, function(param, p1) {
         //param is the full expression: import ... 'module';
         //p2 is the name of the module
-        return param.replace(p1, "./" + p1 + "-" + packageJson.version);
+        return param.replace(p1, "./" + p1 + "-" + packageJson.version + ".js");
     })
     return data;
 }
