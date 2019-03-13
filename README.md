@@ -2,13 +2,13 @@
 Script4J is a set of libraries that allows to write programs and libraries in TypeScript/JavaScript using Java API.
 
 ## Modules
-As everyone knows, Java 9 introduced the Java Platform Module System (JPMS). On the other side ECMAScript 2015 introduced
-JavaScript module system. In Script4J, JPMS modules are mapped to JavaScript modules. For example, Object class from
-java.base is located in script4j.base module.
+Java 9 introduced the Java Platform Module System (JPMS). On the other side ECMAScript 2015 introduced JavaScript 
+module system. In Script4J, JPMS modules are mapped to JavaScript modules. For example, `Object` class from
+`java.base` is located in `script4j.base` module.
 
 However, for development time every class is placed in separate ES2015 class-module for convenience. During code
-building on the base of such class-modules one total module is generated (in .ts and .js) according to the rules in
-module-info.js file.
+building on the base of such class-modules one total module is generated (in `.ts` and `.js`) according to the rules in
+`module-info.js` file.
 
 At the same time JPMS module can contain packages, but ES2015 module can't. Because of this it is not possible to have
 classes with the same name inside one ES2015 module.
@@ -21,12 +21,13 @@ cd script4j
 npm run install-all
 npm run build-all
 ```
-After it see `script4j/dist` folder.
+After it all compiled and modified JavaScript modules can be found in `script4j/dist` folder. TypeScript modules are 
+located in `modules/<module-name>/dist` folder.
 
 ## Code testing
 Built for production ES2015 module can have much more classes then it exports. So, it is necessary to have another way
-to test all classes, even those which are not exported. To do it a special ES2015 module is created for being tested.
-This module exports all the classes it has.
+to test all classes, even those which are not exported. To do it a special ES2015 module is created for being tested and
+is placed in `modules/<module-name>/tmp` folder. This module exports all the classes it has.
 
 To test all modules run the following command:
 ```
