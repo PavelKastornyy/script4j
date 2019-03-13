@@ -18,6 +18,10 @@
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+const path = require('path');
 
-require('./../../scripts/babel.register');
-require('./gulptasks');
+require('@babel/register')({
+    //rootMode: "upward",
+    configFile: __dirname + path.sep + "babel.config.js",
+    ignore: [/node_modules/]
+});

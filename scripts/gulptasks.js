@@ -25,6 +25,7 @@ import packageJson from './../package.json'
 const execSync = require('child_process').execSync;
 import path from 'path';
 import rimraf from 'rimraf';
+import DIST_MODULE_PATHS from './../dist.module.paths';
 
 const MODULES_PATH = __dirname + path.sep + '..' + path.sep + 'modules';
 const TEMP_FOLDER = 'tmp';
@@ -35,8 +36,8 @@ const MAIN_DIST_PATH = __dirname + path.sep + '..' + path.sep + DIST_FOLDER;
 
 const MODULE_TYPE = {
     PRODUCTION : 1,
-    TESTING: 2,
-    TESTS : 3
+    DEVELOPMENT: 2,
+    SPEC : 3
 };
 
 export function installModules() {
@@ -112,12 +113,12 @@ mocha ---> running the tests
         test results
  */
 export function testModule(modulePath) {
-    doBuildModule(modulePath, MODULE_TYPE.TESTING);
-    doBuildModule(modulePath, MODULE_TYPE.TESTS);
+    doBuildModule(modulePath, MODULE_TYPE.DEVELOPMENT);
+    doBuildModule(modulePath, MODULE_TYPE.SPEC);
     let typescriptPath = modulePath + path.sep + TEST_FOLDER;
     let module = require(typescriptPath + path.sep + 'module-info.js');
     let testFilePath = modulePath + path.sep + TEMP_FOLDER + path.sep + module.name + ".js";
-    let babelRegisterPath = __dirname + path.sep + 'babelregister.js';
+    let babelRegisterPath = __dirname + path.sep + 'babel.register.js';
     //With npx you can invoke locally installed utilities like globally installed utilities 
     //(but you must begin the command with npx). 
     //mocha can be called ONLY witin project folder, so we have to use `cd`
@@ -195,7 +196,7 @@ function doBuildModule(modulePath, moduleType) {
     let moduleJsFileName = null;
     let targetFolderPath = null;
     let testedModuleName = null;
-    if (moduleType !== MODULE_TYPE.TESTS) {
+    if (moduleType !== MODULE_TYPE.SPEC) {
         typescriptPath = modulePath + path.sep + SRC_FOLDER;
     } else {
         typescriptPath = modulePath + path.sep + TEST_FOLDER;
@@ -205,10 +206,10 @@ function doBuildModule(modulePath, moduleType) {
         moduleTsFileName = moduleInfo.name + '.ts';
         moduleJsFileName = moduleInfo.name + '.js';
         targetFolderPath = modulePath + path.sep + DIST_FOLDER;
-    } else if (moduleType === MODULE_TYPE.TESTING) {
+    } else if (moduleType === MODULE_TYPE.DEVELOPMENT) {
         moduleTsFileName = moduleInfo.name + '.4spec.ts';
         targetFolderPath = modulePath + path.sep + TEMP_FOLDER;
-    } else if (moduleType === MODULE_TYPE.TESTS) {
+    } else if (moduleType === MODULE_TYPE.SPEC) {
         moduleTsFileName = moduleInfo.name + '.ts';
         targetFolderPath = modulePath + path.sep + TEMP_FOLDER;
         testedModuleName = resolve4SpecModuleName(moduleInfo.name);
@@ -249,10 +250,8 @@ function doBuildModule(modulePath, moduleType) {
             if(err) return console.error(err);
         });
         //now we can compile, we don't use gulp-typescript as wee need more controll.
-        //+ ' --typeRoots ./node_modules/@types',
         execSync('npx tsc "' + targetFolderPath + path.sep + moduleTsFileName
-                        + '" --target ES6 --removeComments --moduleResolution Node',
-                {stdio: 'inherit', shell: true});
+                        + '" --target ES6 --removeComments --moduleResolution Node', {stdio: 'inherit', shell: true});
         if (moduleType === MODULE_TYPE.PRODUCTION) {
             if (!fs.existsSync(MAIN_DIST_PATH)){
                 fs.mkdirSync(MAIN_DIST_PATH, { recursive: false }, (err) => {
@@ -261,8 +260,9 @@ function doBuildModule(modulePath, moduleType) {
             }
             let distTsFilePath = MAIN_DIST_PATH + path.sep + moduleInfo.name + '-' + packageJson.version + '.ts';
             let distJsFilePath = MAIN_DIST_PATH + path.sep + moduleInfo.name + '-' + packageJson.version + '.js'
-            makeDistFile(targetFolderPath + path.sep + moduleTsFileName, distTsFilePath, fixDistModule, moduleInfo);
-            makeDistFile(targetFolderPath + path.sep + moduleJsFileName, distJsFilePath, fixDistModule, moduleInfo);
+            makeDistFile(targetFolderPath + path.sep + moduleJsFileName, distJsFilePath, moduleInfo);
+            //in dist folder we need only js
+            //makeDistFile(targetFolderPath + path.sep + moduleTsFileName, distTsFilePath, moduleInfo);
         }
 
     } catch(e) {
@@ -332,7 +332,7 @@ function extractClassesToImport(data, classesToImport, moduleType, testedModuleN
                 //there are two types of import - import within module and import from other module
                 //this is internal import (within module)
                 if (moduleName.startsWith("./")) {
-                    if (moduleType === MODULE_TYPE.PRODUCTION || moduleType === MODULE_TYPE.TESTING) {
+                    if (moduleType === MODULE_TYPE.PRODUCTION || moduleType === MODULE_TYPE.DEVELOPMENT) {
                         shouldAddClass = false;
                     } else {
                         moduleName = testedModuleName;
@@ -390,7 +390,7 @@ function buildImport(module, classesToImport, moduleType) {
                 importStr += "    " + dataHolder[moduleName][z].getName();
             }
             //we need to show where to look for 4spec module.
-            if (moduleType === MODULE_TYPE.TESTS && moduleName === resolve4SpecModuleName(module.name)) {
+            if (moduleType === MODULE_TYPE.SPEC && moduleName === resolve4SpecModuleName(module.name)) {
                 importStr +="\n} from './" + moduleName + "'";
             } else {
                 importStr +="\n} from '" + moduleName + "'";
@@ -417,16 +417,16 @@ function resolve4SpecModuleName(moduleName) {
     return moduleName.replace(".spec", ".4spec")
 }
 
-function makeDistFile(src, dest, fixer, module) {
+function makeDistFile(src, dest, module) {
   if (!fs.existsSync(src)) {
        return false;
   }
   let data = fs.readFileSync(src, 'utf-8');
-  data = fixer(data, module)
+  data = fixModulePathsInDistFile(data, module)
   fs.writeFileSync(dest, data, { flag: 'w' });
 }
 
-function fixDistModule(data, module) {
+function fixModulePathsInDistFile(data, module) {
     if (!("import" in module) || !("modules" in module.import)) {
         return data;
     }
@@ -451,7 +451,7 @@ function fixDistModule(data, module) {
     data = data.replace(regExp, function(param, p1) {
         //param is the full expression: import ... 'module';
         //p2 is the name of the module
-        return param.replace(p1, "./" + p1 + "-" + packageJson.version + ".js");
+        return param.replace(p1, DIST_MODULE_PATHS[p1]);
     })
     return data;
 }

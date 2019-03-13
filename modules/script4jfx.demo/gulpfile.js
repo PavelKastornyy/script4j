@@ -19,5 +19,5 @@
  *
  */
 
-require('./../../scripts/babelregister');
-require('./tasks');
+require('./../../scripts/babel.register');
+require('./gulptasks');
