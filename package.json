@@ -21,7 +21,8 @@
     "modules": [
         "script4j.base",
         "script4jfx.base",
-        "script4jfx.graphics"
+        "script4jfx.graphics",
+        "script4jfx.demo"
     ],
     "scripts": {
         "install-all": "npm install && npx jsonlint -i package.json -t '    ' && npx gulp install-modules",
