@@ -25,6 +25,7 @@
  */
 
 import { Collection } from 'script4j.base';
+import { ArrayList } from 'script4j.base';
 import { ObservableArrayList } from './../internal/collections/ObservableArrayList';
 import { Set } from 'script4j.base';
 import { Map } from 'script4j.base';
@@ -41,9 +42,14 @@ export class FXCollections {
 
     /**
      * Creates a new observable array list and adds a content of collection col to it.
+     * If col is not passed creates a new empty observable list that is backed by an arraylist.
      */
-    static observableArrayList<E>(​col: Collection<E>): ObservableList<E> {
-        return new ObservableArrayList(col);
+    static observableArrayList<E>(​col?: Collection<E>): ObservableList<E> {
+        if (col === undefined) {
+            return new ObservableArrayList(new ArrayList());
+        } else {
+            return new ObservableArrayList(col);
+        }
     }
 
     /**
