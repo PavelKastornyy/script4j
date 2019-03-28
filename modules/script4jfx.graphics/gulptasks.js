@@ -21,8 +21,21 @@
 
 import { buildModule, cleanModule, uninstallModule, testModule } from './../../scripts/gulptasks';
 import gulp from 'gulp';
+import fs from 'fs';
+import path from 'path';
+import packageJson from './package.json'
 
-gulp.task('build-module', function(done) { buildModule(__dirname); done(); });
+const JQUERY_VERSION = packageJson.devDependencies.jquery;
+
+gulp.task('build-module', function(done) { 
+    buildModule(__dirname);
+    const sep = path.sep;
+    let src = __dirname + sep + "node_modules" + sep + "jquery" + sep + "dist" + sep + "jquery.min.js";
+    let dest = __dirname + sep + ".." + sep + ".." + sep + "dist" + sep + "jquery-" + JQUERY_VERSION + ".min.js";
+    fs.copyFileSync(src, dest);
+    done(); 
+});
+
 gulp.task('clean-module', function(done) { cleanModule(__dirname); done(); });
 gulp.task('uninstall-module', function(done) { uninstallModule(__dirname); done();});
 gulp.task('test-module', function(done) { testModule(__dirname); done(); });

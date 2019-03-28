@@ -434,23 +434,20 @@ function fixModulePathsInDistFile(data, module) {
     //[] is only for one character
     //*? - non greedy
     //?: non capturing group
-    let regExpStr = "^import (?:[\\S\\s\\w]*? from )'(";
+    let regExpStr = "^import (?:[\\S\\s\\w]*? from )*?['\"](";
     let isFirst = true;
     for (let i = 0; i < module.import.modules.length; i++) {
         //if imported module is from script4j modules
-        if (packageJson.modules.indexOf(module.import.modules[i]) > -1) {
-            if (!isFirst) {
-                regExpStr += "|";
-            }
-            regExpStr += module.import.modules[i];
-            isFirst = false;
+        if (!isFirst) {
+            regExpStr += "|";
         }
+        regExpStr += module.import.modules[i];
+        isFirst = false;
     }
-    regExpStr += ")';";
+    regExpStr += ")['\"];";
     let regExp = new RegExp(regExpStr, "gm");
     data = data.replace(regExp, function(param, p1) {
         //param is the full expression: import ... 'module';
-        //p2 is the name of the module
         return param.replace(p1, DIST_MODULE_PATHS[p1]);
     })
     return data;
