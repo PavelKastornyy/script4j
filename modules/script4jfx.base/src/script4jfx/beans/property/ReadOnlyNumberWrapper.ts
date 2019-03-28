@@ -32,7 +32,7 @@ export class ReadOnlyNumberWrapper extends SimpleNumberProperty {
 
     private readOnlyProperty: ReadOnlyNumberPropertyBase;
 
-    constructor(initialValue: number, bean: Object, name: string) {
+    constructor(initialValue?: number, bean?: Object, name?: string) {
         super(initialValue, bean, name);
     }
 

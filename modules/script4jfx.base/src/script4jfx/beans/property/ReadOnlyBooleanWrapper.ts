@@ -32,7 +32,7 @@ export class ReadOnlyBooleanWrapper extends SimpleBooleanProperty {
 
     private readOnlyProperty: ReadOnlyBooleanPropertyBase;
 
-    constructor(initialValue: boolean, bean: Object, name: string) {
+    constructor(initialValue?: boolean, bean?: Object, name?: string) {
         super(initialValue, bean, name);
     }
 

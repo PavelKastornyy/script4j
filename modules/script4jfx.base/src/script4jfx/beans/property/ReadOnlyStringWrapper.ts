@@ -32,7 +32,7 @@ export class ReadOnlyStringWrapper extends SimpleStringProperty {
 
     private readOnlyProperty: ReadOnlyStringPropertyBase;
 
-    constructor(initialValue: string, bean: Object, name: string) {
+    constructor(initialValue?: string, bean?: Object, name?: string) {
         super(initialValue, bean, name);
     }
 
