@@ -52,6 +52,6 @@ export class Pane extends Region {
     }
 
     protected buildElement(): HTMLElement {
-        return $('<span/>', {})[0];
+        return $('<div/>', {})[0];
     }
 }
