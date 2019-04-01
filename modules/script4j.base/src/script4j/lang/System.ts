@@ -53,7 +53,21 @@ export class System {
     public static getProperty(key: String) {
         return System.properties.get(key);
     }
-
+    
+    public static isNodeJs(): boolean {
+        var isNode: boolean = false;
+        //@ts-ignore
+        if (typeof process === 'object') {
+            //@ts-ignore
+            if (typeof process.versions === 'object') {
+                //@ts-ignore
+                if (typeof process.versions.node !== 'undefined') {
+                    isNode = true;
+                }
+            }
+        }
+        return isNode;
+    }
 }
 
 export namespace System {
