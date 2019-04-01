@@ -35,8 +35,20 @@ const TEST_FOLDER = 'test';
 const MAIN_DIST_PATH = __dirname + path.sep + '..' + path.sep + DIST_FOLDER;
 
 const MODULE_TYPE = {
-    PRODUCTION : 1,
-    DEVELOPMENT: 2,
+    
+    /**
+     * The module that is for distribution.
+     */
+    DIST : 1,
+    
+    /**
+     * The module that will be tested.
+     */
+    FOR_SPEC: 2,
+    
+    /**
+     * The module that contains tests.
+     */
     SPEC : 3
 };
 
@@ -67,7 +79,7 @@ export function uninstallAll() {
 }
 
 export function buildModule(modulePath) {
-    return doBuildModule(modulePath, MODULE_TYPE.PRODUCTION);
+    return doBuildModule(modulePath, MODULE_TYPE.DIST);
 }
 
 export function buildModules() {
@@ -113,7 +125,7 @@ mocha ---> running the tests
         test results
  */
 export function testModule(modulePath) {
-    doBuildModule(modulePath, MODULE_TYPE.DEVELOPMENT);
+    doBuildModule(modulePath, MODULE_TYPE.FOR_SPEC);
     doBuildModule(modulePath, MODULE_TYPE.SPEC);
     let typescriptPath = modulePath + path.sep + TEST_FOLDER;
     let module = require(typescriptPath + path.sep + 'module-info.js');
@@ -202,11 +214,11 @@ function doBuildModule(modulePath, moduleType) {
         typescriptPath = modulePath + path.sep + TEST_FOLDER;
     }
     let moduleInfo = require(typescriptPath + path.sep + 'module-info.js');
-    if (moduleType === MODULE_TYPE.PRODUCTION) {
+    if (moduleType === MODULE_TYPE.DIST) {
         moduleTsFileName = moduleInfo.name + '.ts';
         moduleJsFileName = moduleInfo.name + '.js';
         targetFolderPath = modulePath + path.sep + DIST_FOLDER;
-    } else if (moduleType === MODULE_TYPE.DEVELOPMENT) {
+    } else if (moduleType === MODULE_TYPE.FOR_SPEC) {
         moduleTsFileName = moduleInfo.name + '.4spec.ts';
         targetFolderPath = modulePath + path.sep + TEMP_FOLDER;
     } else if (moduleType === MODULE_TYPE.SPEC) {
@@ -222,13 +234,13 @@ function doBuildModule(modulePath, moduleType) {
         let totalData = '';
         for (let i = 0; i < moduleInfo.classes.length; i++) {
             let classFullName = moduleInfo.classes[i];
-            extractClassesToExport(moduleInfo, classFullName, classesToExport);
+            extractObjectsToExport(moduleInfo, classFullName, classesToExport);
             let data = fs.readFileSync(typescriptPath + path.sep + classFullName.replace(/\./g, "/") + ".ts", 'utf8');
-            extractClassesToImport(data, classesToImport, moduleType, testedModuleName);
+            extractObjectsToImport(data, classesToImport, moduleType, testedModuleName);
             //now we can remove import lines from data
             data = removeImportLines(data);
             //for dist module we make "exports" changes
-            if (moduleType === MODULE_TYPE.PRODUCTION) {
+            if (moduleType === MODULE_TYPE.DIST) {
                 data = removeExportLines(data);
             }
             totalData += data
@@ -238,7 +250,7 @@ function doBuildModule(modulePath, moduleType) {
         if (classesToImport.length > 0) {
             totalData = buildImport(moduleInfo, classesToImport, moduleType) + totalData;
         }
-        if (classesToExport.length > 0 && (moduleType === MODULE_TYPE.PRODUCTION)) {
+        if (classesToExport.length > 0 && (moduleType === MODULE_TYPE.DIST)) {
             totalData += buildExport(classesToExport);
         }
         if (!fs.existsSync(targetFolderPath)){
@@ -252,7 +264,7 @@ function doBuildModule(modulePath, moduleType) {
         //now we can compile, we don't use gulp-typescript as wee need more controll.
         execSync('npx tsc "' + targetFolderPath + path.sep + moduleTsFileName
                         + '" --target ES6 --removeComments --moduleResolution Node', {stdio: 'inherit', shell: true});
-        if (moduleType === MODULE_TYPE.PRODUCTION) {
+        if (moduleType === MODULE_TYPE.DIST) {
             if (!fs.existsSync(MAIN_DIST_PATH)){
                 fs.mkdirSync(MAIN_DIST_PATH, { recursive: false }, (err) => {
                     if (err) throw err;
@@ -287,7 +299,7 @@ function removeExportLines(data) {
     return data;
 }
 
-function extractClassesToExport(moduleInfo, classFullName, classesToExport) {
+function extractObjectsToExport(moduleInfo, classFullName, classesToExport) {
     let lastDotIndex = classFullName.lastIndexOf(".");
     let classShortName = classFullName.substr(lastDotIndex + 1);
     let classPackage = classFullName.substr(0, lastDotIndex);
@@ -304,10 +316,10 @@ function extractClassesToExport(moduleInfo, classFullName, classesToExport) {
     }
 }
 
-function extractClassesToImport(data, classesToImport, moduleType, testedModuleName) {
+function extractObjectsToImport(data, classesToImport, moduleType, testedModuleName) {
     let importRegExp = /^import.*$\n/gm;
-    let classAndModuleRegExp = /\{\s*(\w+)\s*\}\s+from\s+["']([\w\.\/]+)["']/;
-    let asteriskAndModuleRegExp = /\s*\*\s+as\s+(.+)\s+from\s+["']([\w\.\/]+)["']/;
+    let classAndModuleRegExp = /\{\s*(\S+)\s*\}\s+from\s+["']([\w\.\/]+)["']/;
+    let asteriskAndModuleRegExp = /\s*\*\s+as\s+(\S+)\s+from\s+["']([\w\.\/]+)["']/;
     let importExecResult;
     let className = null;
     let alias = null;
@@ -332,7 +344,7 @@ function extractClassesToImport(data, classesToImport, moduleType, testedModuleN
                 //there are two types of import - import within module and import from other module
                 //this is internal import (within module)
                 if (moduleName.startsWith("./")) {
-                    if (moduleType === MODULE_TYPE.PRODUCTION || moduleType === MODULE_TYPE.DEVELOPMENT) {
+                    if (moduleType === MODULE_TYPE.DIST || moduleType === MODULE_TYPE.FOR_SPEC) {
                         shouldAddClass = false;
                     } else {
                         moduleName = testedModuleName;
@@ -375,8 +387,15 @@ function buildImport(module, classesToImport, moduleType) {
 	let importStr = "import ";
         //there is nothing to import, so we import all module.
         let moduleName = module.import.modules[i];
+        let moduleFinalName = moduleName;
+        //we can change module name accordig to map rules if it is needed 4spec.
+        if (moduleType === MODULE_TYPE.FOR_SPEC && "forspecmap" in module.import) {
+            if (moduleName in module.import.forspecmap) {
+                moduleFinalName = module.import.forspecmap[moduleName];
+            }
+        }
         if (dataHolder[moduleName].length === 0) {
-            importStr += "'" + moduleName + "'";
+            importStr += "'" + moduleFinalName + "'";
         
         } else if (dataHolder[moduleName].length === 1 && dataHolder[moduleName][0].getName() === "*") {
             let klass = dataHolder[moduleName][0];
@@ -391,9 +410,9 @@ function buildImport(module, classesToImport, moduleType) {
             }
             //we need to show where to look for 4spec module.
             if (moduleType === MODULE_TYPE.SPEC && moduleName === resolve4SpecModuleName(module.name)) {
-                importStr +="\n} from './" + moduleName + "'";
+                importStr +="\n} from './" + moduleFinalName + "'";
             } else {
-                importStr +="\n} from '" + moduleName + "'";
+                importStr +="\n} from '" + moduleFinalName + "'";
             }
 
         }
@@ -434,7 +453,7 @@ function fixModulePathsInDistFile(data, module) {
     //[] is only for one character
     //*? - non greedy
     //?: non capturing group
-    let regExpStr = "^import (?:[\\S\\s\\w]*? from )*?['\"](";
+    let regExpStr = "^import (?:[\\S\\s\\w$]*? from )*?['\"](";
     let isFirst = true;
     for (let i = 0; i < module.import.modules.length; i++) {
         //if imported module is from script4j modules
