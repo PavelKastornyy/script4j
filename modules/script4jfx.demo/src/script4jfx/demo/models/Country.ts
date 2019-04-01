@@ -19,25 +19,31 @@
  *
  */
 
-import { List } from 'script4j.base';
-import { ArrayList } from 'script4j.base';
-import { Pane } from 'script4jfx.graphics';
 import 'jquery';
- 
-export class Application {
+
+export class Country {
     
-    public static main(): void {
-        let list: List<string> = new ArrayList<string>();
-        list.add("one");
-        list.add("two");
-        list.add("three");
-        list.forEach((s) => {console.log("From collection:" + s)});
-        let pane1: Pane = new Pane();
-        pane1.setId("pane1");
-        let pane2: Pane = new Pane();
-        pane2.setId("pane2");
-        pane2.getChildren().add(pane1);
-        $("body").append(pane2.getElement());
+    private name: string;
+    
+    private code: string;
+    
+    public constructor() {
+        //does nothing
+    }
+    
+    public setName(name: string): void {
+        this.name = name;
+    }
+    
+    public getName(): string {
+        return this.name;
+    }
+    
+    public setCode(code: string): void {
+        this.code = code;
+    }
+    
+    public getCode(): string {
+        return this.code;
     }
 }
-

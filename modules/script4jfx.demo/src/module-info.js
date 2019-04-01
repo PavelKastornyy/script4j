@@ -26,8 +26,9 @@ module.exports = {
     import: {
         modules: [
             "script4j.base",
-//	    "script4jfx.base",
-//            "script4jfx.graphics"
+	    //"script4jfx.base",
+            "script4jfx.graphics",
+            'jquery'
         ]
     },
 
@@ -35,6 +36,8 @@ module.exports = {
      * Order matters!
      */
     classes: [
+        "script4jfx.demo.models.Country",
+        "script4jfx.demo.models.Person",
         "script4jfx.demo.Application",
     ],
 
