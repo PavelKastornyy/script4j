@@ -62,13 +62,27 @@ export abstract class Node implements Styleable, EventTarget {
     private readonly id: StringProperty = new SimpleStringProperty();
 
     /**
+     * A string representation of the CSS style associated with this specific Node.
+     */    
+    private readonly style: StringProperty = new SimpleStringProperty();
+
+
+    /**
      * Sets the element, taken from buildHtmlElement().
      */
     constructor() {
-        this.element.set(this.buildElement());
+        let element: HTMLElement = this.buildElement();
+        this.style.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
+            console.log("NEW STYLE:" + newValue);
+            $(this.getElement()).attr("style", newValue);
+        });
         this.id.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
             $(this.getElement()).attr("id", newValue);
         });
+        this.element.set(element);
+        if (element.style.cssText !== "") {
+            this.setStyle(element.style.cssText);
+        }
     }
 
     /**
@@ -143,6 +157,30 @@ export abstract class Node implements Styleable, EventTarget {
      */    
     public getId(): string {
         return this.id.get();
+    }
+
+    /**
+     * A string representation of the CSS style associated with this specific Node. 
+     * This is analogous to the "style" attribute of an HTML element. Note that, like the HTML 
+     * style attribute, this variable contains style properties and values and not the selector 
+     * portion of a style rule.
+     */    
+    public styleProperty(): StringProperty {
+        return this.style;
+    }
+    
+    /**
+     *  A string representation of the CSS style associated with this specific Node.
+     */
+    public getStyle(): string {
+        return this.style.get();
+    }
+
+    /**
+     * A string representation of the CSS style associated with this specific Node.
+     */    
+    public setStyle​(value: string): void {
+        this.style.set(value);
     }
 
     /**

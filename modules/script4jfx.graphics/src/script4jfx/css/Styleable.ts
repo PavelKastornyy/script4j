@@ -28,11 +28,11 @@ export interface Styleable {
 
 //    getCssMetaData(): List<CssMetaData<? extends Styleable,​?>>;
 //
-//    getId(): String;
+    getId(): String;
 //
 //    getPseudoClassStates(): ObservableSet<PseudoClass>;
 //
-//    getStyle(): String;
+    getStyle(): String;
 //
 //    getStyleableParent(): Styleable;
 //
