@@ -22,65 +22,73 @@
 import { assert } from 'chai';
 import { describe } from 'mocha';
 import { it } from 'mocha';
-import { beforeEach} from 'mocha';
+import { beforeEach } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { DOMWindow } from 'jsdom';
 import { Node } from './../../../src/script4jfx/scene/Node';
-import { ArrayList } from 'script4j.base';
-import { FXCollections } from 'script4jfx.base';
-import * as jquery from 'jquery';
+import { JQuery } from 'script4jfx.jquery';
 
 describe('NodeTest', () => {
 
-    //const { JSDOM } = jsdom;
-    const dom: JSDOM = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+    const dom: JSDOM = new JSDOM(`<!DOCTYPE html><html><body></body></html>`);
     const window: DOMWindow = dom.window;
-    const $:JQueryStatic  = require("jquery")(window);
-
-    beforeEach(function() {
-        console.log("aaa");
-    });
-
-    it('testMouseEvent', () => {
-        const document: Document = dom.window.document;
-        const div: Element = document.createElement('div');
-        document.body.appendChild(div);
-
-        div.addEventListener('click', function (e) {
-          console.log('I was clicked.');
-          console.log(e);
-        });
-
-        const event: Event = document.createEvent('CustomEvent');
-        event.initEvent('click', true, true);
-        div.dispatchEvent(event);
-    });
+    JQuery.setWindow(window);
+    //const $:JQueryStatic  = require("jquery")(window);
     
-    it('testKeyboardEvent', () => {
-        const document: Document = dom.window.document;
-        const div: Element = document.createElement('div');
-        document.body.appendChild(div);
-
-        div.addEventListener('keydown', function (e: KeyboardEvent) {
-          console.log('I was keydown.');
-          console.log(e);
-          console.log(e.keyCode);
-        });
+    class NodeImpl extends Node {
         
-        div.addEventListener('keypress', function (e: KeyboardEvent) {
-          console.log('I was pressed.');
-          console.log(e);
-          console.log(e.keyCode);
-        });
+        protected buildElement(): HTMLElement {
+            return $('<div/>', {})[0];
+        }
+    }
 
-        var event1 = new window.KeyboardEvent("keydown", {key: "z", char: "z", keyCode: 90} as any);
-        var event2 = new window.KeyboardEvent("keypress", {key: "z", char: "z", keyCode: 90} as any);
-        //document.dispatchEvent(event);
-        div.dispatchEvent(event1);
-        div.dispatchEvent(event2);
-    });  
+//    beforeEach(function() {
+//        console.log("aaa");
+//    });
+//
+//    it('testMouseEvent', () => {
+//        const document: Document = dom.window.document;
+//        const div: Element = document.createElement('div');
+//        document.body.appendChild(div);
+//
+//        div.addEventListener('click', function (e) {
+//          console.log('I was clicked.');
+//          console.log(e);
+//        });
+//
+//        const event: Event = document.createEvent('CustomEvent');
+//        event.initEvent('click', true, true);
+//        div.dispatchEvent(event);
+//    });
+//    
+//    it('testKeyboardEvent', () => {
+//        const document: Document = dom.window.document;
+//        const div: Element = document.createElement('div');
+//        document.body.appendChild(div);
+//
+//        div.addEventListener('keydown', function (e: KeyboardEvent) {
+//          console.log('I was keydown.');
+//          console.log(e);
+//          console.log(e.keyCode);
+//        });
+//        
+//        div.addEventListener('keypress', function (e: KeyboardEvent) {
+//          console.log('I was pressed.');
+//          console.log(e);
+//          console.log(e.keyCode);
+//        });
+//
+//        var event1 = new window.KeyboardEvent("keydown", {key: "z", char: "z", keyCode: 90} as any);
+//        var event2 = new window.KeyboardEvent("keypress", {key: "z", char: "z", keyCode: 90} as any);
+//        //document.dispatchEvent(event);
+//        div.dispatchEvent(event1);
+//        div.dispatchEvent(event2);
+//    });  
     
-    it('testjQuery', () => {
-        console.log($("p").html());
+    it('setId​_notNullableId_idIsSet', () => {
+        let node: NodeImpl = new NodeImpl();
+        node.setId("TheId");
+        assert.isTrue(node.getId().equals("TheId"));
+        assert.isTrue($(node.getElement()).attr("id").equals("TheId"));
     });
 });

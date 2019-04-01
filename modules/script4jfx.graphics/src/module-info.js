@@ -27,7 +27,11 @@ module.exports = {
         modules: [
             "script4j.base",
 	    "script4jfx.base",
-        ]
+            "jquery"
+        ],
+        forspecmap: {
+            "jquery":"script4jfx.jquery"
+        }
     },
 
     /**
@@ -38,13 +42,17 @@ module.exports = {
         "script4jfx.scene.input.InputEvent",
         "script4jfx.scene.input.KeyCode",
         "script4jfx.scene.input.KeyEvent",
-        "script4jfx.scene.Node"
+        "script4jfx.scene.Node",
+        "script4jfx.scene.Parent",
+        "script4jfx.scene.layout.Region",
+        "script4jfx.scene.layout.Pane",
     ],
 
     export: {
 	packages: [
             "script4jfx.scene",
             "script4jfx.scene.input",
+            "script4jfx.scene.layout",
 	]
     }
 };
