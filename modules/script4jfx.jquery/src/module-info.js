@@ -19,19 +19,29 @@
  *
  */
 
-import mainPackageJson from './package.json'
-import graphicsPackageJson from './modules/script4jfx.graphics/package.json'
+module.exports = {
 
-const PROJECT_VERSION = mainPackageJson.version;
-const JQUERY_VERSION = graphicsPackageJson.devDependencies.jquery;
+    name: "script4jfx.jquery",
 
-const PATHS = {
-    "script4j.base" : "./script4j.base-" + PROJECT_VERSION + ".js",
-    "script4jfx.base" : "./script4jfx.base-" + PROJECT_VERSION + ".js",
-    "script4jfx.demo" : "./script4jfx.demo-" + PROJECT_VERSION + ".js",
-    "script4jfx.graphics" : "./script4jfx.graphics-" + PROJECT_VERSION + ".js",
-    "script4jfx.jquery" : "./script4jfx.jquery-" + PROJECT_VERSION + ".js",
-    "jquery" : "./jquery-" + JQUERY_VERSION + ".min.js",
-}
+    import: {
+        modules: [
+            'script4j.base',
+            'jsdom',
+            'jquery'
+        ]
+    },
 
-export default PATHS;
+    /**
+     * Order matters!
+     */
+    classes: [
+        "script4jfx.jquery.JQuery",
+    ],
+
+    export: {
+	packages: [
+            "script4jfx.jquery"
+	]
+    }
+};
+

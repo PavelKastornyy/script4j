@@ -1,0 +1,30 @@
+{
+    "name": "script4jfx.jquery",
+    "version": "0.1.0",
+    "description": "jQuery ES6 module provider that is used on Node.js",
+    "main": "./dist/script4jfx.jquery.js",
+    "types": "./dist/script4jfx.jquery.ts",
+    "author": "Pavel Kastornyy <pavelkastornyy@gmail.com>",
+    "license": "GNU General Public License, version 2, with the Classpath Exception",
+    "devDependencies": {
+        "gulp": "4.0.0",
+        "typescript": "3.3.3",
+        "jsonlint": "1.6.3",
+        "@types/jsdom": "12.2.2",
+        "jsdom": "13.2.0",
+        "jquery": "3.3.1",
+        "@types/jquery": "3.3.29",
+        "script4j.base": "file:./../script4j.base"
+    },
+    "dependencies": {
+        "script4j.base": "file:./../script4j.base"
+    },
+    "scripts": {
+        "install-module": "npm install && npx jsonlint -i package.json -t '    '",
+        "uninstall-module": "npx gulp uninstall-module",
+        "reinstall-module": "npm run uninstall-module && npm run install-module",
+        "build-module": "npx gulp build-module",
+        "clean-module": "npx gulp clean-module",
+        "test-module": "npx gulp test-module --experimental-modules"
+    }
+}

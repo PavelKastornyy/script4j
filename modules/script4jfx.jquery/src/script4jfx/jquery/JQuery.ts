@@ -19,19 +19,32 @@
  *
  */
 
-import mainPackageJson from './package.json'
-import graphicsPackageJson from './modules/script4jfx.graphics/package.json'
+import { DOMWindow } from 'jsdom';
 
-const PROJECT_VERSION = mainPackageJson.version;
-const JQUERY_VERSION = graphicsPackageJson.devDependencies.jquery;
-
-const PATHS = {
-    "script4j.base" : "./script4j.base-" + PROJECT_VERSION + ".js",
-    "script4jfx.base" : "./script4jfx.base-" + PROJECT_VERSION + ".js",
-    "script4jfx.demo" : "./script4jfx.demo-" + PROJECT_VERSION + ".js",
-    "script4jfx.graphics" : "./script4jfx.graphics-" + PROJECT_VERSION + ".js",
-    "script4jfx.jquery" : "./script4jfx.jquery-" + PROJECT_VERSION + ".js",
-    "jquery" : "./jquery-" + JQUERY_VERSION + ".min.js",
+//import { System } from 'script4j.base';
+//import 'jquery';
+//
+//let jQuery = null;
+//let $ = null;
+//
+//if (!System.isNodeJs()) {
+//    //@ts-ignore
+//    jQuery = $ = window.$;
+//}
+//export { jQuery, $ }
+ 
+/**
+ * Note, that the first letter is capital as it is class. So, it is not jQuery object.
+ * This module and class is used only for Node.js. Although it is possible to use both
+ * for browsers and Node.js it will cause double loading of jQuery on Node.js because
+ * dynamic `imports` (for example import after condition) are not supported in ES6,
+ * so it will be necessary to import jquery anytime.
+ */
+export class JQuery {
+    
+    public static setWindow(window: DOMWindow): void {
+        //@ts-ignore
+        global.$ = global.jQuery = require("jquery")(window);
+    }
 }
 
-export default PATHS;

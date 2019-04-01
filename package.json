@@ -20,6 +20,7 @@
     "dependencies": {},
     "modules": [
         "script4j.base",
+        "script4jfx.jquery",
         "script4jfx.base",
         "script4jfx.graphics",
         "script4jfx.demo"
