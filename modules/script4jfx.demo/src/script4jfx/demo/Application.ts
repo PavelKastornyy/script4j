@@ -19,37 +19,44 @@
  *
  */
 
-import { Pane } from 'script4jfx.graphics';
-import { TextArea } from 'script4jfx.controls';
+import { Person } from './application/Person';
+import { PersonView } from './application/PersonView';
+import { PersonViewModel } from './application/PersonViewModel';
 import 'jquery';
  
 export class Application {
     
     public static main(): void {
-        const parent: Pane = new Pane();
-        parent.setId("pane1");
-        parent.setStyle("width: 200px; height:200px; background-color:green; padding:10px;");
-        const child: Pane = new Pane();
-        child.setId("pane2");
-        child.setStyle("width: 100%; height:100%; background-color:yellow;");
-        parent.getChildren().add(child);
-       
-        $("body").append(parent.getElement());
+        const viewModel: PersonViewModel = new PersonViewModel();
+        const view: PersonView = new PersonView();
+        view.initialize(viewModel);
+        $("body").append(view.getRootElement());
         
-        const textArea: TextArea = new TextArea();
-        $("body").append(textArea.getElement());
+        const person: Person = new Person();
+        viewModel.setModel(person);
         
-        const changeButton = $('<button>Change</button>').on("click", function () { 
-            textArea.setText("Text from change button");
+        const resetButton= $('<button>Reset</button>').on("click", function () { 
+            viewModel.reset();
         });
+        $("body").append(resetButton);
         
-        $("body").append(changeButton);
-        
-        const printButton = $('<button>Print</button>').on("click", function () { 
-            console.log(textArea.getText());
+        const saveButton= $('<button>Save</button>').on("click", function () { 
+            viewModel.save();
         });
+        $("body").append(saveButton);
         
+        const readButton= $('<button>Read</button>').on("click", function () { 
+            person.setFirstName("Nick");
+            person.setLastName("Black");
+            person.setAge(30);
+            person.setResume("Good man");
+            viewModel.read();
+        });
+        $("body").append(readButton);
+        
+        const printButton= $('<button>Print</button>').on("click", function () { 
+            console.log(person.toString());
+        });
         $("body").append(printButton);
     }
 }
-

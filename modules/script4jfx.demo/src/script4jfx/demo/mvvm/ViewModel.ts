@@ -19,40 +19,7 @@
  *
  */
 
-module.exports = {
-
-    name: "script4jfx.demo",
-
-    import: {
-        modules: [
-            "script4j.base",
-	    "script4jfx.base",
-            "script4jfx.graphics",
-            "script4jfx.controls",
-            "jquery"
-        ]
-    },
-
-    /**
-     * Order matters!
-     */
-    classes: [
-        "script4jfx.demo.mvvm.ModelWrapper",
-        "script4jfx.demo.mvvm.View",
-        "script4jfx.demo.mvvm.ViewModel",
-        "script4jfx.demo.application.Country",
-        "script4jfx.demo.application.Person",
-        "script4jfx.demo.application.PersonView",
-        "script4jfx.demo.application.PersonViewModel",
-        "script4jfx.demo.Application",
-    ],
-
-    export: {
-	packages: [
-            "script4jfx.demo",
-            "script4jfx.demo.mvvm",
-            "script4jfx.demo.application",
-	]
-    }
-};
+export interface ViewModel {
+    
+}
 

@@ -19,52 +19,35 @@
  *
  */
 
-import { Country } from './Country';
+import 'jquery';
 
-export class Person {
-     
-    private firstName: string;
+export class Country {
     
-    private lastName: string;
+    private name: string = null;
     
-    private age: number;
-    
-    private country: Country;
+    private code: string = null;
     
     public constructor() {
         //does nothing
     }
     
-    public setFirstName(firstName: string): void {
-        this.firstName = firstName;
+    public setName(name: string): void {
+        this.name = name;
     }
     
-    public getFirstName(): string {
-        return this.firstName;
+    public getName(): string {
+        return this.name;
     }
     
-    public setLastName(lastName: string): void {
-        this.lastName = lastName;
+    public setCode(code: string): void {
+        this.code = code;
     }
     
-    public getLastName(): string {
-        return this.lastName;
+    public getCode(): string {
+        return this.code;
     }
     
-    public setAge(age: number): void {
-        this.age = age;
-    }
-    
-    public getAge(): number {
-        return this.age;
-    }
-    
-    public setCountry(country: Country): void {
-        this.country = country;
-    }
-    
-    public getCountry(): Country {
-        return this.country;
+    public toString(): string {
+        return "{name:" + this.name + ", code:" + this.code + "}";
     }
 }
-

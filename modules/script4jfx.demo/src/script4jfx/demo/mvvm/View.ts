@@ -19,31 +19,12 @@
  *
  */
 
-import 'jquery';
+import { ViewModel } from './ViewModel';
 
-export class Country {
+export interface View {
     
-    private name: string;
+    getRootElement(): HTMLElement;
     
-    private code: string;
-    
-    public constructor() {
-        //does nothing
-    }
-    
-    public setName(name: string): void {
-        this.name = name;
-    }
-    
-    public getName(): string {
-        return this.name;
-    }
-    
-    public setCode(code: string): void {
-        this.code = code;
-    }
-    
-    public getCode(): string {
-        return this.code;
-    }
+    initialize(viewModel: ViewModel);
 }
+
