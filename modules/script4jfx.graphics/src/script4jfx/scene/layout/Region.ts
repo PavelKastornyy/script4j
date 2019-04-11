@@ -34,7 +34,7 @@ export class Region extends Parent {
     }
     
     protected buildElement(): HTMLElement {
-        return $('<div/>', {})[0];
+        return $('<div/>')[0];
     }
 }
 
