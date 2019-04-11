@@ -33,12 +33,11 @@ describe('NodeTest', () => {
     const dom: JSDOM = new JSDOM(`<!DOCTYPE html><html><body></body></html>`);
     const window: DOMWindow = dom.window;
     JQuery.setWindow(window);
-    //const $:JQueryStatic  = require("jquery")(window);
     
     class NodeImpl extends Node {
         
         protected buildElement(): HTMLElement {
-            return $('<div/>', {})[0];
+            return $('<div/>')[0];
         }
     }
 
