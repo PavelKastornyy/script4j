@@ -46,16 +46,16 @@ declare global {
     }
 }
 
-const defineNumber = (name, value) => {
+const defineNumberPrototype = (name, value) => {
     Object.defineProperty(Number.prototype, name, {
         value,
         writable: true,
         configurable: true,
-        enumerable: false,
+        enumerable: false
     });
 }
 
-defineNumber("equals", function(obj: Object) {
+defineNumberPrototype("equals", function(obj: Object) {
     if (obj === null) {
         return false;
     };
@@ -78,7 +78,7 @@ defineNumber("equals", function(obj: Object) {
     }
 });
 
-defineNumber("hashCode", function () {
+defineNumberPrototype("hashCode", function () {
     let hashCode: number = Math.floor(this);//removes decimal
     hashCode = hashCode | 0;//convert to int
     return hashCode;

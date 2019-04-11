@@ -59,16 +59,26 @@ declare global {
     }
 }
 
-const defineString = (name, value) => {
+const defineStringPrototype = (name, value) => {
     Object.defineProperty(String.prototype, name, {
         value,
         writable: true,
         configurable: true,
-        enumerable: false,
+        enumerable: false
     });
 }
 
-defineString("equals", function(obj: Object) {
+//for static methods
+const defineString = (name, value) => {
+    Object.defineProperty(String, name, {
+        value,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+}
+
+defineStringPrototype("equals", function(obj: Object) {
     if (obj === null) {
         return false;
     };
@@ -97,7 +107,7 @@ defineString("equals", function(obj: Object) {
  * generated hash for next call (as it can be used also for primitives) it is clear, that long string are rare used
  * for keys in map.
 */
-defineString("hashCode", function () {
+defineStringPrototype("hashCode", function () {
     let hashCode: number;
     if (this.length === 0){
         hashCode = 0;
@@ -116,7 +126,7 @@ defineString("hashCode", function () {
     return hashCode;
 });
 
-defineString("toString", function() {
+defineStringPrototype("toString", function() {
     if (typeof this === "string") {
         return this;
     //it is a String wrapper
@@ -128,11 +138,10 @@ defineString("toString", function() {
 //we save original function
 const stringPrototypeValueOf = String.prototype.valueOf;
 
-//This is "static" method
-String.valueOf = function(obj?: Object) {
+defineString("valueOf", function(obj?: Object) {
     if (obj === undefined) {
-        return stringPrototypeValueOf.call(this);;
+        return stringPrototypeValueOf.call(this);
     } else {
         return (obj === null) ? "null" : obj.toString();
     }
-};
+});

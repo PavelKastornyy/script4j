@@ -43,7 +43,7 @@ declare global {
     }
 }
 
-const defineBoolean = (name, value) => {
+const defineBooleanPrototype = (name, value) => {
     Object.defineProperty(Boolean.prototype, name, {
         value,
         writable: true,
@@ -52,7 +52,7 @@ const defineBoolean = (name, value) => {
     });
 }
 
-defineBoolean("equals", function(obj: Object) {
+defineBooleanPrototype("equals", function(obj: Object) {
     if (obj === null) {
         return false;
     };
@@ -76,7 +76,7 @@ defineBoolean("equals", function(obj: Object) {
     }
 });
 
-defineBoolean("hashCode", function () {
+defineBooleanPrototype("hashCode", function () {
     let thisBool = null;
     if (typeof this === "boolean") {
         thisBool = this;
@@ -87,7 +87,7 @@ defineBoolean("hashCode", function () {
     return thisBool ? 1231 : 1237;
 });
 
-defineBoolean("toString", function() {
+defineBooleanPrototype("toString", function() {
     let bool: boolean;
     if (typeof this === "boolean") {
         bool = this;

@@ -77,16 +77,16 @@ declare global {
     }
 }
 
-const defineObject = (name, value) => {
+const defineObjectPrototype = (name, value) => {
     Object.defineProperty(Object.prototype, name, {
         value,
         writable: true,
         configurable: true,
-        enumerable: false,
+        enumerable: false
     });
 }
 
-defineObject("equals", function (obj: Object) {
+defineObjectPrototype("equals", function (obj: Object) {
     if (obj === this) {
         return true;
     } else {
@@ -94,7 +94,7 @@ defineObject("equals", function (obj: Object) {
     }
 });
 
-defineObject("hashCode", function () {
+defineObjectPrototype("hashCode", function () {
     if ('__hashCodeValue' in this) {
         return this.__hashCodeValue;
     } else {
@@ -107,7 +107,7 @@ defineObject("hashCode", function () {
 //we save this function as other libraries will need this variant istead of ours
 const objectPrototypeToString = Object.prototype.toString;
 
-defineObject("toString", function () {
+defineObjectPrototype("toString", function () {
     if (this.getClass().getName() === "Function") {
         return objectPrototypeToString.call(this);
     } else {
@@ -115,11 +115,11 @@ defineObject("toString", function () {
     }
 });
 
-defineObject("class", function () {
+defineObjectPrototype("class", function () {
     return Class.forConstructor(this);
 });
 
-defineObject("getClass", function () {
+defineObjectPrototype("getClass", function () {
     return Class.forConstructor(this.constructor);
 });
 
