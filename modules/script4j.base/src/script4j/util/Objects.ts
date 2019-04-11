@@ -25,6 +25,7 @@
  */
 
 import './../lang/Object';
+import './../lang/String';
 
 export class Objects {
 
@@ -44,7 +45,6 @@ export class Objects {
      * are null, true is returned and if exactly one argument is null, false is returned. Otherwise, equality is
      * determined by using the equals method of the first argument.
      */
-
     public static equals​(a: Object, b: Object): boolean {
         if (a === null) {
             if (b === null) {
@@ -59,6 +59,10 @@ export class Objects {
                 return a.equals(b);
             }
         }
+    }
+    
+    public static toString(o: Object): string {
+        return String.valueOf(o);
     }
 }
 

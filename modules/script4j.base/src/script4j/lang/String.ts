@@ -41,8 +41,13 @@ import './Object'
  */
 declare global {
 
+    /**
+     * For static methods. See https://stackoverflow.com/a/32144161/5057736
+     */
     interface StringConstructor {
         of(str:string):String;
+        
+        valueOf(obj?: Object): string;
     }
 
     interface String {
@@ -113,9 +118,21 @@ defineString("hashCode", function () {
 
 defineString("toString", function() {
     if (typeof this === "string") {
-        return this
+        return this;
     //it is a String wrapper
     } else {
         return this.valueOf();
     }
 });
+
+//we save original function
+const stringPrototypeValueOf = String.prototype.valueOf;
+
+//This is "static" method
+String.valueOf = function(obj?: Object) {
+    if (obj === undefined) {
+        return stringPrototypeValueOf.call(this);;
+    } else {
+        return (obj === null) ? "null" : obj.toString();
+    }
+};

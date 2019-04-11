@@ -69,4 +69,18 @@ describe('StringTest', () => {
         let s: String = new String("javascript");
         assert.equal(s.toString(), "javascript");
     });
+    
+    it('valueOf_instanceMethod_string', () => {
+        let s: String = new String("javascript");
+        assert.equal(s.valueOf(), "javascript");
+        let ss: string = "javascript";
+        assert.equal(ss.valueOf(), "javascript");
+    });
+    
+    it('valueOf_staticMethod_string', () => {
+        let s: String = new String("javascript");
+        assert.equal(String.valueOf(s), "javascript");
+        let ss: string = "javascript";
+        assert.equal(String.valueOf(ss), "javascript");
+    });
 });
