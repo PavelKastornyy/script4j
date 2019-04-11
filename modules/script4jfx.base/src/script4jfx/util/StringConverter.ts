@@ -23,20 +23,18 @@
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+ 
+export abstract class StringConverter<T> { 
 
-import { Property } from './../property/Property';
-import { StringConverter } from './../../util/StringConverter';
-import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
+    /**
+     * Converts the string provided into an object defined by the specific converter.
+     */    
+    public abstract fromString​(str: string): T;
 
-export class Bindings {
+    /**
+     * Converts the object provided into its string form.
+     */
+    public abstract toString​(obj: T): string;
 
-    public static bindBidirectional<T>​(property1: Property<T|string>, property2: Property<T>, 
-            converter?: StringConverter<T>): void {
-        PropertyDelegate.bindBidirectional(property1, property2, converter);
-    }
-
-    public static unbindBidirectional<T>​(property1: Property<T>, property2: Property<T>): void {
-        PropertyDelegate.unbindBidirectional(property1, property2);
-    }
 }
 

@@ -24,19 +24,34 @@
  *
  */
 
-import { Property } from './../property/Property';
-import { StringConverter } from './../../util/StringConverter';
-import { PropertyDelegate } from './../../internal/beans/property/PropertyDelegate';
+import { StringConverter } from './../StringConverter';
 
-export class Bindings {
-
-    public static bindBidirectional<T>​(property1: Property<T|string>, property2: Property<T>, 
-            converter?: StringConverter<T>): void {
-        PropertyDelegate.bindBidirectional(property1, property2, converter);
+export class NumberStringConverter extends StringConverter<number> {
+    
+    public fromString​(str: string): number {
+        if (str === null) {
+            return null;
+        } else if (str === undefined) {
+            return undefined;
+        } else {
+            str = str.trim();
+            if (str === "") {
+                return null;
+            } else {
+                return new Number(str).valueOf();
+            }
+        }
     }
 
-    public static unbindBidirectional<T>​(property1: Property<T>, property2: Property<T>): void {
-        PropertyDelegate.unbindBidirectional(property1, property2);
+    public toString​(obj: number): string {
+        if (obj === null) {
+            return null;
+        } else if (obj === undefined) {
+            return undefined;
+        } else {
+            return obj.toString();
+        }
     }
+
 }
 

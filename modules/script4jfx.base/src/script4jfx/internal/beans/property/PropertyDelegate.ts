@@ -33,6 +33,9 @@ import { ObservableValue } from "./../../../beans/value/ObservableValue";
 import { Property } from "./../../../beans/property/Property";
 import { ReadOnlyProperty } from "./../../../beans/property/ReadOnlyProperty";
 import { IllegalArgumentError } from "script4j.base";
+import { Objects } from "script4j.base";
+import { StringConverter } from "./../../../util/StringConverter";
+import { StringProperty } from "./../../../beans/property/StringProperty";
 
 /**
  * Supports Multiple binding to different objects.
@@ -69,24 +72,35 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
     private previousValue: T = null;
 
     /**
-     * We need reference to delegator as we pass it as observable to ChangeListeners.
+     * We need reference to property as we pass it as observable to ChangeListeners.
      */
-    private readonly delegator: ReadOnlyProperty<T>;
+    private readonly property: ReadOnlyProperty<T> = null;
+    
+    /**
+     * Only one of two properties (XProperty, but not StringProperty) has this converter.
+     */
+    private converter: StringConverter<T> = null;
 
-    protected constructor(delegator: Object) {
-        this.delegator = <ReadOnlyProperty<T>> delegator;
+    protected constructor(property: Object) {
+        this.property = <ReadOnlyProperty<T>> property;
     }
 
-    public static newInstance<T>(delegator: Object) : PropertyDelegate<T> {
-        return new PropertyDelegate<T>(delegator);
+    public static newInstance<T>(property: Object) : PropertyDelegate<T> {
+        return new PropertyDelegate<T>(property);
     }
 
     public static bind<T>(delegate: PropertyDelegate<T>, observable: ObservableValue<T>): void {
         delegate.bind(observable);
     }
 
-    public static bindBidirectional<T>(prop1: Property<T>, prop2: Property<T>): void {
-        PropertyDelegate.getDelegate(prop1).bindBidirectional(prop2);
+    public static bindBidirectional<T>(prop1: Property<T| string>, prop2: Property<T>, 
+            converter?: StringConverter<T>): void {
+        let delegate1: PropertyDelegate<T| string> = PropertyDelegate.getDelegate(prop1);
+        let delegate2: PropertyDelegate<T> = PropertyDelegate.getDelegate(prop2);
+        if (converter !== undefined) {
+            delegate2.setConverter(converter);
+        }
+        delegate1.bindBidirectional(prop2);
     }
 
     public static unbindBidirectional<T>(prop1: Property<T>, prop2: Property<T>): void {
@@ -121,8 +135,8 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
         delegate.fireValueChangedEvent();
     }
 
-    protected static getDelegate<T>(prop1: ReadOnlyProperty<T>) {
-        return <PropertyDelegate<T>>(<any> prop1).delegate;
+    protected static getDelegate<T>(prop: ReadOnlyProperty<T>) {
+        return <PropertyDelegate<T>>(<any> prop).delegate;
     }
 
     protected addListener(listener: ChangeListener<T>): void {
@@ -171,11 +185,11 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
             throw new IllegalArgumentError("Property is already bound to that property");
         }
         //we get that property value, because must be always equal to that property.
-        this.set(other.getValue());
+        this.set(this.convertValue(other, other.getValue()));
         this.doBindBidirectional(other);
         //now we do the same from the side of other property
         let otherDelegate: PropertyDelegate<T> = PropertyDelegate.getDelegate(other);
-        otherDelegate.doBindBidirectional(this.delegator);
+        otherDelegate.doBindBidirectional(this.property);
     }
 
     protected isBound(): boolean {
@@ -203,7 +217,7 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
         this.doUnbindBidirectional(other);
         //removing the listener which listens this
         let otherDelegate: PropertyDelegate<T> = PropertyDelegate.getDelegate(other);
-        otherDelegate.doUnbindBidirectional(this.delegator);
+        otherDelegate.doUnbindBidirectional(this.property);
     }
 
     protected fireValueChangedEvent(): void {
@@ -211,7 +225,7 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
         //get is overriden in ReadOnlyXWrappers and that case we don't call set at all.
         this.previousValue = this.get();
         this.externalListeners.forEach((listener) => {
-            listener(this.delegator, oldValue, this.previousValue);
+            listener(this.property, oldValue, this.previousValue);
         });
     }
 
@@ -219,8 +233,9 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
         return (observable: ObservableValue<T>, oldValue: T, newValue: T) => {
             //no bind see ES6 var https://hackernoon.com/javascript-es6-arrow-functions-and-lexical-this-f2a3e2a5e8c4
             //we need to stop cyclic setting value
-            if (!newValue.equals(this.get())) {
-                this.set(newValue);
+            let newConvertedValue: T = this.convertValue(<ReadOnlyProperty<T>>observable, newValue);
+            if (!Objects.equals(newConvertedValue, this.get())) {
+                this.set(newConvertedValue);
             }
         };
     }
@@ -235,6 +250,32 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
         let foreignListener: ChangeListener<T> = this.internalListenersByValue.remove(other);
         if (foreignListener !== null) {
             other.removeListener(foreignListener);
+        }
+    }
+    
+    private getConverter(): StringConverter<T> {
+        return this.converter;
+    }
+    
+    private setConverter(converter: StringConverter<T>): void {
+        this.converter = converter;
+    }
+    
+    private convertValue(other: ReadOnlyProperty<T>, value: T): T {
+        let otherDelagate: PropertyDelegate<T> = PropertyDelegate.getDelegate(other);
+        if (this.property instanceof StringProperty) {
+            if (otherDelagate.getConverter() === null) {
+                return value;
+            } else {
+                return <any> otherDelagate.getConverter().toString(value);
+            }
+            
+        } else if (other instanceof StringProperty) {
+            if (this.getConverter() === null) {
+                return value;
+            } else {
+                return <any> this.getConverter().fromString(<any>value);
+            }
         }
     }
 }

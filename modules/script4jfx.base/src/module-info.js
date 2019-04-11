@@ -46,6 +46,8 @@ module.exports = {
         "script4jfx.beans.value.WritableObjectValue",
         "script4jfx.beans.property.ReadOnlyProperty",
         "script4jfx.beans.property.Property",
+        "script4jfx.util.StringConverter",
+        "script4jfx.util.converter.NumberStringConverter",
         "script4jfx.internal.beans.property.PropertyDelegate",
         "script4jfx.beans.binding.Bindings",
         "script4jfx.beans.binding.StringExpression",
@@ -106,9 +108,12 @@ module.exports = {
     export: {
 	packages: [
 	    "script4jfx.beans.property",
+            "script4jfx.beans.binding",
             "script4jfx.beans.value",
             "script4jfx.collections",
             "script4jfx.event",
+            "script4jfx.util",
+            "script4jfx.util.converter",
 	]
     }
 };
