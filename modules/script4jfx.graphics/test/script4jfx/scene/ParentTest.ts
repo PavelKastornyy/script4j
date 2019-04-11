@@ -39,7 +39,7 @@ describe('ParentTest', () => {
     class ParentImpl extends Parent {
         
         protected buildElement(): HTMLElement {
-            return $('<div/>', {})[0];
+            return $('<div/>')[0];
         }
         
         public getChildren(): ObservableList<Node> {
