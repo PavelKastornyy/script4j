@@ -73,7 +73,6 @@ export abstract class Node implements Styleable, EventTarget {
     constructor() {
         let element: HTMLElement = this.buildElement();
         this.style.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
-            console.log("NEW STYLE:" + newValue);
             $(this.getElement()).attr("style", newValue);
         });
         this.id.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {

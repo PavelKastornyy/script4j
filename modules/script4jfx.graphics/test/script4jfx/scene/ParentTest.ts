@@ -76,10 +76,11 @@ describe('ParentTest', () => {
         child3.setId("Child3");
         parent.getChildren().set(1, child3);
         
-        assert.equal($(parent.getElement()).children().length, 3);
-        assert.isTrue($(parent.getElement()).children().eq(0).attr("id").equals("Child0"));
-        assert.isTrue($(parent.getElement()).children().eq(1).attr("id").equals("Child3"));
-        assert.isTrue($(parent.getElement()).children().eq(2).attr("id").equals("Child2"));
+        let children = $(parent.getElement()).children();
+        assert.equal(children.length, 3);
+        assert.isTrue(children.eq(0).attr("id").equals("Child0"));
+        assert.isTrue(children.eq(1).attr("id").equals("Child3"));
+        assert.isTrue(children.eq(2).attr("id").equals("Child2"));
         
         
 //        let children: ParentImpl[] = [];

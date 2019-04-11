@@ -49,7 +49,6 @@ export abstract class Parent extends Node {
                         if (change.getFrom() === 0) {
                             $(this.getElement()).prepend(addedElements);
                         } else {
-                            //minus one because element#getFrom we remove, so we need the elemenet before it
                             let afterElement = $(this.getElement()).children().eq(change.getFrom() - 1)[0];
                             $(afterElement).after(addedElements);
                         }
