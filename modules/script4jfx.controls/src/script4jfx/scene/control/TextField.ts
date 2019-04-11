@@ -1,11 +1,16 @@
 /*
  * Copyright (c) 2018-2019 Pavel Kastornyy. All rights reserved.
+ * The specified copyright does not cover application programming interface
+ * (API) and the documentation for this API, which were taken from other
+ * libraries. See NOTICE file for more information.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
+ * published by the Free Software Foundation. Copyright holder designates
+ * this particular file as subject to the "Classpath" exception as provided
+ * by copyright holder in the LICENSE file that accompanied this code.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,36 +24,19 @@
  *
  */
 
-module.exports = {
+import { TextInputControl } from './TextInputControl';
 
-    name: "script4jfx.controls",
-
-    import: {
-        modules: [
-            "script4j.base",
-	    "script4jfx.base",
-            "script4jfx.graphics",
-            "jquery"
-        ],
-        forspecmap: {
-            "jquery":"script4jfx.jquery"
+export class TextField extends TextInputControl {
+    
+    constructor(text?: string) {
+        super();
+        if (text !== undefined) {
+            this.setText(text);
         }
-    },
-
-    /**
-     * Order matters!
-     */
-    classes: [
-        "script4jfx.scene.control.Control",
-        "script4jfx.scene.control.TextInputControl",
-        "script4jfx.scene.control.TextArea",
-        "script4jfx.scene.control.TextField",
-    ],
-
-    export: {
-	packages: [
-            "script4jfx.scene.control",
-	]
     }
-};
+    
+    protected buildElement(): HTMLElement {
+        return $('<input type="text"/>')[0];
+    }
+}
 
