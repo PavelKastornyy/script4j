@@ -23,6 +23,7 @@
         "script4jfx.jquery",
         "script4jfx.base",
         "script4jfx.graphics",
+        "script4jfx.controls",
         "script4jfx.demo"
     ],
     "scripts": {

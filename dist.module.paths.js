@@ -27,10 +27,11 @@ const JQUERY_VERSION = graphicsPackageJson.devDependencies.jquery;
 
 const PATHS = {
     "script4j.base" : "./script4j.base-" + PROJECT_VERSION + ".js",
+    "script4jfx.jquery" : "./script4jfx.jquery-" + PROJECT_VERSION + ".js",
     "script4jfx.base" : "./script4jfx.base-" + PROJECT_VERSION + ".js",
     "script4jfx.demo" : "./script4jfx.demo-" + PROJECT_VERSION + ".js",
     "script4jfx.graphics" : "./script4jfx.graphics-" + PROJECT_VERSION + ".js",
-    "script4jfx.jquery" : "./script4jfx.jquery-" + PROJECT_VERSION + ".js",
+    "script4jfx.controls" : "./script4jfx.controls-" + PROJECT_VERSION + ".js",
     "jquery" : "./jquery-" + JQUERY_VERSION + ".min.js",
 }
 
