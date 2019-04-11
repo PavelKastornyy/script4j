@@ -20,20 +20,36 @@
  */
 
 import { Pane } from 'script4jfx.graphics';
+import { TextArea } from 'script4jfx.controls';
 import 'jquery';
  
 export class Application {
     
     public static main(): void {
-        let parent: Pane = new Pane();
+        const parent: Pane = new Pane();
         parent.setId("pane1");
         parent.setStyle("width: 200px; height:200px; background-color:green; padding:10px;");
-        let child: Pane = new Pane();
+        const child: Pane = new Pane();
         child.setId("pane2");
         child.setStyle("width: 100%; height:100%; background-color:yellow;");
         parent.getChildren().add(child);
-        
+       
         $("body").append(parent.getElement());
+        
+        const textArea: TextArea = new TextArea();
+        $("body").append(textArea.getElement());
+        
+        const changeButton = $('<button>Change</button>').on("click", function () { 
+            textArea.setText("Text from change button");
+        });
+        
+        $("body").append(changeButton);
+        
+        const printButton = $('<button>Print</button>').on("click", function () { 
+            console.log(textArea.getText());
+        });
+        
+        $("body").append(printButton);
     }
 }
 

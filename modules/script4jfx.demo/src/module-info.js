@@ -28,6 +28,7 @@ module.exports = {
             "script4j.base",
 	    //"script4jfx.base",
             "script4jfx.graphics",
+            "script4jfx.controls",
             'jquery'
         ]
     },

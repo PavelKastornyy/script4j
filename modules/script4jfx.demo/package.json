@@ -24,7 +24,8 @@
     "dependencies": {
         "script4j.base": "file:./../script4j.base",
         "script4jfx.base": "file:./../script4jfx.base",
-        "script4jfx.graphics": "file:./../script4jfx.graphics"
+        "script4jfx.graphics": "file:./../script4jfx.graphics",
+        "script4jfx.controls": "file:./../script4jfx.controls"
     },
     "scripts": {
         "install-module": "npm install && npx jsonlint -i package.json -t '    '",
