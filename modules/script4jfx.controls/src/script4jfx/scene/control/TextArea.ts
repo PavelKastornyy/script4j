@@ -35,8 +35,8 @@ export class TextArea extends TextInputControl {
         }
     }
     
-    protected buildElement(): HTMLInputElement {
-        return <HTMLInputElement>$('<textarea/>')[0];
+    protected buildElement(): HTMLElement {
+        return $('<textarea/>')[0];
     }
 }
 
