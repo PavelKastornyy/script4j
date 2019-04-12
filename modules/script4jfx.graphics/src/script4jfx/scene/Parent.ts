@@ -39,20 +39,24 @@ export abstract class Parent extends Node {
                 //after set method both added and removed are true
                 if (change.wasRemoved()) {
                     let removedElements: HTMLElement[] = new Array();
-                    change.getRemoved().forEach((e) => {removedElements.push(e.getElement())});
+                    change.getRemoved().forEach((node) => {
+                        (<any>node)._setParent(null);
+                        removedElements.push(node.getElement());
+                    });
                     $(removedElements).remove();
                 }
                 if (change.wasAdded()) {
                     let addedElements: HTMLElement[] = new Array();
-                    change.getAddedSubList().forEach((e)=> {
-                        addedElements.push(e.getElement());
-                        if (change.getFrom() === 0) {
-                            $(this.getElement()).prepend(addedElements);
-                        } else {
-                            let afterElement = $(this.getElement()).children().eq(change.getFrom() - 1)[0];
-                            $(afterElement).after(addedElements);
-                        }
+                    change.getAddedSubList().forEach((node)=> {
+                        (<any>node)._setParent(this);
+                        addedElements.push(node.getElement());
                     });
+                    if (change.getFrom() === 0) {
+                        $(this.getElement()).prepend(addedElements);
+                    } else {
+                        let afterElement = $(this.getElement()).children().eq(change.getFrom() - 1)[0];
+                        $(afterElement).after(addedElements);
+                    }
                 }
             }
         });

@@ -20,10 +20,11 @@
  */
 
 import { ViewModel } from './ViewModel';
+import { Scene } from 'script4jfx.graphics';
 
 export interface View {
     
-    getRootElement(): HTMLElement;
+    getScene(): Scene;
     
     initialize(viewModel: ViewModel);
 }

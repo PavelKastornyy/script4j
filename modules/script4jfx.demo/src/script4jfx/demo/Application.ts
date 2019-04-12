@@ -30,7 +30,7 @@ export class Application {
         const viewModel: PersonViewModel = new PersonViewModel();
         const view: PersonView = new PersonView();
         view.initialize(viewModel);
-        $("body").append(view.getRootElement());
+        $("body").append(view.getScene().getRoot().getElement());
         
         const person: Person = new Person();
         viewModel.setModel(person);

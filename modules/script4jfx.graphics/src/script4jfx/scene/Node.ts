@@ -37,72 +37,50 @@ import { StringProperty } from 'script4jfx.base';
 import { SimpleStringProperty } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
 import { Parent } from './Parent';
+import { Scene } from './Scene';
 import 'jquery';
 
 export abstract class Node implements Styleable, EventTarget {
 
     /**
-     * Specifies the event dispatcher for this node.
-     */
-    private readonly eventDispatcher: ObjectProperty<EventDispatcher> = new SimpleObjectProperty();
-    
-    /**
      * Html element for this Node. No setter for this field!
      */
-    private readonly element: ReadOnlyObjectWrapper<HTMLElement> = new ReadOnlyObjectWrapper();
+    private readonly element: ReadOnlyObjectWrapper<HTMLElement> = new ReadOnlyObjectWrapper<HTMLElement>(null, this);
     
     /**
      * The parent of this Node.
      */
-    private readonly parent: ReadOnlyObjectWrapper<Parent> = new ReadOnlyObjectWrapper();
+    private readonly parent: ReadOnlyObjectWrapper<Parent> = new ReadOnlyObjectWrapper<Parent>(null, this);
+    
+    /**
+     * The Scene that this Node is part of.
+     */
+    private readonly scene: ReadOnlyObjectWrapper<Scene> = new ReadOnlyObjectWrapper<Scene>(null, this);    
+    
+    /**
+     * Specifies the event dispatcher for this node.
+     */
+    private eventDispatcher: ObjectProperty<EventDispatcher> = null;
     
     /**
      * The id of this Node.
      */
-    private readonly id: StringProperty = new SimpleStringProperty();
+    private id: StringProperty = null;
 
     /**
      * A string representation of the CSS style associated with this specific Node.
      */    
-    private readonly style: StringProperty = new SimpleStringProperty();
-
-
+    private style: StringProperty = null;
+    
     /**
      * Sets the element, taken from buildHtmlElement().
      */
     constructor() {
         let element: HTMLElement = this.buildElement();
-        this.style.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
-            $(this.getElement()).attr("style", newValue);
-        });
-        this.id.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
-            $(this.getElement()).attr("id", newValue);
-        });
         this.element.set(element);
         if (element.style.cssText !== "") {
             this.setStyle(element.style.cssText);
         }
-    }
-
-    /**
-     * Gets the value of the property eventDispatcher.
-     */
-    public getEventDispatcher(): EventDispatcher {
-        return this.eventDispatcher.get();
-    }
-    
-    /**
-     * Sets the value of the property eventDispatcher.
-     */
-    public setEventDispatcher​(value: EventDispatcher): void {
-        this.eventDispatcher.set(value);
-    }    
-
-    /**
-     * Specifies the event dispatcher for this node.
-     */    
-    public eventDispatcherProperty(): ObjectProperty<EventDispatcher> {
-        return this.eventDispatcher;
     }
 
     /**
@@ -132,15 +110,60 @@ export abstract class Node implements Styleable, EventTarget {
     public getParent(): Parent {
         return this.parent.get();
     }
+    
+    /**
+     * Gets the value of the property scene.
+     */
+    public getScene(): Scene {
+        return this.scene.get();
+    }
 
-    public buildEventDispatchChain​(tail: EventDispatchChain) {
+    /**
+     * The Scene that this Node is part of.
+     */
+    public sceneProperty(): ReadOnlyObjectProperty<Scene> {
+        return this.scene.getReadOnlyProperty();
+    }    
+    
+    /**
+     * Gets the value of the property eventDispatcher.
+     */
+    public getEventDispatcher(): EventDispatcher {
+        return this.eventDispatcher === null ? null : this.eventDispatcher.get();
+    }
+    
+    /**
+     * Sets the value of the property eventDispatcher.
+     */
+    public setEventDispatcher​(value: EventDispatcher): void {
+        this.eventDispatcherProperty().set(value);
+    }    
+
+    /**
+     * Specifies the event dispatcher for this node.
+     */    
+    public eventDispatcherProperty(): ObjectProperty<EventDispatcher> {
+        if (this.eventDispatcher === null) {
+            this.eventDispatcher = new SimpleObjectProperty<EventDispatcher>(null, this);
+        }
+        return this.eventDispatcher;
+    }    
+
+    public buildEventDispatchChain​(tail: EventDispatchChain): EventDispatchChain {
         let o = FXCollections.observableMap(null);
+        throw new Error();
     }
     
     /**
      * The id of this Node.
      */    
     public idProperty(): StringProperty {
+        if (this.id === null) {
+            this.id = new SimpleStringProperty(null, this);
+            this.id.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
+                $(this.getElement()).attr("id", newValue);
+            });
+        }
         return this.id;
     }
 
@@ -148,14 +171,14 @@ export abstract class Node implements Styleable, EventTarget {
      * Sets the value of the property id.
      */    
     public setId​(value: string): void {
-        this.id.set(value);
+        this.idProperty().set(value);
     }
 
     /**
      * The id of this Node.
      */    
     public getId(): string {
-        return this.id.get();
+        return this.id === null ? null : this.id.get();
     }
 
     /**
@@ -165,6 +188,12 @@ export abstract class Node implements Styleable, EventTarget {
      * portion of a style rule.
      */    
     public styleProperty(): StringProperty {
+        if (this.style === null) {
+            this.style = new SimpleStringProperty(null, this);
+            this.style.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
+                $(this.getElement()).attr("style", newValue);
+            });
+        }
         return this.style;
     }
     
@@ -172,22 +201,29 @@ export abstract class Node implements Styleable, EventTarget {
      *  A string representation of the CSS style associated with this specific Node.
      */
     public getStyle(): string {
-        return this.style.get();
+        return this.style === null ? null : this.style.get();
     }
 
     /**
      * A string representation of the CSS style associated with this specific Node.
      */    
     public setStyle​(value: string): void {
-        this.style.set(value);
-    }
-
-    /**
-     * This method is protected because there is no package scope in TS.
-     */
-    protected setParent(value: Parent): void {
-        this.parent.set(value);
+        this.styleProperty().set(value);
     }
     
     protected abstract buildElement(): HTMLElement;
+    
+    /**
+     * This method is private, but is used in Parent, as there is no package access in TS.
+     */
+    private _setParent(value: Parent): void {
+        this.parent.set(value);
+    }
+    
+    /**
+     * This method is private, but it is used in Scene, as there is no package access in TS
+     */
+    private _setScene(value: Scene): void {
+        this.scene.set(value);
+    }
 }

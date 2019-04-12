@@ -42,6 +42,7 @@ module.exports = {
         "script4jfx.scene.input.InputEvent",
         "script4jfx.scene.input.KeyCode",
         "script4jfx.scene.input.KeyEvent",
+        "script4jfx.scene.Scene",
         "script4jfx.scene.Node",
         "script4jfx.scene.Parent",
         "script4jfx.scene.layout.Region",

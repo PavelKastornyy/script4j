@@ -72,7 +72,8 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
     private previousValue: T = null;
 
     /**
-     * We need reference to property as we pass it as observable to ChangeListeners.
+     * This property is delegator of this delegate. We need reference to property as we pass it as observable to 
+     * ChangeListeners.
      */
     private readonly property: ReadOnlyProperty<T> = null;
     

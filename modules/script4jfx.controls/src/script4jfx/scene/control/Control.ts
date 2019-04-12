@@ -33,12 +33,12 @@ export abstract class Control extends Region {
 //    /**
 //     * The ContextMenu to show for this control.
 //     */    
-//    private readonly contextMenu: ObjectProperty<ContextMenu> = new SimpleObjectProperty();
+//    private contextMenu: ObjectProperty<ContextMenu> = null;
 //
 //    /**
 //     * The ToolTip for this control.
 //     */
-//    private readonly tooltip: ObjectProperty<Tooltip> = new SimpleObjectProperty();
+//    private tooltip: ObjectProperty<Tooltip> = null;
 //    
 //    constructor() {
 //        super();
@@ -48,6 +48,9 @@ export abstract class Control extends Region {
 //     * The ContextMenu to show for this control.
 //     */
 //    public contextMenuProperty(): ObjectProperty<ContextMenu> {
+//        if (this.contextMenu === null) {
+//            this.contextMenu = new SimpleObjectProperty(null, this);
+//        }
 //        return this.contextMenu;
 //    }
 //
@@ -55,20 +58,23 @@ export abstract class Control extends Region {
 //     * Gets the value of the property contextMenu.
 //     */
 //    public getContextMenu(): ContextMenu {
-//        return this.contextMenu.get();
+//        return this.contextMenu === null ? null : this.contextMenu.get();
 //    }
 //
 //    /**
 //     * Sets the value of the property contextMenu.
 //     */
 //    public setContextMenu​(value: ContextMenu): void {
-//        this.contextMenu.set(value);
+//        this.contextMenuProperty().set(value);
 //    }
 //
 //    /**
 //     * The ToolTip for this control.
 //     */    
 //    public tooltipProperty(): ObjectProperty<Tooltip> {
+//        if (this.tooltip === null) {
+//            this.tooltip = new SimpleObjectProperty();
+//        }
 //        return this.tooltip;
 //    }
 //
@@ -76,14 +82,14 @@ export abstract class Control extends Region {
 //     * Sets the value of the property tooltip.
 //     */
 //    public setTooltip​(value: Tooltip): void {
-//        this.tooltip.set(value);
+//        this.tooltipProperty().set(value);
 //    }
 //
 //    /**
 //     * Gets the value of the property tooltip.
 //     */
 //    public getTooltip(): Tooltip {
-//        return this.tooltip.get();
+//        return this.tooltip === null ? null : this.tooltip.get();
 //    }
 
 }

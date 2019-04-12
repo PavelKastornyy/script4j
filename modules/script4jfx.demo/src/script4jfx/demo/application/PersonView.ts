@@ -25,6 +25,7 @@ import { TextField } from 'script4jfx.controls';
 import { TextArea } from 'script4jfx.controls';
 import { Pane } from 'script4jfx.graphics';
 import { Node } from 'script4jfx.graphics';
+import { Scene } from 'script4jfx.graphics';
 import { ObservableList } from 'script4jfx.base';
 import { Bindings } from 'script4jfx.base';
 import { NumberStringConverter } from 'script4jfx.base';
@@ -32,7 +33,9 @@ import { NumberStringConverter } from 'script4jfx.base';
 
 export class PersonView implements View {
 
-    private readonly pane: Pane = new Pane();    
+    private readonly scene: Scene;
+    
+    private readonly pane: Pane;    
 
     private readonly firstNameTextField: TextField = new TextField();
     
@@ -45,15 +48,19 @@ export class PersonView implements View {
     private readonly resumeTextArea: TextArea = new TextArea();
     
     constructor() {
-        const paneNodes: ObservableList<Node> = this.pane.getChildren();
-        paneNodes.add(this.firstNameTextField);
-        paneNodes.add(this.lastNameTextField);
-        paneNodes.add(this.ageTextField);
-        paneNodes.add(this.resumeTextArea);
+        this.pane = new Pane(
+            this.firstNameTextField,
+            this.lastNameTextField,
+            this.ageTextField,
+            this.resumeTextArea
+        )
+        this.scene = new Scene(this.pane);
+        console.log("Pane Scene: " + this.pane.getScene());
+        console.log("Age Scene: " + this.ageTextField.getScene());
     }
     
-    public getRootElement(): HTMLElement {
-        return this.pane.getElement();
+    public getScene(): Scene {
+        return this.scene;
     }
     
     public initialize(viewModel: PersonViewModel) {
