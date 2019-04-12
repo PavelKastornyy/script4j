@@ -25,8 +25,12 @@ import { it } from 'mocha';
 import { beforeEach } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { DOMWindow } from 'jsdom';
+import { ObservableList } from 'script4jfx.base';
 import { Node } from './../../../src/script4jfx/scene/Node';
+import { Parent } from './../../../src/script4jfx/scene/Parent';
+import { Scene } from './../../../src/script4jfx/scene/Scene';
 import { JQuery } from 'script4jfx.jquery';
+
 
 describe('NodeTest', () => {
 
@@ -35,6 +39,17 @@ describe('NodeTest', () => {
     JQuery.setWindow(window);
     
     class NodeImpl extends Node {
+        
+        protected buildElement(): HTMLElement {
+            return $('<div/>')[0];
+        }
+    }
+    
+    class ParentImpl extends Parent {
+        
+        public getChildren(): ObservableList<Node> {
+            return super.getChildren();
+        }
         
         protected buildElement(): HTMLElement {
             return $('<div/>')[0];
@@ -85,9 +100,30 @@ describe('NodeTest', () => {
 //    });  
     
     it('setId​_notNullableId_idIsSet', () => {
-        let node: NodeImpl = new NodeImpl();
+        const node: NodeImpl = new NodeImpl();
         node.setId("TheId");
         assert.isTrue(node.getId().equals("TheId"));
         assert.isTrue($(node.getElement()).attr("id").equals("TheId"));
+    });
+    
+    it('_setScene​_treeOfNodes_sceneIsSetToAll', () => {
+        const parent1: ParentImpl = new ParentImpl();
+        const parent2: ParentImpl = new ParentImpl();
+        const node: Node = new NodeImpl();
+        parent2.getChildren().add(node);
+        parent1.getChildren().add(parent2);
+        const scene: Scene = new Scene(parent1);
+        assert.equal(scene, parent1.getScene());
+        assert.equal(scene, parent2.getScene());
+        assert.equal(scene, node.getScene());
+        scene.setRoot(null);
+        assert.equal(null, parent1.getScene());
+        assert.equal(null, parent2.getScene());
+        assert.equal(null, node.getScene());
+        scene.setRoot(parent1);
+        parent1.getChildren().clear();
+        assert.equal(scene, parent1.getScene());
+        assert.equal(null, parent2.getScene());
+        assert.equal(null, node.getScene());
     });
 });

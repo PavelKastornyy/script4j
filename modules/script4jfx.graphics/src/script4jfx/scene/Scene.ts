@@ -29,10 +29,8 @@ import { EventDispatchChain } from 'script4jfx.base';
 import { ObjectProperty } from 'script4jfx.base';
 import { SimpleObjectProperty } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
-import { ObservableList } from 'script4jfx.base';
 import { Parent } from './Parent';
 import { Node } from './Node';
-import { Iterator } from 'script4j.base';
 
 /**
  * Scene doesn't have element.
@@ -50,10 +48,10 @@ export class Scene implements EventTarget {
     constructor​(root: Parent) {
         this.root.addListener((observable: ObservableValue<Parent>, oldValue: Parent, newValue: Parent) => {
             if (oldValue !== null) {
-                this.setSceneForNodeRecursively(oldValue, null);
+                (<any>oldValue)._setScene(null);
             }
             if (newValue !== null) {
-                this.setSceneForNodeRecursively(newValue, this);
+                (<any>newValue)._setScene(this);
             }
         });
         this.setRoot(root);
@@ -83,19 +81,6 @@ export class Scene implements EventTarget {
      */
     public rootProperty(): ObjectProperty<Parent> {
         return this.root;
-    }
-    
-    private setSceneForNodeRecursively(node: Node, scene: Scene) {
-        //access to private method of Node
-        (<any>node)._setScene(scene);
-        if (node instanceof Parent) {
-            const children: ObservableList<Node> = (<Parent>node).getChildrenUnmodifiable();
-            const iterator: Iterator<Node> = children.iterator();
-            while (iterator.hasNext()) {
-                const childNode: Node = iterator.next();
-                this.setSceneForNodeRecursively(childNode, scene);
-            }
-        }
     }
 }
 

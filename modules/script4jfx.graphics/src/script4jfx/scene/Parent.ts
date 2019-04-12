@@ -40,7 +40,7 @@ export abstract class Parent extends Node {
                 if (change.wasRemoved()) {
                     let removedElements: HTMLElement[] = new Array();
                     change.getRemoved().forEach((node) => {
-                        (<any>node)._setParent(null);
+                        this.modifyRemovedChild(node);
                         removedElements.push(node.getElement());
                     });
                     $(removedElements).remove();
@@ -48,7 +48,7 @@ export abstract class Parent extends Node {
                 if (change.wasAdded()) {
                     let addedElements: HTMLElement[] = new Array();
                     change.getAddedSubList().forEach((node)=> {
-                        (<any>node)._setParent(this);
+                        this.modifyAddedChild(node);
                         addedElements.push(node.getElement());
                     });
                     if (change.getFrom() === 0) {
@@ -76,5 +76,20 @@ export abstract class Parent extends Node {
         return FXCollections.unmodifiableObservableList(this.children);
     }
     
+    private modifyRemovedChild(node: Node): void {
+        (<any>node)._setParent(null);
+        //null scene from removed node and its possible children
+        if (this.getScene() !== null) {
+            (<any>node)._setScene(null);
+        }
+    }
+    
+    private modifyAddedChild(node: Node): void {
+        (<any>node)._setParent(this);
+        //add scene for added node and its possible children
+        if (this.getScene() !== null) {
+            (<any> node)._setScene(this.getScene());
+        }
+    }
 }
 
