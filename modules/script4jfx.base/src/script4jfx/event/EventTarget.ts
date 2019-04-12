@@ -27,7 +27,10 @@
 import { EventDispatchChain } from './EventDispatchChain';
 
 export interface EventTarget {
-
-    buildEventDispatchChain​(tail: EventDispatchChain);
+    
+    /**
+     * Construct an event dispatch chain for this target.
+     */
+    buildEventDispatchChain​(tail: EventDispatchChain): EventDispatchChain;
 }
 
