@@ -55,8 +55,6 @@ export class PersonView implements View {
             this.resumeTextArea
         )
         this.scene = new Scene(this.pane);
-        console.log("Pane Scene: " + this.pane.getScene());
-        console.log("Age Scene: " + this.ageTextField.getScene());
     }
     
     public getScene(): Scene {
