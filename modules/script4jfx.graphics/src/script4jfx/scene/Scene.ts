@@ -46,12 +46,12 @@ export class Scene implements EventTarget {
      * Creates a Scene for a specific root Node.
      */
     constructor​(root: Parent) {
-        this.root.addListener((observable: ObservableValue<Parent>, oldValue: Parent, newValue: Parent) => {
-            if (oldValue !== null) {
-                (<any>oldValue)._setScene(null);
+        this.root.addListener((observable: ObservableValue<Parent>, oldParent: Parent, newParent: Parent) => {
+            if (oldParent !== null) {
+                (<any>oldParent)._setSceneRecursively(null);
             }
-            if (newValue !== null) {
-                (<any>newValue)._setScene(this);
+            if (newParent !== null) {
+                (<any>newParent)._setSceneRecursively(this);
             }
         });
         this.setRoot(root);

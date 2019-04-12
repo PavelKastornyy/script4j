@@ -80,7 +80,7 @@ export abstract class Parent extends Node {
         (<any>node)._setParent(null);
         //null scene from removed node and its possible children
         if (this.getScene() !== null) {
-            (<any>node)._setScene(null);
+            (<any>node)._setSceneRecursively(null);
         }
     }
     
@@ -88,7 +88,7 @@ export abstract class Parent extends Node {
         (<any>node)._setParent(this);
         //add scene for added node and its possible children
         if (this.getScene() !== null) {
-            (<any> node)._setScene(this.getScene());
+            (<any> node)._setSceneRecursively(this.getScene());
         }
     }
 }
