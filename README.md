@@ -10,7 +10,7 @@ be supported. Besides, the difference between Java and JavaScript slightly influ
 The target Java version is 11.
 
 ## JavaFX Implementation in TypeScript / JavaScript
-Script4J provides implementation of JavaFX API on base of web technologies - every Node has a HTML element, which is 
+Script4J provides implementation of JavaFX API on base of web technologies - every `Node` has a `HTML element`, which is 
 added to HTML document body. So, Script4J allows to use JavaFX API for building web user interfaces.
 
 There is a demo module that shows using MVVM design pattern. After building the code in `dist` folder you will fine 
@@ -18,7 +18,7 @@ the HTML document that is the entry point of the demo.
 
 The target JavaFX version is 11.
 
-# Script4J Advantages:
+## Script4J Advantages:
 * It decreases development time as it is very convenient to use the same API for building JavaScript frontend and Java 
 backend.
 * It makes possible to use the same design patterns, for example MVVM.
