@@ -21,7 +21,7 @@ The target JavaFX version is 11.
 ## Advantages
 * Script4J decreases development time as it is very convenient to use the same API for building JavaScript frontend and Java 
 backend.
-* Script4J makes possible to use the same design patterns, for example MVVM.
+* Script4J makes it possible to use the same design patterns, for example MVVM.
 * Script4J allows to use the same business services for both web and non web user interfaces without necessity to modify these 
 services.
 * Script4J increases the quality of the code as Java SE API and JavaFX API are very mature.
