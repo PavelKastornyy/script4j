@@ -18,7 +18,7 @@ a HTML document that is the entry point of the demo.
 
 The target JavaFX version is 11.
 
-## Script4J Advantages:
+## Script4J Advantages
 * It decreases development time as it is very convenient to use the same API for building JavaScript frontend and Java 
 backend.
 * It makes possible to use the same design patterns, for example MVVM.
