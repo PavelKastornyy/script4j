@@ -2,26 +2,28 @@
 Script4J is an implementation of Java SE API and JavaFX API in TypeScript / JavaScript.
 
 ##Java SE Implementation in TypeScript / JavaScript
-
 The core of Script4J is the implementation of Java SE API – base types, errors, collections etc. 
 
-As Script4J is supposed to be used mainly in browsers, not all API will be implemented and multithreading will never be supported. Besides, the difference between Java and JavaScript slightly influences on the API.
+As Script4J is supposed to be used mainly in browsers, not all API will be implemented and multithreading will never 
+be supported. Besides, the difference between Java and JavaScript slightly influences on the API.
 
 The target Java version is 11.
 
 ##JavaFX Implementation in TypeScript / JavaScript
+Script4J provides implementation of JavaFX API on base of web technologies - every Node has a HTML element, which is 
+added to HTML document body. So, Script4J allows to use JavaFX API for building web user interfaces.
 
-Script4J provides implementation of JavaFX API on base of web technologies - every Node has a HTML element, which is added to HTML document body. So, Script4J allows to use JavaFX API for building web user interfaces.
-
-There is a demo module that shows using MVVM design pattern. After building the code in `dist` folder you will fine the HTML document that is the entry point of the demo.
+There is a demo module that shows using MVVM design pattern. After building the code in `dist` folder you will fine 
+the HTML document that is the entry point of the demo.
 
 The target JavaFX version is 11.
 
 #Script4J Advantages:
-
-* It decreases development time as it is very convenient to use the same API for building JavaScript frontend and Java backend.
+* It decreases development time as it is very convenient to use the same API for building JavaScript frontend and Java 
+backend.
 * It makes possible to use the same design patterns, for example MVVM.
-* It allows to use the same business services for both web and non web user interfaces without necessity to modify these services.
+* It allows to use the same business services for both web and non web user interfaces without necessity to modify these 
+services.
 * It increases the quality of the code as Java SE API and JavaFX API are very mature.
 
 ## Modules
@@ -29,7 +31,8 @@ Java 9 introduced the Java Platform Module System (JPMS). On the other side ECMA
 module system. In Script4J, JPMS modules are mapped to JavaScript modules. For example, `Object` class from
 `java.base` is located in `script4j.base` module.
 
-However, for development time every class is placed in separate ES2015 class-module for convenience. During code building on the base of such class-modules one total module is generated (in `.ts` and `.js`) according to the rules in
+However, for development time every class is placed in separate ES2015 class-module for convenience. During code 
+building on the base of such class-modules one total module is generated (in `.ts` and `.js`) according to the rules in
 `module-info.js` file.
 
 At the same time JPMS module can contain packages, but ES2015 module can't. Because of this it is not possible to have
@@ -48,8 +51,8 @@ located in `modules/<module-name>/dist` folder.
 
 ## Code Testing
 Built for production ES2015 module can have much more classes then it exports. So, it is necessary to have another way
-to test all classes, even those which are not exported. To do it a special ES2015 module is created for being tested and
-is placed in `modules/<module-name>/tmp` folder. This module exports all the classes it has.
+to test all classes, even those which are not exported. To do it a special ES2015 module is created for being tested 
+and is placed in `modules/<module-name>/tmp` folder. This module exports all the classes it has.
 
 To test all modules run the following command:
 ```
