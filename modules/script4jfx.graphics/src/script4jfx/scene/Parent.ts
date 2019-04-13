@@ -27,6 +27,8 @@
 import { Node } from './Node';
 import { ObservableList } from 'script4jfx.base';
 import { FXCollections } from 'script4jfx.base';
+import { Iterator } from 'script4j.base';
+import { Scene } from './Scene';
 
 export abstract class Parent extends Node {
     
@@ -40,7 +42,7 @@ export abstract class Parent extends Node {
                 if (change.wasRemoved()) {
                     let removedElements: HTMLElement[] = new Array();
                     change.getRemoved().forEach((node) => {
-                        this.modifyRemovedChild(node);
+                        this.workRemovedChild(node);
                         removedElements.push(node.getElement());
                     });
                     $(removedElements).remove();
@@ -48,7 +50,7 @@ export abstract class Parent extends Node {
                 if (change.wasAdded()) {
                     let addedElements: HTMLElement[] = new Array();
                     change.getAddedSubList().forEach((node)=> {
-                        this.modifyAddedChild(node);
+                        this.workAddedChild(node);
                         addedElements.push(node.getElement());
                     });
                     if (change.getFrom() === 0) {
@@ -76,20 +78,44 @@ export abstract class Parent extends Node {
         return FXCollections.unmodifiableObservableList(this.children);
     }
     
-    private modifyRemovedChild(node: Node): void {
+    private workRemovedChild(node: Node): void {
         (<any>node)._setParent(null);
         //null scene from removed node and its possible children
         if (this.getScene() !== null) {
-            (<any>node)._setSceneRecursively(null);
+            if (node instanceof Parent) {
+                (<Parent>node)._setSceneRecursively(null);
+            } else {
+                (<any>node)._setScene(null);
+            }
         }
     }
     
-    private modifyAddedChild(node: Node): void {
+    private workAddedChild(node: Node): void {
         (<any>node)._setParent(this);
         //add scene for added node and its possible children
         if (this.getScene() !== null) {
-            (<any> node)._setSceneRecursively(this.getScene());
+            if (node instanceof Parent) {
+                (<Parent> node)._setSceneRecursively(this.getScene());
+            } else {
+                (<any> node)._setScene(this.getScene());
+            }
         }
     }
+    
+    /**
+     * This method is private, but it is used in Scene, as there is no package access in TS.
+     */
+    private _setSceneRecursively(scene: Scene): void {
+        (<any>this)._setScene(scene);
+        const iterator: Iterator<Node> = this.children.iterator();
+        while (iterator.hasNext()) {
+            const childNode: Node = iterator.next();
+            if (childNode instanceof Parent) {
+                (<Parent> childNode)._setSceneRecursively(scene);
+            } else {
+                (<any>childNode)._setScene(scene);
+            }
+        }
+    }        
 }
 

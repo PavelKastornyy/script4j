@@ -38,8 +38,6 @@ import { SimpleStringProperty } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
 import { Parent } from './Parent';
 import { Scene } from './Scene';
-import { ObservableList } from 'script4jfx.base';
-import { Iterator } from 'script4j.base';
 import 'jquery';
 
 export abstract class Node implements Styleable, EventTarget {
@@ -223,18 +221,9 @@ export abstract class Node implements Styleable, EventTarget {
     }
     
     /**
-     * This method is private, but it is used in Scene and Parent, as there is no package access in TS.
-     * 
+     * This method is private, but it is used in Parent, as there is no package access in TS.
      */
-    private _setSceneRecursively(scene: Scene): void {
+    private _setScene(scene: Scene): void {
         this.scene.set(scene);
-        if (this instanceof Parent) {
-            const children: ObservableList<Node> = (<Parent>this).getChildrenUnmodifiable();
-            const iterator: Iterator<Node> = children.iterator();
-            while (iterator.hasNext()) {
-                const childNode: Node = iterator.next();
-                childNode._setSceneRecursively(scene)
-            }
-        }
     }
 }
