@@ -1,7 +1,7 @@
 # Script4J
 Script4J is an implementation of Java SE API and JavaFX API in TypeScript / JavaScript.
 
-##Java SE Implementation in TypeScript / JavaScript
+## Java SE Implementation in TypeScript / JavaScript
 The core of Script4J is the implementation of Java SE API – base types, errors, collections etc. 
 
 As Script4J is supposed to be used mainly in browsers, not all API will be implemented and multithreading will never 
@@ -9,7 +9,7 @@ be supported. Besides, the difference between Java and JavaScript slightly influ
 
 The target Java version is 11.
 
-##JavaFX Implementation in TypeScript / JavaScript
+## JavaFX Implementation in TypeScript / JavaScript
 Script4J provides implementation of JavaFX API on base of web technologies - every Node has a HTML element, which is 
 added to HTML document body. So, Script4J allows to use JavaFX API for building web user interfaces.
 
@@ -18,7 +18,7 @@ the HTML document that is the entry point of the demo.
 
 The target JavaFX version is 11.
 
-#Script4J Advantages:
+# Script4J Advantages:
 * It decreases development time as it is very convenient to use the same API for building JavaScript frontend and Java 
 backend.
 * It makes possible to use the same design patterns, for example MVVM.
