@@ -31,7 +31,7 @@ export interface EventHandler<T extends Event> {
     /**
      * Invoked when a specific event of the type for which this handler is registered happens.
      */
-    handle​(event: T): void;
+    (event: T): void;
 
 }
 
