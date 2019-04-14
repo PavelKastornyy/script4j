@@ -37,6 +37,7 @@ module.exports = {
         'script4j.util.Objects',
         'script4j.util.Locale',
         'script4j.util.function.Consumer',
+        'script4j.util.function.BiFunction',
         'script4j.io.PrintWriter',
         'script4j.lang.AbstractError',
         'script4j.lang.IllegalArgumentError',

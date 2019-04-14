@@ -239,4 +239,17 @@ describe('HashMapTest', () => {
         assert.isTrue(values.contains(notEqualObj2));
         assert.equal(values.size(), 2);
     });
+    
+    it('compute_valueExist_correctResult', () => {
+        let map: Map<string, number> = new HashMap<string, number>();
+        map.put("a", 10);
+        map.put("b", 20);
+        let result = map.compute("a", (k: string, n: number) => {
+            return 10 * 10;
+        });
+        assert.equal(result, 100);
+        assert.equal(map.size(), 2);
+        assert.equal(map.get("a"), 100);
+        assert.equal(map.get("b"), 20);
+    });
 });

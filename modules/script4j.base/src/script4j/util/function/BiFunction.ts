@@ -24,48 +24,19 @@
  *
  */
 
+/**
+ * Functional interface.
+ * 
+ *  Type Parameters:
+ *  T - the type of the first argument to the function
+ *  U - the type of the second argument to the function
+ *  R - the type of the result of the function 
+ */
+export interface BiFunction<T,​U,​R> {
 
-import { Set } from './Set';
-import { Collection } from './Collection';
-import { BiFunction } from './function/BiFunction';
-
-export interface Map<K, V> {
-
-    clear(): void;
-
-    containsKey(key: K): boolean;
-
-    containsValue(value: V): boolean;
-
-    entrySet(): Set<Map.Entry<K, V>>;
-
-    get(key: K): V;
-
-    isEmpty(): boolean;
-
-    keySet(): Set<K>;
-
-    put(key: K, value: V): V;
-
-    remove(key: K): V;
-
-    size(): number;
-
-    values(): Collection<V>;
-    
-    compute​(key: K, remappingFunction: BiFunction<K,​ V,​ V>): V;
+    /**
+     * Applies this function to the given arguments.
+     */
+    (t: T, u: U): R;
 }
 
-export namespace Map {
-
-    export interface Entry<K, V> {
-
-        equals(obj: Object): boolean;
-
-        getKey(): K;
-
-        getValue(): V;
-
-        hashCode(): number;
-    }
-}

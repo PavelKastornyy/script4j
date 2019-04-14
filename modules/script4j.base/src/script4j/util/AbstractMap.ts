@@ -28,6 +28,7 @@ import { Map } from './Map';
 import { Set } from './Set';
 import { Collection } from './Collection';
 import { Iterator } from './Iterator';
+import { BiFunction } from './function/BiFunction';
 
 export abstract class AbstractMap<K,V> implements Map<K,V> {
 
@@ -52,6 +53,8 @@ export abstract class AbstractMap<K,V> implements Map<K,V> {
     abstract size(): number;
 
     abstract values(): Collection<V>;
+    
+    abstract compute​(key: K, remappingFunction: BiFunction<K,​ V,​ V>): V;
 
     public hashCode(): number {
         let hashCode: number = 0;

@@ -37,6 +37,8 @@ import { UnsupportedOperationError } from './../lang/UnsupportedOperationError';
 import { IllegalStateError } from './../lang/IllegalStateError';
 import { Iterator } from './Iterator';
 import { NoSuchElementError } from './NoSuchElementError';
+import { BiFunction } from './function/BiFunction';
+
 /**
  * Load factor is not supported.
  */
@@ -313,17 +315,9 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
     }
 
     public get(key: K): V {
-        let keyHashCode = (key !== null) ? key.hashCode() : 0;
-        let bucket: List<HashMap.Entry<K, V>> = this.resolveBucket(keyHashCode);
-        if (bucket === null) {
-            return null;
-        }
-        let entry: HashMap.Entry<K, V> =  null;
-        for (let i: number = 0; i < bucket.size(); i++) {
-            entry = bucket.get(i);
-            if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
-                return entry.getValue();
-            }
+        let entry: HashMap.Entry<K, V> = this.getEntry(key);
+        if (entry !== null) {
+            return entry.getValue();
         }
         return null;
     }
@@ -399,6 +393,45 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
 
     public values(): Collection<V> {
         return new HashMap.ValueCollection<K, V>(this);
+    }
+    
+    public compute​(key: K, remappingFunction: BiFunction<K,​ V,​ V>): V {
+        const entry: HashMap.Entry<K, V> = this.getEntry(key);
+        let oldValue: V = null;
+        if (entry !== null) {
+            oldValue = entry.getValue();
+        }
+        let newValue: V = remappingFunction(key, oldValue);
+        if (oldValue !== null) {
+            if (newValue !== null) {
+                entry.setValue(newValue);
+            } else {
+                this.remove(key); 
+            }
+        } else {
+            if (newValue !== null) {
+                this.put(key, newValue);
+            } else {
+                return null;
+            }
+        }
+        return newValue;
+    }
+    
+    private getEntry(key: K): HashMap.Entry<K, V> {
+        let keyHashCode = (key !== null) ? key.hashCode() : 0;
+        let bucket: List<HashMap.Entry<K, V>> = this.resolveBucket(keyHashCode);
+        if (bucket === null) {
+            return null;
+        }
+        let entry: HashMap.Entry<K, V> =  null;
+        for (let i: number = 0; i < bucket.size(); i++) {
+            entry = bucket.get(i);
+            if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
+                return entry;
+            }
+        }
+        return null;
     }
 
     private iterator(): Iterator<Map.Entry<K, V>> {
