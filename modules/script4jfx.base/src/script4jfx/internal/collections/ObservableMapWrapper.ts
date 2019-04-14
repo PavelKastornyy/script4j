@@ -32,6 +32,7 @@ import { Collection } from 'script4j.base';
 import { Consumer } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { MapChangeListenerChange } from './MapChangeListenerChange';
+import { BiFunction } from 'script4j.base';
 
 export class ObservableMapWrapper<K, V> extends AbstractObservableMapBase<K, V> {
 
@@ -355,6 +356,10 @@ export class ObservableMapWrapper<K, V> extends AbstractObservableMapBase<K, V> 
 
     public values(): Collection<V> {
         return new ObservableMapWrapper.ValueCollectionWrapper(this);
+    }
+    
+    public compute​(key: K, remappingFunction: BiFunction<K,​ V,​ V>): V {
+        throw new Error("Not supported yet");
     }
 
     protected getMap(): Map<K, V> {

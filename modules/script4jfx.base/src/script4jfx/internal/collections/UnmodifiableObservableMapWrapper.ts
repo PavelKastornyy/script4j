@@ -35,6 +35,7 @@ import { Map } from 'script4j.base';
 import { AbstractSet } from 'script4j.base';
 import { Consumer } from 'script4j.base';
 import { AbstractCollection } from 'script4j.base';
+import { BiFunction } from 'script4j.base';
 
 export class UnmodifiableObservableMapWrapper<K, V> extends AbstractObservableMapBase<K, V> {
 
@@ -263,6 +264,10 @@ export class UnmodifiableObservableMapWrapper<K, V> extends AbstractObservableMa
 
     public values(): Collection<V> {
         return new UnmodifiableObservableMapWrapper.ValueCollectionWrapper(this.map.values());
+    }
+    
+    public compute​(key: K, remappingFunction: BiFunction<K,​ V,​ V>): V {
+        throw new UnsupportedOperationError();
     }
 
     protected getMap(): Map<K, V> {

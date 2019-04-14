@@ -31,6 +31,7 @@ import { ArrayList } from 'script4j.base';
 import { Collection } from 'script4j.base';
 import { MapChangeListener } from './../../collections/MapChangeListener';
 import { List } from 'script4j.base';
+import { BiFunction } from 'script4j.base';
 
 export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K, V> {
 
@@ -84,6 +85,8 @@ export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K
     public abstract remove(key: K): V;
 
     public abstract values(): Collection<V>;
+    
+    public abstract compute​(key: K, remappingFunction: BiFunction<K,​ V,​ V>): V;
 
     protected abstract getMap(): Map<K, V>;
 
