@@ -106,7 +106,10 @@ describe('NodeTest', () => {
         assert.isTrue($(node.getElement()).attr("id").equals("TheId"));
     });
     
-    it('_setScene​_treeOfNodes_sceneIsSetToAll', () => {
+    /**
+     * integration test, must be redone.
+     */
+    it('setScene​_treeOfNodes_sceneIsSetToAll', () => {
         const parent1: ParentImpl = new ParentImpl();
         const parent2: ParentImpl = new ParentImpl();
         const node: Node = new NodeImpl();

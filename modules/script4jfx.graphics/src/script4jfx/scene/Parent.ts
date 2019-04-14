@@ -79,25 +79,25 @@ export abstract class Parent extends Node {
     }
     
     private workRemovedChild(node: Node): void {
-        (<any>node)._setParent(null);
+        (<any>node).setParent(null);
         //null scene from removed node and its possible children
         if (this.getScene() !== null) {
             if (node instanceof Parent) {
-                (<Parent>node)._setSceneRecursively(null);
+                (<Parent>node).setSceneRecursively(null);
             } else {
-                (<any>node)._setScene(null);
+                (<any>node).setScene(null);
             }
         }
     }
     
     private workAddedChild(node: Node): void {
-        (<any>node)._setParent(this);
+        (<any>node).setParent(this);
         //add scene for added node and its possible children
         if (this.getScene() !== null) {
             if (node instanceof Parent) {
-                (<Parent> node)._setSceneRecursively(this.getScene());
+                (<Parent> node).setSceneRecursively(this.getScene());
             } else {
-                (<any> node)._setScene(this.getScene());
+                (<any> node).setScene(this.getScene());
             }
         }
     }
@@ -105,15 +105,15 @@ export abstract class Parent extends Node {
     /**
      * This method is private, but it is used in Scene, as there is no package access in TS.
      */
-    private _setSceneRecursively(scene: Scene): void {
-        (<any>this)._setScene(scene);
+    private setSceneRecursively(scene: Scene): void {
+        (<any>this).setScene(scene);
         const iterator: Iterator<Node> = this.children.iterator();
         while (iterator.hasNext()) {
             const childNode: Node = iterator.next();
             if (childNode instanceof Parent) {
-                (<Parent> childNode)._setSceneRecursively(scene);
+                (<Parent> childNode).setSceneRecursively(scene);
             } else {
-                (<any>childNode)._setScene(scene);
+                (<any>childNode).setScene(scene);
             }
         }
     }        

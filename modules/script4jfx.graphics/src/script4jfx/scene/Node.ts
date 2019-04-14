@@ -36,8 +36,13 @@ import { ReadOnlyObjectWrapper } from 'script4jfx.base';
 import { StringProperty } from 'script4jfx.base';
 import { SimpleStringProperty } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
+import { EventHandler } from 'script4jfx.base';
+import { KeyEvent } from './input/KeyEvent';
 import { Parent } from './Parent';
 import { Scene } from './Scene';
+import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
+import { EventType } from 'script4jfx.base';
+import { Event } from 'script4jfx.base';
 import 'jquery';
 
 export abstract class Node implements Styleable, EventTarget {
@@ -55,7 +60,12 @@ export abstract class Node implements Styleable, EventTarget {
     /**
      * The Scene that this Node is part of.
      */
-    private readonly scene: ReadOnlyObjectWrapper<Scene> = new ReadOnlyObjectWrapper<Scene>(null, this);    
+    private readonly scene: ReadOnlyObjectWrapper<Scene> = new ReadOnlyObjectWrapper<Scene>(null, this);
+    
+    /**
+     * The manager of event handlers.
+     */
+    private readonly eventHandlerManager: NodeEventHandlerManager = new NodeEventHandlerManager(this);
     
     /**
      * Specifies the event dispatcher for this node.
@@ -72,6 +82,21 @@ export abstract class Node implements Styleable, EventTarget {
      */    
     private style: StringProperty = null;
     
+    /**
+     * Defines a function to be called when this Node or its child Node has input focus and a key has been pressed.
+     */    
+    private onKeyPressed: ObjectProperty<EventHandler<KeyEvent>> = null;
+
+    /**
+     * Defines a function to be called when this Node or its child Node has input focus and a key has been released.
+     */
+    private onKeyReleased: ObjectProperty<EventHandler<KeyEvent>> = null;
+    
+    /**
+     * Defines a function to be called when this Node or its child Node has input focus and a key has been typed.
+     */
+    private onKeyTyped: ObjectProperty<EventHandler<KeyEvent>> = null;
+        
     /**
      * Sets the element, taken from buildHtmlElement().
      */
@@ -210,20 +235,118 @@ export abstract class Node implements Styleable, EventTarget {
     public setStyle​(value: string): void {
         this.styleProperty().set(value);
     }
+
+    /**
+     * Defines a function to be called when this Node or its child Node has input focus and a key has been pressed.
+     */    
+    public onKeyPressedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
+        if (this.onKeyPressed === null) {
+            this.onKeyPressed = this.eventHandlerManager.createOnKeyPressed();
+        }
+        return this.onKeyPressed;
+    }
+
+    /**
+     * Gets the value of the property onKeyPressed.
+     */    
+    public getOnKeyPressed(): EventHandler<KeyEvent> {
+        return this.onKeyPressed === null ? null : this.onKeyPressed.get();
+    }
+
+    /**
+     * Sets the value of the property onKeyPressed.
+     */
+    public setOnKeyPressed​(value: EventHandler<KeyEvent>): void {
+        this.onKeyPressedProperty().set(value);
+    }
+
+    /**
+     * Defines a function to be called when this Node or its child Node has input focus and a key has been released.
+     */
+    public onKeyReleasedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
+        if (this.onKeyReleased === null) {
+            this.onKeyReleased = this.eventHandlerManager.createOnKeyReleased();
+        }
+        return this.onKeyReleased;
+    }
+
+    /**
+     * Gets the value of the property onKeyReleased.
+     */    
+    public getOnKeyReleased(): EventHandler<KeyEvent> {
+        return this.onKeyReleased === null ? null : this.onKeyReleased.get();
+    }
+
+    /**
+     * Sets the value of the property onKeyReleased.
+     */
+    public setOnKeyReleased(value: EventHandler<KeyEvent>): void {
+        this.onKeyReleasedProperty().set(value);
+    }
+
+    /**
+     * Defines a function to be called when this Node or its child Node has input focus and a key has been typed.
+     */
+    public onKeyTypedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
+        if (this.onKeyTyped === null) {
+            this.onKeyTyped = this.eventHandlerManager.createOnKeyTyped();
+        }
+        return this.onKeyTyped;
+    }
+
+    /**
+     * Gets the value of the property onKeyTyped.
+     */    
+    public getOnKeyTyped(): EventHandler<KeyEvent> {
+        return this.onKeyTyped === null ? null : this.onKeyTyped.get();
+    }
+
+    /**
+     * Sets the value of the property onKeyTyped.
+     */
+    public setOnKeyTyped​(value: EventHandler<KeyEvent>): void {
+        this.onKeyTypedProperty().set(value);
+    }
     
+    /**
+     * Registers an event handler to this node.
+     */
+    public addEventHandler<T extends Event>​(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
+        this.eventHandlerManager.addMultipleEventHandlerByType(eventType, eventHandler);
+    }
+
+    /**
+     * Unregisters a previously registered event handler from this node.
+     */    
+    public removeEventHandler​<T extends Event>(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
+        this.eventHandlerManager.removeMultipleEventHandlerByType(eventType, eventHandler);
+    }
+
     protected abstract buildElement(): HTMLElement;
     
     /**
-     * This method is private, but is used in Parent, as there is no package access in TS.
+     * This method is private, but is used in Parent/Scene, as there is no package access in TS.
      */
-    private _setParent(value: Parent): void {
+    private setParent(value: Parent): void {
         this.parent.set(value);
     }
     
     /**
-     * This method is private, but it is used in Parent, as there is no package access in TS.
+     * This method is private, but it is used in Parent/Scene, as there is no package access in TS.
      */
-    private _setScene(scene: Scene): void {
+    private setScene(scene: Scene): void {
         this.scene.set(scene);
+        if (scene === null) {
+            this.getEventHandlerManager().setHandlerListener(null);
+        } else {
+            this.getEventHandlerManager().setHandlerListener((<any>scene).getHandlerListener());
+        }
     }
+    
+    /**
+     * This method is private, but it is used in Parent/Scene, as there is no package access in TS.
+     */
+     private getEventHandlerManager(): NodeEventHandlerManager {
+         return this.eventHandlerManager;
+     }
 }

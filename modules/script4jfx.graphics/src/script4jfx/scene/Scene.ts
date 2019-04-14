@@ -31,16 +31,66 @@ import { SimpleObjectProperty } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
 import { Parent } from './Parent';
 import { Node } from './Node';
+import { EventType } from 'script4jfx.base';
+import { SceneEventHandlerManager } from './../internal/scene/SceneEventHandlerManager';
+import { EventHandlerListener } from './../internal/scene/EventHandlerListener';
+import { AbstractEventHandlerManager } from './../internal/scene/AbstractEventHandlerManager';
+import { EventHandler } from 'script4jfx.base';
+import { KeyEvent } from './input/KeyEvent';
+import { Event } from 'script4jfx.base';
 
 /**
  * Scene doesn't have element.
  */
 export class Scene implements EventTarget {
 
+    private static EventHandlerListenerImpl = class implements EventHandlerListener {
+        
+        private readonly scene: Scene;
+        
+        constructor(scene: Scene) {
+            this.scene = scene;
+        }
+        
+        public handlerWasAdded(eventType: EventType<any>, manager: AbstractEventHandlerManager): void {
+            console.log("Hadnler was added, type:" + eventType + ", manager:" + manager);
+        }
+    
+        public handlerWasRemoved(eventType: EventType<any>, manager: AbstractEventHandlerManager): void {
+            console.log("Hadnler was removed, type:" + eventType + ", manager:" + manager);
+        }
+    };
+
     /**
      * Defines the root Node of the scene graph.
      */    
     private readonly root: ObjectProperty<Parent> = new SimpleObjectProperty<Parent>();
+    
+    /**
+     * This listener will be use by all EventHandlerManagers of all Nodes on this Scene and of this Scene.
+     */
+    private readonly eventHandlerListener: EventHandlerListener = new Scene.EventHandlerListenerImpl(this);
+    
+    /**
+     * The manager of event handlers.
+     */
+    private readonly eventHandlerManager: SceneEventHandlerManager = 
+            new SceneEventHandlerManager(this, this.eventHandlerListener);    
+    
+    /**
+     * Defines a function to be called when some Node of this Scene has input focus and a key has been pressed.
+     */    
+    private onKeyPressed: ObjectProperty<EventHandler<KeyEvent>> = null;
+
+    /**
+     * Defines a function to be called when some Node of this Scene has input focus and a key has been released.
+     */
+    private onKeyReleased: ObjectProperty<EventHandler<KeyEvent>> = null;
+    
+    /**
+     * Defines a function to be called when some Node of this Scene has input focus and a key has been typed.
+     */
+    private onKeyTyped: ObjectProperty<EventHandler<KeyEvent>> = null;
 
     /**
      * Creates a Scene for a specific root Node.
@@ -48,10 +98,10 @@ export class Scene implements EventTarget {
     constructor​(root: Parent) {
         this.root.addListener((observable: ObservableValue<Parent>, oldParent: Parent, newParent: Parent) => {
             if (oldParent !== null) {
-                (<any>oldParent)._setSceneRecursively(null);
+                (<any>oldParent).setSceneRecursively(null);
             }
             if (newParent !== null) {
-                (<any>newParent)._setSceneRecursively(this);
+                (<any> newParent).setSceneRecursively(this);
             }
         });
         this.setRoot(root);
@@ -82,5 +132,99 @@ export class Scene implements EventTarget {
     public rootProperty(): ObjectProperty<Parent> {
         return this.root;
     }
+    
+    /**
+     * Defines a function to be called when some Node of this Scene has input focus and a key has been pressed.
+     */    
+    public onKeyPressedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
+        if (this.onKeyPressed === null) {
+            this.onKeyPressed = this.eventHandlerManager.createOnKeyPressed();
+        }
+        return this.onKeyPressed;
+    }
+
+    /**
+     * Gets the value of the property onKeyPressed.
+     */    
+    public getOnKeyPressed(): EventHandler<KeyEvent> {
+        return this.onKeyPressed === null ? null : this.onKeyPressed.get();
+    }
+
+    /**
+     * Sets the value of the property onKeyPressed.
+     */
+    public setOnKeyPressed​(value: EventHandler<KeyEvent>): void {
+        this.onKeyPressedProperty().set(value);
+    }
+
+    /**
+     * Defines a function to be called when some Node of this Scene has input focus and a key has been released.
+     */
+    public onKeyReleasedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
+        if (this.onKeyReleased === null) {
+            this.onKeyReleased = this.eventHandlerManager.createOnKeyReleased();
+        }
+        return this.onKeyReleased;
+    }
+
+    /**
+     * Gets the value of the property onKeyReleased.
+     */    
+    public getOnKeyReleased(): EventHandler<KeyEvent> {
+        return this.onKeyReleased === null ? null : this.onKeyReleased.get();
+    }
+
+    /**
+     * Sets the value of the property onKeyReleased.
+     */
+    public setOnKeyReleased(value: EventHandler<KeyEvent>): void {
+        this.onKeyReleasedProperty().set(value);
+    }
+
+    /**
+     * Defines a function to be called when some Node of this Scene has input focus and a key has been typed.
+     */
+    public onKeyTypedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
+        if (this.onKeyTyped === null) {
+            this.onKeyTyped = this.eventHandlerManager.createOnKeyTyped();
+        }
+        return this.onKeyTyped;
+    }
+
+    /**
+     * Gets the value of the property onKeyTyped.
+     */    
+    public getOnKeyTyped(): EventHandler<KeyEvent> {
+        return this.onKeyTyped === null ? null : this.onKeyTyped.get();
+    }
+
+    /**
+     * Sets the value of the property onKeyTyped.
+     */
+    public setOnKeyTyped​(value: EventHandler<KeyEvent>): void {
+        this.onKeyTypedProperty().set(value);
+    }
+    
+    /**
+     * Registers an event handler to this scene.
+     */
+    public addEventHandler<T extends Event>​(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
+        this.eventHandlerManager.addMultipleEventHandlerByType(eventType, eventHandler);
+    }
+
+    /**
+     * Unregisters a previously registered event handler from this scene.
+     */    
+    public removeEventHandler​<T extends Event>(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
+        this.eventHandlerManager.removeMultipleEventHandlerByType(eventType, eventHandler);
+    }    
+    
+    /**
+     * This method is private, but it is used in Node, as there is no package access in TS.
+     */
+    private getHandlerListener(): EventHandlerListener {
+        return this.eventHandlerListener;
+    }
+   
 }
 
