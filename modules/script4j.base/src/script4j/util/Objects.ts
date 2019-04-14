@@ -26,6 +26,7 @@
 
 import './../lang/Object';
 import './../lang/String';
+import { IllegalArgumentError } from './../lang/IllegalArgumentError';
 
 export class Objects {
 
@@ -46,6 +47,9 @@ export class Objects {
      * determined by using the equals method of the first argument.
      */
     public static equals​(a: Object, b: Object): boolean {
+        if (a === undefined || b === undefined) {
+            throw new IllegalArgumentError("Argument is undefined");
+        }
         if (a === null) {
             if (b === null) {
                 return true;

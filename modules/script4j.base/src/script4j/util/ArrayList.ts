@@ -32,6 +32,7 @@ import { Consumer } from './../util/function/Consumer';
 import { IndexOutOfBoundsError } from './../lang/IndexOutOfBoundsError';
 import { NoSuchElementError } from './../util/NoSuchElementError';
 import { IllegalStateError } from './../lang/IllegalStateError';
+import { Objects } from './Objects';
 
 export class ArrayList<E> extends AbstractList<E> {
 
@@ -90,14 +91,8 @@ export class ArrayList<E> extends AbstractList<E> {
     public contains(obj: E): boolean {
         //we can not use here this.array.indexOf because we need to check equality.
         for (let i: number = 0; i < this.array.length; i++) {
-            if (this.array[i] === null) {
-                if (obj === null) {
-                    return true;
-                }
-            } else {
-                if (obj !== null && this.array[i].equals(obj)) {
-                    return true;
-                }
+            if (Objects.equals(this.array[i], obj)) {
+                return true;
             }
         }
         return false;
@@ -172,15 +167,8 @@ export class ArrayList<E> extends AbstractList<E> {
 
     public indexOf(obj: E): number {
         for (let i: number = 0; i < this.size(); i++) {
-            let checkObject = this.get(i);
-            if (checkObject === null) {
-                if (obj === null) {
-                    return i;
-                }
-            } else {
-                if (obj !== null && checkObject.equals(obj)) {
-                    return i;
-                }
+            if (Objects.equals(this.get(i), obj)) {
+                return i;
             }
         }
         return -1;
