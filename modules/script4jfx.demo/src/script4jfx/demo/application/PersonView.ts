@@ -29,6 +29,8 @@ import { Scene } from 'script4jfx.graphics';
 import { ObservableList } from 'script4jfx.base';
 import { Bindings } from 'script4jfx.base';
 import { NumberStringConverter } from 'script4jfx.base';
+import { EventHandler } from 'script4jfx.base';
+import { KeyEvent } from 'script4jfx.graphics';
 
 
 export class PersonView implements View {
@@ -48,6 +50,19 @@ export class PersonView implements View {
     private readonly resumeTextArea: TextArea = new TextArea();
     
     constructor() {
+        this.firstNameTextField.setOnKeyPressed((event: KeyEvent) => {
+            console.log("KeyPressed event for firstNameTextField came:");
+            console.log(event);
+        });
+        this.lastNameTextField.setOnKeyPressed((event: KeyEvent) => {
+            console.log("KeyPressed event for lastNameTextField came:");
+            console.log(event);
+        });
+        this.ageTextField.setOnKeyTyped((event: KeyEvent) => {
+            console.log("KeyTyped event for ageTextField came:");
+            console.log(event);
+        });
+        
         this.pane = new Pane(
             this.firstNameTextField,
             this.lastNameTextField,
@@ -55,6 +70,11 @@ export class PersonView implements View {
             this.resumeTextArea
         )
         this.scene = new Scene(this.pane);
+        
+        this.resumeTextArea.setOnKeyTyped((event: KeyEvent) => {
+            console.log("KeyTyped event for resumeTextArea came:");
+            console.log(event);
+        });
     }
     
     public getScene(): Scene {
