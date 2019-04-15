@@ -34,7 +34,7 @@ export class Event extends EventObject {
     /**
      * Common supertype for all event types.
      */
-    public static readonly ANY: EventType<Event>;
+    public static readonly ANY: EventType<Event> = null;
 
     private readonly target: EventTarget;
 
