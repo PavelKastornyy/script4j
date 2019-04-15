@@ -24,12 +24,28 @@
  *
  */
 
-import { Event } from "script4jfx.base";
+import { EventType } from 'script4jfx.base';
+import { Event } from 'script4jfx.base';
+import { EventTarget } from 'script4jfx.base';
+import { UnsupportedOperationError } from 'script4j.base';
 
- export class EventManager {
-
-     public static processEvent(event: Event, node: Node): void {
-
-     }
- }
+export class BusEvent extends Event {
+    
+    public static readonly ANY: EventType<BusEvent> = new EventType(Event.ANY, "BUS") ;
+    
+    constructor(source: Object, eventType: EventType<BusEvent>) {
+        super(source, null, eventType)
+    }
+    
+    public getTarget(): EventTarget {
+        throw new UnsupportedOperationError();
+    }
+    
+    /**
+     * Gets the event type of this event.
+     */
+    public getEventType(): EventType<BusEvent> {
+        return <EventType<BusEvent>>super.getEventType();
+    }
+}
 

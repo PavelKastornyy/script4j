@@ -24,16 +24,45 @@
  *
  */
 
+import { BusEvent } from './../eventbus/BusEvent';
+import { EventHandlerCounter } from './../EventHandlerCounter';
 import { EventType } from 'script4jfx.base';
-import { AbstractEventHandlerManager } from './AbstractEventHandlerManager';
 
-/**
- * We use listener but not properties for performance reasons.
- */
-export interface EventHandlerListener {
+export class NodeEvent extends BusEvent {
     
-    handlerWasAdded(eventType: EventType<any>, manager: AbstractEventHandlerManager): void;
+    /**
+     * Common supertype for all node event types.
+     */
+    public static readonly ANY: EventType<NodeEvent> = new EventType<NodeEvent>(BusEvent.ANY, "NODE");
+
+    /**
+     * This event occurs when a node has been added to scene.
+     */
+    public static readonly NODE_ADDED: EventType<NodeEvent> = 
+            new EventType<NodeEvent>(NodeEvent.ANY, "NODE_ADDED");
     
-    handlerWasRemoved(eventType: EventType<any>, manager: AbstractEventHandlerManager): void;
+    /**
+     * This event occurs when a node has been removed from scene.
+     */
+    public static readonly NODE_REMOVED: EventType<NodeEvent> = 
+            new EventType<NodeEvent>(NodeEvent.ANY, "NODE_REMOVED");
+
+    private readonly counterResult: EventHandlerCounter.Result;
+    
+    constructor(source: Object, eventType: EventType<NodeEvent>, counterResult: EventHandlerCounter.Result) {
+        super(source, eventType);
+        this.counterResult = counterResult;
+    }
+    
+    public getCounterResult(): EventHandlerCounter.Result {
+        return this.counterResult;
+    }
+    
+    /**
+     * Gets the event type of this event.
+     */
+    public getEventType(): EventType<NodeEvent> {
+        return <EventType<NodeEvent>>super.getEventType();
+    }
 }
 

@@ -26,11 +26,22 @@
 
 import { Node } from './../../scene/Node';
 import { AbstractEventHandlerManager } from './AbstractEventHandlerManager';
+import { EventBus } from './eventbus/EventBus';
+import { Scene } from './../../scene/Scene';
 
 export class NodeEventHandlerManager extends AbstractEventHandlerManager {
     
     constructor(node: Node) {
         super(node);
+    }
+    
+    protected getEventBus(): EventBus {
+        const scene: Scene = (<Node> this.getBean()).getScene();
+        if (scene === null) {
+            return null;
+        } else {
+            return scene.getEventBus();
+        }
     }
 }
 

@@ -43,6 +43,9 @@ import { Scene } from './Scene';
 import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
 import { EventType } from 'script4jfx.base';
 import { Event } from 'script4jfx.base';
+import { ObservableList } from 'script4jfx.base';
+import { Consumer } from 'script4j.base';
+import { Iterator } from 'script4j.base';
 import 'jquery';
 
 export abstract class Node implements Styleable, EventTarget {
@@ -101,7 +104,7 @@ export abstract class Node implements Styleable, EventTarget {
      * Sets the element, taken from buildHtmlElement().
      */
     constructor() {
-        let element: HTMLElement = this.buildElement();
+        let element: HTMLElement = this.createElement();
         this.element.set(element);
         if (element.style.cssText !== "") {
             this.setStyle(element.style.cssText);
@@ -322,7 +325,7 @@ export abstract class Node implements Styleable, EventTarget {
         this.eventHandlerManager.removeMultipleEventHandlerByType(eventType, eventHandler);
     }
 
-    protected abstract buildElement(): HTMLElement;
+    protected abstract createElement(): HTMLElement;
     
     /**
      * This method is private, but is used in Parent/Scene, as there is no package access in TS.
@@ -336,11 +339,6 @@ export abstract class Node implements Styleable, EventTarget {
      */
     private setScene(scene: Scene): void {
         this.scene.set(scene);
-        if (scene === null) {
-            this.getEventHandlerManager().setHandlerListener(null);
-        } else {
-            this.getEventHandlerManager().setHandlerListener((<any>scene).getHandlerListener());
-        }
     }
     
     /**
@@ -349,4 +347,20 @@ export abstract class Node implements Styleable, EventTarget {
      private getEventHandlerManager(): NodeEventHandlerManager {
          return this.eventHandlerManager;
      }
+     
+    /**
+     * This method is private, but it is used in Parent/Scene, as there is no package access in TS.
+     * Traverses down Node tree and calls consume function. This method is in Node but not in Parent
+     * because lookup method is also in Node.
+     */
+    private traverse(consumer: Consumer<Node>) {
+        consumer(this);
+        if (this instanceof Parent) {
+            const children: ObservableList<Node> = (<any>this).getChildren();
+            const iterator: Iterator<Node> = children.iterator();
+            while (iterator.hasNext()) {
+                iterator.next().traverse(consumer);
+            }
+        }
+    }
 }

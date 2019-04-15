@@ -27,8 +27,10 @@
 import { Node } from './Node';
 import { ObservableList } from 'script4jfx.base';
 import { FXCollections } from 'script4jfx.base';
-import { Iterator } from 'script4j.base';
-import { Scene } from './Scene';
+import { List } from 'script4j.base';
+import { EventHandlerCounter } from './../internal/scene/EventHandlerCounter';
+import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
+import { NodeEvent } from './../internal/scene/busevents/NodeEvent';
 
 export abstract class Parent extends Node {
     
@@ -40,25 +42,10 @@ export abstract class Parent extends Node {
             while (change.next()) {
                 //after set method both added and removed are true
                 if (change.wasRemoved()) {
-                    let removedElements: HTMLElement[] = new Array();
-                    change.getRemoved().forEach((node) => {
-                        this.workRemovedChild(node);
-                        removedElements.push(node.getElement());
-                    });
-                    $(removedElements).remove();
+                    this.workRemovedChildlen(change.getRemoved());
                 }
                 if (change.wasAdded()) {
-                    let addedElements: HTMLElement[] = new Array();
-                    change.getAddedSubList().forEach((node)=> {
-                        this.workAddedChild(node);
-                        addedElements.push(node.getElement());
-                    });
-                    if (change.getFrom() === 0) {
-                        $(this.getElement()).prepend(addedElements);
-                    } else {
-                        let afterElement = $(this.getElement()).children().eq(change.getFrom() - 1)[0];
-                        $(afterElement).after(addedElements);
-                    }
+                    this.workAddedChildren(change.getAddedSubList(), change.getFrom());
                 }
             }
         });
@@ -78,44 +65,51 @@ export abstract class Parent extends Node {
         return FXCollections.unmodifiableObservableList(this.children);
     }
     
-    private workRemovedChild(node: Node): void {
-        (<any>node).setParent(null);
-        //null scene from removed node and its possible children
-        if (this.getScene() !== null) {
-            if (node instanceof Parent) {
-                (<Parent>node).setSceneRecursively(null);
-            } else {
-                (<any>node).setScene(null);
+    private workRemovedChildlen(nodes: List<Node>): void {
+        let removedElements: HTMLElement[] = new Array();
+        const counter: EventHandlerCounter = new EventHandlerCounter();
+        nodes.forEach((node) => {
+            removedElements.push(node.getElement());
+            (<any>node).setParent(null);
+            //null scene from removed node and its possible children
+            if (this.getScene() !== null) {
+                (<any>node).traverse((currentNode: Node) => {
+                    (<any>currentNode).setScene(null);
+                    counter.countAndAdd(<NodeEventHandlerManager>(<any>currentNode).getEventHandlerManager());
+                });
             }
+        });
+        if (!counter.getResult().isEmpty() && this.getScene() !== null) {
+            const event: NodeEvent = new NodeEvent(this, NodeEvent.NODE_REMOVED, counter.getResult());
+            this.getScene().getEventBus().post(event);
         }
+        $(removedElements).remove();
     }
     
-    private workAddedChild(node: Node): void {
-        (<any>node).setParent(this);
-        //add scene for added node and its possible children
-        if (this.getScene() !== null) {
-            if (node instanceof Parent) {
-                (<Parent> node).setSceneRecursively(this.getScene());
-            } else {
-                (<any> node).setScene(this.getScene());
+    private workAddedChildren(nodes: List<Node>, fromPos: number): void {
+        let addedElements: HTMLElement[] = new Array();
+        const counter: EventHandlerCounter = new EventHandlerCounter();
+        nodes.forEach((node)=> {
+            (<any>node).setParent(this);
+            //add scene for added node and its possible children
+            if (this.getScene() !== null) {
+                (<any>node).traverse((currentNode: Node) => {
+                    (<any>currentNode).setScene(this.getScene());
+                    counter.countAndAdd(<NodeEventHandlerManager>(<any>currentNode).getEventHandlerManager());
+                });
             }
+            addedElements.push(node.getElement());
+        });
+        if (fromPos === 0) {
+            $(this.getElement()).prepend(addedElements);
+        } else {
+            let afterElement = $(this.getElement()).children().eq(fromPos - 1)[0];
+            $(afterElement).after(addedElements);
+        }
+        if (!counter.getResult().isEmpty() && this.getScene() !== null) {
+            const event: NodeEvent = new NodeEvent(this, NodeEvent.NODE_ADDED, counter.getResult());
+            this.getScene().getEventBus().post(event);
         }
     }
-    
-    /**
-     * This method is private, but it is used in Scene, as there is no package access in TS.
-     */
-    private setSceneRecursively(scene: Scene): void {
-        (<any>this).setScene(scene);
-        const iterator: Iterator<Node> = this.children.iterator();
-        while (iterator.hasNext()) {
-            const childNode: Node = iterator.next();
-            if (childNode instanceof Parent) {
-                (<Parent> childNode).setSceneRecursively(scene);
-            } else {
-                (<any>childNode).setScene(scene);
-            }
-        }
-    }        
 }
 

@@ -39,5 +39,11 @@ export class InputEvent extends Event {
         super(source, target, eventType);
     }
 
+    /**
+     * Gets the event type of this event.
+     */
+    public getEventType(): EventType<InputEvent> {
+        return <EventType<InputEvent>>super.getEventType();
+    }
 }
 

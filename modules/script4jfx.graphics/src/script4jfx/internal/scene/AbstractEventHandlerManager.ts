@@ -35,7 +35,8 @@ import { ObservableValue } from 'script4jfx.base';
 import { EventType } from 'script4jfx.base';
 import { SimpleObjectProperty } from 'script4jfx.base';
 import { IllegalStateError } from 'script4j.base';
-import { EventHandlerListener } from './EventHandlerListener';
+import { EventBus } from './eventbus/EventBus';
+import { HandlerEvent } from './busevents/HandlerEvent';
 
 export abstract class AbstractEventHandlerManager {
     
@@ -50,14 +51,9 @@ export abstract class AbstractEventHandlerManager {
     private singleEventHandlersByType: Map<EventType<any>, EventHandler<any>> = null;
     
     /**
-     * Return either Scene or Node that contains this helper.
+     * Either Scene or Node that contains this maanger.
      */
     private readonly bean: Object;
-    
-    /**
-     * We use listener but not properties for performance reasons.
-     */
-    private handlerListener: EventHandlerListener = null;
     
     constructor(bean: Object) {
         this.bean = bean;
@@ -73,14 +69,6 @@ export abstract class AbstractEventHandlerManager {
     
     public getMultipleEventHandlersByType(): Map<EventType<any>, List<EventHandler<any>>> {
         return this.multipleEventHandlersByType;
-    }
-    
-    public setHandlerListener(listener: EventHandlerListener) {
-        this.handlerListener = listener;
-    }
-    
-    public getHandlerListener() {
-        return this.handlerListener;
     }
     
     public createOnKeyReleased(): ObjectProperty<EventHandler<KeyEvent>> {
@@ -108,7 +96,7 @@ export abstract class AbstractEventHandlerManager {
             this.multipleEventHandlersByType.put(eventType, handlers);
         }
         if (handlers.add(handler)) {
-            this.doOnHandlerWasAdded(eventType, handler);
+            this.doOnHandlerAdded(eventType, handler);
         }
     }
     
@@ -124,7 +112,7 @@ export abstract class AbstractEventHandlerManager {
             return;
         }
         if (handlers.remove(handler)) {
-            this.doOnHandlerWasRemoved(eventType, handler);
+            this.doOnHandlerRemoved(eventType, handler);
         }
         if (handlers.isEmpty()) {
             this.multipleEventHandlersByType.remove(eventType);
@@ -137,28 +125,36 @@ export abstract class AbstractEventHandlerManager {
     /**
      * This method is called after new handler was added.
      */
-    protected doOnHandlerWasAdded(eventType: EventType<any>, handler: EventHandler<any>): void {
-        if (this.handlerListener !== null) {
-            this.handlerListener.handlerWasAdded(eventType, this);
+    protected doOnHandlerAdded(eventType: EventType<any>, handler: EventHandler<any>): void {
+        const eventBus = this.getEventBus();
+        if (eventBus === null) {
+            return;
         }
+        const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_ADDED, eventType, this);
+        eventBus.post(event);
     }
     
     /**
      * This method is called after one handler was removed.
      */
-    protected doOnHandlerWasRemoved(eventType: EventType<any>, handler: EventHandler<any>): void {
-        if (this.handlerListener !== null) {
-            this.handlerListener.handlerWasRemoved(eventType, this);
+    protected doOnHandlerRemoved(eventType: EventType<any>, handler: EventHandler<any>): void {
+        const eventBus = this.getEventBus();
+        if (eventBus === null) {
+            return;
         }
+        const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_REMOVED, eventType, this);
+        eventBus.post(event);
     }
     
     /**
      * This method is called after one handler was replaced by another.
      */
-    protected doOnHandlerWasReplaced(eventType: EventType<any>, oldHandler: EventHandler<any>, 
+    protected doOnHandlerReplaced(eventType: EventType<any>, oldHandler: EventHandler<any>, 
             newHandler: EventHandler<any>): void {
         //no logic yet        
     }
+    
+    protected abstract getEventBus(): EventBus;    
     
     private createEventProperty(eventType: EventType<any>): ObjectProperty<EventHandler<any>>  {
         const prop: ObjectProperty<EventHandler<any>> =  
@@ -184,7 +180,7 @@ export abstract class AbstractEventHandlerManager {
         let previousSize = this.singleEventHandlersByType.size();
         this.singleEventHandlersByType.put(eventType, handler);
         if (this.singleEventHandlersByType.size() > previousSize) {
-            this.doOnHandlerWasAdded(eventType, handler);
+            this.doOnHandlerAdded(eventType, handler);
         }
     }
     
@@ -195,7 +191,7 @@ export abstract class AbstractEventHandlerManager {
         const previousSize = this.singleEventHandlersByType.size();
         const handler: EventHandler<any> = this.singleEventHandlersByType.remove(eventType);
         if (this.singleEventHandlersByType.size() < previousSize) {
-            this.doOnHandlerWasRemoved(eventType, handler);
+            this.doOnHandlerRemoved(eventType, handler);
         }
         if (this.singleEventHandlersByType.isEmpty()) {
             this.singleEventHandlersByType = null;
@@ -209,7 +205,7 @@ export abstract class AbstractEventHandlerManager {
         let previousSize = this.singleEventHandlersByType.size();
         let oldHandler: EventHandler<any> = this.singleEventHandlersByType.put(eventType, newHandler);
         if (this.singleEventHandlersByType.size() === previousSize) {
-            this.doOnHandlerWasReplaced(eventType, oldHandler, newHandler);
+            this.doOnHandlerReplaced(eventType, oldHandler, newHandler);
         } else {
             throw new IllegalStateError("The size of singleEventHandlersByType changed after replacing");
         }

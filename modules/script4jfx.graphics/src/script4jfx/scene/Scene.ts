@@ -33,33 +33,18 @@ import { Parent } from './Parent';
 import { Node } from './Node';
 import { EventType } from 'script4jfx.base';
 import { SceneEventHandlerManager } from './../internal/scene/SceneEventHandlerManager';
-import { EventHandlerListener } from './../internal/scene/EventHandlerListener';
-import { AbstractEventHandlerManager } from './../internal/scene/AbstractEventHandlerManager';
+import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
+import { HtmlEventListenerManager } from './../internal/scene/HtmlEventListenerManager';
+import { EventHandlerCounter } from './../internal/scene/EventHandlerCounter';
 import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from './input/KeyEvent';
 import { Event } from 'script4jfx.base';
+import { EventBus } from './../internal/scene/eventbus/EventBus';
 
 /**
- * Scene doesn't have element.
+ * Scene doesn't have element. All javascript event handlers are set to the root of the Scene.
  */
 export class Scene implements EventTarget {
-
-    private static EventHandlerListenerImpl = class implements EventHandlerListener {
-        
-        private readonly scene: Scene;
-        
-        constructor(scene: Scene) {
-            this.scene = scene;
-        }
-        
-        public handlerWasAdded(eventType: EventType<any>, manager: AbstractEventHandlerManager): void {
-            console.log("Hadnler was added, type:" + eventType + ", manager:" + manager);
-        }
-    
-        public handlerWasRemoved(eventType: EventType<any>, manager: AbstractEventHandlerManager): void {
-            console.log("Hadnler was removed, type:" + eventType + ", manager:" + manager);
-        }
-    };
 
     /**
      * Defines the root Node of the scene graph.
@@ -69,13 +54,19 @@ export class Scene implements EventTarget {
     /**
      * This listener will be use by all EventHandlerManagers of all Nodes on this Scene and of this Scene.
      */
-    private readonly eventHandlerListener: EventHandlerListener = new Scene.EventHandlerListenerImpl(this);
+    //private readonly eventHandlerListener: EventHandlerListener = new Scene.EventHandlerListenerImpl(this);
+    
+    private readonly eventBus: EventBus = new EventBus();
     
     /**
-     * The manager of event handlers.
+     * The manager for event handlers of this Scene.
      */
-    private readonly eventHandlerManager: SceneEventHandlerManager = 
-            new SceneEventHandlerManager(this, this.eventHandlerListener);    
+    private readonly eventHandlerManager: SceneEventHandlerManager = new SceneEventHandlerManager(this);
+
+    /**
+     * This manager is created for every new root.
+     */
+    private htmlEventListenerManager: HtmlEventListenerManager = null;
     
     /**
      * Defines a function to be called when some Node of this Scene has input focus and a key has been pressed.
@@ -96,12 +87,25 @@ export class Scene implements EventTarget {
      * Creates a Scene for a specific root Node.
      */
     constructor​(root: Parent) {
+        //root can be set via property that is not ReadOnlyProperty
         this.root.addListener((observable: ObservableValue<Parent>, oldParent: Parent, newParent: Parent) => {
             if (oldParent !== null) {
-                (<any>oldParent).setSceneRecursively(null);
+                (<any>oldParent).traverse((node: Node) => {
+                    (<any>node).setScene(null);
+                });
+                this.htmlEventListenerManager.deinitialize();
             }
             if (newParent !== null) {
-                (<any> newParent).setSceneRecursively(this);
+                this.htmlEventListenerManager = new HtmlEventListenerManager(newParent.getElement(), this.eventBus);
+                const counter: EventHandlerCounter = new EventHandlerCounter();
+                //count handlers from node
+                (<any>newParent).traverse((node: Node) => {
+                    (<any>node).setScene(this);
+                     counter.countAndAdd(<NodeEventHandlerManager>(<any>node).getEventHandlerManager());
+                });
+                //count handlers from scene
+                counter.countAndAdd(this.eventHandlerManager);
+                this.htmlEventListenerManager.initialize(counter.getResult());
             }
         });
         this.setRoot(root);
@@ -122,7 +126,6 @@ export class Scene implements EventTarget {
      * Sets the value of the property root.
      */    
     public setRoot​(value: Parent): void {
-        
         this.root.set(value);
     }
 
@@ -220,10 +223,13 @@ export class Scene implements EventTarget {
     }    
     
     /**
-     * This method is private, but it is used in Node, as there is no package access in TS.
+     * This eventBus is used for internal purposes but it can be also used for custom purposes.
+     * This method is not present in JavaFX API. By using this bus we don't add multiple required
+     * methods that are not present in JavaFX API. However, this bus is not supposed for user events -
+     * - mouse click, key pressed etc.
      */
-    private getHandlerListener(): EventHandlerListener {
-        return this.eventHandlerListener;
+    public getEventBus(): EventBus {
+        return this.eventBus;
     }
    
 }

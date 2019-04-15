@@ -51,7 +51,7 @@ export class Pane extends Region {
         return super.getChildren();
     }
 
-    protected buildElement(): HTMLElement {
+    protected createElement(): HTMLElement {
         return $('<div/>')[0];
     }
 }

@@ -61,4 +61,10 @@ export class KeyEvent extends InputEvent {
         super(source, target, eventType);
     }
 
+    /**
+     * Gets the event type of this event.
+     */    
+    public getEventType(): EventType<KeyEvent> {
+        return <EventType<KeyEvent>>super.getEventType();
+    }
 }

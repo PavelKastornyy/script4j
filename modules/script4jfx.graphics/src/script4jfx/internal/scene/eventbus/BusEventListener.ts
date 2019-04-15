@@ -24,17 +24,12 @@
  *
  */
 
-import { Parent } from './../Parent';
-import 'jquery';
+import { BusEvent } from './BusEvent'
 
-export class Region extends Parent {
+//Functional interface
+export interface BusEventListener<T extends BusEvent> {
     
-    public constructor() {
-        super();
-    }
-    
-    protected createElement(): HTMLElement {
-        return $('<div/>')[0];
-    }
+    //handleEvent
+    (event: T): void;
 }
 

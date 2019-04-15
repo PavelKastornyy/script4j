@@ -26,13 +26,16 @@
 
 import { AbstractEventHandlerManager } from './AbstractEventHandlerManager';
 import { Scene } from './../../scene/Scene';
-import { EventHandlerListener } from './EventHandlerListener';
+import { EventBus } from './eventbus/EventBus';
 
 export class SceneEventHandlerManager extends AbstractEventHandlerManager {
     
-    constructor(scene: Scene, handlerListener: EventHandlerListener) {
+    constructor(scene: Scene) {
         super(scene);
-        this.setHandlerListener(handlerListener);
+    }
+    
+    public getEventBus(): EventBus {
+        return (<Scene> this.getBean()).getEventBus();
     }
 }
 
