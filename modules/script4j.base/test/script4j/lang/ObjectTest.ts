@@ -25,6 +25,8 @@ import { it } from 'mocha';
 import './../../../src/script4j/lang/Object';
 import { Class } from './../../../src/script4j/lang/Class';
 import { Integer } from './../../../src/script4j/lang/Integer';
+import { ArrayList } from './../../../src/script4j/util/ArrayList';
+import { HashSet } from './../../../src/script4j/util/HashSet';
 
 describe('ObjectTest', () => {
 
@@ -69,7 +71,8 @@ describe('ObjectTest', () => {
         };
         assert.equal(testObj1.toString(), "_class@ff");
     });
-
-
-
+    
+    it('class_classByLiteralAndClassFromInstance_sameClassInstance', () => {
+        assert.equal(ArrayList.class(), new ArrayList().getClass());
+    });
 });

@@ -44,12 +44,10 @@ describe('ClassTest', () => {
         assert.equal(test.getClass().getName(), "TheTest");
     });
 
-    it('forConstructor_classByNameAndClassFromInstance_sameClassInstance', () => {
-        assert.equal(Class.forConstructor(ArrayList.class()), Class.forConstructor(new ArrayList().getClass()));
-    });
-
-    it('forConstructor_differentClasses_differentClassInstance', () => {
-        assert.notEqual(Class.forConstructor(ArrayList.class()), Class.forConstructor(HashSet.class()));
+    it('forConstructor_multipleCall_sameClassInstance', () => {
+        const klass: Class = Class.forConstructor(ArrayList);
+        assert.equal(klass.getName(), "ArrayList");
+        assert.equal(klass, Class.forConstructor(ArrayList));
     });
 });
 
