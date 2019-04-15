@@ -31,7 +31,7 @@ describe('ClassTest', () => {
     class TheTest {
 
         constructor() {
-            let theClass: Class = new Class(null);
+            
         }
     }
 
@@ -45,11 +45,8 @@ describe('ClassTest', () => {
     });
 
     it('forConstructor_multipleCall_sameClassInstance', () => {
-        const klass: Class = Class.forConstructor(ArrayList);
+        const klass: Class<ArrayList<any>> = Class.forConstructor(ArrayList);
         assert.equal(klass.getName(), "ArrayList");
         assert.equal(klass, Class.forConstructor(ArrayList));
     });
 });
-
-
-

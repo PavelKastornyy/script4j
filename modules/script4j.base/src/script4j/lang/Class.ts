@@ -41,21 +41,24 @@ import './Object';
  *
  * @author  Pavel Kastornyy
  */
-export class Class {
 
-    private static constructors = new Array();
+import { Constructor } from './Constructor';
 
-    private static createdClasses = new Array();
+export class Class<T> {
 
-    private construc: any;
+    private static constructors: Constructor<any>[] = new Array();
 
-    constructor(construc: any) {
+    private static createdClasses: Class<any>[] = new Array();
+
+    private construc: Constructor<T> = null;
+
+    private constructor(construc: any) {
         this.construc = construc;
     }
 
-    public static forConstructor(construc: any): Class {
+    public static forConstructor<S extends Object>(construc: { new (...args: any[]): S }): Class<S> {
         let index = Class.constructors.indexOf(construc);
-        let klass: Class = null;
+        let klass: Class<S> = null;
         if (index === -1) {
             Class.constructors.push(construc);
             klass = new Class(construc);

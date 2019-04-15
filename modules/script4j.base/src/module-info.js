@@ -27,6 +27,7 @@ module.exports = {
      * Order matters!
      */
     classes: [
+        'script4j.lang.Constructor',
         'script4j.lang.Class',
         'script4j.lang.Object',
         'script4j.lang.LooseObject',

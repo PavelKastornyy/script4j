@@ -60,7 +60,7 @@ declare global {
          * Return the class. This method must be used when we need a class literal,
          * for example, MyClass.class().
          */
-        class(): Class;
+        class<T>(): Class<T>;
 
         /**
         * Returns the runtime class of this {@code Object}. The returned
@@ -71,7 +71,7 @@ declare global {
         * @return The {@code Class} object that represents the runtime
         *         class of this object.
         */
-        getClass(): Class;
+        getClass<T>(): Class<T>;
 
         toString(): string;
     }
