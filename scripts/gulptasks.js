@@ -288,7 +288,7 @@ function removeImportLines(data) {
 
 function removeExportLines(data) {
     //console.log(data);
-    let regexpNotGlobal = /export\s+[class|interface|abstract|enum|function]/;
+    let regexpNotGlobal = /export\s+[class|interface|abstract|enum|function|type]/;
     data = data.replace(regexpNotGlobal, function(match){
         return match.replace("export", "").trim();
     });
