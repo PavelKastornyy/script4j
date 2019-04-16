@@ -240,7 +240,7 @@ describe('HashMapTest', () => {
         assert.equal(values.size(), 2);
     });
     
-    it('compute_valueExists_valueIsReplaced', () => {
+    it('compute_valueExists_valueReplaced', () => {
         let map: Map<string, number> = new HashMap<string, number>();
         map.put("a", 10);
         map.put("b", 20);
@@ -253,7 +253,7 @@ describe('HashMapTest', () => {
         assert.equal(map.get("b"), 20);
     });
     
-    it('compute_valueNotExists_valueIsPut', () => {
+    it('compute_valueNotExists_valuePut', () => {
         let map: Map<string, number> = new HashMap<string, number>();
         map.put("a", 10);
         let result = map.compute("b", (k: string, n: number) => {
@@ -266,5 +266,15 @@ describe('HashMapTest', () => {
         assert.equal(map.size(), 2);
         assert.equal(map.get("a"), 10);
         assert.equal(map.get("b"), 5);
+    });
+    
+    it('compute_resultIsNull_valueRemoved', () => {
+        let map: Map<string, number> = new HashMap<string, number>();
+        map.put("a", 10);
+        let result = map.compute("a", (k: string, n: number) => {
+            return null;
+        });
+        assert.equal(result, null);
+        assert.equal(map.size(), 0);
     });
 });
