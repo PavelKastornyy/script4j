@@ -78,6 +78,6 @@ export class Class<T> {
      *          represented by this object.
      */
     public getName(): string {
-        return this.construc.name;
+        return (<any>this.construc).name;
     }
 }
