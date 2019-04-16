@@ -24,22 +24,15 @@
  *
  */
 
-import { AbstractEventHandlerManager } from './AbstractEventHandlerManager';
-import { Scene } from './../../scene/Scene';
-import { SceneUnlocker } from './SceneUnlocker';
-import { EventBus } from './eventbus/EventBus';
-
-export class SceneEventHandlerManager extends AbstractEventHandlerManager {
+import { Node } from './../../scene/Node';
+import { ObservableList } from 'script4jfx.base';
+import { NodeUnlocker } from './NodeUnlocker';
+/**
+ * There is no package scope in TypeScript. To solve this proplem this Unlocker is used.
+ * In allows to keep JavaFX API and to check code at compilation time.
+ */
+export interface ParentUnlocker extends NodeUnlocker {
     
-    constructor(scene: Scene) {
-        super(scene);
-    }
-    
-    public getEventBus(): EventBus {
-        return (<SceneUnlocker>this.getBean()).getEventBus();
-    }
+    getChildren(): ObservableList<Node>;
 }
-
-
-
 

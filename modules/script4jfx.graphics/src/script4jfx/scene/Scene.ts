@@ -40,6 +40,8 @@ import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from './input/KeyEvent';
 import { Event } from 'script4jfx.base';
 import { EventBus } from './../internal/scene/eventbus/EventBus';
+import { NodeUnlocker } from './../internal/scene/NodeUnlocker';
+import { ParentUnlocker } from './../internal/scene/ParentUnlocker';
 
 /**
  * Scene doesn't have element. All javascript event handlers are set to the root of the Scene.
@@ -90,20 +92,18 @@ export class Scene implements EventTarget {
         //root can be set via property that is not ReadOnlyProperty
         this.root.addListener((observable: ObservableValue<Parent>, oldParent: Parent, newParent: Parent) => {
             if (oldParent !== null) {
-                (<any>oldParent).traverse((node: Node) => {
-                    (<any>node).setScene(null);
+                (<ParentUnlocker><any>oldParent).traverse((node: Node) => {
+                    (<NodeUnlocker><any>node).setScene(null);
                 });
                 this.htmlEventListenerManager.deinitialize();
             }
             if (newParent !== null) {
                 this.htmlEventListenerManager = new HtmlEventListenerManager(newParent.getElement(), this.eventBus);
                 const counter: EventHandlerCounter = new EventHandlerCounter();
-                //count handlers from node
-                (<any>newParent).traverse((node: Node) => {
-                    (<any>node).setScene(this);
-                     counter.countAndAdd(<NodeEventHandlerManager>(<any>node).getEventHandlerManager());
+                (<ParentUnlocker><any>newParent).traverse((node: Node) => {
+                    (<NodeUnlocker><any>node).setScene(this);
+                     counter.countAndAdd((<NodeUnlocker><any>node).getEventHandlerManager());
                 });
-                //count handlers from scene
                 counter.countAndAdd(this.eventHandlerManager);
                 this.htmlEventListenerManager.initialize(counter.getResult());
             }
@@ -223,14 +223,10 @@ export class Scene implements EventTarget {
     }    
     
     /**
-     * This eventBus is used for internal purposes but it can be also used for custom purposes.
-     * This method is not present in JavaFX API. By using this bus we don't add multiple required
-     * methods that are not present in JavaFX API. However, this bus is not supposed for user events -
-     * - mouse click, key pressed etc.
+     * Use this method via SceneUnlocker.
      */
-    public getEventBus(): EventBus {
+    private getEventBus(): EventBus {
         return this.eventBus;
     }
-   
 }
 

@@ -38,7 +38,7 @@ describe('ParentTest', () => {
     
     class ParentImpl extends Parent {
         
-        protected buildElement(): HTMLElement {
+        protected createElement(): HTMLElement {
             return $('<div/>')[0];
         }
         

@@ -40,7 +40,7 @@ describe('NodeTest', () => {
     
     class NodeImpl extends Node {
         
-        protected buildElement(): HTMLElement {
+        protected createElement(): HTMLElement {
             return $('<div/>')[0];
         }
     }
@@ -51,7 +51,7 @@ describe('NodeTest', () => {
             return super.getChildren();
         }
         
-        protected buildElement(): HTMLElement {
+        protected createElement(): HTMLElement {
             return $('<div/>')[0];
         }
     }

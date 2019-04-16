@@ -47,6 +47,7 @@ import { ObservableList } from 'script4jfx.base';
 import { Consumer } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import 'jquery';
+import { ParentUnlocker } from './../internal/scene/ParentUnlocker';
 
 export abstract class Node implements Styleable, EventTarget {
 
@@ -328,35 +329,33 @@ export abstract class Node implements Styleable, EventTarget {
     protected abstract createElement(): HTMLElement;
     
     /**
-     * This method is private, but is used in Parent/Scene, as there is no package access in TS.
+     * Use this method via NodeUnlocker.
      */
     private setParent(value: Parent): void {
         this.parent.set(value);
     }
     
     /**
-     * This method is private, but it is used in Parent/Scene, as there is no package access in TS.
+     * Use this method via NodeUnlocker.
      */
     private setScene(scene: Scene): void {
         this.scene.set(scene);
     }
     
     /**
-     * This method is private, but it is used in Parent/Scene, as there is no package access in TS.
+     * Use this method via NodeUnlocker.
      */
      private getEventHandlerManager(): NodeEventHandlerManager {
          return this.eventHandlerManager;
      }
      
     /**
-     * This method is private, but it is used in Parent/Scene, as there is no package access in TS.
-     * Traverses down Node tree and calls consume function. This method is in Node but not in Parent
-     * because lookup method is also in Node.
+     * Use this method via NodeUnlocker.
      */
     private traverse(consumer: Consumer<Node>) {
         consumer(this);
         if (this instanceof Parent) {
-            const children: ObservableList<Node> = (<any>this).getChildren();
+            const children: ObservableList<Node> = (<ParentUnlocker><any>this).getChildren();
             const iterator: Iterator<Node> = children.iterator();
             while (iterator.hasNext()) {
                 iterator.next().traverse(consumer);

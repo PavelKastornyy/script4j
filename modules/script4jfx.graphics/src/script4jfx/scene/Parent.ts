@@ -30,6 +30,8 @@ import { FXCollections } from 'script4jfx.base';
 import { List } from 'script4j.base';
 import { EventHandlerCounter } from './../internal/scene/EventHandlerCounter';
 import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
+import { NodeUnlocker } from './../internal/scene/NodeUnlocker';
+import { SceneUnlocker } from './../internal/scene/SceneUnlocker';
 import { NodeEvent } from './../internal/scene/busevents/NodeEvent';
 
 export abstract class Parent extends Node {
@@ -70,18 +72,18 @@ export abstract class Parent extends Node {
         const counter: EventHandlerCounter = new EventHandlerCounter();
         nodes.forEach((node) => {
             removedElements.push(node.getElement());
-            (<any>node).setParent(null);
+            (<NodeUnlocker><any>node).setParent(null);
             //null scene from removed node and its possible children
             if (this.getScene() !== null) {
-                (<any>node).traverse((currentNode: Node) => {
-                    (<any>currentNode).setScene(null);
-                    counter.countAndAdd(<NodeEventHandlerManager>(<any>currentNode).getEventHandlerManager());
+                (<NodeUnlocker><any>node).traverse((currentNode: Node) => {
+                    (<NodeUnlocker><any>currentNode).setScene(null);
+                    counter.countAndAdd((<NodeUnlocker><any>currentNode).getEventHandlerManager());
                 });
             }
         });
         if (!counter.getResult().isEmpty() && this.getScene() !== null) {
             const event: NodeEvent = new NodeEvent(this, NodeEvent.NODE_REMOVED, counter.getResult());
-            this.getScene().getEventBus().post(event);
+            (<SceneUnlocker><any>this.getScene()).getEventBus().post(event);
         }
         $(removedElements).remove();
     }
@@ -90,12 +92,12 @@ export abstract class Parent extends Node {
         let addedElements: HTMLElement[] = new Array();
         const counter: EventHandlerCounter = new EventHandlerCounter();
         nodes.forEach((node)=> {
-            (<any>node).setParent(this);
+            (<NodeUnlocker><any>node).setParent(this);
             //add scene for added node and its possible children
             if (this.getScene() !== null) {
-                (<any>node).traverse((currentNode: Node) => {
-                    (<any>currentNode).setScene(this.getScene());
-                    counter.countAndAdd(<NodeEventHandlerManager>(<any>currentNode).getEventHandlerManager());
+                (<NodeUnlocker><any>node).traverse((currentNode: Node) => {
+                    (<NodeUnlocker><any>currentNode).setScene(this.getScene());
+                    counter.countAndAdd((<NodeUnlocker><any>currentNode).getEventHandlerManager());
                 });
             }
             addedElements.push(node.getElement());
@@ -108,8 +110,7 @@ export abstract class Parent extends Node {
         }
         if (!counter.getResult().isEmpty() && this.getScene() !== null) {
             const event: NodeEvent = new NodeEvent(this, NodeEvent.NODE_ADDED, counter.getResult());
-            this.getScene().getEventBus().post(event);
+            (<SceneUnlocker><any>this.getScene()).getEventBus().post(event);
         }
     }
 }
-

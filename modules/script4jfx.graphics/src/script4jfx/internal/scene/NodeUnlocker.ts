@@ -24,22 +24,37 @@
  *
  */
 
-import { AbstractEventHandlerManager } from './AbstractEventHandlerManager';
+import { Parent } from './../../scene/Parent';
+import { Node } from './../../scene/Node';
 import { Scene } from './../../scene/Scene';
-import { SceneUnlocker } from './SceneUnlocker';
-import { EventBus } from './eventbus/EventBus';
+import { NodeEventHandlerManager } from './NodeEventHandlerManager';
+import { Consumer } from 'script4j.base';
 
-export class SceneEventHandlerManager extends AbstractEventHandlerManager {
+/**
+ * There is no package scope in TypeScript. To solve this proplem this Unlocker is used.
+ * In allows to keep JavaFX API and to check code at compilation time.
+ */
+export interface NodeUnlocker {
     
-    constructor(scene: Scene) {
-        super(scene);
-    }
+    /**
+     * sets parent.
+     */
+    setParent(value: Parent): void;
     
-    public getEventBus(): EventBus {
-        return (<SceneUnlocker>this.getBean()).getEventBus();
-    }
+    /**
+     * Sets scene.
+     */
+    setScene(scene: Scene): void;
+    
+    /**
+     * Returns eventHandlerManager
+     */
+    getEventHandlerManager(): NodeEventHandlerManager;
+     
+    /**
+     * Traverses down Node tree and calls consume function. This method is in Node but not in Parent
+     * because lookup method is also in Node.
+     */
+    traverse(consumer: Consumer<Node>);
 }
-
-
-
 

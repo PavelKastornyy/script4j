@@ -28,6 +28,7 @@ import { Node } from './../../scene/Node';
 import { AbstractEventHandlerManager } from './AbstractEventHandlerManager';
 import { EventBus } from './eventbus/EventBus';
 import { Scene } from './../../scene/Scene';
+import { SceneUnlocker } from './SceneUnlocker';
 
 export class NodeEventHandlerManager extends AbstractEventHandlerManager {
     
@@ -40,7 +41,7 @@ export class NodeEventHandlerManager extends AbstractEventHandlerManager {
         if (scene === null) {
             return null;
         } else {
-            return scene.getEventBus();
+            return (<SceneUnlocker><any>scene).getEventBus();
         }
     }
 }
