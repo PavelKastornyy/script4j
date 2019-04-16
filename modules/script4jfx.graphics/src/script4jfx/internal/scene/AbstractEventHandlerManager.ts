@@ -130,7 +130,9 @@ export abstract class AbstractEventHandlerManager {
         if (eventBus === null) {
             return;
         }
-        const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_ADDED, eventType, this);
+        const countsByType: Map<EventType<any>, number> = new HashMap();
+        countsByType.put(eventType, 1);
+        const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_ADDED, countsByType);
         eventBus.post(event);
     }
     
@@ -142,7 +144,9 @@ export abstract class AbstractEventHandlerManager {
         if (eventBus === null) {
             return;
         }
-        const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_REMOVED, eventType, this);
+        const countsByType: Map<EventType<any>, number> = new HashMap();
+        countsByType.put(eventType, 1);
+        const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_REMOVED, countsByType);
         eventBus.post(event);
     }
     

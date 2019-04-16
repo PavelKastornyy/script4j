@@ -34,7 +34,7 @@ import { EventHandler } from 'script4jfx.base';
 
 export class EventHandlerCounter {
     
-    private result: EventHandlerCounter.Result = new EventHandlerCounter.Result();
+    private result: Map<EventType<any>, number> = new HashMap<EventType<any>, number>();
     
     public countAndAdd(eventHandlerManager: AbstractEventHandlerManager): void {
         //count single
@@ -61,7 +61,7 @@ export class EventHandlerCounter {
         }
     }
     
-    public getResult(): EventHandlerCounter.Result {
+    public getResult(): Map<EventType<any>, number> {
         return this.result;
     }
     
@@ -87,11 +87,4 @@ export class EventHandlerCounter {
             return result;
         })
     }    
-}
-
-export namespace EventHandlerCounter {
-
-    export class Result extends HashMap<EventType<any>, number> implements Map<EventType<any>, number> {
-        
-    }
 }    

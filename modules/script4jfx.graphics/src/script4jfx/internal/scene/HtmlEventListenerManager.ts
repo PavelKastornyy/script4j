@@ -28,11 +28,12 @@ import { EventType } from 'script4jfx.base';
 import { Map } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { HashMap } from 'script4j.base'
-import { EventHandlerCounter } from './EventHandlerCounter';
 import { EventBus } from './eventbus/EventBus';
 import { BusEventListener } from './eventbus/BusEventListener';
 import { HandlerEvent } from './busevents/HandlerEvent';
-import { NodeEvent } from './busevents/NodeEvent';
+import { KeyEvent } from './../../scene/input/KeyEvent';
+import { HtmlEventType } from './HtmlEventType';
+import 'jquery';
 
 /**
  * This class is resposible for adding and removing event listeners to/from root HTML code.
@@ -51,36 +52,31 @@ export class HtmlEventListenerManager {
      * We need to know the count of handlers of all Nodes that are on Scene. At the same time references to
      * handlers are not required and we don't want to control them.
      */
-    private readonly handlerCountsByEventType: Map<EventType<any>, number> = new HashMap<EventType<any>, number>();
+    private readonly handlerCountsByEventType: Map<EventType<any>, number> = new HashMap();
     
     /**
-     * Listeners that were added to root html element.
+     * Listeners that were added to root html element. If there can be situation that fx listeners overlap html 
+     * listeners, then it must be fixed. jQuery is not used because it doesn't support capturing phase.
      */
-    private readonly listenersByEventType: Map<EventType<any>, EventListener> = new HashMap<EventType<any>, EventListener>();
+    private readonly listenersByEventType: Map<EventType<any>, EventListener> = new HashMap();
+    
+    /**
+     * It can be not 1:1
+     */
+    //private readonly htmlEvenTypesByFxEventType: Map<EventType<any>, string> = new HashMap();
     
     private readonly eventBus: EventBus = null;
     
     /**
-     * Listener that will be called when a handler will be added/removed to/from scene.
+     * Listener that will be called when a handler will be added/removed to/from scene or when node with handlers
+     * will be added/removed to/from scene.
      */
     private readonly handlerListener: BusEventListener<HandlerEvent> = (event: HandlerEvent)=> {
         const eventType: EventType<HandlerEvent> = event.getEventType();
         if (eventType === HandlerEvent.HANDLER_ADDED) {
-            this.addToCount(event.getHandlerEventType(), 1);
+            this.addCounts(event.getСountsByType());
         } else if (eventType === HandlerEvent.HANDLER_REMOVED) {
-            this.subtractFromCount(event.getHandlerEventType(), 1);
-        }
-    };
-    
-    /**
-     * Listener that will be called when a node will be added/removed to/from scene.
-     */
-    private readonly nodeListener: BusEventListener<NodeEvent> = (event: NodeEvent)=> {
-        const eventType: EventType<NodeEvent> = event.getEventType();
-        if (eventType === NodeEvent.NODE_ADDED) {
-            this.addResult(event.getCounterResult());
-        } else if (eventType === NodeEvent.NODE_REMOVED) {
-            this.subtractResult(event.getCounterResult());
+            this.subtractCounts(event.getСountsByType());
         }
     };
     
@@ -92,63 +88,133 @@ export class HtmlEventListenerManager {
         this.eventBus = eventBus;
     }
     
-    public initialize(counterResult: EventHandlerCounter.Result): void {
-        this.addResult(counterResult);
+    public initialize(countsByType: Map<EventType<any>, number>): void {
+        this.addCounts(countsByType);
         this.eventBus.register(HandlerEvent.HANDLER_ADDED, this.handlerListener);
         this.eventBus.register(HandlerEvent.HANDLER_REMOVED, this.handlerListener);
-        this.eventBus.register(NodeEvent.NODE_ADDED, this.nodeListener);
-        this.eventBus.register(NodeEvent.NODE_REMOVED, this.nodeListener);
     }
 
     public deinitialize(): void {
         this.eventBus.unregister(HandlerEvent.HANDLER_ADDED, this.handlerListener);
         this.eventBus.unregister(HandlerEvent.HANDLER_REMOVED, this.handlerListener);
-        this.eventBus.unregister(NodeEvent.NODE_ADDED, this.nodeListener);
-        this.eventBus.unregister(NodeEvent.NODE_REMOVED, this.nodeListener);
         this.handlerCountsByEventType.clear();
     }    
     
     private addToCount(eventType: EventType<any>, value: number): void {
+        if (value === null) {
+            return;
+        }
         this.handlerCountsByEventType.compute(eventType, (k: EventType<any>, v: number) => {
             if (v === null) {
                 v = 0;
             }
-            return v + value;
+            v = v + value;
+            if (v > 0) {
+                this.createListenerIfAbsent(eventType);
+            }
+            return v;
         });
     }
     
     private subtractFromCount(eventType: EventType<any>, value: number): void {
+        if (value === null) {
+            return;
+        }
         this.handlerCountsByEventType.compute(eventType, (k: EventType<any>, v: number) => {
             if (v === null) {
                 return null;
             }
             v = v - value;
-            if (v < 0) {
+            if (v <= 0) {
+                this.destroyListenerIfPresent(eventType);
+                //remove this eventType from map
                 return null;
             }
             return v;
         });
     }
     
-    private addResult(counterResult: EventHandlerCounter.Result): void {
-        if (counterResult.isEmpty()) {
+    private addCounts(countsByType: Map<EventType<any>, number>): void {
+        if (countsByType.isEmpty()) {
             return;
         }
-        const iterator: Iterator<Map.Entry<EventType<any>, number>> = counterResult.entrySet().iterator();
+        const iterator: Iterator<Map.Entry<EventType<any>, number>> = countsByType.entrySet().iterator();
         while (iterator.hasNext()) {
             const entry: Map.Entry<EventType<any>, number> = iterator.next();
             this.addToCount(entry.getKey(), entry.getValue());
         }
     }
     
-    private subtractResult(counterResult: EventHandlerCounter.Result): void {
-        if (counterResult.isEmpty()) {
+    private subtractCounts(countsByType: Map<EventType<any>, number>): void {
+        if (countsByType.isEmpty()) {
             return;
         }
-        const iterator: Iterator<Map.Entry<EventType<any>, number>> = counterResult.entrySet().iterator();
+        const iterator: Iterator<Map.Entry<EventType<any>, number>> = countsByType.entrySet().iterator();
         while (iterator.hasNext()) {
             const entry: Map.Entry<EventType<any>, number> = iterator.next();
             this.subtractFromCount(entry.getKey(), entry.getValue());
         }
+    }
+    
+    private createListenerIfAbsent(eventType: EventType<any>): void {
+        if (this.listenersByEventType.containsKey(eventType)) {
+            return;
+        }
+        if (eventType.getSuperType() === KeyEvent.ANY) {
+            this.createKeyListener(eventType);
+        }
+    }
+    
+    private destroyListenerIfPresent(eventType: EventType<any>): void {
+        if (!this.listenersByEventType.containsKey(eventType)) {
+            return;
+        }
+        if (eventType.getSuperType() === KeyEvent.ANY) {
+            this.destroyKeyListener(eventType);
+        }
+    }
+    
+    private createKeyListener(eventType: EventType<KeyEvent>): void {
+        let listener: EventListener = null;
+        let htmlEventType: string = null;
+        if (eventType === KeyEvent.KEY_TYPED) {
+            listener = function(e) {
+                console.log("KEY_TYPED");
+                e.stopPropagation();
+            };
+            htmlEventType = HtmlEventType.Key.KEY_PRESSED;
+        } else if (eventType === KeyEvent.KEY_PRESSED) {
+            listener = function(e) {
+                console.log("KEY_PRESSED");
+                e.stopPropagation();
+            };
+            htmlEventType = HtmlEventType.Key.KEY_DOWN;
+        } else if (eventType === KeyEvent.KEY_RELEASED) {
+            listener = function(e) {
+                console.log("KEY_RELEASED");
+                e.stopPropagation();
+            };
+            htmlEventType = HtmlEventType.Key.KEY_UP;
+        }
+        //capturing phase, not supported by jQuery
+        this.rootElement.addEventListener(htmlEventType, listener, true);
+        this.listenersByEventType.put(eventType, listener);
+    }
+    
+    private destroyKeyListener(eventType: EventType<KeyEvent>): void {
+        const listener: EventListener = this.listenersByEventType.remove(eventType);
+        let htmlEventType: string = null;
+        if (listener === null) {
+            return;
+        }
+        if (eventType === KeyEvent.KEY_TYPED) {
+            htmlEventType = HtmlEventType.Key.KEY_PRESSED;
+        } else if (eventType === KeyEvent.KEY_PRESSED) {
+            htmlEventType = HtmlEventType.Key.KEY_DOWN;
+        } else if (eventType === KeyEvent.KEY_RELEASED) {
+            htmlEventType = HtmlEventType.Key.KEY_UP;
+        }
+        //capturing phase, not supported by jQuery
+        this.rootElement.removeEventListener(htmlEventType, listener, true);
     }
 }

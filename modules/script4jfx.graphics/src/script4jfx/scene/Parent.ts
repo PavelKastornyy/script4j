@@ -32,7 +32,7 @@ import { EventHandlerCounter } from './../internal/scene/EventHandlerCounter';
 import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
 import { NodeUnlocker } from './../internal/scene/NodeUnlocker';
 import { SceneUnlocker } from './../internal/scene/SceneUnlocker';
-import { NodeEvent } from './../internal/scene/busevents/NodeEvent';
+import { HandlerEvent } from './../internal/scene/busevents/HandlerEvent';
 
 export abstract class Parent extends Node {
     
@@ -82,7 +82,7 @@ export abstract class Parent extends Node {
             }
         });
         if (!counter.getResult().isEmpty() && this.getScene() !== null) {
-            const event: NodeEvent = new NodeEvent(this, NodeEvent.NODE_REMOVED, counter.getResult());
+            const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_REMOVED, counter.getResult());
             (<SceneUnlocker><any>this.getScene()).getEventBus().post(event);
         }
         $(removedElements).remove();
@@ -109,7 +109,7 @@ export abstract class Parent extends Node {
             $(afterElement).after(addedElements);
         }
         if (!counter.getResult().isEmpty() && this.getScene() !== null) {
-            const event: NodeEvent = new NodeEvent(this, NodeEvent.NODE_ADDED, counter.getResult());
+            const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_ADDED, counter.getResult());
             (<SceneUnlocker><any>this.getScene()).getEventBus().post(event);
         }
     }

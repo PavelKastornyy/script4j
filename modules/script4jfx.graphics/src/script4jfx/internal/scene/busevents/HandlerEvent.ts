@@ -26,8 +26,11 @@
 
 import { BusEvent } from './../eventbus/BusEvent';
 import { EventType } from 'script4jfx.base';
-import { AbstractEventHandlerManager } from './../AbstractEventHandlerManager';
+import { Map } from 'script4j.base';
 
+/**
+ * This event is thrown when one or more handler was added to scene.
+ */
 export class HandlerEvent extends BusEvent {
     
     /**
@@ -47,23 +50,15 @@ export class HandlerEvent extends BusEvent {
     public static readonly HANDLER_REMOVED: EventType<HandlerEvent> = 
             new EventType<HandlerEvent>(HandlerEvent.ANY, "HANDLER_REMOVED");
 
-    private readonly handlerEventType: EventType<any>;
+    private readonly countsByType: Map<EventType<any>, number>;
     
-    private readonly handlerManager: AbstractEventHandlerManager;
-    
-    constructor(source: Object, eventType: EventType<HandlerEvent>, handlerEventType: EventType<any>, 
-            handlerManager: AbstractEventHandlerManager) {
+    constructor(source: Object, eventType: EventType<HandlerEvent>, countsByType: Map<EventType<any>, number>) {
         super(source, eventType);
-        this.handlerEventType = handlerEventType;
-        this.handlerManager = handlerManager;
+        this.countsByType = countsByType;
     }
     
-    public getHandlerEventType(): EventType<any> {
-        return this.handlerEventType;
-    }
-    
-    public getHandlerManager(): AbstractEventHandlerManager {
-        return this.handlerManager;
+    public getСountsByType(): Map<EventType<any>, number> {
+        return this.countsByType;
     }
     
     /**
