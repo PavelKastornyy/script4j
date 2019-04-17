@@ -66,9 +66,11 @@ export class HashSet<E> extends AbstractSet<E> {
     }
 
     remove(obj: E): boolean {
-        let prevSize = this.size();
-        this.map.remove(obj);
-        return (prevSize !== this.size());
+        if (this.map.remove(obj) === this.value) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     size(): number {
