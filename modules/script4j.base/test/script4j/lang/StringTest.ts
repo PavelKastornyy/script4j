@@ -83,4 +83,16 @@ describe('StringTest', () => {
         let ss: string = "javascript";
         assert.equal(String.valueOf(ss), "javascript");
     });
+    
+    it('startsWith_withoutOffset_correctResult', () => {
+        let s: string = "javascript is a language";
+        assert.equal(s.startsWith("javascript"), true);
+        assert.equal(s.startsWith("javascript2"), false);
+    });
+    
+    it('startsWith_withOffset_correctResult', () => {
+        let s: String = new String("javascript is a language");
+        assert.equal(s.startsWith("is", 11), true);
+        assert.equal(s.startsWith("is", 12), false);
+    });
 });

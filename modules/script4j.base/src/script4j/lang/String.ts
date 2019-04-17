@@ -56,6 +56,9 @@ declare global {
         equals(obj: Object): boolean;
 
         toString(): string;
+        
+        startsWith(prefix: string, toffset?: number): boolean;
+
     }
 }
 
@@ -133,6 +136,13 @@ defineStringPrototype("toString", function() {
     } else {
         return this.valueOf();
     }
+});
+
+defineStringPrototype("startsWith", function(prefix: string, toffset?: number) {
+    if (toffset === undefined) {
+        toffset = 0;
+    }
+    return (this.lastIndexOf(prefix, toffset) === toffset);
 });
 
 //we save original function
