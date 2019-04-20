@@ -1,11 +1,16 @@
 /*
  * Copyright (c) 2018-2019 Pavel Kastornyy. All rights reserved.
+ * The specified copyright does not cover application programming interface
+ * (API) and the documentation for this API, which were taken from other
+ * libraries. See NOTICE file for more information.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
+ * published by the Free Software Foundation. Copyright holder designates
+ * this particular file as subject to the "Classpath" exception as provided
+ * by copyright holder in the LICENSE file that accompanied this code.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,34 +24,16 @@
  *
  */
 
-module.exports = {
-
-    name: 'script4j.base.spec',
-
-    import: {
-        modules: [
-            'script4j.base.4spec', 'chai', 'mocha'
-        ]
-    },
+/**
+ * Functional interface.
+ */
+export interface Predicate<T> {
 
     /**
-     * Order matters!
+     * Evaluates this predicate on the given argument.
      */
-    classes: [
-        'script4j.lang.ClassTest',
-        'script4j.lang.ObjectTest',
-        'script4j.lang.StringTest',
-        'script4j.lang.NumberTest',
-        'script4j.lang.BooleanTest',
-        'script4j.internal.logging.LoggerFactoryTest',
-        'script4j.util.AbstractListTest',
-        'script4j.util.ArrayListTest',
-        'script4j.util.AbstractSetTest',
-        'script4j.util.HashSetTest',
-        'script4j.util.AbstractMapTest',
-        'script4j.util.CommonMapTest',
-        'script4j.util.HashMapTest',
-        'script4j.internal.util.RedBlackBinaryTreeTest',
-        'script4j.util.TreeMapTest',
-    ]
-};
+    (t: T): boolean;
+
+}
+
+

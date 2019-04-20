@@ -38,6 +38,7 @@ import { IllegalStateError } from './../lang/IllegalStateError';
 import { Iterator } from './Iterator';
 import { NoSuchElementError } from './NoSuchElementError';
 import { BiFunction } from './function/BiFunction';
+import { Objects } from './Objects';
 
 /**
  * Load factor is not supported.
@@ -236,7 +237,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
             let prevSize = this.size();
             let iterator: Iterator<V> = this.iterator();
             while (iterator.hasNext()) {
-                if (iterator.next().equals(obj)) {
+                if (Objects.equals(iterator.next(), obj)) {
                     iterator.remove();
                     break;
                 }
@@ -606,7 +607,7 @@ export namespace HashMap {
         public hashCode(): number {
             let hash: number = 3;
             hash = 31 * hash + this.keyHashCode;
-            hash = 31 * hash + this.value.hashCode();
+            hash = 31 * hash + Objects.hashCode(this.value);
             hash = hash | 0; //convert to int32
             return hash;
         }

@@ -30,32 +30,11 @@ import {Iterator} from './../../../src/script4j/util/Iterator';
 import {Collection} from './../../../src/script4j/util/Collection';
 import {Map} from './../../../src/script4j/util/Map';
 import {HashMap} from './../../../src/script4j/util/HashMap';
+import { CommonMapTest } from './CommonMapTest';
 
 describe('HashMapTest', () => {
 
-    let notEqualObj1: Object = new String("one");
-
-    let notEqualObj2: Object = new String("two");
-
-    let notEqualObj3: Object =  new String("three");
-
-    class EqualObject {
-
-        public hashCode(): number {
-            return 47;
-        }
-
-        public equals(obj: Object): boolean {
-            if (obj instanceof EqualObject) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    let equalObj1: EqualObject = new EqualObject();
-    let equalObj2: EqualObject = new EqualObject();
+    const commonMapTest: CommonMapTest = new CommonMapTest();
 
     it('constructor_capacityIsNotPassed_defaultCapacity', () => {
         let map: Map<Object, Object> = new HashMap<Object, Object>();
@@ -69,212 +48,121 @@ describe('HashMapTest', () => {
 
     it('clear_emptyMap_clearsMap', () => {
         let map: Map<Object, Object> = new HashMap<Object, Object>(4);
-        map.clear();
-        assert.isTrue(map.isEmpty());
+        commonMapTest.clear_emptyMap_clearsMap(map);
     });
 
     it('clear_notEmptyMap_clearsMap', () => {
         let map: Map<Object, Object> = new HashMap<Object, Object>(4);
-        map.put(notEqualObj1, "one");
-        map.put(notEqualObj2, "two");
-        assert.equal(map.size(), 2);
-        assert.isFalse(map.isEmpty());
-        map.clear();
-        assert.equal(map.size(), 0);
-        assert.isTrue(map.isEmpty());
+        commonMapTest.clear_notEmptyMap_clearsMap(map);
     });
 
     it('containsKey_keyExist_true', () => {
         let map: Map<Object, Object> = new HashMap<Object, Object>(4);
-        map.put(notEqualObj1, "foo");
-        map.put(notEqualObj2, "boo");
-        map.put(equalObj2, "doo");
-        assert.equal(map.size(), 3);
-        assert.isTrue(map.containsKey(notEqualObj1));
-        assert.isTrue(map.containsKey(notEqualObj2));
-        assert.isTrue(map.containsKey(equalObj2));
-        assert.isTrue(map.containsKey(equalObj1));
+        commonMapTest.containsKey_keyExist_true(map);
     });
 
     it('containsKey_keyNotExist_false', () => {
         let map: Map<Object, Object> = new HashMap<Object, Object>(4);
-        map.put(notEqualObj1, "foo");
-        map.put(notEqualObj2, "boo");
-        assert.equal(map.size(), 2);
-        assert.isFalse(map.containsKey(notEqualObj3));
+        commonMapTest.containsKey_keyNotExist_false(map);
     });
 
     it('containsValue_valueExistString_true', () => {
         let map: Map<Object, string> = new HashMap<Object, string>(4);
-        map.put(notEqualObj1, "foo");
-        map.put(notEqualObj2, "boo");
-        assert.equal(map.size(), 2);
-        assert.isTrue(map.containsValue("foo"));
-        assert.isTrue(map.containsValue("boo"));
+        commonMapTest.containsValue_valueExistString_true(map);
     });
 
     it('containsValue_valueNotExistString_false', () => {
         let map: Map<Object, string> = new HashMap<Object, string>(4);
-        map.put(notEqualObj1, "foo");
-        map.put(notEqualObj2, "boo");
-        assert.equal(map.size(), 2);
-        assert.isFalse(map.containsValue("doo"));
+        commonMapTest.containsValue_valueNotExistString_false(map);
     });
 
     it('containsValue_valueExistNumber_true', () => {
         let map: Map<Object, number> = new HashMap<Object, number>(4);
-        map.put(notEqualObj1, 1);
-        map.put(notEqualObj2, 2);
-        assert.equal(map.size(), 2);
-        assert.isTrue(map.containsValue(1));
-        assert.isTrue(map.containsValue(2));
+        commonMapTest.containsValue_valueExistNumber_true(map);
     });
 
     it('containsValue_valueNotExistNumber_false', () => {
         let map: Map<Object, number> = new HashMap<Object, number>(4);
-        map.put(notEqualObj1, 100);
-        map.put(notEqualObj2, 200);
-        assert.equal(map.size(), 2);
-        assert.isFalse(map.containsValue(1000));
+        commonMapTest.containsValue_valueNotExistNumber_false(map);
     });
 
     it('entries_emptyMap_emptySet', () => {
         let map: Map<Object, string> = new HashMap<Object, string>(4);
-        let set: Set<Map.Entry<Object, string>> = map.entrySet();
-        assert.equal(set.size(), 0);
+        commonMapTest.entries_emptyMap_emptySet(map);
     });
 
     it('entries_nonEmptyMap_returnsEntries', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        map.put("foo", notEqualObj1);
-        let set: Set<Map.Entry<string, Object>> = map.entrySet();
-        let entry: Map.Entry<string, Object> = set.iterator().next();
-        assert.isTrue(entry.getKey().equals("foo"));
-        assert.equal(entry.getValue(), notEqualObj1);
-        map.put("doo", notEqualObj2);
-        set = map.entrySet();
-        assert.equal(set.size(), 2);
+        commonMapTest.entries_nonEmptyMap_returnsEntries(map);
     });
 
     it('get_objectsNotExist_returnsNull', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        assert.equal(map.get("foo"), null);
-        assert.equal(map.get("doo"), null);
+        commonMapTest.get_objectsNotExist_returnsNull(map);
     });
 
     it('get_objectsExist_returnsObjects', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        map.put("foo", notEqualObj1);
-        map.put("doo", notEqualObj2);
-        assert.equal(map.get("foo"), notEqualObj1);
-        assert.equal(map.get("doo"), notEqualObj2);
+        commonMapTest.get_objectsExist_returnsObjects(map);
     });
 
     it('isEmpty_objectsWereNotAdded_true', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        assert.isTrue(map.isEmpty());
+        commonMapTest.isEmpty_objectsWereNotAdded_true(map);
     });
 
     it('isEmpty_objectsWereAdded_false', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        map.put("foo", notEqualObj1);
-        assert.isFalse(map.isEmpty());
+        commonMapTest.isEmpty_objectsWereAdded_false(map);
     });
 
     it('keys_objectsWereNotAdded_emptySet', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        assert.isTrue(map.keySet().isEmpty());
+        commonMapTest.keys_objectsWereNotAdded_emptySet(map);
     });
 
     it('keys_objectsWereAdded_correctKeys', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        map.put("foo", notEqualObj1);
-        map.put("doo", notEqualObj2);
-        let keys: Set<string>  = map.keySet();
-        assert.isTrue(keys.contains("foo"));
-        assert.isTrue(keys.contains("doo"));
-        assert.equal(keys.size(), 2);
+        commonMapTest.keys_objectsWereAdded_correctKeys(map);
     });
 
     it('put_keyExists_oldValue', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        map.put("foo", notEqualObj1);
-        assert.equal(map.size(), 1);
-        assert.equal(map.get("foo"), notEqualObj1);
-        let oldValue = map.put("foo", notEqualObj2);
-        assert.equal(oldValue, notEqualObj1);
-        assert.equal(map.get("foo"), notEqualObj2);
-        assert.equal(map.size(), 1);
+        commonMapTest.put_keyExists_oldValue(map);
     });
 
     it('remove_keyNotExists_null', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        assert.equal(map.remove("foo"), null);
+        commonMapTest.remove_keyNotExists_null(map);
     });
 
     it('remove_keysExist_returnsValue', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        map.put("foo", notEqualObj1);
-        map.put("doo", notEqualObj2);
-        assert.equal(map.remove("foo"), notEqualObj1);
-        assert.equal(map.size(), 1);
-        assert.isFalse(map.isEmpty());
-        assert.equal(map.remove("doo"), notEqualObj2);
-        assert.equal(map.size(), 0);
-        assert.isTrue(map.isEmpty());
+        commonMapTest.remove_keysExist_returnsValue(map);
     });
-
 
     it('values_objectsWereNotAdded_emptyCollection', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        assert.isTrue(map.values().isEmpty());
+        commonMapTest.values_objectsWereNotAdded_emptyCollection(map);
     });
 
     it('values_objectsWereAdded_correctValues', () => {
         let map: Map<string, Object> = new HashMap<string, Object>(4);
-        map.put("foo", notEqualObj1);
-        map.put("doo", notEqualObj2);
-        let values: Collection<Object>  = map.values();
-        assert.isTrue(values.contains(notEqualObj1));
-        assert.isTrue(values.contains(notEqualObj2));
-        assert.equal(values.size(), 2);
+        commonMapTest.values_objectsWereAdded_correctValues(map);
     });
     
     it('compute_valueExists_valueReplaced', () => {
         let map: Map<string, number> = new HashMap<string, number>();
-        map.put("a", 10);
-        map.put("b", 20);
-        let result = map.compute("a", (k: string, n: number) => {
-            return 10 * 10;
-        });
-        assert.equal(result, 100);
-        assert.equal(map.size(), 2);
-        assert.equal(map.get("a"), 100);
-        assert.equal(map.get("b"), 20);
+        commonMapTest.compute_valueExists_valueReplaced(map);
     });
     
     it('compute_valueNotExists_valuePut', () => {
         let map: Map<string, number> = new HashMap<string, number>();
-        map.put("a", 10);
-        let result = map.compute("b", (k: string, n: number) => {
-            if (n === null) {
-                n = 1;
-            }
-            return n * 5;
-        });
-        assert.equal(result, 5);
-        assert.equal(map.size(), 2);
-        assert.equal(map.get("a"), 10);
-        assert.equal(map.get("b"), 5);
+        commonMapTest.compute_valueNotExists_valuePut(map);
     });
     
     it('compute_resultIsNull_valueRemoved', () => {
         let map: Map<string, number> = new HashMap<string, number>();
-        map.put("a", 10);
-        let result = map.compute("a", (k: string, n: number) => {
-            return null;
-        });
-        assert.equal(result, null);
-        assert.equal(map.size(), 0);
+        commonMapTest.compute_resultIsNull_valueRemoved(map);
     });
 });
