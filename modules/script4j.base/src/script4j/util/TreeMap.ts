@@ -270,8 +270,6 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     
     private comparator: Comparator<K> = null;
     
-    private mapSize: number = 0;
-    
     public constructor​(comparator?: Comparator<K>) {
         super();
         if (comparator !== undefined) {
@@ -286,11 +284,10 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
         if (this.tree !== null) {
             this.tree.clear();
         }
-        this.mapSize = 0;
     }
 
     public containsKey(key: K): boolean {
-        if (this.mapSize === 0) {
+        if (this.tree === null || this.tree.size() === 0) {
             return false;
         }
         let node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.findNode(new TreeMap.Entry<K, V>(key, null));
@@ -302,7 +299,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }
 
     public containsValue(value: V): boolean {
-        if (this.mapSize === 0 || this.tree === null) {
+        if (this.tree === null || this.tree.size() === 0) {
             return false;
         }
         return this.tree.traverseAndTest((entry: TreeMap.Entry<K, V>): boolean => {
@@ -311,7 +308,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }
 
     public get(key: K): V {
-        if (this.mapSize === 0) {
+        if (this.tree === null || this.tree.size() === 0) {
             return null;
         }
         let node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.findNode(new TreeMap.Entry<K, V>(key, null));
@@ -323,7 +320,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }
 
     public isEmpty(): boolean {
-        if (this.mapSize === 0) {
+        if (this.tree === null || this.tree.size() === 0) {
             return true;
         } else {
             return false;
@@ -360,33 +357,47 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
         if (previousEntry !== null) {
             return previousEntry.getValue();
         } else {
-            this.mapSize++;
             return null;
         }
     }
 
     public remove(key: K): V {
-        if (this.mapSize === 0) {
+        if (this.tree === null || this.tree.size() === 0) {
             return null;
         }
         const entry: TreeMap.Entry<K, V> = new TreeMap.Entry(key, null);
-        const node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.findNode(entry);     
+        const node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.findNode(entry);
         if (node === null) {
             return null;
         } else {
             //deletes node without its childrent
             this.tree.removeNode(node);
-            this.mapSize--;
             return node.getValue().getValue();
         }
     }
 
     public size(): number {
-        return this.mapSize;
+        if (this.tree === null) {
+            return 0;
+        } else {
+            return this.tree.size();
+        }
     }
 
     public compute​(key: K, remappingFunction: BiFunction<K,​ V,​ V>): V {
-        throw new UnsupportedOperationError();
+        const entry: TreeMap.Entry<K, V> = new TreeMap.Entry(key, null);
+        const node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.findNode(entry);
+        let oldValue: V = null;
+        if (node !== null) {
+            oldValue = node.getValue().getValue();
+            this.tree.removeNode(node);
+        }
+        let newValue: V = remappingFunction(key, oldValue);
+        if (newValue !== null) {
+            entry.setValue(newValue);
+            this.tree.add(entry);
+        }
+        return newValue;
     }
     
     private createNumberComparator(): Comparator<number> {
@@ -469,7 +480,6 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
                 this.nextWasCalled = false;
                 this.nextNode = this.map.tree.getSuccessorOf(this.currentNode);
                 this.map.tree.removeNode(this.currentNode);
-                this.map.mapSize--;
                 this.currentNode = null;
                 this.deletionHappened = true;
             }

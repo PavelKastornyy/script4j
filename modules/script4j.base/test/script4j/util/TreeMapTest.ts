@@ -164,11 +164,11 @@ describe('TreeMapTest', () => {
 //        let map: Map<string, number> = new TreeMap<string, number>();
 //        commonMapTest.compute_valueNotExists_valuePut(map);
 //    });
-//    
-//    it('compute_resultIsNull_valueRemoved', () => {
-//        let map: Map<string, number> = new TreeMap<string, number>();
-//        commonMapTest.compute_resultIsNull_valueRemoved(map);
-//    });    
+    
+    it('compute_resultIsNull_valueRemoved', () => {
+        let map: Map<string, number> = new TreeMap<string, number>();
+        commonMapTest.compute_resultIsNull_valueRemoved(map);
+    });    
 
     it('entrySet_removingWithIterator_correctResult', () => {
         let map: Map<number, string> = new TreeMap();
@@ -179,7 +179,6 @@ describe('TreeMapTest', () => {
         map.put(130, "a");
         map.put(150, "a");
         map.put(140, "a");
-        assert.equal(map.size(), 7);
         assert.equal(map.size(), 7);
         let list: List<number> = new ArrayList();
         const iterator: Iterator<Map.Entry<number, string>> = map.entrySet().iterator();

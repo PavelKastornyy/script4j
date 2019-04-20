@@ -33,6 +33,8 @@ export class RedBlackBinaryTree<T> {
     private readonly comparator: Comparator<T>;
     
     private rootNode: RedBlackBinaryTree.Node<T> = null;
+    
+    private treeSize: number = 0;
 
     /**
      * From user or someone from TreeMap.
@@ -48,6 +50,7 @@ export class RedBlackBinaryTree<T> {
         if (this.rootNode === null) {
             this.rootNode = new RedBlackBinaryTree.Node(value);
             this.rootNode.setColor(RedBlackBinaryTree.Color.BLACK);
+            this.treeSize++;
             return null;
         }
         let node: RedBlackBinaryTree.Node<T> = this.rootNode;
@@ -62,6 +65,7 @@ export class RedBlackBinaryTree<T> {
                 if (node.getRight() === null) {
                     const newNode: RedBlackBinaryTree.Node<T> = new RedBlackBinaryTree.Node(value);
                     node.setRight(newNode);
+                    this.treeSize++;
                     this.balanceAfterInsertion(newNode);
                     break;
                 } else {
@@ -71,6 +75,7 @@ export class RedBlackBinaryTree<T> {
                 if (node.getLeft() === null) {
                     const newNode: RedBlackBinaryTree.Node<T> = new RedBlackBinaryTree.Node(value);
                     node.setLeft(newNode);
+                    this.treeSize++;
                     this.balanceAfterInsertion(newNode);
                     break;
                 } else {
@@ -88,6 +93,11 @@ export class RedBlackBinaryTree<T> {
     
     public clear(): void {
         this.rootNode = null;
+        this.treeSize = 0;
+    }
+    
+    public size(): number {
+        return this.treeSize;
     }
     
     public getRootNode() {
@@ -127,6 +137,7 @@ export class RedBlackBinaryTree<T> {
             }
             node.removeFromParent();
         }
+        this.treeSize--;
     }
     
     public countNodes(node: RedBlackBinaryTree.Node<T>): number {
