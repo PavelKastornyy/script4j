@@ -95,4 +95,11 @@ describe('StringTest', () => {
         assert.equal(s.startsWith("is", 11), true);
         assert.equal(s.startsWith("is", 12), false);
     });
+    
+    it('compareTo_otherNotNull_correctResult', () => {
+        let s: string = "bbb";
+        assert.isTrue(s.compareTo("aaa") > 0);
+        assert.isTrue(s.compareTo("bbb") === 0);
+        assert.isTrue(s.compareTo("ccc") < 0);
+    });
 });

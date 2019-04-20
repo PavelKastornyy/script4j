@@ -58,7 +58,8 @@ declare global {
         toString(): string;
         
         startsWith(prefix: string, toffset?: number): boolean;
-
+        
+        compareTo(anotherString: string): number;
     }
 }
 
@@ -143,6 +144,10 @@ defineStringPrototype("startsWith", function(prefix: string, toffset?: number) {
         toffset = 0;
     }
     return (this.lastIndexOf(prefix, toffset) === toffset);
+});
+
+defineStringPrototype("compareTo", function(anotherString: string) {
+    return this.localeCompare(anotherString);
 });
 
 //we save original function
