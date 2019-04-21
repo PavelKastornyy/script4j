@@ -43,7 +43,7 @@ import { NoSuchElementError } from './NoSuchElementError';
 import { AbstractCollection } from './AbstractCollection';
 
 
-export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// NavigableMap<K,V>, Cloneable, Serializable
+export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> {// NavigableMap<K,V>, Cloneable, Serializable
 
     private static EntrySet = class<K, V> extends AbstractSet<Map.Entry<K, V>> {
 
@@ -260,17 +260,17 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
 
     private readonly comparatorWrapper: Comparator<TreeMap.Entry<K, V>> = 
             (o1: TreeMap.Entry<K, V>, o2: TreeMap.Entry<K, V>): number => {
-        return this.comparator(o1.getKey(), o2.getKey());
+        return this.aComparator(o1.getKey(), o2.getKey());
     }
     
     private readonly tree: RedBlackBinaryTree<TreeMap.Entry<K, V>> = new RedBlackBinaryTree(this.comparatorWrapper);
     
-    private comparator: Comparator<K> = null;
+    private aComparator: Comparator<K> = null;
     
     public constructor​(comparator?: Comparator<K>) {
         super();
         if (comparator !== undefined) {
-            this.comparator = comparator;
+            this.aComparator = comparator;
         }
     }
     
@@ -332,11 +332,11 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }    
 
     public put(key: K, value: V): V {
-        if (this.comparator === null) {
+        if (this.aComparator === null) {
             if (typeof key === "number" || key instanceof Number) {
-                this.comparator = <Comparator<any>>this.createNumberComparator();
+                this.aComparator = <Comparator<any>>this.createNumberComparator();
             } else if (typeof key === "string" || key instanceof String) {
-                this.comparator = <Comparator<any>>this.createStringComparator();
+                this.aComparator = <Comparator<any>>this.createStringComparator();
             } else {
                 throw new IllegalStateError("Comparator is not defined");
             }
@@ -383,6 +383,28 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
             this.tree.add(entry);
         }
         return newValue;
+    }
+    
+    public comparator(): Comparator<K> {
+        return this.aComparator;
+    }
+
+    public firstKey(): K {
+        const node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.getFirstNode();
+        if (node !== null) {
+            return node.getValue().getKey();
+        } else {
+            return null;
+        }
+    }
+
+    public lastKey(): K {
+        const node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.getLastNode();
+        if (node !== null) {
+            return node.getValue().getKey();
+        } else {
+            return null;
+        }
     }
     
     private createNumberComparator(): Comparator<number> {
