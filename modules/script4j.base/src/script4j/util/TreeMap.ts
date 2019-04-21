@@ -258,15 +258,12 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
 
     };    
 
-    /**
-     * Tree is created when we have comparator.
-     */    
-    private tree: RedBlackBinaryTree<TreeMap.Entry<K, V>> = null;
-    
-    private comparatorWrapper: Comparator<TreeMap.Entry<K, V>> = 
+    private readonly comparatorWrapper: Comparator<TreeMap.Entry<K, V>> = 
             (o1: TreeMap.Entry<K, V>, o2: TreeMap.Entry<K, V>): number => {
         return this.comparator(o1.getKey(), o2.getKey());
     }
+    
+    private readonly tree: RedBlackBinaryTree<TreeMap.Entry<K, V>> = new RedBlackBinaryTree(this.comparatorWrapper);
     
     private comparator: Comparator<K> = null;
     
@@ -275,19 +272,14 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
         if (comparator !== undefined) {
             this.comparator = comparator;
         }
-        if (this.comparator !== null) {
-            this.tree = new RedBlackBinaryTree(this.comparatorWrapper);
-        }
     }
     
     public clear(): void {
-        if (this.tree !== null) {
-            this.tree.clear();
-        }
+        this.tree.clear();
     }
 
     public containsKey(key: K): boolean {
-        if (this.tree === null || this.tree.size() === 0) {
+        if (this.size() === 0) {
             return false;
         }
         let node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.findNode(new TreeMap.Entry<K, V>(key, null));
@@ -299,7 +291,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }
 
     public containsValue(value: V): boolean {
-        if (this.tree === null || this.tree.size() === 0) {
+        if (this.size() === 0) {
             return false;
         }
         return this.tree.traverseAndTest((entry: TreeMap.Entry<K, V>): boolean => {
@@ -308,7 +300,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }
 
     public get(key: K): V {
-        if (this.tree === null || this.tree.size() === 0) {
+        if (this.size() === 0) {
             return null;
         }
         let node: RedBlackBinaryTree.Node<TreeMap.Entry<K, V>> = this.tree.findNode(new TreeMap.Entry<K, V>(key, null));
@@ -320,7 +312,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }
 
     public isEmpty(): boolean {
-        if (this.tree === null || this.tree.size() === 0) {
+        if (this.size() === 0) {
             return true;
         } else {
             return false;
@@ -340,14 +332,11 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }    
 
     public put(key: K, value: V): V {
-        if (this.tree === null) {
+        if (this.comparator === null) {
             if (typeof key === "number" || key instanceof Number) {
                 this.comparator = <Comparator<any>>this.createNumberComparator();
             } else if (typeof key === "string" || key instanceof String) {
                 this.comparator = <Comparator<any>>this.createStringComparator();
-            }
-            if (this.comparator !== null) {
-                this.tree = new RedBlackBinaryTree(this.comparatorWrapper);
             } else {
                 throw new IllegalStateError("Comparator is not defined");
             }
@@ -362,7 +351,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }
 
     public remove(key: K): V {
-        if (this.tree === null || this.tree.size() === 0) {
+        if (this.size() === 0) {
             return null;
         }
         const entry: TreeMap.Entry<K, V> = new TreeMap.Entry(key, null);
@@ -377,11 +366,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {// Na
     }
 
     public size(): number {
-        if (this.tree === null) {
-            return 0;
-        } else {
-            return this.tree.size();
-        }
+        return this.tree.size();
     }
 
     public compute​(key: K, remappingFunction: BiFunction<K,​ V,​ V>): V {
