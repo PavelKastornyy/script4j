@@ -76,5 +76,12 @@ describe('NumberTest', () => {
         let n: Number = new Number(200);
         assert.equal(n.toString(), "200");
     });
+    
+    it('compareTo_otherNotNull_correctResult', () => {
+        let n: number  = 10;
+        assert.isTrue(n.compareTo(20) < 0);
+        assert.isTrue(n.compareTo(10) === 0);
+        assert.isTrue(n.compareTo(-20) > 0);
+    });
 });
 

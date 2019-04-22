@@ -24,7 +24,8 @@
  *
  */
 
-import './Object'
+import './Object';
+import { Comparable } from './Comparable';
 
 /**
  * In JS there are primitive string and String object.
@@ -50,7 +51,7 @@ declare global {
         valueOf(obj?: Object): string;
     }
 
-    interface String {
+    interface String extends Comparable<string> {
         hashCode(): number;
 
         equals(obj: Object): boolean;

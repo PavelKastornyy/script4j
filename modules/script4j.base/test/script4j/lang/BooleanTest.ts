@@ -59,5 +59,17 @@ describe('BooleanTest', () => {
         assert.equal(a.toString(), "false");
         assert.equal(b.toString(), "true");
     });
+    
+    it('compareTo_thisTrue_correctResult', () => {
+        let b: boolean = true;
+        assert.isTrue(b.compareTo(false) > 0);
+        assert.isTrue(b.compareTo(true) === 0);
+    });
+    
+    it('compareTo_thisFalse_correctResult', () => {
+        let b: boolean = false;
+        assert.isTrue(b.compareTo(true) < 0);
+        assert.isTrue(b.compareTo(false) === 0);
+    });
 });
 

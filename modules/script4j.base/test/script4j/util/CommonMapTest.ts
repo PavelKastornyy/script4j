@@ -22,14 +22,15 @@
 import { assert } from 'chai';
 import { describe } from 'mocha';
 import { it } from 'mocha';
-import {Set} from './../../../src/script4j/util/Set';
-import {HashSet} from './../../../src/script4j/util/HashSet';
-import {List} from './../../../src/script4j/util/List';
-import {ArrayList} from './../../../src/script4j/util/ArrayList';
-import {Iterator} from './../../../src/script4j/util/Iterator';
-import {Collection} from './../../../src/script4j/util/Collection';
-import {Map} from './../../../src/script4j/util/Map';
-import {HashMap} from './../../../src/script4j/util/HashMap';
+import { Set } from './../../../src/script4j/util/Set';
+import { HashSet } from './../../../src/script4j/util/HashSet';
+import { List } from './../../../src/script4j/util/List';
+import { ArrayList } from './../../../src/script4j/util/ArrayList';
+import { Iterator } from './../../../src/script4j/util/Iterator';
+import { Collection } from './../../../src/script4j/util/Collection';
+import { Map } from './../../../src/script4j/util/Map';
+import { HashMap } from './../../../src/script4j/util/HashMap';
+import { BiFunction } from './../../../src/script4j/util/function/BiFunction';
 
 export class CommonMapTest {
     
@@ -80,21 +81,21 @@ export class CommonMapTest {
     
     public compute_resultIsNull_valueRemoved(map: Map<string, number>): void {
         map.put("a", 10);
-        let result = map.compute("a", (k: string, n: number) => {
+        let result = map.compute("a", BiFunction.fromFunc((k: string, n: number) => {
             return null;
-        });
+        }));
         assert.equal(result, null);
         assert.equal(map.size(), 0);
     }
     
     public compute_valueNotExists_valuePut(map: Map<string, number>): void {
         map.put("a", 10);
-        let result = map.compute("b", (k: string, n: number) => {
+        let result = map.compute("b", BiFunction.fromFunc((k: string, n: number) => {
             if (n === null) {
                 n = 1;
             }
             return n * 5;
-        });
+        }));
         assert.equal(result, 5);
         assert.equal(map.size(), 2);
         assert.equal(map.get("a"), 10);
@@ -104,9 +105,9 @@ export class CommonMapTest {
     public compute_valueExists_valueReplaced(map: Map<string, number>): void {
         map.put("a", 10);
         map.put("b", 20);
-        let result = map.compute("a", (k: string, n: number) => {
+        let result = map.compute("a", BiFunction.fromFunc((k: string, n: number) => {
             return 10 * 10;
-        });
+        }));
         assert.equal(result, 100);
         assert.equal(map.size(), 2);
         assert.equal(map.get("a"), 100);

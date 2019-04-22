@@ -22,11 +22,12 @@
 import { assert } from 'chai';
 import { describe } from 'mocha';
 import { it } from 'mocha';
-import {Set} from './../../../src/script4j/util/Set';
-import {HashSet} from './../../../src/script4j/util/HashSet';
-import {List} from './../../../src/script4j/util/List';
-import {ArrayList} from './../../../src/script4j/util/ArrayList';
-import {Iterator} from './../../../src/script4j/util/Iterator';
+import { Set } from './../../../src/script4j/util/Set';
+import { HashSet } from './../../../src/script4j/util/HashSet';
+import { List } from './../../../src/script4j/util/List';
+import { Consumer } from './../../../src/script4j/util/function/Consumer';
+import { ArrayList } from './../../../src/script4j/util/ArrayList';
+import { Iterator } from './../../../src/script4j/util/Iterator';
 
 describe('HashSetTest', () => {
 
@@ -132,7 +133,7 @@ describe('HashSetTest', () => {
         assert.equal(set.add(notEqualObj2), true);
         assert.equal(set.add(notEqualObj3), true);
         let list: List<Object> = new ArrayList<Object>();
-        set.forEach((obj: Object) => {list.add(obj)});
+        set.forEach(Consumer.fromFunc((obj: Object) => {list.add(obj)}));
         assert.isTrue(list.get(0).equals(notEqualObj1));
         assert.isTrue(list.get(1).equals(notEqualObj2));
         assert.isTrue(list.get(2).equals(notEqualObj3));

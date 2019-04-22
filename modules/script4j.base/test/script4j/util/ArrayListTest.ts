@@ -27,6 +27,7 @@ import {List} from './../../../src/script4j/util/List';
 import {Iterator} from './../../../src/script4j/util/Iterator';
 import {IndexOutOfBoundsError} from './../../../src/script4j/lang/IndexOutOfBoundsError';
 import {NoSuchElementError} from './../../../src/script4j/util/NoSuchElementError';
+import { Consumer } from './../../../src/script4j/util/function/Consumer';
 import {IllegalStateError} from './../../../src/script4j/lang/IllegalStateError';
 
 describe('ArrayListTest', () => {
@@ -228,9 +229,9 @@ describe('ArrayListTest', () => {
         list.add(obj1);
         list.add(obj2);
         let arr: Object[] = [];
-        list.forEach((e: Object) => {
+        list.forEach(Consumer.fromFunc((e: Object) => {
             arr.push(e);
-        });
+        }));
         assert.isTrue(list.get(0).equals(arr[0]));
         assert.isTrue(list.get(1).equals(arr[1]));
         assert.equal(arr.length, 2);

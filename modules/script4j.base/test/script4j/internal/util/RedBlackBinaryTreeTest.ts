@@ -27,7 +27,7 @@ import { RedBlackBinaryTree } from './../../../../src/script4j/internal/util/Red
 
 describe('RedBlackBinaryTree', () => {
     
-    const comparator: Comparator<number> = (o1: number, o2: number): number => {
+    const comparator: Comparator<number> = Comparator.fromFunc<number>((o1: number, o2: number): number => {
         if (o1 < o2) {
             return -1;
         } else if (o1 === o2) { 
@@ -35,7 +35,7 @@ describe('RedBlackBinaryTree', () => {
         } else if (o1 > o2){
             return +1;
         }
-    };
+    });
 
     it('add_numbers_addedAndSorted', () => {
         let tree: RedBlackBinaryTree<number> = new RedBlackBinaryTree(comparator);
@@ -88,8 +88,35 @@ describe('RedBlackBinaryTree', () => {
         assert.equal(node.getLeft(), null);
         assert.equal(node.getRight(), null);
     });
-
-
-
+    
+    it('getFirstNode_nonEmptyTree_firstNode', () => {
+        let tree: RedBlackBinaryTree<number> = new RedBlackBinaryTree(comparator);
+        tree.add(100);
+        tree.add(110);
+        tree.add(120);
+        tree.add(130);
+        tree.add(140);
+        tree.add(150);
+        tree.add(160);
+        tree.add(170);
+        tree.add(180);
+        let node: RedBlackBinaryTree.Node<number> = tree.getFirstNode();
+        assert.equal(node.getValue(), 100);
+    });    
+    
+    it('getLastNode_nonEmptyTree_lastNode', () => {
+        let tree: RedBlackBinaryTree<number> = new RedBlackBinaryTree(comparator);
+        tree.add(100);
+        tree.add(110);
+        tree.add(120);
+        tree.add(130);
+        tree.add(140);
+        tree.add(150);
+        tree.add(160);
+        tree.add(170);
+        tree.add(180);
+        let node: RedBlackBinaryTree.Node<number> = tree.getLastNode();
+        assert.equal(node.getValue(), 180);
+    });    
 });
 

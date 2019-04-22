@@ -112,7 +112,7 @@ export class ArrayList<E> extends AbstractList<E> {
 
     forEach(consumer: Consumer<E>): void {
         for (let i: number = 0; i < this.size(); i++) {
-            consumer(this.get(i));
+            consumer.accept(this.get(i));
         }
     }
 

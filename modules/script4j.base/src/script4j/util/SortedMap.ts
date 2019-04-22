@@ -50,7 +50,7 @@ export interface SortedMap<K,V> extends Map<K,V> {
     /**
      * Returns a view of the portion of this map whose keys are strictly less than toKey.
      */    
-    headMap(toKey: K): SortedMap<K,V>;
+    //headMap(toKey: K): SortedMap<K,V>;
 
     /**
      * Returns a Set view of the keys contained in this map.
@@ -65,12 +65,12 @@ export interface SortedMap<K,V> extends Map<K,V> {
     /**
      * Returns a view of the portion of this map whose keys range from fromKey, inclusive, to toKey, exclusive.
      */
-    subMap(fromKey: K, toKey: K): SortedMap<K,V>;
+    //subMap(fromKey: K, toKey: K): SortedMap<K,V>;
     
     /**
      * Returns a view of the portion of this map whose keys are greater than or equal to fromKey.
      */
-    tailMap(fromKey: K): SortedMap<K,V>;
+    //tailMap(fromKey: K): SortedMap<K,V>;
 
     /**
      * Returns a Collection view of the values contained in this map.

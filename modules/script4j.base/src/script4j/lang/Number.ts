@@ -24,7 +24,8 @@
  *
  */
 
-import './Object'
+import './Object';
+import { Comparable } from './Comparable';
 
 declare global {
 
@@ -33,11 +34,13 @@ declare global {
         of(num:number):Number;
     }
 
-    interface Number {
+    interface Number extends Comparable<number> {
 
         hashCode(): number;
 
         equals(obj: Object): boolean;
+        
+        compareTo(another: number): number;
 
         /**
          * We DON'T override this method for Number
@@ -82,4 +85,9 @@ defineNumberPrototype("hashCode", function () {
     let hashCode: number = Math.floor(this);//removes decimal
     hashCode = hashCode | 0;//convert to int
     return hashCode;
+});
+
+defineNumberPrototype("compareTo", function (n: Number) {
+    //@ts-ignore
+    return this - n;
 });

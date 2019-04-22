@@ -24,33 +24,21 @@
  *
  */
 
-/**
- * Functional interface.
- * 
- *  Type Parameters:
- *  T - the type of the first argument to the function
- *  U - the type of the second argument to the function
- *  R - the type of the result of the function 
- */
-export interface BiFunction<T,​U,​R> {
+type ComparableFunc<T> = (o: T) => number;
+
+export abstract class Comparable<T> {
     
-    /**
-     * Applies this function to the given arguments.
-     */
-    apply(t: T, u: U): R;
-
-}
-
-type BiBunfctionFunc<T, U, R> = (t: T, u: U) => R;
-
-export namespace BiFunction {
-    
-    export function fromFunc<T, U, R>(func: BiBunfctionFunc<T, U, R>): BiFunction<T,​U,​R> {
-        return new class implements BiFunction<T, U, R> {
+    public static fromFunc<T>(func: ComparableFunc<T>): Comparable<T> {
+        return new class extends Comparable<T> {
             
-            public apply(t: T, u: U): R {
-                return func(t, u);
+            public compareTo(o1: T): number {
+                return func(o1);
             }
         };
-    }
+    }    
+    
+    /**
+     * Compares this object with the specified object for order.
+     */
+    public abstract compareTo​(o: T): number;
 }

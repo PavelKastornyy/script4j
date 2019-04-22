@@ -32,8 +32,21 @@ export interface Predicate<T> {
     /**
      * Evaluates this predicate on the given argument.
      */
-    (t: T): boolean;
+    test​(t: T): boolean;
+}
 
+type PredicateFunc<T> = (t: T) => boolean;
+
+export namespace Predicate {
+    
+    export function fromFunc<T>(func: PredicateFunc<T>): Predicate<T> {
+        return new class implements Predicate<T> {
+            
+            public test​(t: T): boolean {
+                return func(t);
+            }
+        };
+    }
 }
 
 

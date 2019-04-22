@@ -56,7 +56,7 @@ export class RedBlackBinaryTree<T> {
         let node: RedBlackBinaryTree.Node<T> = this.rootNode;
         let previous: T = null;
         do {
-            const result: number = this.comparator(value, node.getValue());
+            const result: number = this.comparator.compare(value, node.getValue());
             if (result === 0) {
                 previous = node.getValue();
                 node.setValue(value);
@@ -154,7 +154,7 @@ export class RedBlackBinaryTree<T> {
         let node: RedBlackBinaryTree.Node<T>;
         node = this.rootNode;
         do { 
-            let result: number = this.comparator(value, node.getValue());
+            let result: number = this.comparator.compare(value, node.getValue());
             if (result === 0) {
                 return node;
             } else if (result < 0) {
@@ -234,7 +234,13 @@ export class RedBlackBinaryTree<T> {
         return p;
     }
     
+    /**
+     * Returns the most left as it has the lowest value.
+     */
     public getFirstNode(): RedBlackBinaryTree.Node<T> {
+        if (this.rootNode === null) {
+            return null;
+        }
         let node: RedBlackBinaryTree.Node<T> = this.rootNode;
         if (node.getLeft() !== null) {
             while (node.getLeft() !== null) {
@@ -249,10 +255,31 @@ export class RedBlackBinaryTree<T> {
         return node;
     }
     
+    /**
+     * Returns the most right as it has the highest value.
+     */
+    public getLastNode(): RedBlackBinaryTree.Node<T> {
+        if (this.rootNode === null) {
+            return null;
+        }
+        let node: RedBlackBinaryTree.Node<T> = this.rootNode;
+        if (node.getRight() !== null) {
+            while (node.getRight() !== null) {
+                node = node.getRight();
+            }
+        } else if (node.getLeft() !== null) {
+            node = node.getLeft();
+            while (node.getRight() !== null) {
+                node = node.getRight();
+            }
+        }
+        return node;
+    }    
+    
     private traverseWithoutCondition(consumer: Consumer<T>, node: RedBlackBinaryTree.Node<T>): void {
         if (node !== null) {
             this.traverseWithoutCondition(consumer, node.getLeft());
-            consumer(node.getValue());
+            consumer.accept(node.getValue());
             this.traverseWithoutCondition(consumer, node.getRight());
         }
     }    
@@ -262,7 +289,7 @@ export class RedBlackBinaryTree<T> {
             if (this.traverseWithCondition(predicate, node.getLeft())) {
                 return true;
             }
-            if (predicate(node.getValue())) {
+            if (predicate.test(node.getValue())) {
                 return true;
             }
             return this.traverseWithCondition(predicate, node.getRight());

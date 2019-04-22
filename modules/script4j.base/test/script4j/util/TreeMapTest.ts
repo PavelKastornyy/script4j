@@ -32,6 +32,7 @@ import { Map } from './../../../src/script4j/util/Map';
 import { TreeMap } from './../../../src/script4j/util/TreeMap';
 import { HashMap } from './../../../src/script4j/util/HashMap';
 import { Comparator } from './../../../src/script4j/util/Comparator';
+import { Collections } from './../../../src/script4j/util/Collections';
 import { RedBlackBinaryTree } from './../../../src/script4j/internal/util/RedBlackBinaryTree';
 import { CommonMapTest } from './CommonMapTest';
 
@@ -46,9 +47,37 @@ describe('TreeMapTest', () => {
     numberMap.put(commonMapTest.getEqualObj1(), 4);
     numberMap.put(commonMapTest.getEqualObj2(), 5);
     
-    const comparator: Comparator<Object> = (obj1: Object, obj2: Object): number => {
+    const comparator: Comparator<Object> = Comparator.fromFunc<Object>((obj1: Object, obj2: Object): number => {
         return numberMap.get(obj1) - numberMap.get(obj2);
-    };
+    });
+    
+    it('constructor_reverseComparator_reverseOrder', () => {
+        let map: Map<number, string> = new TreeMap(Collections.reverseOrder());
+        map.put(100, "a");
+        map.put(110, "a");
+        map.put(120, "a");
+        map.put(160, "a");
+        map.put(130, "a");
+        map.put(150, "a");
+        map.put(140, "a");
+        assert.equal(map.size(), 7);
+        let list: List<number> = new ArrayList();
+        const iterator: Iterator<Map.Entry<number, string>> = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            let entry: Map.Entry<number, string> = iterator.next();
+            list.add(entry.getKey());
+            iterator.remove();
+        }
+        assert.equal(list.get(6), 100);
+        assert.equal(list.get(5), 110);
+        assert.equal(list.get(4), 120);
+        assert.equal(list.get(3), 130);
+        assert.equal(list.get(2), 140);
+        assert.equal(list.get(1), 150);
+        assert.equal(list.get(0), 160);
+        assert.equal(list.size(), 7);
+        assert.equal(map.size(), 0);
+    });
 
     it('clear_emptyMap_clearsMap', () => {
         let map: Map<Object, Object> = new TreeMap<Object, Object>();
@@ -155,15 +184,15 @@ describe('TreeMapTest', () => {
         commonMapTest.values_objectsWereAdded_correctValues(map);
     });
     
-//    it('compute_valueExists_valueReplaced', () => {
-//        let map: Map<string, number> = new TreeMap<string, number>();
-//        commonMapTest.compute_valueExists_valueReplaced(map);
-//    });
-//    
-//    it('compute_valueNotExists_valuePut', () => {
-//        let map: Map<string, number> = new TreeMap<string, number>();
-//        commonMapTest.compute_valueNotExists_valuePut(map);
-//    });
+    it('compute_valueExists_valueReplaced', () => {
+        let map: Map<string, number> = new TreeMap<string, number>();
+        commonMapTest.compute_valueExists_valueReplaced(map);
+    });
+    
+    it('compute_valueNotExists_valuePut', () => {
+        let map: Map<string, number> = new TreeMap<string, number>();
+        commonMapTest.compute_valueNotExists_valuePut(map);
+    });
     
     it('compute_resultIsNull_valueRemoved', () => {
         let map: Map<string, number> = new TreeMap<string, number>();

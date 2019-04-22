@@ -33,6 +33,7 @@ import { Set } from './Set';
 import { HashSet } from './HashSet';
 import { AbstractSet } from './AbstractSet';
 import { BiFunction } from './function/BiFunction';
+import { Predicate } from './function/Predicate';
 import { Consumer } from './function/Consumer';
 import { Iterator } from './Iterator';
 import { UnsupportedOperationError } from './../lang/UnsupportedOperationError';
@@ -40,6 +41,7 @@ import { RedBlackBinaryTree } from './../internal/util/RedBlackBinaryTree';
 import { IllegalStateError } from './../lang/IllegalStateError';
 import { Objects } from './Objects';
 import { NoSuchElementError } from './NoSuchElementError';
+import { Comparable } from './../lang/Comparable';
 import { AbstractCollection } from './AbstractCollection';
 
 
@@ -61,7 +63,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
         public forEach(consumer: Consumer<Map.Entry<K, V>>): void {
             let iterator: Iterator<Map.Entry<K, V>> = this.iterator();
             while (iterator.hasNext()) {
-                consumer(iterator.next());
+                consumer.accept(iterator.next());
             }
         }
 
@@ -147,7 +149,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
         public forEach(consumer: Consumer<K>): void {
             let iterator: Iterator<K> = this.iterator();
             while (iterator.hasNext()) {
-                consumer(iterator.next());
+                consumer.accept(iterator.next());
             }
         }
 
@@ -220,7 +222,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
         public forEach(consumer: Consumer<V>): void {
             let iterator: Iterator<V> = this.iterator();
             while (iterator.hasNext()) {
-                consumer(iterator.next());
+                consumer.accept(iterator.next());
             }
         }
 
@@ -259,9 +261,10 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
     };    
 
     private readonly comparatorWrapper: Comparator<TreeMap.Entry<K, V>> = 
-            (o1: TreeMap.Entry<K, V>, o2: TreeMap.Entry<K, V>): number => {
-        return this.aComparator(o1.getKey(), o2.getKey());
-    }
+            Comparator.fromFunc<TreeMap.Entry<K, V>>((o1: TreeMap.Entry<K, V>, o2: TreeMap.Entry<K, V>): number => {
+                return this.aComparator.compare(o1.getKey(), o2.getKey());
+            });
+    
     
     private readonly tree: RedBlackBinaryTree<TreeMap.Entry<K, V>> = new RedBlackBinaryTree(this.comparatorWrapper);
     
@@ -271,6 +274,8 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
         super();
         if (comparator !== undefined) {
             this.aComparator = comparator;
+        } else {
+            this.aComparator = Comparator.naturalOrder<any>();
         }
     }
     
@@ -294,9 +299,9 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
         if (this.size() === 0) {
             return false;
         }
-        return this.tree.traverseAndTest((entry: TreeMap.Entry<K, V>): boolean => {
+        return this.tree.traverseAndTest(Predicate.fromFunc((entry: TreeMap.Entry<K, V>): boolean => {
             return Objects.equals(entry.getValue(), value);
-        });
+        }));
     }
 
     public get(key: K): V {
@@ -332,15 +337,6 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
     }    
 
     public put(key: K, value: V): V {
-        if (this.aComparator === null) {
-            if (typeof key === "number" || key instanceof Number) {
-                this.aComparator = <Comparator<any>>this.createNumberComparator();
-            } else if (typeof key === "string" || key instanceof String) {
-                this.aComparator = <Comparator<any>>this.createStringComparator();
-            } else {
-                throw new IllegalStateError("Comparator is not defined");
-            }
-        }
         let entry: TreeMap.Entry<K, V> = new TreeMap.Entry(key, value);
         let previousEntry: TreeMap.Entry<K, V> = this.tree.add(entry);
         if (previousEntry !== null) {
@@ -377,7 +373,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
             oldValue = node.getValue().getValue();
             this.tree.removeNode(node);
         }
-        let newValue: V = remappingFunction(key, oldValue);
+        let newValue: V = remappingFunction.apply(key, oldValue);
         if (newValue !== null) {
             entry.setValue(newValue);
             this.tree.add(entry);
@@ -404,24 +400,6 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
             return node.getValue().getKey();
         } else {
             return null;
-        }
-    }
-    
-    private createNumberComparator(): Comparator<number> {
-        return  (o1: number, o2: number): number => {
-            if (o1 < o2) {
-                return -1;
-            } else if (o1 === o2) { 
-                return 0;
-            } else if (o1 > o2){
-                return +1;
-            }
-        }
-    }
-    
-    private createStringComparator(): Comparator<string> {
-        return (o1: string, o2: string): number => {
-            return o1.compareTo(o2);
         }
     }
     

@@ -66,7 +66,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
         public forEach(consumer: Consumer<Map.Entry<K, V>>): void {
             let iterator: Iterator<Map.Entry<K, V>> = this.iterator();
             while (iterator.hasNext()) {
-                consumer(iterator.next());
+                consumer.accept(iterator.next());
             }
         }
 
@@ -140,7 +140,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
         public forEach(consumer: Consumer<K>): void {
             let iterator: Iterator<K> = this.iterator();
             while (iterator.hasNext()) {
-                consumer(iterator.next());
+                consumer.accept(iterator.next());
             }
         }
 
@@ -213,7 +213,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
         public forEach(consumer: Consumer<V>): void {
             let iterator: Iterator<V> = this.iterator();
             while (iterator.hasNext()) {
-                consumer(iterator.next());
+                consumer.accept(iterator.next());
             }
         }
 
@@ -402,7 +402,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
         if (entry !== null) {
             oldValue = entry.getValue();
         }
-        let newValue: V = remappingFunction(key, oldValue);
+        let newValue: V = remappingFunction.apply(key, oldValue);
         if (oldValue !== null) {
             if (newValue !== null) {
                 entry.setValue(newValue);

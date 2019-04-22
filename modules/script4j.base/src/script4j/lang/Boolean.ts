@@ -25,6 +25,7 @@
  */
 
 import './Object'
+import { Comparable } from './Comparable';
 
 declare global {
 
@@ -33,13 +34,15 @@ declare global {
         of(num: boolean): Boolean;
     }
 
-    interface Boolean {
+    interface Boolean extends Comparable<boolean> {
 
         hashCode(): number;
 
         equals(obj: Object): boolean;
 
         toString(): string;
+        
+        compareTo(another: boolean): number;
     }
 }
 
@@ -85,6 +88,18 @@ defineBooleanPrototype("hashCode", function () {
         thisBool = this.valueOf();
     }
     return thisBool ? 1231 : 1237;
+});
+
+defineBooleanPrototype("compareTo", function (another: boolean) {
+    if (this == another) {
+        return 0;
+    } else {
+        if (this == true) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 });
 
 defineBooleanPrototype("toString", function() {
