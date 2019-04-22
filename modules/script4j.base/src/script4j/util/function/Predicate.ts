@@ -47,6 +47,15 @@ export namespace Predicate {
             }
         };
     }
+    
+    export abstract class AbstractDefault<T> implements Predicate<T>{
+        
+        public test2(): void {
+            console.log("test");
+        }
+        
+        public abstract test​(t: T): boolean;
+    }
 }
 
 

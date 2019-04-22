@@ -29,6 +29,7 @@ import { Set } from './Set';
 import { Collection } from './Collection';
 import { Iterator } from './Iterator';
 import { BiFunction } from './function/BiFunction';
+import { Objects } from './Objects';
 
 export abstract class AbstractMap<K,V> implements Map<K,V> {
 
@@ -106,10 +107,8 @@ export abstract class AbstractMap<K,V> implements Map<K,V> {
         while (iterator.hasNext()) {
             let entry: Map.Entry<K, V> = iterator.next();
             let key: K = entry.getKey();
-            let keyStr: string = (key === null)? "null" : key.toString();
             let value: V = entry.getValue();
-            let valueStr: string = (value === null)? "null" : value.toString();
-            result += comma + keyStr + "=" + valueStr;
+            result += comma + Objects.toString(key) + "=" + Objects.toString(value);
             comma = ", ";
         }
         result += "}";

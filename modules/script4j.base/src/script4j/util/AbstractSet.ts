@@ -28,6 +28,7 @@ import { AbstractCollection } from './AbstractCollection';
 import { Set } from './Set';
 import { Iterator } from './Iterator';
 import { Collection } from './Collection';
+import { Objects } from './Objects';
 
 export abstract class AbstractSet<E> extends AbstractCollection<E> implements Set<E> {
 
@@ -67,7 +68,7 @@ export abstract class AbstractSet<E> extends AbstractCollection<E> implements Se
         let iterator: Iterator<E> = this.iterator();
         while (iterator.hasNext()) {
             let value: E = iterator.next();
-            result += comma + (value === null ? "null" : value.toString());
+            result += comma + Objects.toString(value);
             comma = ", ";
         }
         result += "]";

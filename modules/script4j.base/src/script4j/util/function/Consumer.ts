@@ -47,4 +47,13 @@ export namespace Consumer {
             }
         };
     }
+    
+    export abstract class AbstractDefault<T> implements Consumer<T> {
+        
+        public test(): void {
+            console.log("test");
+        }
+        
+        public abstract accept​(t: T): void;
+    }
 }

@@ -53,4 +53,13 @@ export namespace BiFunction {
             }
         };
     }
+    
+    export abstract class AbstractDefault<T, U, R> implements BiFunction<T, U, R> {
+        
+        public test(): void {
+            console.log("test");
+        }
+        
+        public abstract apply(t: T, u: U): R;
+    }
 }

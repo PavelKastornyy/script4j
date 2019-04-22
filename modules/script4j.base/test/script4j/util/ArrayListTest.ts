@@ -229,9 +229,10 @@ describe('ArrayListTest', () => {
         list.add(obj1);
         list.add(obj2);
         let arr: Object[] = [];
-        list.forEach(Consumer.fromFunc((e: Object) => {
+        let consumer: Consumer<Object> = Consumer.fromFunc((e: Object) => {
             arr.push(e);
-        }));
+        });
+        list.forEach(consumer);
         assert.isTrue(list.get(0).equals(arr[0]));
         assert.isTrue(list.get(1).equals(arr[1]));
         assert.equal(arr.length, 2);

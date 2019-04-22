@@ -28,6 +28,7 @@ import { AbstractCollection } from './AbstractCollection';
 import { List } from './List';
 import { Iterator } from './Iterator';
 import { Collection } from './Collection';
+import { Objects } from './Objects';
 
 export abstract class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 
@@ -94,7 +95,7 @@ export abstract class AbstractList<E> extends AbstractCollection<E> implements L
         let result: string = "[";
         for (let i: number = 0; i < this.size(); i++) {
             let value: E = this.get(i);
-            result += comma + (value === null ? "null" : value.toString());
+            result += comma + Objects.toString(value);
             comma = ", ";
         }
         result += "]";
