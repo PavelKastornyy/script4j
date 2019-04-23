@@ -34,7 +34,7 @@ export class BusEvent extends Event {
     public static readonly ANY: EventType<BusEvent> = new EventType(Event.ANY, "BUS") ;
     
     constructor(source: Object, eventType: EventType<BusEvent>) {
-        super(source, null, eventType)
+        super(source, null, eventType, null)
     }
     
     public getTarget(): EventTarget {

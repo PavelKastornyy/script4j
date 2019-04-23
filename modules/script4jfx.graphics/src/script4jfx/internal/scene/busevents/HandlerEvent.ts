@@ -29,7 +29,7 @@ import { EventType } from 'script4jfx.base';
 import { Map } from 'script4j.base';
 
 /**
- * This event is thrown when one or more handler was added to scene.
+ * This event is thrown when one or more handler was added/removed to/from scene.
  */
 export class HandlerEvent extends BusEvent {
     

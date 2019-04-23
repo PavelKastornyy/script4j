@@ -28,6 +28,7 @@ import { EventTarget } from 'script4jfx.base';
 import { EventDispatchChain } from 'script4jfx.base';
 import { ObjectProperty } from 'script4jfx.base';
 import { SimpleObjectProperty } from 'script4jfx.base';
+import { Consumer } from 'script4j.base';
 import { ObservableValue } from 'script4jfx.base';
 import { Parent } from './Parent';
 import { Node } from './Node';
@@ -39,9 +40,13 @@ import { EventHandlerCounter } from './../internal/scene/EventHandlerCounter';
 import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from './input/KeyEvent';
 import { Event } from 'script4jfx.base';
+import { ChangeListener } from 'script4jfx.base';
+import { EventDispatcher } from 'script4jfx.base';
 import { EventBus } from './../internal/scene/eventbus/EventBus';
 import { NodeUnlocker } from './../internal/scene/NodeUnlocker';
 import { ParentUnlocker } from './../internal/scene/ParentUnlocker';
+import { EventDispatcherImpl } from './../internal/scene/EventDispatcherImpl';
+
 
 /**
  * Scene doesn't have element. All javascript event handlers are set to the root of the Scene.
@@ -64,6 +69,11 @@ export class Scene implements EventTarget {
      * The manager for event handlers of this Scene.
      */
     private readonly eventHandlerManager: SceneEventHandlerManager = new SceneEventHandlerManager(this);
+    
+    /**
+     * Specifies the event dispatcher for this scene.
+     */
+    private readonly eventDispatcher: ObjectProperty<EventDispatcher> = new SimpleObjectProperty<EventDispatcher>();
 
     /**
      * This manager is created for every new root.
@@ -89,30 +99,55 @@ export class Scene implements EventTarget {
      * Creates a Scene for a specific root Node.
      */
     constructor​(root: Parent) {
+        this.setEventDispatcher(new EventDispatcherImpl(this.eventHandlerManager));
         //root can be set via property that is not ReadOnlyProperty
-        this.root.addListener((observable: ObservableValue<Parent>, oldParent: Parent, newParent: Parent) => {
+        this.root.addListener(ChangeListener.fromFunc((observable: ObservableValue<Parent>, oldParent: Parent, newParent: Parent) => {
             if (oldParent !== null) {
-                (<ParentUnlocker><any>oldParent).traverse((node: Node) => {
+                (<ParentUnlocker> <any> oldParent).traverse(Consumer.fromFunc((node: Node) => {
                     (<NodeUnlocker><any>node).setScene(null);
-                });
+                }));
                 this.htmlEventListenerManager.deinitialize();
             }
             if (newParent !== null) {
                 this.htmlEventListenerManager = new HtmlEventListenerManager(newParent.getElement(), this.eventBus);
                 const counter: EventHandlerCounter = new EventHandlerCounter();
-                (<ParentUnlocker><any>newParent).traverse((node: Node) => {
+                (<ParentUnlocker><any>newParent).traverse(Consumer.fromFunc((node: Node) => {
                     (<NodeUnlocker><any>node).setScene(this);
                      counter.countAndAdd((<NodeUnlocker><any>node).getEventHandlerManager());
-                });
+                }));
                 counter.countAndAdd(this.eventHandlerManager);
                 this.htmlEventListenerManager.initialize(counter.getResult());
             }
-        });
+        }));
         this.setRoot(root);
     }
+    
+    /*
+     * Gets the value of the property eventDispatcher.
+     */
+    public getEventDispatcher(): EventDispatcher {
+        return this.eventDispatcher.get();
+    }
+    
+    /**
+     * Sets the value of the property eventDispatcher.
+     */
+    public setEventDispatcher​(value: EventDispatcher): void {
+        this.eventDispatcher.set(value);
+    }    
 
+    /**
+     * Specifies the event dispatcher for this scene.
+     */    
+    public eventDispatcherProperty(): ObjectProperty<EventDispatcher> {
+        return this.eventDispatcher;
+    }
+
+    /**
+     * Construct an event dispatch chain for this node.
+     */
     public buildEventDispatchChain​(tail: EventDispatchChain): EventDispatchChain  {
-        throw new Error();
+        return tail.prepend(this.getEventDispatcher());
     }    
 
     /**
@@ -212,15 +247,29 @@ export class Scene implements EventTarget {
      * Registers an event handler to this scene.
      */
     public addEventHandler<T extends Event>​(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
-        this.eventHandlerManager.addMultipleEventHandlerByType(eventType, eventHandler);
+        this.eventHandlerManager.addEventHandlerByType(eventType, eventHandler);
     }
 
     /**
      * Unregisters a previously registered event handler from this scene.
      */    
     public removeEventHandler​<T extends Event>(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
-        this.eventHandlerManager.removeMultipleEventHandlerByType(eventType, eventHandler);
-    }    
+        this.eventHandlerManager.removeEventHandlerByType(eventType, eventHandler);
+    }  
+    
+    /**
+     * Registers an event filter to this node.
+     */
+    public addEventFilter<T extends Event>(eventType: EventType<T>, eventFilter: EventHandler<T>): void {
+        this.eventHandlerManager.addEventFilterByType(eventType, eventFilter);
+    }
+    
+    /**
+     * Unregisters a previously registered event filter from this node.
+     */
+    public removeEventFilter<T extends Event>(eventType: EventType<T>, eventFilter: EventHandler<T>): void {
+        this.eventHandlerManager.removeEventFilterByType(eventType, eventFilter);
+    }      
     
     /**
      * Use this method via SceneUnlocker.

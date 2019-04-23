@@ -48,947 +48,947 @@ export class KeyCode {
     /**
      * Constant for the {@code Enter} key.
      */
-    public static readonly ENTER = new KeyCode(0x0A, "Enter", KeyCode.KeyCodeClass.WHITESPACE);
+    public static readonly ENTER: KeyCode = new KeyCode(0x0A, "Enter", KeyCode.KeyCodeClass.WHITESPACE);
 
     /**
      * Constant for the {@code Backspace} key.
      */
-    public static readonly BACK_SPACE = new KeyCode(0x08, "Backspace");
+    public static readonly BACK_SPACE: KeyCode = new KeyCode(0x08, "Backspace");
 
     /**
      * Constant for the {@code Tab} key.
      */
-    public static readonly TAB = new KeyCode(0x09, "Tab", KeyCode.KeyCodeClass.WHITESPACE);
+    public static readonly TAB: KeyCode = new KeyCode(0x09, "Tab", KeyCode.KeyCodeClass.WHITESPACE);
 
     /**
      * Constant for the {@code Cancel} key.
      */
-    public static readonly CANCEL = new KeyCode(0x03, "Cancel");
+    public static readonly CANCEL: KeyCode = new KeyCode(0x03, "Cancel");
 
     /**
      * Constant for the {@code Clear} key.
      */
-    public static readonly CLEAR = new KeyCode(0x0C, "Clear");
+    public static readonly CLEAR: KeyCode = new KeyCode(0x0C, "Clear");
 
     /**
      * Constant for the {@code Shift} key.
      */
-    public static readonly SHIFT = new KeyCode(0x10, "Shift", KeyCode.KeyCodeClass.MODIFIER);
+    public static readonly SHIFT: KeyCode = new KeyCode(0x10, "Shift", KeyCode.KeyCodeClass.MODIFIER);
 
     /**
      * Constant for the {@code Ctrl} key.
      */
-    public static readonly CONTROL = new KeyCode(0x11, "Ctrl", KeyCode.KeyCodeClass.MODIFIER);
+    public static readonly CONTROL: KeyCode = new KeyCode(0x11, "Ctrl", KeyCode.KeyCodeClass.MODIFIER);
 
     /**
      * Constant for the {@code Alt} key.
      */
-    public static readonly ALT = new KeyCode(0x12, "Alt", KeyCode.KeyCodeClass.MODIFIER);
+    public static readonly ALT: KeyCode = new KeyCode(0x12, "Alt", KeyCode.KeyCodeClass.MODIFIER);
 
     /**
      * Constant for the {@code Pause} key.
      */
-    public static readonly PAUSE = new KeyCode(0x13, "Pause");
+    public static readonly PAUSE: KeyCode = new KeyCode(0x13, "Pause");
 
     /**
      * Constant for the {@code Caps Lock} key.
      */
-    public static readonly CAPS = new KeyCode(0x14, "Caps Lock");
+    public static readonly CAPS: KeyCode = new KeyCode(0x14, "Caps Lock");
 
     /**
      * Constant for the {@code Esc} key.
      */
-    public static readonly ESCAPE = new KeyCode(0x1B, "Esc");
+    public static readonly ESCAPE: KeyCode = new KeyCode(0x1B, "Esc");
 
     /**
      * Constant for the {@code Space} key.
      */
-    public static readonly SPACE = new KeyCode(0x20, "Space", KeyCode.KeyCodeClass.WHITESPACE);
+    public static readonly SPACE: KeyCode = new KeyCode(0x20, "Space", KeyCode.KeyCodeClass.WHITESPACE);
 
     /**
      * Constant for the {@code Page Up} key.
      */
-    public static readonly PAGE_UP = new KeyCode(0x21, "Page Up", KeyCode.KeyCodeClass.NAVIGATION);
+    public static readonly PAGE_UP: KeyCode = new KeyCode(0x21, "Page Up", KeyCode.KeyCodeClass.NAVIGATION);
 
     /**
      * Constant for the {@code Page Down} key.
      */
-    public static readonly PAGE_DOWN = new KeyCode(0x22, "Page Down", KeyCode.KeyCodeClass.NAVIGATION);
+    public static readonly PAGE_DOWN: KeyCode = new KeyCode(0x22, "Page Down", KeyCode.KeyCodeClass.NAVIGATION);
 
     /**
      * Constant for the {@code End} key.
      */
-    public static readonly END = new KeyCode(0x23, "End", KeyCode.KeyCodeClass.NAVIGATION);
+    public static readonly END: KeyCode = new KeyCode(0x23, "End", KeyCode.KeyCodeClass.NAVIGATION);
 
     /**
      * Constant for the {@code Home} key.
      */
-    public static readonly HOME = new KeyCode(0x24, "Home", KeyCode.KeyCodeClass.NAVIGATION);
+    public static readonly HOME: KeyCode =  new KeyCode(0x24, "Home", KeyCode.KeyCodeClass.NAVIGATION);
 
     /**
      * Constant for the non-numpad <b>left</b> arrow key.
      */
-    public static readonly LEFT = new KeyCode(0x25, "Left", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION);
+    public static readonly LEFT: KeyCode =  new KeyCode(0x25, "Left", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION);
 
     /**
      * Constant for the non-numpad <b>up</b> arrow key.
      */
-    public static readonly UP = new KeyCode(0x26, "Up", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION);
+    public static readonly UP: KeyCode =  new KeyCode(0x26, "Up", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION);
 
     /**
      * Constant for the non-numpad <b>right</b> arrow key.
      */
-    public static readonly RIGHT = new KeyCode(0x27, "Right", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION);
+    public static readonly RIGHT: KeyCode =  new KeyCode(0x27, "Right", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION);
 
     /**
      * Constant for the non-numpad <b>down</b> arrow key.
      */
-    public static readonly DOWN = new KeyCode(0x28, "Down", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION);
+    public static readonly DOWN: KeyCode =  new KeyCode(0x28, "Down", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION);
 
     /**
      * Constant for the comma key, ","
      */
-    public static readonly COMMA = new KeyCode(0x2C, "Comma");
+    public static readonly COMMA: KeyCode =  new KeyCode(0x2C, "Comma");
 
     /**
      * Constant for the minus key, "-"
      */
-    public static readonly MINUS = new KeyCode(0x2D, "Minus");
+    public static readonly MINUS: KeyCode =  new KeyCode(0x2D, "Minus");
 
     /**
      * Constant for the period key, "."
      */
-    public static readonly PERIOD = new KeyCode(0x2E, "Period");
+    public static readonly PERIOD: KeyCode =  new KeyCode(0x2E, "Period");
 
     /**
      * Constant for the forward slash key, "/"
      */
-    public static readonly SLASH = new KeyCode(0x2F, "Slash");
+    public static readonly SLASH: KeyCode =  new KeyCode(0x2F, "Slash");
 
     /**
      * Constant for the {@code 0} key.
      */
-    public static readonly DIGIT0 = new KeyCode(0x30, "0", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT0: KeyCode =  new KeyCode(0x30, "0", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 1} key.
      */
-    public static readonly DIGIT1 = new KeyCode(0x31, "1", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT1: KeyCode =  new KeyCode(0x31, "1", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 2} key.
      */
-    public static readonly DIGIT2 = new KeyCode(0x32, "2", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT2: KeyCode =  new KeyCode(0x32, "2", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 3} key.
      */
-    public static readonly DIGIT3 = new KeyCode(0x33, "3", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT3: KeyCode =  new KeyCode(0x33, "3", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 4} key.
      */
-    public static readonly DIGIT4 = new KeyCode(0x34, "4", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT4: KeyCode =  new KeyCode(0x34, "4", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 5} key.
      */
-    public static readonly DIGIT5 = new KeyCode(0x35, "5", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT5: KeyCode =  new KeyCode(0x35, "5", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 6} key.
      */
-    public static readonly DIGIT6 = new KeyCode(0x36, "6", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT6: KeyCode =  new KeyCode(0x36, "6", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 7} key.
      */
-    public static readonly DIGIT7 = new KeyCode(0x37, "7", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT7: KeyCode =  new KeyCode(0x37, "7", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 8} key.
      */
-    public static readonly DIGIT8 = new KeyCode(0x38, "8", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT8: KeyCode =  new KeyCode(0x38, "8", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the {@code 9} key.
      */
-    public static readonly DIGIT9 = new KeyCode(0x39, "9", KeyCode.KeyCodeClass.DIGIT);
+    public static readonly DIGIT9: KeyCode =  new KeyCode(0x39, "9", KeyCode.KeyCodeClass.DIGIT);
 
     /**
      * Constant for the semicolon key, ";"
      */
-    public static readonly SEMICOLON = new KeyCode(0x3B, "Semicolon");
+    public static readonly SEMICOLON: KeyCode =  new KeyCode(0x3B, "Semicolon");
 
     /**
      * Constant for the equals key, "="
      */
-    public static readonly EQUALS = new KeyCode(0x3D, "Equals");
+    public static readonly EQUALS: KeyCode =  new KeyCode(0x3D, "Equals");
 
     /**
      * Constant for the {@code A} key.
      */
-    public static readonly A = new KeyCode(0x41, "A", KeyCode.KeyCodeClass.LETTER);
+    public static readonly A: KeyCode =  new KeyCode(0x41, "A", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code B} key.
      */
-    public static readonly B = new KeyCode(0x42, "B", KeyCode.KeyCodeClass.LETTER);
+    public static readonly B: KeyCode =  new KeyCode(0x42, "B", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code C} key.
      */
-    public static readonly C = new KeyCode(0x43, "C", KeyCode.KeyCodeClass.LETTER);
+    public static readonly C: KeyCode =  new KeyCode(0x43, "C", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code D} key.
      */
-    public static readonly D = new KeyCode(0x44, "D", KeyCode.KeyCodeClass.LETTER);
+    public static readonly D: KeyCode =  new KeyCode(0x44, "D", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code E} key.
      */
-    public static readonly E = new KeyCode(0x45, "E", KeyCode.KeyCodeClass.LETTER);
+    public static readonly E: KeyCode =  new KeyCode(0x45, "E", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code F} key.
      */
-    public static readonly F = new KeyCode(0x46, "F", KeyCode.KeyCodeClass.LETTER);
+    public static readonly F: KeyCode =  new KeyCode(0x46, "F", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code G} key.
      */
-    public static readonly G = new KeyCode(0x47, "G", KeyCode.KeyCodeClass.LETTER);
+    public static readonly G: KeyCode =  new KeyCode(0x47, "G", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code H} key.
      */
-    public static readonly H = new KeyCode(0x48, "H", KeyCode.KeyCodeClass.LETTER);
+    public static readonly H: KeyCode =  new KeyCode(0x48, "H", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code I} key.
      */
-    public static readonly I = new KeyCode(0x49, "I", KeyCode.KeyCodeClass.LETTER);
+    public static readonly I: KeyCode =  new KeyCode(0x49, "I", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code J} key.
      */
-    public static readonly J = new KeyCode(0x4A, "J", KeyCode.KeyCodeClass.LETTER);
+    public static readonly J: KeyCode =  new KeyCode(0x4A, "J", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code K} key.
      */
-    public static readonly K = new KeyCode(0x4B, "K", KeyCode.KeyCodeClass.LETTER);
+    public static readonly K: KeyCode =  new KeyCode(0x4B, "K", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code L} key.
      */
-    public static readonly L = new KeyCode(0x4C, "L", KeyCode.KeyCodeClass.LETTER);
+    public static readonly L: KeyCode =  new KeyCode(0x4C, "L", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code M} key.
      */
-    public static readonly M = new KeyCode(0x4D, "M", KeyCode.KeyCodeClass.LETTER);
+    public static readonly M: KeyCode =  new KeyCode(0x4D, "M", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code N} key.
      */
-    public static readonly N = new KeyCode(0x4E, "N", KeyCode.KeyCodeClass.LETTER);
+    public static readonly N: KeyCode =  new KeyCode(0x4E, "N", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code O} key.
      */
-    public static readonly O = new KeyCode(0x4F, "O", KeyCode.KeyCodeClass.LETTER);
+    public static readonly O: KeyCode =  new KeyCode(0x4F, "O", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code P} key.
      */
-    public static readonly P = new KeyCode(0x50, "P", KeyCode.KeyCodeClass.LETTER);
+    public static readonly P: KeyCode =  new KeyCode(0x50, "P", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code Q} key.
      */
-    public static readonly Q = new KeyCode(0x51, "Q", KeyCode.KeyCodeClass.LETTER);
+    public static readonly Q: KeyCode =  new KeyCode(0x51, "Q", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code R} key.
      */
-    public static readonly R = new KeyCode(0x52, "R", KeyCode.KeyCodeClass.LETTER);
+    public static readonly R: KeyCode =  new KeyCode(0x52, "R", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code S} key.
      */
-    public static readonly S = new KeyCode(0x53, "S", KeyCode.KeyCodeClass.LETTER);
+    public static readonly S: KeyCode =  new KeyCode(0x53, "S", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code T} key.
      */
-    public static readonly T = new KeyCode(0x54, "T", KeyCode.KeyCodeClass.LETTER);
+    public static readonly T: KeyCode =  new KeyCode(0x54, "T", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code U} key.
      */
-    public static readonly U = new KeyCode(0x55, "U", KeyCode.KeyCodeClass.LETTER);
+    public static readonly U: KeyCode =  new KeyCode(0x55, "U", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code V} key.
      */
-    public static readonly V = new KeyCode(0x56, "V", KeyCode.KeyCodeClass.LETTER);
+    public static readonly V: KeyCode =  new KeyCode(0x56, "V", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code W} key.
      */
-    public static readonly W = new KeyCode(0x57, "W", KeyCode.KeyCodeClass.LETTER);
+    public static readonly W: KeyCode =  new KeyCode(0x57, "W", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code X} key.
      */
-    public static readonly X = new KeyCode(0x58, "X", KeyCode.KeyCodeClass.LETTER);
+    public static readonly X: KeyCode =  new KeyCode(0x58, "X", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code Y} key.
      */
-    public static readonly Y = new KeyCode(0x59, "Y", KeyCode.KeyCodeClass.LETTER);
+    public static readonly Y: KeyCode =  new KeyCode(0x59, "Y", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the {@code Z} key.
      */
-    public static readonly Z = new KeyCode(0x5A, "Z", KeyCode.KeyCodeClass.LETTER);
+    public static readonly Z: KeyCode =  new KeyCode(0x5A, "Z", KeyCode.KeyCodeClass.LETTER);
 
     /**
      * Constant for the open bracket key, "["
      */
-    public static readonly OPEN_BRACKET = new KeyCode(0x5B, "Open Bracket");
+    public static readonly OPEN_BRACKET: KeyCode =  new KeyCode(0x5B, "Open Bracket");
 
     /**
      * Constant for the back slash key, "\"
      */
-    public static readonly BACK_SLASH = new KeyCode(0x5C, "Back Slash");
+    public static readonly BACK_SLASH: KeyCode =  new KeyCode(0x5C, "Back Slash");
 
     /**
      * Constant for the close bracket key, "]"
      */
-    public static readonly CLOSE_BRACKET = new KeyCode(0x5D, "Close Bracket");
+    public static readonly CLOSE_BRACKET: KeyCode =  new KeyCode(0x5D, "Close Bracket");
 
     /**
      * Constant for the {@code Numpad 0} key.
      */
-    public static readonly NUMPAD0 = new KeyCode(0x60, "Numpad 0", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD0: KeyCode =  new KeyCode(0x60, "Numpad 0", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 1} key.
      */
-    public static readonly NUMPAD1 = new KeyCode(0x61, "Numpad 1", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD1: KeyCode =  new KeyCode(0x61, "Numpad 1", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 2} key.
      */
-    public static readonly NUMPAD2 = new KeyCode(0x62, "Numpad 2", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD2: KeyCode =  new KeyCode(0x62, "Numpad 2", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 3} key.
      */
-    public static readonly NUMPAD3 = new KeyCode(0x63, "Numpad 3", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD3: KeyCode =  new KeyCode(0x63, "Numpad 3", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 4} key.
      */
-    public static readonly NUMPAD4 = new KeyCode(0x64, "Numpad 4", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD4: KeyCode =  new KeyCode(0x64, "Numpad 4", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 5} key.
      */
-    public static readonly NUMPAD5 = new KeyCode(0x65, "Numpad 5", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD5: KeyCode =  new KeyCode(0x65, "Numpad 5", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 6} key.
      */
-    public static readonly NUMPAD6 = new KeyCode(0x66, "Numpad 6", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD6: KeyCode =  new KeyCode(0x66, "Numpad 6", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 7} key.
      */
-    public static readonly NUMPAD7 = new KeyCode(0x67, "Numpad 7", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD7: KeyCode =  new KeyCode(0x67, "Numpad 7", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 8} key.
      */
-    public static readonly NUMPAD8 = new KeyCode(0x68, "Numpad 8", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD8: KeyCode =  new KeyCode(0x68, "Numpad 8", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Numpad 9} key.
      */
-    public static readonly NUMPAD9 = new KeyCode(0x69, "Numpad 9", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly NUMPAD9: KeyCode =  new KeyCode(0x69, "Numpad 9", KeyCode.KeyCodeClass.DIGIT | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Multiply} key.
      */
-    public static readonly MULTIPLY = new KeyCode(0x6A, "Multiply");
+    public static readonly MULTIPLY: KeyCode =  new KeyCode(0x6A, "Multiply");
 
     /**
      * Constant for the {@code Add} key.
      */
-    public static readonly ADD = new KeyCode(0x6B, "Add");
+    public static readonly ADD: KeyCode =  new KeyCode(0x6B, "Add");
 
     /**
      * Constant for the Numpad Separator key.
      */
-    public static readonly SEPARATOR = new KeyCode(0x6C, "Separator");
+    public static readonly SEPARATOR: KeyCode =  new KeyCode(0x6C, "Separator");
 
     /**
      * Constant for the {@code Subtract} key.
      */
-    public static readonly SUBTRACT = new KeyCode(0x6D, "Subtract");
+    public static readonly SUBTRACT: KeyCode =  new KeyCode(0x6D, "Subtract");
 
     /**
      * Constant for the {@code Decimal} key.
      */
-    public static readonly DECIMAL = new KeyCode(0x6E, "Decimal");
+    public static readonly DECIMAL: KeyCode =  new KeyCode(0x6E, "Decimal");
 
     /**
      * Constant for the {@code Divide} key.
      */
-    public static readonly DIVIDE = new KeyCode(0x6F, "Divide");
+    public static readonly DIVIDE: KeyCode =  new KeyCode(0x6F, "Divide");
 
     /**
      * Constant for the {@code Delete} key.
      */
-    public static readonly DELETE = new KeyCode(0x7F, "Delete"); /* ASCII:Integer   DEL */
+    public static readonly DELETE: KeyCode =  new KeyCode(0x7F, "Delete"); /* ASCII:Integer   DEL */
 
     /**
      * Constant for the {@code Num Lock} key.
      */
-    public static readonly NUM_LOCK = new KeyCode(0x90, "Num Lock");
+    public static readonly NUM_LOCK: KeyCode =  new KeyCode(0x90, "Num Lock");
 
     /**
      * Constant for the {@code Scroll Lock} key.
      */
-    public static readonly SCROLL_LOCK = new KeyCode(0x91, "Scroll Lock");
+    public static readonly SCROLL_LOCK: KeyCode =  new KeyCode(0x91, "Scroll Lock");
 
     /**
      * Constant for the F1 function key.
      */
-    public static readonly F1 = new KeyCode(0x70, "F1", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F1: KeyCode =  new KeyCode(0x70, "F1", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F2 function key.
      */
-    public static readonly F2 = new KeyCode(0x71, "F2", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F2: KeyCode =  new KeyCode(0x71, "F2", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F3 function key.
      */
-    public static readonly F3 = new KeyCode(0x72, "F3", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F3: KeyCode =  new KeyCode(0x72, "F3", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F4 function key.
      */
-    public static readonly F4 = new KeyCode(0x73, "F4", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F4: KeyCode =  new KeyCode(0x73, "F4", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F5 function key.
      */
-    public static readonly F5 = new KeyCode(0x74, "F5", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F5: KeyCode =  new KeyCode(0x74, "F5", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F6 function key.
      */
-    public static readonly F6 = new KeyCode(0x75, "F6", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F6: KeyCode =  new KeyCode(0x75, "F6", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F7 function key.
      */
-    public static readonly F7 = new KeyCode(0x76, "F7", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F7: KeyCode =  new KeyCode(0x76, "F7", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F8 function key.
      */
-    public static readonly F8 = new KeyCode(0x77, "F8", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F8: KeyCode =  new KeyCode(0x77, "F8", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F9 function key.
      */
-    public static readonly F9 = new KeyCode(0x78, "F9", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F9: KeyCode =  new KeyCode(0x78, "F9", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F10 function key.
      */
-    public static readonly F10 = new KeyCode(0x79, "F10", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F10: KeyCode =  new KeyCode(0x79, "F10", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F11 function key.
      */
-    public static readonly F11 = new KeyCode(0x7A, "F11", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F11: KeyCode =  new KeyCode(0x7A, "F11", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F12 function key.
      */
-    public static readonly F12 = new KeyCode(0x7B, "F12", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F12: KeyCode =  new KeyCode(0x7B, "F12", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F13 function key.
      */
-    public static readonly F13 = new KeyCode(0xF000, "F13", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F13: KeyCode =  new KeyCode(0xF000, "F13", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F14 function key.
      */
-    public static readonly F14 = new KeyCode(0xF001, "F14", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F14: KeyCode =  new KeyCode(0xF001, "F14", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F15 function key.
      */
-    public static readonly F15 = new KeyCode(0xF002, "F15", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F15: KeyCode =  new KeyCode(0xF002, "F15", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F16 function key.
      */
-    public static readonly F16 = new KeyCode(0xF003, "F16", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F16: KeyCode =  new KeyCode(0xF003, "F16", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F17 function key.
      */
-    public static readonly F17 = new KeyCode(0xF004, "F17", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F17: KeyCode =  new KeyCode(0xF004, "F17", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F18 function key.
      */
-    public static readonly F18 = new KeyCode(0xF005, "F18", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F18: KeyCode =  new KeyCode(0xF005, "F18", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F19 function key.
      */
-    public static readonly F19 = new KeyCode(0xF006, "F19", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F19: KeyCode =  new KeyCode(0xF006, "F19", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F20 function key.
      */
-    public static readonly F20 = new KeyCode(0xF007, "F20", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F20: KeyCode =  new KeyCode(0xF007, "F20", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F21 function key.
      */
-    public static readonly F21 = new KeyCode(0xF008, "F21", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F21: KeyCode =  new KeyCode(0xF008, "F21", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F22 function key.
      */
-    public static readonly F22 = new KeyCode(0xF009, "F22", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F22: KeyCode =  new KeyCode(0xF009, "F22", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F23 function key.
      */
-    public static readonly F23 = new KeyCode(0xF00A, "F23", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F23: KeyCode =  new KeyCode(0xF00A, "F23", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the F24 function key.
      */
-    public static readonly F24 = new KeyCode(0xF00B, "F24", KeyCode.KeyCodeClass.FUNCTION);
+    public static readonly F24: KeyCode =  new KeyCode(0xF00B, "F24", KeyCode.KeyCodeClass.FUNCTION);
 
     /**
      * Constant for the {@code Print Screen} key.
      */
-    public static readonly PRINTSCREEN = new KeyCode(0x9A, "Print Screen");
+    public static readonly PRINTSCREEN: KeyCode =  new KeyCode(0x9A, "Print Screen");
 
     /**
      * Constant for the {@code Insert} key.
      */
-    public static readonly INSERT = new KeyCode(0x9B, "Insert");
+    public static readonly INSERT: KeyCode =  new KeyCode(0x9B, "Insert");
 
     /**
      * Constant for the {@code Help} key.
      */
-    public static readonly HELP = new KeyCode(0x9C, "Help");
+    public static readonly HELP: KeyCode =  new KeyCode(0x9C, "Help");
 
     /**
      * Constant for the {@code Meta} key.
      */
-    public static readonly META = new KeyCode(0x9D, "Meta", KeyCode.KeyCodeClass.MODIFIER);
+    public static readonly META: KeyCode =  new KeyCode(0x9D, "Meta", KeyCode.KeyCodeClass.MODIFIER);
 
     /**
      * Constant for the {@code Back Quote} key.
      */
-    public static readonly BACK_QUOTE = new KeyCode(0xC0, "Back Quote");
+    public static readonly BACK_QUOTE: KeyCode =  new KeyCode(0xC0, "Back Quote");
 
     /**
      * Constant for the {@code Quote} key.
      */
-    public static readonly QUOTE = new KeyCode(0xDE, "Quote");
+    public static readonly QUOTE: KeyCode =  new KeyCode(0xDE, "Quote");
 
     /**
      * Constant for the numeric keypad <b>up</b> arrow key.
      */
-    public static readonly KP_UP = new KeyCode(0xE0, "Numpad Up", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly KP_UP: KeyCode =  new KeyCode(0xE0, "Numpad Up", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the numeric keypad <b>down</b> arrow key.
      */
-    public static readonly KP_DOWN = new KeyCode(0xE1, "Numpad Down", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly KP_DOWN: KeyCode =  new KeyCode(0xE1, "Numpad Down", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the numeric keypad <b>left</b> arrow key.
      */
-    public static readonly KP_LEFT = new KeyCode(0xE2, "Numpad Left", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly KP_LEFT: KeyCode =  new KeyCode(0xE2, "Numpad Left", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the numeric keypad <b>right</b> arrow key.
      */
-    public static readonly KP_RIGHT = new KeyCode(0xE3, "Numpad Right", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION | KeyCode.KeyCodeClass.KEYPAD);
+    public static readonly KP_RIGHT: KeyCode =  new KeyCode(0xE3, "Numpad Right", KeyCode.KeyCodeClass.ARROW | KeyCode.KeyCodeClass.NAVIGATION | KeyCode.KeyCodeClass.KEYPAD);
 
     /**
      * Constant for the {@code Dead Grave} key.
      */
-    public static readonly DEAD_GRAVE = new KeyCode(0x80, "Dead Grave");
+    public static readonly DEAD_GRAVE: KeyCode =  new KeyCode(0x80, "Dead Grave");
 
     /**
      * Constant for the {@code Dead Acute} key.
      */
-    public static readonly DEAD_ACUTE = new KeyCode(0x81, "Dead Acute");
+    public static readonly DEAD_ACUTE: KeyCode =  new KeyCode(0x81, "Dead Acute");
 
     /**
      * Constant for the {@code Dead Circumflex} key.
      */
-    public static readonly DEAD_CIRCUMFLEX = new KeyCode(0x82, "Dead Circumflex");
+    public static readonly DEAD_CIRCUMFLEX: KeyCode =  new KeyCode(0x82, "Dead Circumflex");
 
     /**
      * Constant for the {@code Dead Tilde} key.
      */
-    public static readonly DEAD_TILDE = new KeyCode(0x83, "Dead Tilde");
+    public static readonly DEAD_TILDE: KeyCode =  new KeyCode(0x83, "Dead Tilde");
 
     /**
      * Constant for the {@code Dead Macron} key.
      */
-    public static readonly DEAD_MACRON = new KeyCode(0x84, "Dead Macron");
+    public static readonly DEAD_MACRON: KeyCode =  new KeyCode(0x84, "Dead Macron");
 
     /**
      * Constant for the {@code Dead Breve} key.
      */
-    public static readonly DEAD_BREVE = new KeyCode(0x85, "Dead Breve");
+    public static readonly DEAD_BREVE: KeyCode =  new KeyCode(0x85, "Dead Breve");
 
     /**
      * Constant for the {@code Dead Abovedot} key.
      */
-    public static readonly DEAD_ABOVEDOT = new KeyCode(0x86, "Dead Abovedot");
+    public static readonly DEAD_ABOVEDOT: KeyCode =  new KeyCode(0x86, "Dead Abovedot");
 
     /**
      * Constant for the {@code Dead Diaeresis} key.
      */
-    public static readonly DEAD_DIAERESIS = new KeyCode(0x87, "Dead Diaeresis");
+    public static readonly DEAD_DIAERESIS: KeyCode =  new KeyCode(0x87, "Dead Diaeresis");
 
     /**
      * Constant for the {@code Dead Abovering} key.
      */
-    public static readonly DEAD_ABOVERING = new KeyCode(0x88, "Dead Abovering");
+    public static readonly DEAD_ABOVERING: KeyCode =  new KeyCode(0x88, "Dead Abovering");
 
     /**
      * Constant for the {@code Dead Doubleacute} key.
      */
-    public static readonly DEAD_DOUBLEACUTE = new KeyCode(0x89, "Dead Doubleacute");
+    public static readonly DEAD_DOUBLEACUTE: KeyCode =  new KeyCode(0x89, "Dead Doubleacute");
 
     /**
      * Constant for the {@code Dead Caron} key.
      */
-    public static readonly DEAD_CARON = new KeyCode(0x8a, "Dead Caron");
+    public static readonly DEAD_CARON: KeyCode =  new KeyCode(0x8a, "Dead Caron");
 
     /**
      * Constant for the {@code Dead Cedilla} key.
      */
-    public static readonly DEAD_CEDILLA = new KeyCode(0x8b, "Dead Cedilla");
+    public static readonly DEAD_CEDILLA: KeyCode =  new KeyCode(0x8b, "Dead Cedilla");
 
     /**
      * Constant for the {@code Dead Ogonek} key.
      */
-    public static readonly DEAD_OGONEK = new KeyCode(0x8c, "Dead Ogonek");
+    public static readonly DEAD_OGONEK: KeyCode =  new KeyCode(0x8c, "Dead Ogonek");
 
     /**
      * Constant for the {@code Dead Iota} key.
      */
-    public static readonly DEAD_IOTA = new KeyCode(0x8d, "Dead Iota");
+    public static readonly DEAD_IOTA: KeyCode =  new KeyCode(0x8d, "Dead Iota");
 
     /**
      * Constant for the {@code Dead Voiced Sound} key.
      */
-    public static readonly DEAD_VOICED_SOUND = new KeyCode(0x8e, "Dead Voiced Sound");
+    public static readonly DEAD_VOICED_SOUND: KeyCode =  new KeyCode(0x8e, "Dead Voiced Sound");
 
     /**
      * Constant for the {@code Dead Semivoiced Sound} key.
      */
-    public static readonly DEAD_SEMIVOICED_SOUND = new KeyCode(0x8f, "Dead Semivoiced Sound");
+    public static readonly DEAD_SEMIVOICED_SOUND: KeyCode =  new KeyCode(0x8f, "Dead Semivoiced Sound");
 
     /**
      * Constant for the {@code Ampersand} key.
      */
-    public static readonly AMPERSAND = new KeyCode(0x96, "Ampersand");
+    public static readonly AMPERSAND: KeyCode =  new KeyCode(0x96, "Ampersand");
 
     /**
      * Constant for the {@code Asterisk} key.
      */
-    public static readonly ASTERISK = new KeyCode(0x97, "Asterisk");
+    public static readonly ASTERISK: KeyCode =  new KeyCode(0x97, "Asterisk");
 
     /**
      * Constant for the {@code Double Quote} key.
      */
-    public static readonly QUOTEDBL = new KeyCode(0x98, "Double Quote");
+    public static readonly QUOTEDBL: KeyCode =  new KeyCode(0x98, "Double Quote");
 
     /**
      * Constant for the {@code Less} key.
      */
-    public static readonly LESS = new KeyCode(0x99, "Less");
+    public static readonly LESS: KeyCode =  new KeyCode(0x99, "Less");
 
     /**
      * Constant for the {@code Greater} key.
      */
-    public static readonly GREATER = new KeyCode(0xa0, "Greater");
+    public static readonly GREATER: KeyCode =  new KeyCode(0xa0, "Greater");
 
     /**
      * Constant for the {@code Left Brace} key.
      */
-    public static readonly BRACELEFT = new KeyCode(0xa1, "Left Brace");
+    public static readonly BRACELEFT: KeyCode =  new KeyCode(0xa1, "Left Brace");
 
     /**
      * Constant for the {@code Right Brace} key.
      */
-    public static readonly BRACERIGHT = new KeyCode(0xa2, "Right Brace");
+    public static readonly BRACERIGHT: KeyCode =  new KeyCode(0xa2, "Right Brace");
 
     /**
      * Constant for the "@" key.
      */
-    public static readonly AT = new KeyCode(0x0200, "At");
+    public static readonly AT: KeyCode =  new KeyCode(0x0200, "At");
 
     /**
      * Constant for the ":" key.
      */
-    public static readonly COLON = new KeyCode(0x0201, "Colon");
+    public static readonly COLON: KeyCode =  new KeyCode(0x0201, "Colon");
 
     /**
      * Constant for the "^" key.
      */
-    public static readonly CIRCUMFLEX = new KeyCode(0x0202, "Circumflex");
+    public static readonly CIRCUMFLEX: KeyCode =  new KeyCode(0x0202, "Circumflex");
 
     /**
      * Constant for the "$" key.
      */
-    public static readonly DOLLAR = new KeyCode(0x0203, "Dollar");
+    public static readonly DOLLAR: KeyCode =  new KeyCode(0x0203, "Dollar");
 
     /**
      * Constant for the Euro currency sign key.
      */
-    public static readonly EURO_SIGN = new KeyCode(0x0204, "Euro Sign");
+    public static readonly EURO_SIGN: KeyCode =  new KeyCode(0x0204, "Euro Sign");
 
     /**
      * Constant for the "!" key.
      */
-    public static readonly EXCLAMATION_MARK = new KeyCode(0x0205, "Exclamation Mark");
+    public static readonly EXCLAMATION_MARK: KeyCode =  new KeyCode(0x0205, "Exclamation Mark");
 
     /**
      * Constant for the inverted exclamation mark key.
      */
-    public static readonly INVERTED_EXCLAMATION_MARK = new KeyCode(0x0206, "Inverted Exclamation Mark");
+    public static readonly INVERTED_EXCLAMATION_MARK: KeyCode =  new KeyCode(0x0206, "Inverted Exclamation Mark");
 
     /**
-     * Constant for the " = new KeyCode(" key.
+     * Constant for the ": KeyCode =  new KeyCode(" key.
      */
-    public static readonly LEFT_PARENTHESIS = new KeyCode(0x0207, "Left Parenthesis");
+    public static readonly LEFT_PARENTHESIS: KeyCode =  new KeyCode(0x0207, "Left Parenthesis");
 
     /**
      * Constant for the "#" key.
      */
-    public static readonly NUMBER_SIGN = new KeyCode(0x0208, "Number Sign");
+    public static readonly NUMBER_SIGN: KeyCode =  new KeyCode(0x0208, "Number Sign");
 
     /**
      * Constant for the "+" key.
      */
-    public static readonly PLUS = new KeyCode(0x0209, "Plus");
+    public static readonly PLUS: KeyCode =  new KeyCode(0x0209, "Plus");
 
     /**
      * Constant for the ")" key.
      */
-    public static readonly RIGHT_PARENTHESIS = new KeyCode(0x020A, "Right Parenthesis");
+    public static readonly RIGHT_PARENTHESIS: KeyCode =  new KeyCode(0x020A, "Right Parenthesis");
 
     /**
      * Constant for the "_" key.
      */
-    public static readonly UNDERSCORE = new KeyCode(0x020B, "Underscore");
+    public static readonly UNDERSCORE: KeyCode =  new KeyCode(0x020B, "Underscore");
 
     /**
      * Constant for the Microsoft Windows "Windows" key.
      * It is used for both the left and right version of the key.
      */
-    public static readonly WINDOWS = new KeyCode(0x020C, "Windows", KeyCode.KeyCodeClass.MODIFIER);
+    public static readonly WINDOWS: KeyCode =  new KeyCode(0x020C, "Windows", KeyCode.KeyCodeClass.MODIFIER);
 
     /**
      * Constant for the Microsoft Windows Context Menu key.
      */
-    public static readonly CONTEXT_MENU = new KeyCode(0x020D, "Context Menu");
+    public static readonly CONTEXT_MENU: KeyCode =  new KeyCode(0x020D, "Context Menu");
 
     /**
      * Constant for input method support on Asian Keyboards.
      */
-    public static readonly FINAL = new KeyCode(0x0018, "Final");
+    public static readonly FINAL: KeyCode =  new KeyCode(0x0018, "Final");
 
     /**
      * Constant for the Convert function key.
      */
-    public static readonly CONVERT = new KeyCode(0x001C, "Convert");
+    public static readonly CONVERT: KeyCode =  new KeyCode(0x001C, "Convert");
 
     /**
      * Constant for the Don't Convert function key.
      */
-    public static readonly NONCONVERT = new KeyCode(0x001D, "Nonconvert");
+    public static readonly NONCONVERT: KeyCode =  new KeyCode(0x001D, "Nonconvert");
 
     /**
      * Constant for the Accept or Commit function key.
      */
-    public static readonly ACCEPT = new KeyCode(0x001E, "Accept");
+    public static readonly ACCEPT: KeyCode =  new KeyCode(0x001E, "Accept");
 
     /**
      * Constant for the {@code Mode Change} key.
      */
-    public static readonly MODECHANGE = new KeyCode(0x001F, "Mode Change");
+    public static readonly MODECHANGE: KeyCode =  new KeyCode(0x001F, "Mode Change");
     /**
      * Constant for the {@code Kana} key.
      */
-    public static readonly KANA = new KeyCode(0x0015, "Kana");
+    public static readonly KANA: KeyCode =  new KeyCode(0x0015, "Kana");
     /**
      * Constant for the {@code Kanji} key.
      */
-    public static readonly KANJI = new KeyCode(0x0019, "Kanji");
+    public static readonly KANJI: KeyCode =  new KeyCode(0x0019, "Kanji");
 
     /**
      * Constant for the Alphanumeric function key.
      */
-    public static readonly ALPHANUMERIC = new KeyCode(0x00F0, "Alphanumeric");
+    public static readonly ALPHANUMERIC: KeyCode =  new KeyCode(0x00F0, "Alphanumeric");
 
     /**
      * Constant for the Katakana function key.
      */
-    public static readonly KATAKANA = new KeyCode(0x00F1, "Katakana");
+    public static readonly KATAKANA: KeyCode =  new KeyCode(0x00F1, "Katakana");
 
     /**
      * Constant for the Hiragana function key.
      */
-    public static readonly HIRAGANA = new KeyCode(0x00F2, "Hiragana");
+    public static readonly HIRAGANA: KeyCode =  new KeyCode(0x00F2, "Hiragana");
 
     /**
      * Constant for the Full-Width Characters function key.
      */
-    public static readonly FULL_WIDTH = new KeyCode(0x00F3, "Full Width");
+    public static readonly FULL_WIDTH: KeyCode =  new KeyCode(0x00F3, "Full Width");
 
     /**
      * Constant for the Half-Width Characters function key.
      */
-    public static readonly HALF_WIDTH = new KeyCode(0x00F4, "Half Width");
+    public static readonly HALF_WIDTH: KeyCode =  new KeyCode(0x00F4, "Half Width");
 
     /**
      * Constant for the Roman Characters function key.
      */
-    public static readonly ROMAN_CHARACTERS = new KeyCode(0x00F5, "Roman Characters");
+    public static readonly ROMAN_CHARACTERS: KeyCode =  new KeyCode(0x00F5, "Roman Characters");
 
     /**
      * Constant for the All Candidates function key.
      */
-    public static readonly ALL_CANDIDATES = new KeyCode(0x0100, "All Candidates");
+    public static readonly ALL_CANDIDATES: KeyCode =  new KeyCode(0x0100, "All Candidates");
 
     /**
      * Constant for the Previous Candidate function key.
      */
-    public static readonly PREVIOUS_CANDIDATE = new KeyCode(0x0101, "Previous Candidate");
+    public static readonly PREVIOUS_CANDIDATE: KeyCode =  new KeyCode(0x0101, "Previous Candidate");
 
     /**
      * Constant for the Code Input function key.
      */
-    public static readonly CODE_INPUT = new KeyCode(0x0102, "Code Input");
+    public static readonly CODE_INPUT: KeyCode =  new KeyCode(0x0102, "Code Input");
 
     /**
      * Constant for the Japanese-Katakana function key.
      * This key switches to a Japanese input method and selects its Katakana input mode.
      */
-    public static readonly JAPANESE_KATAKANA = new KeyCode(0x0103, "Japanese Katakana");
+    public static readonly JAPANESE_KATAKANA: KeyCode =  new KeyCode(0x0103, "Japanese Katakana");
 
     /**
      * Constant for the Japanese-Hiragana function key.
      * This key switches to a Japanese input method and selects its Hiragana input mode.
      */
-    public static readonly JAPANESE_HIRAGANA = new KeyCode(0x0104, "Japanese Hiragana");
+    public static readonly JAPANESE_HIRAGANA: KeyCode =  new KeyCode(0x0104, "Japanese Hiragana");
 
     /**
      * Constant for the Japanese-Roman function key.
      * This key switches to a Japanese input method and selects its Roman-Direct input mode.
      */
-    public static readonly JAPANESE_ROMAN = new KeyCode(0x0105, "Japanese Roman");
+    public static readonly JAPANESE_ROMAN: KeyCode =  new KeyCode(0x0105, "Japanese Roman");
 
     /**
      * Constant for the locking Kana function key.
      * This key locks the keyboard into a Kana layout.
      */
-    public static readonly KANA_LOCK = new KeyCode(0x0106, "Kana Lock");
+    public static readonly KANA_LOCK: KeyCode =  new KeyCode(0x0106, "Kana Lock");
 
     /**
      * Constant for the input method on/off key.
      */
-    public static readonly INPUT_METHOD_ON_OFF = new KeyCode(0x0107, "Input Method On/Off");
+    public static readonly INPUT_METHOD_ON_OFF: KeyCode =  new KeyCode(0x0107, "Input Method On/Off");
 
     /**
      * Constant for the {@code Cut} key.
      */
-    public static readonly CUT = new KeyCode(0xFFD1, "Cut");
+    public static readonly CUT: KeyCode =  new KeyCode(0xFFD1, "Cut");
 
     /**
      * Constant for the {@code Copy} key.
      */
-    public static readonly COPY = new KeyCode(0xFFCD, "Copy");
+    public static readonly COPY: KeyCode =  new KeyCode(0xFFCD, "Copy");
 
     /**
      * Constant for the {@code Paste} key.
      */
-    public static readonly PASTE = new KeyCode(0xFFCF, "Paste");
+    public static readonly PASTE: KeyCode =  new KeyCode(0xFFCF, "Paste");
 
     /**
      * Constant for the {@code Undo} key.
      */
-    public static readonly UNDO = new KeyCode(0xFFCB, "Undo");
+    public static readonly UNDO: KeyCode =  new KeyCode(0xFFCB, "Undo");
 
     /**
      * Constant for the {@code Again} key.
      */
-    public static readonly AGAIN = new KeyCode(0xFFC9, "Again");
+    public static readonly AGAIN: KeyCode =  new KeyCode(0xFFC9, "Again");
 
     /**
      * Constant for the {@code Find} key.
      */
-    public static readonly FIND = new KeyCode(0xFFD0, "Find");
+    public static readonly FIND: KeyCode =  new KeyCode(0xFFD0, "Find");
 
     /**
      * Constant for the {@code Properties} key.
      */
-    public static readonly PROPS = new KeyCode(0xFFCA, "Properties");
+    public static readonly PROPS: KeyCode =  new KeyCode(0xFFCA, "Properties");
 
     /**
      * Constant for the {@code Stop} key.
      */
-    public static readonly STOP = new KeyCode(0xFFC8, "Stop");
+    public static readonly STOP: KeyCode =  new KeyCode(0xFFC8, "Stop");
 
     /**
      * Constant for the input method on/off key.
      */
-    public static readonly COMPOSE = new KeyCode(0xFF20, "Compose");
+    public static readonly COMPOSE: KeyCode =  new KeyCode(0xFF20, "Compose");
 
     /**
      * Constant for the AltGraph function key.
      */
-    public static readonly ALT_GRAPH = new KeyCode(0xFF7E, "Alt Graph", KeyCode.KeyCodeClass.MODIFIER);
+    public static readonly ALT_GRAPH: KeyCode =  new KeyCode(0xFF7E, "Alt Graph", KeyCode.KeyCodeClass.MODIFIER);
 
     /**
      * Constant for the Begin key.
      */
-    public static readonly BEGIN = new KeyCode(0xFF58, "Begin");
+    public static readonly BEGIN: KeyCode =  new KeyCode(0xFF58, "Begin");
 
     /**
      * This value is used to indicate that the keyCode is unknown.
      * Key typed events do not have a keyCode value; this value
      * is used instead.
      */
-    public static readonly UNDEFINED = new KeyCode(0x0, "Undefined");
+    public static readonly UNDEFINED: KeyCode =  new KeyCode(0x0, "Undefined");
 
 
     //--------------------------------------------------------------
@@ -1000,183 +1000,183 @@ export class KeyCode {
     /**
      * Constant for the {@code Softkey 0} key.
      */
-    public static readonly SOFTKEY_0 = new KeyCode(0x1000, "Softkey 0");
+    public static readonly SOFTKEY_0: KeyCode =  new KeyCode(0x1000, "Softkey 0");
 
     /**
      * Constant for the {@code Softkey 1} key.
      */
-    public static readonly SOFTKEY_1 = new KeyCode(0x1001, "Softkey 1");
+    public static readonly SOFTKEY_1: KeyCode =  new KeyCode(0x1001, "Softkey 1");
 
     /**
      * Constant for the {@code Softkey 2} key.
      */
-    public static readonly SOFTKEY_2 = new KeyCode(0x1002, "Softkey 2");
+    public static readonly SOFTKEY_2: KeyCode =  new KeyCode(0x1002, "Softkey 2");
 
     /**
      * Constant for the {@code Softkey 3} key.
      */
-    public static readonly SOFTKEY_3 = new KeyCode(0x1003, "Softkey 3");
+    public static readonly SOFTKEY_3: KeyCode =  new KeyCode(0x1003, "Softkey 3");
 
     /**
      * Constant for the {@code Softkey 4} key.
      */
-    public static readonly SOFTKEY_4 = new KeyCode(0x1004, "Softkey 4");
+    public static readonly SOFTKEY_4: KeyCode =  new KeyCode(0x1004, "Softkey 4");
 
     /**
      * Constant for the {@code Softkey 5} key.
      */
-    public static readonly SOFTKEY_5 = new KeyCode(0x1005, "Softkey 5");
+    public static readonly SOFTKEY_5: KeyCode =  new KeyCode(0x1005, "Softkey 5");
 
     /**
      * Constant for the {@code Softkey 6} key.
      */
-    public static readonly SOFTKEY_6 = new KeyCode(0x1006, "Softkey 6");
+    public static readonly SOFTKEY_6: KeyCode =  new KeyCode(0x1006, "Softkey 6");
 
     /**
      * Constant for the {@code Softkey 7} key.
      */
-    public static readonly SOFTKEY_7 = new KeyCode(0x1007, "Softkey 7");
+    public static readonly SOFTKEY_7: KeyCode =  new KeyCode(0x1007, "Softkey 7");
 
     /**
      * Constant for the {@code Softkey 8} key.
      */
-    public static readonly SOFTKEY_8 = new KeyCode(0x1008, "Softkey 8");
+    public static readonly SOFTKEY_8: KeyCode =  new KeyCode(0x1008, "Softkey 8");
 
     /**
      * Constant for the {@code Softkey 9} key.
      */
-    public static readonly SOFTKEY_9 = new KeyCode(0x1009, "Softkey 9");
+    public static readonly SOFTKEY_9: KeyCode =  new KeyCode(0x1009, "Softkey 9");
 
     /**
      * Constant for the {@code Game A} key.
      */
-    public static readonly GAME_A = new KeyCode(0x100A, "Game A");
+    public static readonly GAME_A: KeyCode =  new KeyCode(0x100A, "Game A");
 
     /**
      * Constant for the {@code Game B} key.
      */
-    public static readonly GAME_B = new KeyCode(0x100B, "Game B");
+    public static readonly GAME_B: KeyCode =  new KeyCode(0x100B, "Game B");
 
     /**
      * Constant for the {@code Game C} key.
      */
-    public static readonly GAME_C = new KeyCode(0x100C, "Game C");
+    public static readonly GAME_C: KeyCode =  new KeyCode(0x100C, "Game C");
 
     /**
      * Constant for the {@code Game D} key.
      */
-    public static readonly GAME_D = new KeyCode(0x100D, "Game D");
+    public static readonly GAME_D: KeyCode =  new KeyCode(0x100D, "Game D");
 
     /**
      * Constant for the {@code Star} key.
      */
-    public static readonly STAR = new KeyCode(0x100E, "Star");
+    public static readonly STAR: KeyCode =  new KeyCode(0x100E, "Star");
 
     /**
      * Constant for the {@code Pound} key.
      */
-    public static readonly POUND = new KeyCode(0x100F, "Pound");
+    public static readonly POUND: KeyCode =  new KeyCode(0x100F, "Pound");
 
     /**
      * Constant for the {@code Power} key.
      */
-    public static readonly POWER = new KeyCode(0x199, "Power");
+    public static readonly POWER: KeyCode =  new KeyCode(0x199, "Power");
 
     /**
      * Constant for the {@code Info} key.
      */
-    public static readonly INFO = new KeyCode(0x1C9, "Info");
+    public static readonly INFO: KeyCode =  new KeyCode(0x1C9, "Info");
 
     /**
      * Constant for the {@code Colored Key 0} key.
      */
-    public static readonly COLORED_KEY_0 = new KeyCode(0x193, "Colored Key 0");
+    public static readonly COLORED_KEY_0: KeyCode =  new KeyCode(0x193, "Colored Key 0");
 
     /**
      * Constant for the {@code Colored Key 1} key.
      */
-    public static readonly COLORED_KEY_1 = new KeyCode(0x194, "Colored Key 1");
+    public static readonly COLORED_KEY_1: KeyCode =  new KeyCode(0x194, "Colored Key 1");
 
     /**
      * Constant for the {@code Colored Key 2} key.
      */
-    public static readonly COLORED_KEY_2 = new KeyCode(0x195, "Colored Key 2");
+    public static readonly COLORED_KEY_2: KeyCode =  new KeyCode(0x195, "Colored Key 2");
 
     /**
      * Constant for the {@code Colored Key 3} key.
      */
-    public static readonly COLORED_KEY_3 = new KeyCode(0x196, "Colored Key 3");
+    public static readonly COLORED_KEY_3: KeyCode =  new KeyCode(0x196, "Colored Key 3");
 
     /**
      * Constant for the {@code Eject} key.
      */
-    public static readonly EJECT_TOGGLE = new KeyCode(0x19E, "Eject", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly EJECT_TOGGLE: KeyCode =  new KeyCode(0x19E, "Eject", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Play} key.
      */
-    public static readonly PLAY = new KeyCode(0x19F, "Play", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly PLAY: KeyCode =  new KeyCode(0x19F, "Play", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Record} key.
      */
-    public static readonly RECORD = new KeyCode(0x1A0, "Record", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly RECORD: KeyCode =  new KeyCode(0x1A0, "Record", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Fast Forward} key.
      */
-    public static readonly FAST_FWD = new KeyCode(0x1A1, "Fast Forward", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly FAST_FWD: KeyCode =  new KeyCode(0x1A1, "Fast Forward", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Rewind} key.
      */
-    public static readonly REWIND = new KeyCode(0x19C, "Rewind", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly REWIND: KeyCode =  new KeyCode(0x19C, "Rewind", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Previous Track} key.
      */
-    public static readonly TRACK_PREV = new KeyCode(0x1A8, "Previous Track", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly TRACK_PREV: KeyCode =  new KeyCode(0x1A8, "Previous Track", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Next Track} key.
      */
-    public static readonly TRACK_NEXT = new KeyCode(0x1A9, "Next Track", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly TRACK_NEXT: KeyCode =  new KeyCode(0x1A9, "Next Track", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Channel Up} key.
      */
-    public static readonly CHANNEL_UP = new KeyCode(0x1AB, "Channel Up", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly CHANNEL_UP: KeyCode =  new KeyCode(0x1AB, "Channel Up", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Channel Down} key.
      */
-    public static readonly CHANNEL_DOWN = new KeyCode(0x1AC, "Channel Down", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly CHANNEL_DOWN: KeyCode =  new KeyCode(0x1AC, "Channel Down", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Volume Up} key.
      */
-    public static readonly VOLUME_UP = new KeyCode(0x1bf, "Volume Up", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly VOLUME_UP: KeyCode =  new KeyCode(0x1bf, "Volume Up", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Volume Down} key.
      */
-    public static readonly VOLUME_DOWN = new KeyCode(0x1C0, "Volume Down", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly VOLUME_DOWN: KeyCode =  new KeyCode(0x1C0, "Volume Down", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the {@code Mute} key.
      */
-    public static readonly MUTE = new KeyCode(0x1C1, "Mute", KeyCode.KeyCodeClass.MEDIA);
+    public static readonly MUTE: KeyCode =  new KeyCode(0x1C1, "Mute", KeyCode.KeyCodeClass.MEDIA);
 
     /**
      * Constant for the Apple {@code Command} key.
      * @since JavaFX 2.1
      */
-    public static readonly COMMAND = new KeyCode(0x300, "Command", KeyCode.KeyCodeClass.MODIFIER);
+    public static readonly COMMAND: KeyCode =  new KeyCode(0x300, "Command", KeyCode.KeyCodeClass.MODIFIER);
 
     /**
      * Constant for the {@code Shortcut} key.
      */
-    public static readonly SHORTCUT = new KeyCode(-1, "Shortcut");
+    public static readonly SHORTCUT: KeyCode =  new KeyCode(-1, "Shortcut");
 
     private readonly code: number;
     private readonly ch: string;
@@ -1302,9 +1302,9 @@ export class KeyCode {
     }
 
 
-    private static readonly nameMap: Map<string, KeyCode> = new HashMap<string, KeyCode>(100);
+    private static readonly nameMap: Map<string, KeyCode> = new HashMap<string, KeyCode>(32);
     
-    private static readonly codeMap: Map<number, KeyCode> = new HashMap<number, KeyCode>(100);
+    private static readonly codeMap: Map<number, KeyCode> = new HashMap<number, KeyCode>(32);
     
     /**
      * Hack to call initMaps method.

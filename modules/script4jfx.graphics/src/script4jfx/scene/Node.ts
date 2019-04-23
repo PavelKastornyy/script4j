@@ -30,7 +30,6 @@ import { EventDispatchChain } from 'script4jfx.base';
 import { EventDispatcher } from 'script4jfx.base';
 import { ObjectProperty } from 'script4jfx.base';
 import { SimpleObjectProperty } from 'script4jfx.base';
-import { FXCollections } from 'script4jfx.base';
 import { ReadOnlyObjectProperty } from 'script4jfx.base';
 import { ReadOnlyObjectWrapper } from 'script4jfx.base';
 import { StringProperty } from 'script4jfx.base';
@@ -46,8 +45,11 @@ import { Event } from 'script4jfx.base';
 import { ObservableList } from 'script4jfx.base';
 import { Consumer } from 'script4j.base';
 import { Iterator } from 'script4j.base';
-import 'jquery';
 import { ParentUnlocker } from './../internal/scene/ParentUnlocker';
+import { JQueryDataKeys } from './../internal/scene/JQueryDataKeys';
+import { EventDispatcherImpl } from './../internal/scene/EventDispatcherImpl';
+import { ChangeListener } from 'script4jfx.base';
+import 'jquery';
 
 export abstract class Node implements Styleable, EventTarget {
 
@@ -74,7 +76,7 @@ export abstract class Node implements Styleable, EventTarget {
     /**
      * Specifies the event dispatcher for this node.
      */
-    private eventDispatcher: ObjectProperty<EventDispatcher> = null;
+    private readonly eventDispatcher: ObjectProperty<EventDispatcher> = new SimpleObjectProperty<EventDispatcher>();
     
     /**
      * The id of this Node.
@@ -110,6 +112,7 @@ export abstract class Node implements Styleable, EventTarget {
         if (element.style.cssText !== "") {
             this.setStyle(element.style.cssText);
         }
+        this.setEventDispatcher(new EventDispatcherImpl(this.eventHandlerManager));
     }
 
     /**
@@ -158,29 +161,38 @@ export abstract class Node implements Styleable, EventTarget {
      * Gets the value of the property eventDispatcher.
      */
     public getEventDispatcher(): EventDispatcher {
-        return this.eventDispatcher === null ? null : this.eventDispatcher.get();
+        return this.eventDispatcher.get();
     }
     
     /**
      * Sets the value of the property eventDispatcher.
      */
     public setEventDispatcher​(value: EventDispatcher): void {
-        this.eventDispatcherProperty().set(value);
+        this.eventDispatcher.set(value);
     }    
 
     /**
      * Specifies the event dispatcher for this node.
      */    
     public eventDispatcherProperty(): ObjectProperty<EventDispatcher> {
-        if (this.eventDispatcher === null) {
-            this.eventDispatcher = new SimpleObjectProperty<EventDispatcher>(null, this);
-        }
         return this.eventDispatcher;
     }    
 
+    /**
+     * Construct an event dispatch chain for this node.
+     */
     public buildEventDispatchChain​(tail: EventDispatchChain): EventDispatchChain {
-        let o = FXCollections.observableMap(null);
-        throw new Error();
+        tail.prepend(this.getEventDispatcher());
+        const parent: Parent = this.getParent();
+        if (parent !== null) {
+            return parent.buildEventDispatchChain(tail);
+        } else {
+            const scene: Scene = this.getScene();
+            if (scene !== null) {
+                return scene.buildEventDispatchChain(tail);
+            }
+        }
+        return tail;
     }
     
     /**
@@ -189,9 +201,10 @@ export abstract class Node implements Styleable, EventTarget {
     public idProperty(): StringProperty {
         if (this.id === null) {
             this.id = new SimpleStringProperty(null, this);
-            this.id.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
+            this.id.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, oldValue: string, 
+                    newValue: string) => {
                 $(this.getElement()).attr("id", newValue);
-            });
+            }));
         }
         return this.id;
     }
@@ -219,9 +232,10 @@ export abstract class Node implements Styleable, EventTarget {
     public styleProperty(): StringProperty {
         if (this.style === null) {
             this.style = new SimpleStringProperty(null, this);
-            this.style.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
+            this.style.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
+                    oldValue: string, newValue: string) => {
                 $(this.getElement()).attr("style", newValue);
-            });
+            }));
         }
         return this.style;
     }
@@ -316,15 +330,37 @@ export abstract class Node implements Styleable, EventTarget {
      * Registers an event handler to this node.
      */
     public addEventHandler<T extends Event>​(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
-        this.eventHandlerManager.addMultipleEventHandlerByType(eventType, eventHandler);
+        this.eventHandlerManager.addEventHandlerByType(eventType, eventHandler);
     }
 
     /**
      * Unregisters a previously registered event handler from this node.
      */    
-    public removeEventHandler​<T extends Event>(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
-        this.eventHandlerManager.removeMultipleEventHandlerByType(eventType, eventHandler);
+    public removeEventHandler<T extends Event>(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
+        this.eventHandlerManager.removeEventHandlerByType(eventType, eventHandler);
     }
+    
+    /**
+     * Registers an event filter to this node.
+     */
+    public addEventFilter<T extends Event>(eventType: EventType<T>, eventFilter: EventHandler<T>): void {
+        this.eventHandlerManager.addEventFilterByType(eventType, eventFilter);
+    }
+    
+    /**
+     * Unregisters a previously registered event filter from this node.
+     */
+    public removeEventFilter<T extends Event>(eventType: EventType<T>, eventFilter: EventHandler<T>): void {
+        this.eventHandlerManager.removeEventFilterByType(eventType, eventFilter);
+    }
+
+    /**
+     * Fires the specified event.
+     */    
+    public fireEvent(event: Event): void {
+        Event.fireEvent(this, event);
+    }
+
 
     protected abstract createElement(): HTMLElement;
     
@@ -340,6 +376,11 @@ export abstract class Node implements Styleable, EventTarget {
      */
     private setScene(scene: Scene): void {
         this.scene.set(scene);
+        if (scene !== null) {
+            $(this.element.get()).data(JQueryDataKeys.node, this);
+        } else {
+            $(this.element.get()).removeData(JQueryDataKeys.node);
+        }
     }
     
     /**
@@ -353,7 +394,7 @@ export abstract class Node implements Styleable, EventTarget {
      * Use this method via NodeUnlocker.
      */
     private traverse(consumer: Consumer<Node>) {
-        consumer(this);
+        consumer.accept(this);
         if (this instanceof Parent) {
             const children: ObservableList<Node> = (<ParentUnlocker><any>this).getChildren();
             const iterator: Iterator<Node> = children.iterator();

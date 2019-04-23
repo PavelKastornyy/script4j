@@ -25,6 +25,7 @@
  */
 
 import { EventBus } from './eventbus/EventBus';
+import { SceneEventHandlerManager } from './SceneEventHandlerManager';
 
 /**
  * There is no package scope in TypeScript. To solve this proplem this Unlocker is used.
@@ -36,6 +37,11 @@ export interface SceneUnlocker {
      * Returns event bus.
      */
     getEventBus(): EventBus;
+    
+    /**
+     * Returns eventHandlerManager
+     */
+    getEventHandlerManager(): SceneEventHandlerManager;
     
 }
 

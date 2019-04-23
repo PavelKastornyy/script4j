@@ -23,26 +23,12 @@
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-
-import { BusEvent } from './BusEvent'
-
-//Functional interface
-export interface BusEventListener<T extends BusEvent> {
+ 
+/**
+ * The keys are used in $.data() function.
+ */
+export class JQueryDataKeys {
     
-    //handleEvent
-    handle(event: T): void;
+    public static readonly node = "_fxNode";
 }
 
-type BusEventListenerFunc<T extends BusEvent> = (event: T) => void;
-
-export namespace BusEventListener {
-    
-    export function fromFunc<T extends BusEvent>(func: BusEventListenerFunc<T>): BusEventListener<T> {
-        return new class implements BusEventListener<T> {
-            
-            public handle(event: T): void {
-                func(event);
-            }
-        };
-    }
-}    

@@ -22,6 +22,7 @@
 import { Person } from './application/Person';
 import { PersonView } from './application/PersonView';
 import { PersonViewModel } from './application/PersonViewModel';
+import { TreeMap } from 'script4j.base';
 import 'jquery';
  
 export class Application {
@@ -35,9 +36,9 @@ export class Application {
         const person: Person = new Person();
         viewModel.setModel(person);
         
-        const resetButton= $('<button>Reset</button>').on("click", function () { 
+        const resetButton= $('<button>Reset</button>').on("click", function (e: Event) { 
             viewModel.reset();
-        });
+        })[0];
         $("body").append(resetButton);
         
         const saveButton= $('<button>Save</button>').on("click", function () { 
@@ -58,5 +59,30 @@ export class Application {
             console.log(person.toString());
         });
         $("body").append(printButton);
+        
+        $("body").append($('<button>RemoveKeyTyped</button>').on("click", function () { 
+            view.removeKeyTyped();
+        }));
+        
+        $("body").append($('<button>RemoveKeyPressed</button>').on("click", function () { 
+            view.removeKeyPressed();
+        }));
+        
+        $("body").append($('<button>RemoveKeyReleased</button>').on("click", function () { 
+            view.removeKeyReleased();
+        }));
+        
+        let map: TreeMap<number, string> = new TreeMap();
+        map.put(100, "a");
+        map.put(110, "a");
+        map.put(120, "a");
+        map.put(130, "a");
+        map.put(140, "a");
+        map.put(150, "a");
+        map.put(160, "a");
+        map.put(170, "a");
+        map.put(180, "a");
+        //@ts-ignore
+        console.log(map.tree.rootNode);
     }
 }

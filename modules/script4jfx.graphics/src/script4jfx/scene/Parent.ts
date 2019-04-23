@@ -27,7 +27,9 @@
 import { Node } from './Node';
 import { ObservableList } from 'script4jfx.base';
 import { FXCollections } from 'script4jfx.base';
+import { ListChangeListener } from 'script4jfx.base';
 import { List } from 'script4j.base';
+import { Consumer } from 'script4j.base';
 import { EventHandlerCounter } from './../internal/scene/EventHandlerCounter';
 import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
 import { NodeUnlocker } from './../internal/scene/NodeUnlocker';
@@ -40,7 +42,7 @@ export abstract class Parent extends Node {
 
     public constructor() {
         super();
-        this.children.addListener((change)=> {
+        this.children.addListener(ListChangeListener.fromFunc((change)=> {
             while (change.next()) {
                 //after set method both added and removed are true
                 if (change.wasRemoved()) {
@@ -50,7 +52,7 @@ export abstract class Parent extends Node {
                     this.workAddedChildren(change.getAddedSubList(), change.getFrom());
                 }
             }
-        });
+        }));
     }
 
     /**
@@ -70,17 +72,18 @@ export abstract class Parent extends Node {
     private workRemovedChildlen(nodes: List<Node>): void {
         let removedElements: HTMLElement[] = new Array();
         const counter: EventHandlerCounter = new EventHandlerCounter();
-        nodes.forEach((node) => {
+        const tConsumer: Consumer<Node> = Consumer.fromFunc((currentNode: Node) => {
+                    (<NodeUnlocker><any>currentNode).setScene(null);
+                    counter.countAndAdd((<NodeUnlocker><any>currentNode).getEventHandlerManager());
+                });
+        nodes.forEach(Consumer.fromFunc((node) => {
             removedElements.push(node.getElement());
             (<NodeUnlocker><any>node).setParent(null);
             //null scene from removed node and its possible children
             if (this.getScene() !== null) {
-                (<NodeUnlocker><any>node).traverse((currentNode: Node) => {
-                    (<NodeUnlocker><any>currentNode).setScene(null);
-                    counter.countAndAdd((<NodeUnlocker><any>currentNode).getEventHandlerManager());
-                });
+                (<NodeUnlocker> <any> node).traverse(tConsumer);
             }
-        });
+        }));
         if (!counter.getResult().isEmpty() && this.getScene() !== null) {
             const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_REMOVED, counter.getResult());
             (<SceneUnlocker><any>this.getScene()).getEventBus().post(event);
@@ -91,17 +94,18 @@ export abstract class Parent extends Node {
     private workAddedChildren(nodes: List<Node>, fromPos: number): void {
         let addedElements: HTMLElement[] = new Array();
         const counter: EventHandlerCounter = new EventHandlerCounter();
-        nodes.forEach((node)=> {
-            (<NodeUnlocker><any>node).setParent(this);
-            //add scene for added node and its possible children
-            if (this.getScene() !== null) {
-                (<NodeUnlocker><any>node).traverse((currentNode: Node) => {
+        const tConsumer: Consumer<Node> = Consumer.fromFunc((currentNode: Node) => {
                     (<NodeUnlocker><any>currentNode).setScene(this.getScene());
                     counter.countAndAdd((<NodeUnlocker><any>currentNode).getEventHandlerManager());
                 });
+        nodes.forEach(Consumer.fromFunc((node)=> {
+            (<NodeUnlocker><any>node).setParent(this);
+            //add scene for added node and its possible children
+            if (this.getScene() !== null) {
+                (<NodeUnlocker> <any> node).traverse(tConsumer);
             }
             addedElements.push(node.getElement());
-        });
+        }));
         if (fromPos === 0) {
             $(this.getElement()).prepend(addedElements);
         } else {

@@ -50,19 +50,26 @@ export class PersonView implements View {
     private readonly resumeTextArea: TextArea = new TextArea();
     
     constructor() {
-        this.firstNameTextField.setOnKeyPressed((event: KeyEvent) => {
+        this.firstNameTextField.setOnKeyPressed(EventHandler.fromFunc((event: KeyEvent) => {
             console.log("KeyPressed event for firstNameTextField came:");
             console.log(event);
-        });
-        this.lastNameTextField.setOnKeyPressed((event: KeyEvent) => {
+        }));
+        this.lastNameTextField.setOnKeyPressed(EventHandler.fromFunc((event: KeyEvent) => {
             console.log("KeyPressed event for lastNameTextField came:");
             console.log(event);
-        });
-        this.ageTextField.setOnKeyTyped((event: KeyEvent) => {
-            console.log("KeyTyped event for ageTextField came:");
+        }));        
+        this.firstNameTextField.setOnKeyReleased(EventHandler.fromFunc((event: KeyEvent) => {
+            console.log("KeyReleased event for firstNameTextField came:");
             console.log(event);
-        });
-        
+        }));
+//        this.firstNameTextField.setOnKeyTyped(EventHandler.fromFunc((event: KeyEvent) => {
+//            console.log("KeyTyped event for firstNameTextField came:");
+//            console.log(event);
+//        }));
+//        this.firstNameTextField.addEventHandler(KeyEvent.ANY, EventHandler.fromFunc((event: KeyEvent) => {
+//            console.log("KeyEvent.ANY for firstNameTextField came:");
+//            console.log(event);
+//        }));
         this.pane = new Pane(
             this.firstNameTextField,
             this.lastNameTextField,
@@ -70,11 +77,6 @@ export class PersonView implements View {
             this.resumeTextArea
         )
         this.scene = new Scene(this.pane);
-        
-        this.resumeTextArea.setOnKeyTyped((event: KeyEvent) => {
-            console.log("KeyTyped event for resumeTextArea came:");
-            console.log(event);
-        });
     }
     
     public getScene(): Scene {
@@ -87,6 +89,18 @@ export class PersonView implements View {
         Bindings.bindBidirectional(this.ageTextField.textProperty(), viewModel.ageProperty(), 
                 new NumberStringConverter());
         this.resumeTextArea.textProperty().bindBidirectional(viewModel.resumeProperty());
+    }
+    
+    public removeKeyReleased() {
+        this.firstNameTextField.setOnKeyReleased(null);
+    }
+    
+    public removeKeyPressed() {
+        this.firstNameTextField.setOnKeyPressed(null);
+    }
+    
+    public removeKeyTyped() {
+        this.firstNameTextField.setOnKeyTyped(null);
     }
 }
 

@@ -37,18 +37,23 @@ import { SimpleObjectProperty } from 'script4jfx.base';
 import { IllegalStateError } from 'script4j.base';
 import { EventBus } from './eventbus/EventBus';
 import { HandlerEvent } from './busevents/HandlerEvent';
+import { Event } from 'script4jfx.base';
+import { ChangeListener } from 'script4jfx.base';
+import { InputEvent } from './../../scene/input/InputEvent';
+import { HandlerTree } from './HandlerTree';
 
 export abstract class AbstractEventHandlerManager {
     
     /**
-     * These are types of handlers that are added via addEventHandler();
+     * These are types of handlers that are added via addEventHandler() and setOnXXX().
+     * The first ones are added to the head of the list, the second ones are added to the tail.
      */
-    private multipleEventHandlersByType: Map<EventType<any>, List<EventHandler<any>>> = null;
+    private eventHandlerTree: HandlerTree = null;
     
     /**
-     * These are types of handlers that are added via setOnXXX();
+     * Event filters.
      */
-    private singleEventHandlersByType: Map<EventType<any>, EventHandler<any>> = null;
+    private eventFilterTree: HandlerTree = null;
     
     /**
      * Either Scene or Node that contains this maanger.
@@ -63,12 +68,28 @@ export abstract class AbstractEventHandlerManager {
         return this.bean;
     }
     
-    public getSingleEventHandlersByType(): Map<EventType<any>, EventHandler<any>> {
-        return this.singleEventHandlersByType;
+    public getEventHandlers(evenType: EventType<Event>):List<EventHandler<Event>> {
+        if (this.eventHandlerTree === null) {
+            return null;
+        } else {
+            return this.eventHandlerTree.getHandlers(evenType);
+        }
     }
     
-    public getMultipleEventHandlersByType(): Map<EventType<any>, List<EventHandler<any>>> {
-        return this.multipleEventHandlersByType;
+    public getEventFilters(eventType: EventType<Event>): List<EventHandler<Event>> {
+        if (this.eventFilterTree === null) {
+            return null;
+        } else {
+            return this.eventFilterTree.getHandlers(eventType);
+        }
+    }
+    
+    public getEventHandlersByType(): Map<EventType<Event>, List<EventHandler<Event>>> {
+        if (this.eventHandlerTree !== null) {
+            return this.eventHandlerTree.getEventHandlerByType();
+        } else {
+            return null;
+        }
     }
     
     public createOnKeyReleased(): ObjectProperty<EventHandler<KeyEvent>> {
@@ -84,53 +105,62 @@ export abstract class AbstractEventHandlerManager {
     }
     
     /**
+     * Registers an event filter to this node.
+     */
+    public addEventFilterByType<T extends Event>(eventType: EventType<T>, eventFilter: EventHandler<T>): void {
+        if (this.eventFilterTree === null) {
+            this.eventFilterTree = new HandlerTree();
+        }
+        this.eventFilterTree.addHandler(eventType, eventFilter);
+    }
+    
+    /**
+     * Unregisters a previously registered event filter from this node.
+     */
+    public removeEventFilterByType<T extends Event>(eventType: EventType<T>, eventFilter: EventHandler<T>): void {
+        if (this.eventFilterTree === null) {
+            return;
+        }
+        this.eventFilterTree.removeHandler(eventType, eventFilter);
+        if (this.eventFilterTree.isEmpty()) {
+            this.eventFilterTree = null;
+        }
+    }    
+    
+    /**
      * This method is called in addEventHandler.
      */
-    public addMultipleEventHandlerByType(eventType: EventType<any>, handler: EventHandler<any>): void {
-        if (this.multipleEventHandlersByType === null) {
-            this.multipleEventHandlersByType = new HashMap<EventType<any>, List<EventHandler<any>>>();
+    public addEventHandlerByType<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>): void {
+        if (this.eventHandlerTree === null) {
+            this.eventHandlerTree = new HandlerTree();
         }
-        let handlers: List<EventHandler<any>> = this.multipleEventHandlersByType.get(eventType);
-        if (handlers === null) {
-            handlers = new ArrayList<EventHandler<any>>();
-            this.multipleEventHandlersByType.put(eventType, handlers);
-        }
-        if (handlers.add(handler)) {
-            this.doOnHandlerAdded(eventType, handler);
-        }
+        this.eventHandlerTree.addHandler(eventType, handler);
+        this.doOnHandlerAdded(eventType, handler);
     }
     
     /**
      * This method is called in removeEventHandler.
      */
-    public removeMultipleEventHandlerByType(eventType: EventType<any>, handler: EventHandler<any>): void {
-        if (this.multipleEventHandlersByType === null) {
+    public removeEventHandlerByType<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>): void {
+        if (this.eventHandlerTree === null) {
             return;
         }
-        let handlers: List<EventHandler<any>> = this.multipleEventHandlersByType.get(eventType);
-        if (handlers === null) {
-            return;
-        }
-        if (handlers.remove(handler)) {
-            this.doOnHandlerRemoved(eventType, handler);
-        }
-        if (handlers.isEmpty()) {
-            this.multipleEventHandlersByType.remove(eventType);
-        }
-        if (this.multipleEventHandlersByType.isEmpty()) {
-            this.multipleEventHandlersByType = null;
+        this.eventHandlerTree.removeHandler(eventType, handler);
+        this.doOnHandlerRemoved(eventType, handler);
+        if (this.eventHandlerTree.isEmpty()) {
+            this.eventHandlerTree = null;
         }
     }
     
     /**
      * This method is called after new handler was added.
      */
-    protected doOnHandlerAdded(eventType: EventType<any>, handler: EventHandler<any>): void {
+    protected doOnHandlerAdded<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>): void {
         const eventBus = this.getEventBus();
         if (eventBus === null) {
             return;
         }
-        const countsByType: Map<EventType<any>, number> = new HashMap();
+        const countsByType: Map<EventType<T>, number> = new HashMap();
         countsByType.put(eventType, 1);
         const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_ADDED, countsByType);
         eventBus.post(event);
@@ -139,12 +169,12 @@ export abstract class AbstractEventHandlerManager {
     /**
      * This method is called after one handler was removed.
      */
-    protected doOnHandlerRemoved(eventType: EventType<any>, handler: EventHandler<any>): void {
+    protected doOnHandlerRemoved<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>): void {
         const eventBus = this.getEventBus();
         if (eventBus === null) {
             return;
         }
-        const countsByType: Map<EventType<any>, number> = new HashMap();
+        const countsByType: Map<EventType<T>, number> = new HashMap();
         countsByType.put(eventType, 1);
         const event: HandlerEvent = new HandlerEvent(this, HandlerEvent.HANDLER_REMOVED, countsByType);
         eventBus.post(event);
@@ -153,66 +183,28 @@ export abstract class AbstractEventHandlerManager {
     /**
      * This method is called after one handler was replaced by another.
      */
-    protected doOnHandlerReplaced(eventType: EventType<any>, oldHandler: EventHandler<any>, 
-            newHandler: EventHandler<any>): void {
+    protected doOnHandlerReplaced<T extends Event>(eventType: EventType<T>, oldHandler: EventHandler<T>, 
+            newHandler: EventHandler<T>): void {
         //no logic yet        
     }
     
     protected abstract getEventBus(): EventBus;    
     
-    private createEventProperty(eventType: EventType<any>): ObjectProperty<EventHandler<any>>  {
-        const prop: ObjectProperty<EventHandler<any>> =  
-                new SimpleObjectProperty<EventHandler<any>>(null, this.bean);
-        prop.addListener((observable: ObservableValue<EventHandler<any>>, oldHandler: EventHandler<any>, 
-                newHandler: EventHandler<any>) => {
+    private createEventProperty<T extends Event>(eventType: EventType<T>): ObjectProperty<EventHandler<T>>  {
+        const prop: ObjectProperty<EventHandler<T>> = new SimpleObjectProperty<EventHandler<T>>(null, this.bean);
+        prop.addListener(ChangeListener.fromFunc((observable: ObservableValue<EventHandler<T>>, 
+                    oldHandler: EventHandler<T>, newHandler: EventHandler<T>) => {
                 if (newHandler !== null && oldHandler === null) {
-                    this.addSingleEventHandlerByType(eventType, newHandler);
+                    this.addEventHandlerByType(eventType, newHandler);
                 } else if (newHandler === null && oldHandler !== null) {
-                    this.removeSingleEventHandlerByType(eventType);
+                    this.removeEventHandlerByType(eventType, oldHandler);
                 //there can be situation when null is set to null
                 } else if (newHandler !== null && oldHandler !== null) {
-                    this.replaceSingleEventHandlerByType(eventType, newHandler);
+                    this.removeEventHandlerByType(eventType, oldHandler);
+                    this.addEventHandlerByType(eventType, newHandler);
                 }
-            });
+            }));
         return prop;
     }    
-    
-    private addSingleEventHandlerByType(eventType: EventType<any>, handler: EventHandler<any>): void {
-        if (this.singleEventHandlersByType === null) {
-            this.singleEventHandlersByType = new HashMap<EventType<any>, EventHandler<any>>();
-        }
-        let previousSize = this.singleEventHandlersByType.size();
-        this.singleEventHandlersByType.put(eventType, handler);
-        if (this.singleEventHandlersByType.size() > previousSize) {
-            this.doOnHandlerAdded(eventType, handler);
-        }
-    }
-    
-    private removeSingleEventHandlerByType(eventType: EventType<any>): void {
-        if (this.singleEventHandlersByType === null) {
-            return;
-        }
-        const previousSize = this.singleEventHandlersByType.size();
-        const handler: EventHandler<any> = this.singleEventHandlersByType.remove(eventType);
-        if (this.singleEventHandlersByType.size() < previousSize) {
-            this.doOnHandlerRemoved(eventType, handler);
-        }
-        if (this.singleEventHandlersByType.isEmpty()) {
-            this.singleEventHandlersByType = null;
-        }
-    }
-    
-    private replaceSingleEventHandlerByType(eventType: EventType<any>, newHandler: EventHandler<any>): void {
-        if (this.singleEventHandlersByType === null) {
-            return;
-        }
-        let previousSize = this.singleEventHandlersByType.size();
-        let oldHandler: EventHandler<any> = this.singleEventHandlersByType.put(eventType, newHandler);
-        if (this.singleEventHandlersByType.size() === previousSize) {
-            this.doOnHandlerReplaced(eventType, oldHandler, newHandler);
-        } else {
-            throw new IllegalStateError("The size of singleEventHandlersByType changed after replacing");
-        }
-    }
 }
 

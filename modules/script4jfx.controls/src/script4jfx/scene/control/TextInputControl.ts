@@ -28,6 +28,7 @@ import { Control } from './Control';
 import { StringProperty } from 'script4jfx.base';
 import { SimpleStringProperty } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
+import { ChangeListener } from 'script4jfx.base';
 
 export abstract class TextInputControl extends Control {
 
@@ -47,11 +48,11 @@ export abstract class TextInputControl extends Control {
                 ignoreTextChangeEvent = false;
             }
         });
-        this.text.addListener((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
+        this.text.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
             if (!ignoreTextChangeEvent) {
                 (<HTMLInputElement>this.getElement()).value = newValue;
             }
-        });
+        }));
     }
 
     /**

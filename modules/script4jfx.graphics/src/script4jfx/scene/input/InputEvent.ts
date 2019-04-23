@@ -35,8 +35,8 @@ export class InputEvent extends Event {
      */
     public static readonly ANY: EventType<InputEvent> = new EventType<InputEvent> (Event.ANY, "INPUT");
 
-    constructor​(source: Object, target: EventTarget, eventType: EventType<InputEvent>) {
-        super(source, target, eventType);
+    constructor​(source: Object, target: EventTarget, eventType: EventType<InputEvent>, originalEvent: any) {
+        super(source, target, eventType, originalEvent);
     }
 
     /**

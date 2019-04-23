@@ -341,12 +341,18 @@ function extractObjectsToImport(data, classesToImport, moduleType, testedModuleN
             }
             if (arr !== null) {
                 let shouldAddClass = true;
-                //there are two types of import - import within module and import from other module
+                //there are two types of import - import within module and import from other module.
+                //spec module is the only module that import from another module classes by './..' string.
+                //however, spec module can import and within module.
                 //this is internal import (within module)
                 if (moduleName.startsWith("./")) {
                     if (moduleType === MODULE_TYPE.DIST || moduleType === MODULE_TYPE.FOR_SPEC) {
                         shouldAddClass = false;
                     } else {
+                        //import from another class in test module
+                        if (moduleName.indexOf("/src/") < 0) {
+                            shouldAddClass = false;
+                        }
                         moduleName = testedModuleName;
                     }
                 }

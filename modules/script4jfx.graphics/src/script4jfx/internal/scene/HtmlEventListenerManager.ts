@@ -32,7 +32,13 @@ import { EventBus } from './eventbus/EventBus';
 import { BusEventListener } from './eventbus/BusEventListener';
 import { HandlerEvent } from './busevents/HandlerEvent';
 import { KeyEvent } from './../../scene/input/KeyEvent';
+import { KeyCode } from './../../scene/input/KeyCode';
 import { HtmlEventType } from './HtmlEventType';
+import { JQueryDataKeys } from './JQueryDataKeys';
+import { Node } from './../../scene/Node';
+import { EventTarget } from 'script4jfx.base';
+import { BiFunction } from 'script4j.base';
+import { HtmlKeyMapper } from './HtmlKeyMapper';
 import 'jquery';
 
 /**
@@ -71,14 +77,15 @@ export class HtmlEventListenerManager {
      * Listener that will be called when a handler will be added/removed to/from scene or when node with handlers
      * will be added/removed to/from scene.
      */
-    private readonly handlerListener: BusEventListener<HandlerEvent> = (event: HandlerEvent)=> {
-        const eventType: EventType<HandlerEvent> = event.getEventType();
-        if (eventType === HandlerEvent.HANDLER_ADDED) {
-            this.addCounts(event.getСountsByType());
-        } else if (eventType === HandlerEvent.HANDLER_REMOVED) {
-            this.subtractCounts(event.getСountsByType());
-        }
-    };
+    private readonly handlerListener: BusEventListener<HandlerEvent> = 
+            BusEventListener.fromFunc((event: HandlerEvent)=> {
+                const eventType: EventType<HandlerEvent> = event.getEventType();
+                if (eventType === HandlerEvent.HANDLER_ADDED) {
+                    this.addCounts(event.getСountsByType());
+                } else if (eventType === HandlerEvent.HANDLER_REMOVED) {
+                    this.subtractCounts(event.getСountsByType());
+                }
+        });
     
     /**
      * Root is parent root that was added to scene.
@@ -104,7 +111,7 @@ export class HtmlEventListenerManager {
         if (value === null) {
             return;
         }
-        this.handlerCountsByEventType.compute(eventType, (k: EventType<any>, v: number) => {
+        this.handlerCountsByEventType.compute(eventType, BiFunction.fromFunc((k: EventType<any>, v: number) => {
             if (v === null) {
                 v = 0;
             }
@@ -113,14 +120,14 @@ export class HtmlEventListenerManager {
                 this.createListenerIfAbsent(eventType);
             }
             return v;
-        });
+        }));
     }
     
     private subtractFromCount(eventType: EventType<any>, value: number): void {
         if (value === null) {
             return;
         }
-        this.handlerCountsByEventType.compute(eventType, (k: EventType<any>, v: number) => {
+        this.handlerCountsByEventType.compute(eventType, BiFunction.fromFunc((k: EventType<any>, v: number) => {
             if (v === null) {
                 return null;
             }
@@ -131,7 +138,7 @@ export class HtmlEventListenerManager {
                 return null;
             }
             return v;
-        });
+        }));
     }
     
     private addCounts(countsByType: Map<EventType<any>, number>): void {
@@ -175,27 +182,20 @@ export class HtmlEventListenerManager {
     }
     
     private createKeyListener(eventType: EventType<KeyEvent>): void {
-        let listener: EventListener = null;
         let htmlEventType: string = null;
         if (eventType === KeyEvent.KEY_TYPED) {
-            listener = function(e) {
-                console.log("KEY_TYPED");
-                e.stopPropagation();
-            };
             htmlEventType = HtmlEventType.Key.KEY_PRESSED;
         } else if (eventType === KeyEvent.KEY_PRESSED) {
-            listener = function(e) {
-                console.log("KEY_PRESSED");
-                e.stopPropagation();
-            };
             htmlEventType = HtmlEventType.Key.KEY_DOWN;
         } else if (eventType === KeyEvent.KEY_RELEASED) {
-            listener = function(e) {
-                console.log("KEY_RELEASED");
-                e.stopPropagation();
-            };
             htmlEventType = HtmlEventType.Key.KEY_UP;
         }
+        let listener: EventListener = (e: KeyboardEvent) => {
+            const node: Node = this.resolveNode(<HTMLElement>e.target);
+            if (node !== null) {
+                node.fireEvent(this.createKeyEvent(e, eventType, node));
+            }
+        };
         //capturing phase, not supported by jQuery
         this.rootElement.addEventListener(htmlEventType, listener, true);
         this.listenersByEventType.put(eventType, listener);
@@ -217,4 +217,44 @@ export class HtmlEventListenerManager {
         //capturing phase, not supported by jQuery
         this.rootElement.removeEventListener(htmlEventType, listener, true);
     }
+    
+    private createKeyEvent(event: KeyboardEvent, eventType: EventType<KeyEvent>, eventTarget: EventTarget): KeyEvent {
+        let source: Object = null; 
+        let character: string = null;
+        let text: string = event.key;
+        let code: KeyCode = this.resolveKeyCode(event.code);
+        let shiftDown: boolean = event.shiftKey; 
+        let controlDown: boolean = event.ctrlKey;
+        let altDown: boolean = event.altKey;
+        let metaDown: boolean = event.metaKey;
+        return new KeyEvent(source, eventTarget, eventType, event, character, text, code, shiftDown, controlDown, altDown, metaDown);
+    }
+    
+    private resolveNode(target: HTMLElement): Node {
+        let node: Node = $(target).data(JQueryDataKeys.node);
+        if (typeof node !== "undefined") {
+            return node;
+        } else {
+            if (target.parentElement !== null) {
+                return this.resolveNode(target.parentElement);
+            } else {
+                return null;
+            }
+        }
+    }
+    
+    private resolveKeyCode(code: string): KeyCode {
+        return HtmlKeyMapper.map(code);
+//        if (code.startsWith("Key")) {
+//            code = code.substr(3);
+//        } else if (code.startsWith("Digit")) {
+//            code = code.substr(5);
+//        } else if (code.startsWith("Numpad")) {
+//            code = code.substr(6);
+//            //extra space
+//            code = "Numpad " + code;
+//        }
+//        return code;
+    }
+    
 }

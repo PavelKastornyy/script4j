@@ -27,6 +27,7 @@
 import { AbstractEventHandlerManager } from './AbstractEventHandlerManager';
 import { Map } from 'script4j.base';
 import { List } from 'script4j.base';
+import { BiFunction } from 'script4j.base';
 import { HashMap } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { EventType } from 'script4jfx.base';
@@ -37,23 +38,12 @@ export class EventHandlerCounter {
     private result: Map<EventType<any>, number> = new HashMap<EventType<any>, number>();
     
     public countAndAdd(eventHandlerManager: AbstractEventHandlerManager): void {
-        //count single
-        const singleHandlers: Map<EventType<any>, EventHandler<any>> = 
-                eventHandlerManager.getSingleEventHandlersByType()
-        if (singleHandlers !== null) {
-            const iterator: Iterator<Map.Entry<EventType<any>, EventHandler<any>>> = 
-                    singleHandlers.entrySet().iterator();
-            while (iterator.hasNext()) {
-                const entry: Map.Entry<EventType<any>, EventHandler<any>> = iterator.next();
-                this.add(entry.getKey(), 1);
-            }
-        }
         //count multiple
-        const multipleHandlers: Map<EventType<any>, List<EventHandler<any>>> = 
-                eventHandlerManager.getMultipleEventHandlersByType()
-        if (multipleHandlers !== null) {
+        const eventHandlers: Map<EventType<any>, List<EventHandler<any>>> = 
+                eventHandlerManager.getEventHandlersByType()
+        if (eventHandlers !== null) {
             const iterator: Iterator<Map.Entry<EventType<any>, List<EventHandler<any>>>> = 
-                    multipleHandlers.entrySet().iterator();
+                    eventHandlers.entrySet().iterator();
             while (iterator.hasNext()) {
                 const entry: Map.Entry<EventType<any>, List<EventHandler<any>>> = iterator.next();
                 this.add(entry.getKey(), entry.getValue().size());
@@ -66,16 +56,16 @@ export class EventHandlerCounter {
     }
     
     private add(eventType:EventType<any>, value: number) {
-        this.result.compute(eventType, (k: EventType<any>, v: number)=>{
+        this.result.compute(eventType, BiFunction.fromFunc((k: EventType<any>, v: number)=>{
             if (v === null) {
                 v = 0;
             }
             return v + value;
-        })
+        }));
     }
     
     private subtract(eventType:EventType<any>, value: number) {
-        this.result.compute(eventType, (k: EventType<any>, v: number)=>{
+        this.result.compute(eventType, BiFunction.fromFunc((k: EventType<any>, v: number)=>{
             if (v === null) {
                 v = 0;
             }
@@ -85,6 +75,6 @@ export class EventHandlerCounter {
                 result = 0;
             }
             return result;
-        })
+        }));
     }    
 }    

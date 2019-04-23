@@ -67,7 +67,7 @@ export class EventBus {
         const iterator: Iterator<BusEventListener<any>> = listeners.iterator();
         while(iterator.hasNext()) {
             try {
-                iterator.next()(event);
+                iterator.next().handle(event);
             } catch (e) {
                 console.log(e);
             }
