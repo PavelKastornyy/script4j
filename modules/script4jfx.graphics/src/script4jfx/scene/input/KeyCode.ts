@@ -1302,16 +1302,10 @@ export class KeyCode {
     }
 
 
-    private static readonly nameMap: Map<string, KeyCode> = new HashMap<string, KeyCode>(32);
+    private static nameMap: Map<string, KeyCode> = KeyCode.initMaps();
     
-    private static readonly codeMap: Map<number, KeyCode> = new HashMap<number, KeyCode>(32);
-    
-    /**
-     * Hack to call initMaps method.
-     */
-    private static readonly mapsAreInitialized: boolean = KeyCode.initMaps();
-    
-    private static initMaps(): boolean {
+    private static initMaps(): Map<string, KeyCode> {
+        const map: Map<string, KeyCode> = new HashMap<string, KeyCode>(32)
         let fields: string[] = Object.getOwnPropertyNames( KeyCode );
         //to take only static fields of the class we use regex
         let pattern = new RegExp('^[A-Z0-9_]+$');
@@ -1319,24 +1313,16 @@ export class KeyCode {
             if (fields[i].match(pattern)) {
                 let code: KeyCode = KeyCode[fields[i]];
                 KeyCode.nameMap.put(code.getName(), code);
-                KeyCode.codeMap.put(code.getCode(), code);
             }
         }
-        return true;
+        return map;
     }
 
     /**
      * Parses textual representation of a key.
-     * @param id Textual or Number representation of the key
-     * @return KeyCode for the key with the given name, null if the string
-     *                 is unknown
      */
-    public static getKeyCode(id: string|number): KeyCode {
-        if (typeof id === "string") {
-            return KeyCode.nameMap.get(id);
-        } else {
-            return KeyCode.codeMap.get(id);
-        }
+    public static getKeyCode(name: string): KeyCode {
+        return KeyCode.nameMap.get(name);
     }
 
 }
