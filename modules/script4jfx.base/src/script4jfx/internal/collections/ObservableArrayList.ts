@@ -101,6 +101,19 @@ export class ObservableArrayList<E> extends AbstractObservableListBase<E> {
             return false;
         }
     }
+    
+    public addAllByIndex(index: number, collection: Collection<E>): boolean {
+        if (this.list.addAllByIndex(index, collection)) {
+            let change: ListChangeListenerChange<E> = this.createInitialChange();
+            let node: ListChangeListenerChange.Node<E> = change.newNode();
+            node.setFrom(index);//inclusive
+            node.setTo(index + collection.size()); //exclusive
+            this.fireChangeEvent(change);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public clear(): void {
         let change: ListChangeListenerChange<E> = this.createInitialChange();

@@ -32,6 +32,7 @@ import { Collection } from 'script4j.base';
 import { MapChangeListener } from './../../collections/MapChangeListener';
 import { List } from 'script4j.base';
 import { BiFunction } from 'script4j.base';
+import { Consumer } from 'script4j.base';
 
 export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K, V> {
 
@@ -91,8 +92,9 @@ export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K
     protected abstract getMap(): Map<K, V>;
 
     protected fireChangeEvent(event: MapChangeListener.Change<K, V>) {
-        this.listeners.forEach((listener) => {
-            listener(event);
+        let consumer: Consumer<MapChangeListener<K, V>> = Consumer.fromFunc((listener) => {
+            listener.onChanged(event);
         });
+        this.listeners.forEach(consumer);
     }
 }

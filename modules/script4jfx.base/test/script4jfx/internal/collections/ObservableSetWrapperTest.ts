@@ -52,14 +52,14 @@ describe('ObservableSetWrapperTest', () => {
 
     it('add_addingOneElement_correctEvent', () => {
         let counter: number = 0;
-        set.addListener((change) => {
+        set.addListener(SetChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.wasAdded());
             assert.isFalse(change.wasRemoved());
             assert.isTrue(change.getElementAdded().equals("X"));
             assert.isNull(change.getElementRemoved());
             assert.equal(change.getSet().size(), 6);
-        });
+        }));
         assert.isTrue(set.add("X"));
         assert.equal(counter, 1);
     });
@@ -68,7 +68,7 @@ describe('ObservableSetWrapperTest', () => {
         let counter: number = 0;
         let temp0: Set<string> = new HashSet<string>();
         let temp1: Set<string> = new HashSet<string>();
-        set.addListener((change) => {
+        set.addListener(SetChangeListener.fromFunc((change) => {
             counter++;
             if (counter === 1) {
                 assert.isTrue(change.wasAdded());
@@ -83,7 +83,7 @@ describe('ObservableSetWrapperTest', () => {
                 assert.isNull(change.getElementRemoved());
                 assert.equal(change.getSet().size(), 7);
             }
-        });
+        }));
         temp0.add("X");
         temp0.add("Z");
         assert.isTrue(set.addAll(temp0));
@@ -103,14 +103,14 @@ describe('ObservableSetWrapperTest', () => {
 
     it('remove_addingOneElement_correctEvent', () => {
         let counter: number = 0;
-        set.addListener((change) => {
+        set.addListener(SetChangeListener.fromFunc((change) => {
             counter++;
             assert.isFalse(change.wasAdded());
             assert.isTrue(change.wasRemoved());
             assert.isNull(change.getElementAdded());
             assert.isTrue(change.getElementRemoved().equals("C"));
             assert.equal(change.getSet().size(), 4);
-        });
+        }));
         assert.isTrue(set.remove("C"));
         assert.equal(counter, 1);
     });
@@ -119,7 +119,7 @@ describe('ObservableSetWrapperTest', () => {
         let counter: number = 0;
         let temp0: Set<string> = new HashSet<string>();
         let temp1: Set<string> = new HashSet<string>();
-        set.addListener((change) => {
+        set.addListener(SetChangeListener.fromFunc((change) => {
             counter++;
             if (counter === 1) {
                 assert.isFalse(change.wasAdded());
@@ -134,7 +134,7 @@ describe('ObservableSetWrapperTest', () => {
                 assert.isNull(change.getElementAdded());
                 assert.equal(change.getSet().size(), 3);
             }
-        });
+        }));
         temp0.add("C");
         temp0.add("E");
         assert.isTrue(set.removeAll(temp0));
@@ -155,7 +155,7 @@ describe('ObservableSetWrapperTest', () => {
     it('iterator_removingTwoElements_correctEvent', () => {
         let counter: number = 0;
         let temp: Set<string> = new HashSet<string>();
-        set.addListener((change) => {
+        set.addListener(SetChangeListener.fromFunc((change) => {
             counter++;
             if (counter === 1) {
                 assert.isFalse(change.wasAdded());
@@ -170,7 +170,7 @@ describe('ObservableSetWrapperTest', () => {
                 assert.isNull(change.getElementAdded());
                 assert.equal(change.getSet().size(), 3);
             }
-        });
+        }));
         let iterator: Iterator<string> = set.iterator();
         while (iterator.hasNext()) {
             let obj: string = iterator.next();
@@ -199,7 +199,7 @@ describe('ObservableSetWrapperTest', () => {
     it('clear_removingAllElements_correctEvents', () => {
         let temp: Set<string> = new HashSet<string>();
         let counter: number = 0;
-        set.addListener((change) => {
+        set.addListener(SetChangeListener.fromFunc((change) => {
             counter++;
             assert.isFalse(change.wasAdded());
             assert.isTrue(change.wasRemoved());
@@ -207,7 +207,7 @@ describe('ObservableSetWrapperTest', () => {
             assert.isNull(change.getElementAdded());
             assert.equal(change.getSet().size(), 5 - counter);
 
-        });
+        }));
         set.clear();
         assert.equal(counter, 5);
         assert.isTrue(temp.contains("A"));

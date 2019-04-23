@@ -31,7 +31,20 @@ export interface EventHandler<T extends Event> {
     /**
      * Invoked when a specific event of the type for which this handler is registered happens.
      */
-    (event: T): void;
+    handle(event: T): void;
 
 }
 
+type EventHandlerFunc<T extends Event> = (t: T) => void;
+
+export namespace EventHandler {
+    
+    export function fromFunc<T extends Event>(func: EventHandlerFunc<T>): EventHandler<T> {
+        return new class implements EventHandler<T> {
+            
+            public handle(t: T): void {
+                return func(t);
+            }
+        };
+    }
+}

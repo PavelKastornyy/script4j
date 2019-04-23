@@ -84,6 +84,7 @@ module.exports = {
         "script4jfx.event.EventTarget",
         "script4jfx.event.Event",
         "script4jfx.event.EventType",
+        "script4jfx.internal.event.EventDispatchChainImpl",
         "script4jfx.collections.ListChangeListener",
         "script4jfx.collections.ObservableList",
         "script4jfx.collections.SetChangeListener",

@@ -52,7 +52,7 @@ describe('ObservableArrayListTest', () => {
 
     it('addByIndex_addingOneElement_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.next());
             assert.isFalse(change.next());
@@ -65,14 +65,42 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getAddedSize(), 1);
             assert.isTrue(change.getAddedSubList().get(0).equals("X"));
             assert.equal(change.getRemovedSize(), 0);
-        });
+        }));
         list.addByIndex(1, "X");
         assert.equal(counter, 1);
     });
+    
+    it('addAllByIndex_nonEmptyCollection_correctEvent', () => {
+        let list2: List<string> = new ArrayList<string>();
+        list2.add("X");
+        list2.add("Y");
+        list2.add("Z");        
+        let counter: number = 0;
+        list.addListener(ListChangeListener.fromFunc((change) => {
+            counter++;
+            assert.isTrue(change.next());
+            assert.isFalse(change.next());
+            assert.equal(change.getFrom(), 2);
+            assert.equal(change.getTo(), 5);
+            assert.isTrue(change.wasAdded());
+            assert.isFalse(change.wasRemoved());
+            assert.isFalse(change.wasReplaced());
+            assert.isFalse(change.wasUpdated());
+            assert.equal(change.getAddedSize(), 3);
+            assert.isTrue(change.getAddedSubList().get(0).equals("X"));
+            assert.isTrue(change.getAddedSubList().get(1).equals("Y"));
+            assert.isTrue(change.getAddedSubList().get(2).equals("Z"));
+            assert.equal(change.getAddedSubList().size(), 3);
+            assert.equal(change.getRemovedSize(), 0);
+        }));
+        assert.equal(list.addAllByIndex(2, list2), true);
+        assert.equal(list.size(), 8);
+        assert.equal(counter, 1);
+    });      
 
     it('removeByIndex_removingOneElement_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.next());
             assert.isFalse(change.next());
@@ -85,7 +113,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getRemovedSize(), 1);
             assert.isTrue(change.getRemoved().get(0).equals("B"));
             assert.equal(change.getAddedSize(), 0);
-        });
+        }));
         assert.isTrue(list.removeByIndex(1).equals("B"));
         assert.equal(counter, 1);
     });
@@ -97,7 +125,7 @@ describe('ObservableArrayListTest', () => {
 
     it('set_replacingExistingElement_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.next());
             assert.isFalse(change.next());
@@ -111,7 +139,7 @@ describe('ObservableArrayListTest', () => {
             assert.isTrue(change.getRemoved().get(0).equals("B"));
             assert.equal(change.getAddedSize(), 1);
             assert.isTrue(change.getAddedSubList().get(0).equals("X"));
-        });
+        }));
         assert.isTrue(list.set(1, "X").equals("B"));;
         assert.equal(counter, 1);
     });
@@ -123,7 +151,7 @@ describe('ObservableArrayListTest', () => {
 
     it('add_addingOneElement_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.next());
             assert.isFalse(change.next());
@@ -136,7 +164,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getAddedSize(), 1);
             assert.isTrue(change.getAddedSubList().get(0).equals("X"));
             assert.equal(change.getRemovedSize(), 0);
-        });
+        }));
         list.add("X");
         assert.equal(counter, 1);
     });
@@ -149,7 +177,7 @@ describe('ObservableArrayListTest', () => {
 
     it('addAll_addingTwoElements_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.next());
             assert.isFalse(change.next());
@@ -163,7 +191,7 @@ describe('ObservableArrayListTest', () => {
             assert.isTrue(change.getAddedSubList().get(0).equals("X"));
             assert.isTrue(change.getAddedSubList().get(1).equals("Z"));
             assert.equal(change.getRemovedSize(), 0);
-        });
+        }));
         let temp: List<string> = new ArrayList<string>();
         temp.add("X");
         temp.add("Z");
@@ -183,7 +211,7 @@ describe('ObservableArrayListTest', () => {
 
     it('clear_clearingExistingElements_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.next());
             assert.isFalse(change.next());
@@ -196,7 +224,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getRemovedSize(), 5);
             assert.isTrue(change.getRemoved().get(1).equals("B"));
             assert.equal(change.getAddedSize(), 0);
-        });
+        }));
         list.clear();
         assert.equal(counter, 1);
     });
@@ -209,7 +237,7 @@ describe('ObservableArrayListTest', () => {
 
     it('remove_removingOneElement_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.next());
             assert.isFalse(change.next());
@@ -222,7 +250,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getRemovedSize(), 1);
             assert.isTrue(change.getRemoved().get(0).equals("B"));
             assert.equal(change.getAddedSize(), 0);
-        });
+        }));
         list.remove("B");
         assert.equal(counter, 1);
     });
@@ -234,7 +262,7 @@ describe('ObservableArrayListTest', () => {
 
     it('removeAll_removingThreeElements_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             //first change
             assert.isTrue(change.next());
@@ -261,7 +289,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getAddedSize(), 0);
             //third?
             assert.isFalse(change.next());
-        });
+        }));
         let temp: List<string> = new ArrayList<string>();
         temp.add("A");
         temp.add("B");
@@ -272,7 +300,7 @@ describe('ObservableArrayListTest', () => {
 
     it('iterator_removeOneElement_correctEvent', () => {
         let counter: number = 0;
-        list.addListener((change) => {
+        list.addListener(ListChangeListener.fromFunc((change) => {
             counter++;
             assert.isTrue(change.next());
             assert.isFalse(change.next());
@@ -285,7 +313,7 @@ describe('ObservableArrayListTest', () => {
             assert.equal(change.getRemovedSize(), 1);
             assert.isTrue(change.getRemoved().get(0).equals("B"));
             assert.equal(change.getAddedSize(), 0);
-        });
+        }));
         let iterator: Iterator<string> = list.iterator();
         assert.isTrue(iterator.hasNext());
         iterator.next();

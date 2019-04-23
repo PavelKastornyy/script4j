@@ -29,6 +29,7 @@ import { Set } from "script4j.base";
 import { Map } from "script4j.base";
 import { HashMap } from "script4j.base";
 import { HashSet } from "script4j.base";
+import { Consumer } from "script4j.base";
 import { ObservableValue } from "./../../../beans/value/ObservableValue";
 import { Property } from "./../../../beans/property/Property";
 import { ReadOnlyProperty } from "./../../../beans/property/ReadOnlyProperty";
@@ -225,20 +226,21 @@ export class PropertyDelegate<T> { //implements Property<T>, WritableValue<T> {
         let oldValue: T = this.previousValue;
         //get is overriden in ReadOnlyXWrappers and that case we don't call set at all.
         this.previousValue = this.get();
-        this.externalListeners.forEach((listener) => {
-            listener(this.property, oldValue, this.previousValue);
+        let consumer: Consumer<ChangeListener<T>> = Consumer.fromFunc((listener) => {
+            listener.changed(this.property, oldValue, this.previousValue);
         });
+        this.externalListeners.forEach(consumer);
     }
 
     private createInternalForeignListener(): ChangeListener<T> {
-        return (observable: ObservableValue<T>, oldValue: T, newValue: T) => {
+        return ChangeListener.fromFunc<any>((observable: ObservableValue<T>, oldValue: T, newValue: T) => {
             //no bind see ES6 var https://hackernoon.com/javascript-es6-arrow-functions-and-lexical-this-f2a3e2a5e8c4
             //we need to stop cyclic setting value
             let newConvertedValue: T = this.convertValue(<ReadOnlyProperty<T>>observable, newValue);
             if (!Objects.equals(newConvertedValue, this.get())) {
                 this.set(newConvertedValue);
             }
-        };
+        });
     }
 
     private doBindBidirectional(other: ReadOnlyProperty<T>) {

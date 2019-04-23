@@ -28,6 +28,8 @@ import { EventObject } from 'script4j.base';
 import { UnsupportedOperationError } from 'script4j.base';
 import { EventTarget } from './EventTarget';
 import { EventType } from './EventType';
+import { EventDispatchChain } from './EventDispatchChain';
+import { EventDispatchChainImpl } from './../internal/event/EventDispatchChainImpl';
 
 export class Event extends EventObject {
 
@@ -41,21 +43,31 @@ export class Event extends EventObject {
     private readonly eventType: EventType<Event>;
 
     private consumed: boolean = false;
+    
+    /**
+     * The event that was created by browser.
+     */
+    private originalEvent: any;
 
     /**
      * Construct a new Event with the specified event source, target and type.
      */
-    constructor​(source: Object, target: EventTarget, eventType: EventType<Event>) {
+    constructor​(source: Object, target: EventTarget, eventType: EventType<Event>, originalEvent: any) {
         super(source);
         this.target = target;
         this.eventType = eventType;
+        this.originalEvent = originalEvent;
     }
 
     /**
-     * Fires the specified event.
+     * Fires the specified event. JavaFX event mechanism is explained here: https://stackoverflow.com/a/51015783/5057736
+     * We have two base classed EventDispatchChain and EventDispatcher. In chain we call dispatcher passing chain as 
+     * argument. When dispatcher need to pass event to next dispatcher it calls chain method.
      */
     public static fireEvent​(eventTarget: EventTarget, event: Event): void {
-        throw new UnsupportedOperationError("Not implemented yet");
+        const dispatchChain: EventDispatchChain = new EventDispatchChainImpl();
+        eventTarget.buildEventDispatchChain(dispatchChain);
+        dispatchChain.dispatchEvent(event);
     }
 
     /**
@@ -91,6 +103,13 @@ export class Event extends EventObject {
      */
     public isConsumed(): boolean {
         return this.consumed;
+    }
+    
+    /**
+     * Returns the event that was created by browser.
+     */
+    public getOriginalEvent(): any {
+        return this.originalEvent;
     }
 
 }

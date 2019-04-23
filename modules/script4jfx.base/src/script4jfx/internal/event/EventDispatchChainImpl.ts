@@ -24,23 +24,40 @@
  *
  */
 
-import { ObservableValue } from "./ObservableValue"
+import { EventDispatchChain } from './../../event/EventDispatchChain';
+import { EventDispatcher } from './../../event/EventDispatcher';
+import { Event } from './../../event/Event';
+import { List } from 'script4j.base';
+import { ArrayList } from 'script4j.base';
 
-export interface ChangeListener<T> {
-
-    changed(observable: ObservableValue<T>, oldValue: T, newValue: T): void;
-}
-
-type ChangeListenerFunc<T> = (observable: ObservableValue<T>, oldValue: T, newValue: T) => void;
-
-export namespace ChangeListener {
+export class EventDispatchChainImpl implements EventDispatchChain {
     
-    export function fromFunc<T>(func: ChangeListenerFunc<T>): ChangeListener<T> {
-        return new class implements ChangeListener<T> {
-            
-            public changed(observable: ObservableValue<T>, oldValue: T, newValue: T): void {
-                func(observable, oldValue, newValue);
-            }
-        };
+    private dispatchers: List<EventDispatcher> = new ArrayList();
+    
+    public append​(eventDispatcher: EventDispatcher): EventDispatchChain {
+        this.dispatchers.add(eventDispatcher);
+        return this;
+    }
+
+    public dispatchEvent​(event: Event): Event {
+        if (this.dispatchers.isEmpty()) {
+            return event;
+        }
+        const dispatcher: EventDispatcher = this.dispatchers.removeByIndex(0);
+        if (dispatcher !== null) {
+            event = dispatcher.dispatchEvent(event, this);
+            return event;
+        }
+        return event;
+    }
+
+    public prepend​(eventDispatcher: EventDispatcher): EventDispatchChain {
+        if (this.dispatchers.isEmpty()) {
+            this.dispatchers.add(eventDispatcher);
+        } else {
+            this.dispatchers.addByIndex(0, eventDispatcher);
+        }
+        return this;
     }
 }
+

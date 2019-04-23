@@ -89,9 +89,10 @@ export abstract class AbstractObservableSetBase<E> implements ObservableSet<E> {
     protected abstract getSet(): Set<E>;
 
     protected fireChangeEvent(event: SetChangeListener.Change<E>) {
-        this.listeners.forEach((listener) => {
-            listener(event);
+        let consumer: Consumer<SetChangeListener<E>> = Consumer.fromFunc((listener) => {
+            listener.onChanged(event);
         });
+        this.listeners.forEach(consumer);
     }
 }
 

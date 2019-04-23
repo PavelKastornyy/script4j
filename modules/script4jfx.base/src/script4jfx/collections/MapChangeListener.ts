@@ -34,10 +34,21 @@ export interface MapChangeListener<K, V> {
     /**
      * Called after a change has been made to an ObservableMap.
      */
-    ​(change: MapChangeListener.Change<K, V>): void;
+    onChanged(change: MapChangeListener.Change<K, V>): void;
 }
 
+type MapChangeListenerFunc<K, V> = (change: MapChangeListener.Change<K, V>) => void;
+
 export namespace MapChangeListener {
+    
+    export function fromFunc<K, V>(func: MapChangeListenerFunc<K, V>): MapChangeListener<K, V> {
+        return new class implements MapChangeListener<K, V> {
+            
+            public onChanged(change: MapChangeListener.Change<K, V>): void {
+                func(change);
+            }
+        };
+    }    
 
     export abstract class Change<K,​V> {
 

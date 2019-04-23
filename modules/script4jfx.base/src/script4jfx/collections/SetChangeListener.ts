@@ -36,11 +36,21 @@ export interface SetChangeListener<E> {
      * elementary change (add/remove) once. This means, complex changes like removeAll(Collection)
      * or clear() may result in more than one call of onChanged method.
      */
-    ​(c: SetChangeListener.Change<E>): void;
+    ​onChanged(c: SetChangeListener.Change<E>): void;
 }
 
+type SetChangeListenerFunc<E> = (c: SetChangeListener.Change<E>) => void;
 
 export namespace SetChangeListener {
+    
+    export function fromFunc<E>(func: SetChangeListenerFunc<E>): SetChangeListener<E> {
+        return new class implements SetChangeListener<E> {
+            
+            public ​onChanged(change: SetChangeListener.Change<E>): void {
+                func(change);
+            }
+        };
+    }    
 
     export abstract class Change<E> {
 

@@ -36,10 +36,21 @@ export interface ListChangeListener<E> {
     /**
      * Called after a change has been made to an ObservableList.
      */
-    ​(c: ListChangeListener.Change<E>): void;
+    onChanged(c: ListChangeListener.Change<E>): void;
 }
 
+type ListChangeListenerFunc<E> = (c: ListChangeListener.Change<E>) => void;
+
 export namespace ListChangeListener {
+    
+    export function fromFunc<E>(func: ListChangeListenerFunc<E>): ListChangeListener<E> {
+        return new class implements ListChangeListener<E> {
+            
+            public onChanged(c: ListChangeListener.Change<E>): void {
+                func(c);
+            }
+        };
+    }    
 
     export abstract class Change<E> {
 
