@@ -33,6 +33,7 @@ import { IndexOutOfBoundsError } from './../lang/IndexOutOfBoundsError';
 import { NoSuchElementError } from './../util/NoSuchElementError';
 import { IllegalStateError } from './../lang/IllegalStateError';
 import { Objects } from './Objects';
+import { Collection } from './Collection';
 
 export class ArrayList<E> extends AbstractList<E> {
 
@@ -134,6 +135,24 @@ export class ArrayList<E> extends AbstractList<E> {
         this.checkIndexIsInRange(index);
         this.array.splice(index, 0, obj);
     }
+    
+    public addAllByIndex(index: number, c: Collection<E>): boolean {
+        if (index < 0 || index > this.size()) {
+            throw new IndexOutOfBoundsError();
+        }
+        const previousSize = this.size();
+        const iterator: Iterator<E> = c.iterator();
+        const newArray: E[] = [];
+        while (iterator.hasNext()) {
+            newArray.push(iterator.next());
+        }
+        this.array.splice(index, 0, ...newArray);
+        if (previousSize !== this.size()) {
+            return true;
+        } else {
+            return false;
+        }
+    }    
 
     public get(index: number): E {
         this.checkIndexIsInRange(index);

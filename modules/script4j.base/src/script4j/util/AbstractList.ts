@@ -29,6 +29,7 @@ import { List } from './List';
 import { Iterator } from './Iterator';
 import { Collection } from './Collection';
 import { Objects } from './Objects';
+import { IndexOutOfBoundsError } from './../lang/IndexOutOfBoundsError';
 
 export abstract class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 
@@ -37,6 +38,22 @@ export abstract class AbstractList<E> extends AbstractCollection<E> implements L
     }
 
     public abstract addByIndex(index: number, obj: E): void;
+    
+    public addAllByIndex(index: number, c: Collection<E>): boolean {
+        if (index < 0 || index > this.size()) {
+            throw new IndexOutOfBoundsError();
+        }
+        const previousSize = this.size();
+        const iterator: Iterator<E> = c.iterator();
+        while (iterator.hasNext()) {
+            this.addByIndex(index++, iterator.next());
+        }
+        if (previousSize !== this.size()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public abstract get(index: number): E;
 

@@ -40,4 +40,7 @@ export interface List<E> extends Collection<E> {
     subList​(fromIndex: number, toIndex: number): List<E>;
 
     indexOf(obj: E): number;
+    
+    addAllByIndex(index: number, c: Collection<E>): boolean;
+
 }

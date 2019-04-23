@@ -105,6 +105,27 @@ describe('ArrayListTest', () => {
         assert.isTrue(list.get(2).equals(obj1));
         assert.equal(list.size(), 3);
     });
+    
+    it('addAllByIndex_shiftingObjects_addsObject', () => {
+        let list: List<number> = new ArrayList<number>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        let list2: List<number> = new ArrayList<number>();
+        list2.add(5);
+        list2.add(6);
+        list2.add(7);
+        assert.equal(list.addAllByIndex(2, list2), true);
+        assert.equal(list.get(0), 1);
+        assert.equal(list.get(1), 2);
+        assert.equal(list.get(2), 5);
+        assert.equal(list.get(3), 6);
+        assert.equal(list.get(4), 7);
+        assert.equal(list.get(5), 3);
+        assert.equal(list.get(6), 4);
+        assert.equal(list.size(), 7);
+    });    
 
     it('get_outOfRange_IndexOutOfBoundsError', () => {
         let list: List<Object> = new ArrayList<Object>();
