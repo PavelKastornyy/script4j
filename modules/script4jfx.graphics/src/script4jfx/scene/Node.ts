@@ -330,7 +330,7 @@ export abstract class Node implements Styleable, EventTarget {
      * Registers an event handler to this node.
      */
     public addEventHandler<T extends Event>​(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
-        this.eventHandlerManager.addEventHandlerByType(eventType, eventHandler);
+        this.eventHandlerManager.addEventHandlerByType(eventType, eventHandler, true);
     }
 
     /**

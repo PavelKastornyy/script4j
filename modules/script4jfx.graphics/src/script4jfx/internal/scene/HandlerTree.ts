@@ -41,7 +41,7 @@ export class HandlerTree {
     
     private nodesByType: Map<EventType<Event>, HandlerTree.Node<Event>> = null;
     
-    public addHandler<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>): void {
+    public addHandler<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>, asFirst: boolean): void {
         if (eventType === null || handler === null) {
             throw new IllegalArgumentError();
         }
@@ -52,7 +52,7 @@ export class HandlerTree {
         if (node === null) {
             node = this.createNode(eventType);
         }
-        node.addHandler(handler)
+        node.addHandler(handler, asFirst);
     }
     
     public removeHandler<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>): void {
@@ -292,14 +292,22 @@ export namespace HandlerTree {
             }
         }
 
-        public addHandler(handler: EventHandler<T>): void {
+        public addHandler(handler: EventHandler<T>, asFirst: boolean): void {
             if (handler === null) {
                 throw new IllegalArgumentError("Handler can not be null");
             }
             if (this.handlers === null) {
                 this.handlers = new ArrayList();
             }
-            this.handlers.add(handler);
+            if (this.handlers.isEmpty()) {
+                this.handlers.add(handler);
+            } else {
+                if (asFirst) {
+                    this.handlers.addByIndex(0, handler);
+                } else {
+                    this.handlers.add(handler);
+                }
+            }
         }
 
         public removeHandler(handler: EventHandler<T>): void {

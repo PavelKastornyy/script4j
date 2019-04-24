@@ -247,7 +247,7 @@ export class Scene implements EventTarget {
      * Registers an event handler to this scene.
      */
     public addEventHandler<T extends Event>​(eventType: EventType<T>, eventHandler: EventHandler<T>): void {
-        this.eventHandlerManager.addEventHandlerByType(eventType, eventHandler);
+        this.eventHandlerManager.addEventHandlerByType(eventType, eventHandler, true);
     }
 
     /**

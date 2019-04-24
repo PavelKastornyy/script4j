@@ -1312,7 +1312,7 @@ export class KeyCode {
         for (let i: number = 0; i < fields.length; i++) {
             if (fields[i].match(pattern)) {
                 let code: KeyCode = KeyCode[fields[i]];
-                KeyCode.nameMap.put(code.getName(), code);
+                map.put(code.getName(), code);
             }
         }
         return map;

@@ -56,7 +56,7 @@ export abstract class AbstractEventHandlerManager {
     private eventFilterTree: HandlerTree = null;
     
     /**
-     * Either Scene or Node that contains this maanger.
+     * Either Scene or Node that contains this manager.
      */
     private readonly bean: Object;
     
@@ -111,7 +111,7 @@ export abstract class AbstractEventHandlerManager {
         if (this.eventFilterTree === null) {
             this.eventFilterTree = new HandlerTree();
         }
-        this.eventFilterTree.addHandler(eventType, eventFilter);
+        this.eventFilterTree.addHandler(eventType, eventFilter, false);
     }
     
     /**
@@ -128,13 +128,15 @@ export abstract class AbstractEventHandlerManager {
     }    
     
     /**
-     * This method is called in addEventHandler.
+     * This method is called in addEventHandler. Handlers added via addEventHandler() are
+     * executed before the handlers added via setOnXXX. So we need asFirst paramater.
      */
-    public addEventHandlerByType<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>): void {
+    public addEventHandlerByType<T extends Event>(eventType: EventType<T>, handler: EventHandler<T>, 
+            asFirst: boolean): void {
         if (this.eventHandlerTree === null) {
             this.eventHandlerTree = new HandlerTree();
         }
-        this.eventHandlerTree.addHandler(eventType, handler);
+        this.eventHandlerTree.addHandler(eventType, handler, asFirst);
         this.doOnHandlerAdded(eventType, handler);
     }
     
@@ -195,13 +197,13 @@ export abstract class AbstractEventHandlerManager {
         prop.addListener(ChangeListener.fromFunc((observable: ObservableValue<EventHandler<T>>, 
                     oldHandler: EventHandler<T>, newHandler: EventHandler<T>) => {
                 if (newHandler !== null && oldHandler === null) {
-                    this.addEventHandlerByType(eventType, newHandler);
+                    this.addEventHandlerByType(eventType, newHandler, false);
                 } else if (newHandler === null && oldHandler !== null) {
                     this.removeEventHandlerByType(eventType, oldHandler);
                 //there can be situation when null is set to null
                 } else if (newHandler !== null && oldHandler !== null) {
                     this.removeEventHandlerByType(eventType, oldHandler);
-                    this.addEventHandlerByType(eventType, newHandler);
+                    this.addEventHandlerByType(eventType, newHandler, false);
                 }
             }));
         return prop;

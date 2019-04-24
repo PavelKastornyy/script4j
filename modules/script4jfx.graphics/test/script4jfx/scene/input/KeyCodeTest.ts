@@ -34,10 +34,6 @@ describe('KeyCodeTest', () => {
         assert.isTrue(KeyCode.getKeyCode("L") === KeyCode.L);
     });
     
-    it('getKeyCode_existingCodeByNumber_correctCode', () => {
-        assert.isTrue(KeyCode.getKeyCode(76) === KeyCode.L);
-    });
-    
     it('isLetterKey_lettterKey_true', () => {
         assert.isTrue(KeyCode.L.isLetterKey());
     });
