@@ -32,12 +32,18 @@ import { EventBus } from './eventbus/EventBus';
 import { BusEventListener } from './eventbus/BusEventListener';
 import { HandlerEvent } from './busevents/HandlerEvent';
 import { KeyEvent } from './../../scene/input/KeyEvent';
+import { MouseEvent } from './../../scene/input/MouseEvent';
+import { MouseButton } from './../../scene/input/MouseButton';
 import { KeyCode } from './../../scene/input/KeyCode';
 import { HtmlEventType } from './HtmlEventType';
 import { JQueryDataKeys } from './JQueryDataKeys';
 import { Node } from './../../scene/Node';
 import { EventTarget } from 'script4jfx.base';
 import { BiFunction } from 'script4j.base';
+import { List } from 'script4j.base';
+import { ArrayList } from 'script4j.base';
+import { System } from 'script4j.base';
+import { Event } from 'script4jfx.base';
 import { HtmlKeyMapper } from './HtmlKeyMapper';
 import 'jquery';
 
@@ -63,8 +69,9 @@ export class HtmlEventListenerManager {
     /**
      * Listeners that were added to root html element. If there can be situation that fx listeners overlap html 
      * listeners, then it must be fixed. jQuery is not used because it doesn't support capturing phase.
+     * 
      */
-    private readonly listenersByEventType: Map<EventType<any>, EventListener> = new HashMap();
+    private readonly listenersByHtmlType: Map<string, EventListener> = new HashMap();
     
     /**
      * It can be not 1:1
@@ -163,25 +170,33 @@ export class HtmlEventListenerManager {
         }
     }
     
+    /**
+     * The method is respobsible for creating listeners in html.
+     */
     private createListenerIfAbsent(eventType: EventType<any>): void {
-        if (this.listenersByEventType.containsKey(eventType)) {
-            return;
-        }
-        if (eventType.getSuperType() === KeyEvent.ANY) {
-            this.createKeyListener(eventType);
+        const types: List<EventType<Event>> = this.getTypes(eventType);
+        const baseType: EventType<any> = types.get(2);
+        if (baseType === KeyEvent.ANY) {
+            this.createKeyListenerIfAbsent(eventType);
+        } else if (baseType === MouseEvent.ANY) {
+            this.createMouseListenerIfAbsent(eventType);
         }
     }
     
+    /**
+     * The method is responsible for destroying listeners in html.
+     */
     private destroyListenerIfPresent(eventType: EventType<any>): void {
-        if (!this.listenersByEventType.containsKey(eventType)) {
-            return;
-        }
-        if (eventType.getSuperType() === KeyEvent.ANY) {
-            this.destroyKeyListener(eventType);
+        const types: List<EventType<Event>> = this.getTypes(eventType);
+        const baseType: EventType<any> = types.get(2);
+        if (baseType === KeyEvent.ANY) {
+            this.destroyKeyListenerIfPresent(eventType);
+        } else if (baseType === MouseEvent.ANY) {
+            this.destroyMouseListenerIfPresent(eventType);
         }
     }
     
-    private createKeyListener(eventType: EventType<KeyEvent>): void {
+    private createKeyListenerIfAbsent(eventType: EventType<KeyEvent>): void {
         let htmlEventType: string = null;
         if (eventType === KeyEvent.KEY_TYPED) {
             htmlEventType = HtmlEventType.Key.KEY_PRESSED;
@@ -189,6 +204,9 @@ export class HtmlEventListenerManager {
             htmlEventType = HtmlEventType.Key.KEY_DOWN;
         } else if (eventType === KeyEvent.KEY_RELEASED) {
             htmlEventType = HtmlEventType.Key.KEY_UP;
+        }
+        if (this.listenersByHtmlType.containsKey(htmlEventType)) {
+            return;
         }
         let listener: EventListener = (e: KeyboardEvent) => {
             const node: Node = this.resolveNode(<HTMLElement>e.target);
@@ -196,17 +214,71 @@ export class HtmlEventListenerManager {
                 node.fireEvent(this.createKeyEvent(e, eventType, node));
             }
         };
-        //capturing phase, not supported by jQuery
-        this.rootElement.addEventListener(htmlEventType, listener, true);
-        this.listenersByEventType.put(eventType, listener);
+        this.doCreateListener(htmlEventType, listener);
     }
     
-    private destroyKeyListener(eventType: EventType<KeyEvent>): void {
-        const listener: EventListener = this.listenersByEventType.remove(eventType);
+    private createMouseListenerIfAbsent(eventType: EventType<KeyEvent>): void {
+        let oneClickListener: EventListener = (e: any) => {
+            const node: Node = this.resolveNode(<HTMLElement>e.target);
+            if (node !== null) {
+                node.fireEvent(this.createMouseEvent(e, eventType, node, 1));
+            }
+        };
+        let dblClickListener: EventListener = (e: any) => {
+            const node: Node = this.resolveNode(<HTMLElement>e.target);
+            if (node !== null) {
+                node.fireEvent(this.createMouseEvent(e, eventType, node, 2));
+            }
+        };
+        let rightClickListener: EventListener = (e: any) => {
+            const node: Node = this.resolveNode(<HTMLElement>e.target);
+            if (node !== null) {
+                node.fireEvent(this.createMouseEvent(e, eventType, node, 1));
+            }
+            let hideBrowserContextMenu = System.getProperty("script4jfx.graphics.hide-context-menu");
+            if (hideBrowserContextMenu !== null) {
+                if (hideBrowserContextMenu.toLowerCase().equals("true")) {
+                    e.preventDefault();//for firefox and chrome
+                    return false;//for others
+                }
+            }
+        };
         let htmlEventType: string = null;
-        if (listener === null) {
-            return;
+        if (eventType === MouseEvent.MOUSE_PRESSED) {
+            htmlEventType = HtmlEventType.Mouse.MOUSE_DOWN;
+        } else if (eventType === MouseEvent.MOUSE_RELEASED) {
+            htmlEventType = HtmlEventType.Mouse.MOUSE_UP;
         }
+        if (htmlEventType !== null) {
+            if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
+                return;
+            }
+            this.doCreateListener(htmlEventType, oneClickListener);
+        //clicked - multiple events
+        } else {
+            htmlEventType = HtmlEventType.Mouse.CLICK;
+            if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
+                this.doCreateListener(htmlEventType, oneClickListener);
+            }
+            htmlEventType = HtmlEventType.Mouse.DOUBLE_CLICK;
+            if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
+                this.doCreateListener(htmlEventType, dblClickListener);
+            }
+            htmlEventType = HtmlEventType.Mouse.CONEXT_MENU;
+            if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
+                this.doCreateListener(htmlEventType, rightClickListener);
+            }
+        }
+    }
+    
+    private doCreateListener(htmlEventType: string, listener: EventListener) {
+        //capturing phase, not supported by jQuery
+        this.rootElement.addEventListener(htmlEventType, listener, true);
+        this.listenersByHtmlType.put(htmlEventType, listener);
+    }
+    
+    private destroyKeyListenerIfPresent(eventType: EventType<KeyEvent>): void {
+        let htmlEventType: string = null;
         if (eventType === KeyEvent.KEY_TYPED) {
             htmlEventType = HtmlEventType.Key.KEY_PRESSED;
         } else if (eventType === KeyEvent.KEY_PRESSED) {
@@ -214,20 +286,102 @@ export class HtmlEventListenerManager {
         } else if (eventType === KeyEvent.KEY_RELEASED) {
             htmlEventType = HtmlEventType.Key.KEY_UP;
         }
+        if (htmlEventType !== null) {
+            this.doDestroyListener(htmlEventType);
+        }
+    }    
+    
+    private destroyMouseListenerIfPresent(eventType: EventType<KeyEvent>): void {
+        let htmlEventType: string = null;
+        let listener: EventListener = null;
+        if (eventType === MouseEvent.MOUSE_PRESSED) {
+            htmlEventType = HtmlEventType.Mouse.MOUSE_DOWN;
+        } else if (eventType === MouseEvent.MOUSE_RELEASED) {
+            htmlEventType = HtmlEventType.Mouse.MOUSE_UP;
+        }
+        if (htmlEventType !== null) {
+            this.doDestroyListener(htmlEventType);
+        //clicked - multiple events
+        } else {
+            htmlEventType = HtmlEventType.Mouse.CLICK;
+            this.doDestroyListener(htmlEventType);
+            htmlEventType = HtmlEventType.Mouse.DOUBLE_CLICK;
+            this.doDestroyListener(htmlEventType);
+            htmlEventType = HtmlEventType.Mouse.CONEXT_MENU;
+            this.doDestroyListener(htmlEventType);
+        }
+    }
+    
+    private doDestroyListener(htmlEventType: string) {
         //capturing phase, not supported by jQuery
+        let listener: EventListener = this.listenersByHtmlType.remove(htmlEventType);
+        if (listener === null) {
+            return;
+        }
         this.rootElement.removeEventListener(htmlEventType, listener, true);
     }
     
     private createKeyEvent(event: KeyboardEvent, eventType: EventType<KeyEvent>, eventTarget: EventTarget): KeyEvent {
-        let source: Object = null; 
-        let character: string = null;
-        let text: string = event.key;
-        let code: KeyCode = this.resolveKeyCode(event.code);
-        let shiftDown: boolean = event.shiftKey; 
-        let controlDown: boolean = event.ctrlKey;
-        let altDown: boolean = event.altKey;
-        let metaDown: boolean = event.metaKey;
-        return new KeyEvent(source, eventTarget, eventType, event, character, text, code, shiftDown, controlDown, altDown, metaDown);
+        return new KeyEvent(
+                null, //source
+                eventTarget, 
+                eventType, 
+                event, 
+                null, //character
+                event.key, //text
+                this.resolveKeyCode(event.code), //code
+                event.shiftKey, //shiftDown
+                event.ctrlKey, //controlDown
+                event.altKey, //altDown
+                event.metaKey //metaDown
+                ); 
+    }
+    
+    /**
+     * For mouseenter, mouseleave, mouseover, mouseout или mousemove event.button IS NOT USED.
+     */
+    private createMouseEvent(event: any, eventType: EventType<KeyEvent>, 
+            eventTarget: EventTarget, clickCount: number): MouseEvent {
+        let primaryButtonDown: boolean = false;
+        let middleButtonDown: boolean = false;
+        let secondaryButtonDown: boolean = false; 
+        let button: MouseButton = MouseButton.NONE;
+        switch (event.button) {
+            case 0: 
+                primaryButtonDown = true;
+                button = MouseButton.PRIMARY;
+            break;
+            case 1: 
+                middleButtonDown = true;
+                button = MouseButton.MIDDLE;
+            break;
+            case 2:
+                secondaryButtonDown = true;
+                button = MouseButton.SECONDARY;
+            break;
+        }
+        return new MouseEvent(
+                null, //source, 
+                eventTarget,//target, 
+                eventType, 
+                event, //originalEvent,
+                event.offsetX, //x
+                event.offsetY, //y
+                event.clientX, //screenX, 
+                event.clientY, //screenY, 
+                button, 
+                clickCount, 
+                event.shiftKey, //shiftDown, 
+                event.ctrlKey, //controlDown, 
+                event.altKey, //altDown, 
+                event.metaKey, //metaDown, 
+                primaryButtonDown, 
+                middleButtonDown, 
+                secondaryButtonDown, 
+                null, //synthesized, 
+                null, //popupTrigger, 
+                null, //stillSincePress
+                );
     }
     
     private resolveNode(target: HTMLElement): Node {
@@ -242,6 +396,19 @@ export class HtmlEventListenerManager {
             }
         }
     }
+    
+    private getTypes<T extends Event>(eventType: EventType<T>): List<EventType<T>> {
+        const types: List<EventType<T>> = new ArrayList();
+        while (eventType !== null) {
+            if (types.isEmpty()) {
+                types.add(eventType);
+            } else {
+                types.addByIndex(0, eventType);
+            }
+            eventType = eventType.getSuperType();
+        }
+        return types;
+    }    
     
     private resolveKeyCode(code: string): KeyCode {
         return HtmlKeyMapper.map(code);

@@ -42,6 +42,8 @@ module.exports = {
         "script4jfx.scene.input.InputEvent",
         "script4jfx.scene.input.KeyCode",
         "script4jfx.scene.input.KeyEvent",
+        "script4jfx.scene.input.MouseButton",
+        "script4jfx.scene.input.MouseEvent",
         "script4jfx.internal.scene.eventbus.BusEvent",
         "script4jfx.internal.scene.eventbus.BusEventListener",
         "script4jfx.internal.scene.eventbus.EventBus",

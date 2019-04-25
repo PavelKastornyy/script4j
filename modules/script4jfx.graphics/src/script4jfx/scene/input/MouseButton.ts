@@ -24,35 +24,26 @@
  *
  */
 
-export class HtmlEventType {
-    
-    public static readonly Key = class {
-        
-        public static readonly KEY_PRESSED = "keypress";
-    
-        public static readonly KEY_UP = "keyup";
-    
-        public static readonly KEY_DOWN = "keydown";
-    }
-    
-    public static readonly Mouse = class {
-        
-        public static readonly MOUSE_DOWN = "mousedown";
+export enum MouseButton {
 
-        public static readonly MOUSE_UP = "mouseup";
+    /**
+     * Represents no button.
+     */
+    NONE,
 
-        public static readonly MOUSE_OVER = "mouseover";
+    /**
+     * Represents primary (button 1, usually the left) mouse button.
+     */
+    PRIMARY,
 
-        public static readonly MOUSE_OUT = "mouseout";
+    /**
+     * Represents middle (button 2) mouse button.
+     */
+    MIDDLE,
 
-        public static readonly MOUSE_MOVE = "mousemove";
-
-        public static readonly CLICK = "click";
-
-        public static readonly CONEXT_MENU = "contextmenu";
-
-        public static readonly DOUBLE_CLICK = "dblclick";
-    }    
-    
+    /**
+     * Represents seconday (button 3, usually the right) mouse button.
+     */
+    SECONDARY
 }
 

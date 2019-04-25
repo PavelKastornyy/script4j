@@ -37,6 +37,7 @@ import { SimpleStringProperty } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
 import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from './input/KeyEvent';
+import { MouseEvent } from './input/MouseEvent';
 import { Parent } from './Parent';
 import { Scene } from './Scene';
 import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
@@ -102,6 +103,21 @@ export abstract class Node implements Styleable, EventTarget {
      * Defines a function to be called when this Node or its child Node has input focus and a key has been typed.
      */
     private onKeyTyped: ObjectProperty<EventHandler<KeyEvent>> = null;
+
+    /**
+     * Defines a function to be called when a mouse button has been clicked (pressed and released) on this Node.
+     */    
+    private onMouseClicked: ObjectProperty<EventHandler<MouseEvent>> = null;
+
+    /**
+     * Defines a function to be called when a mouse button has been pressed on this Node.
+     */    
+    private onMousePressed: ObjectProperty<EventHandler<MouseEvent>> = null;
+
+    /**
+     * Defines a function to be called when a mouse button has been released on this Node.
+     */    
+    private onMouseReleased: ObjectProperty<EventHandler<MouseEvent>> = null;
         
     /**
      * Sets the element, taken from buildHtmlElement().
@@ -259,7 +275,7 @@ export abstract class Node implements Styleable, EventTarget {
      */    
     public onKeyPressedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
         if (this.onKeyPressed === null) {
-            this.onKeyPressed = this.eventHandlerManager.createOnKeyPressed();
+            this.onKeyPressed = this.eventHandlerManager.createEventProperty(KeyEvent.KEY_PRESSED);
         }
         return this.onKeyPressed;
     }
@@ -283,7 +299,7 @@ export abstract class Node implements Styleable, EventTarget {
      */
     public onKeyReleasedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
         if (this.onKeyReleased === null) {
-            this.onKeyReleased = this.eventHandlerManager.createOnKeyReleased();
+            this.onKeyReleased = this.eventHandlerManager.createEventProperty(KeyEvent.KEY_RELEASED);
         }
         return this.onKeyReleased;
     }
@@ -307,7 +323,7 @@ export abstract class Node implements Styleable, EventTarget {
      */
     public onKeyTypedProperty(): ObjectProperty<EventHandler<KeyEvent>> {
         if (this.onKeyTyped === null) {
-            this.onKeyTyped = this.eventHandlerManager.createOnKeyTyped();
+            this.onKeyTyped = this.eventHandlerManager.createEventProperty(KeyEvent.KEY_TYPED);
         }
         return this.onKeyTyped;
     }
@@ -325,6 +341,78 @@ export abstract class Node implements Styleable, EventTarget {
     public setOnKeyTyped​(value: EventHandler<KeyEvent>): void {
         this.onKeyTypedProperty().set(value);
     }
+
+    /**
+     * Defines a function to be called when a mouse button has been clicked (pressed and released) on this Node.
+     */
+    public onMouseClickedProperty(): ObjectProperty<EventHandler<MouseEvent>> {
+        if (this.onMouseClicked === null) {
+            this.onMouseClicked = this.eventHandlerManager.createEventProperty(MouseEvent.MOUSE_CLICKED);
+        }
+        return this.onMouseClicked;
+    }
+
+    /**
+     * Gets the value of the property onMouseClicked.
+     */    
+    public getOnMouseClicked(): EventHandler<MouseEvent> {
+        return this.onMouseClicked === null ? null : this.onMouseClicked.get();
+    }
+    
+    /**
+     * Sets the value of the property onMouseClicked.
+     */
+    public setOnMouseClicked(value: EventHandler<MouseEvent>): void {
+        this.onMouseClickedProperty().set(value);
+    }    
+
+    /**
+     * Defines a function to be called when a mouse button has been pressed on this Node.
+     */
+    public onMousePressedProperty(): ObjectProperty<EventHandler<MouseEvent>> {
+        if (this.onMousePressed === null) {
+            this.onMousePressed = this.eventHandlerManager.createEventProperty(MouseEvent.MOUSE_PRESSED);
+        }
+        return this.onMousePressed;
+    }
+
+    /**
+     * Gets the value of the property onMousePressed.
+     */    
+    public getOnMousePressed(): EventHandler<MouseEvent> {
+        return this.onMousePressed === null ? null : this.onMousePressed.get();
+    }
+    
+    /**
+     * Sets the value of the property onMousePressed.
+     */
+    public setOnMousePressed(value: EventHandler<MouseEvent>): void {
+        this.onMousePressedProperty().set(value);
+    }  
+
+    /**
+     * Defines a function to be called when a mouse button has been released on this Node.
+     */
+    public onMouseReleasedProperty(): ObjectProperty<EventHandler<MouseEvent>> {
+        if (this.onMouseReleased === null) {
+            this.onMouseReleased = this.eventHandlerManager.createEventProperty(MouseEvent.MOUSE_RELEASED);
+        }
+        return this.onMouseReleased;
+    }
+
+    /**
+     * Gets the value of the property onMouseReleased.
+     */    
+    public getOnMouseReleased(): EventHandler<MouseEvent> {
+        return this.onMouseReleased === null ? null : this.onMouseReleased.get();
+    }
+    
+    /**
+     * Sets the value of the property onMouseReleased.
+     */
+    public setOnMouseReleased(value: EventHandler<MouseEvent>): void {
+        this.onMouseReleasedProperty().set(value);
+    } 
     
     /**
      * Registers an event handler to this node.

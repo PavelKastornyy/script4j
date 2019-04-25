@@ -24,6 +24,7 @@ import { PersonViewModel } from './PersonViewModel';
 import { TextField } from 'script4jfx.controls';
 import { TextArea } from 'script4jfx.controls';
 import { Pane } from 'script4jfx.graphics';
+import { System } from 'script4j.base';
 import { Node } from 'script4jfx.graphics';
 import { Scene } from 'script4jfx.graphics';
 import { ObservableList } from 'script4jfx.base';
@@ -31,6 +32,7 @@ import { Bindings } from 'script4jfx.base';
 import { NumberStringConverter } from 'script4jfx.base';
 import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from 'script4jfx.graphics';
+import { MouseEvent } from 'script4jfx.graphics';
 
 
 export class PersonView implements View {
@@ -77,6 +79,11 @@ export class PersonView implements View {
             this.resumeTextArea
         )
         this.scene = new Scene(this.pane);
+        this.pane.setStyle("padding: 20px; background-color: yellow");
+        System.setProperty("script4jfx.graphics.hide-context-menu", "true");
+        this.pane.setOnMouseClicked(EventHandler.fromFunc((event: MouseEvent) => {
+            console.log(event);
+        }));
     }
     
     public getScene(): Scene {

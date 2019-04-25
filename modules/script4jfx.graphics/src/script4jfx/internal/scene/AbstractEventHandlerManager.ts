@@ -92,17 +92,22 @@ export abstract class AbstractEventHandlerManager {
         }
     }
     
-    public createOnKeyReleased(): ObjectProperty<EventHandler<KeyEvent>> {
-        return this.createEventProperty(KeyEvent.KEY_RELEASED);
-    }
-    
-    public createOnKeyPressed(): ObjectProperty<EventHandler<KeyEvent>> {
-        return this.createEventProperty(KeyEvent.KEY_PRESSED);
-    }
-    
-    public createOnKeyTyped(): ObjectProperty<EventHandler<KeyEvent>> {
-        return this.createEventProperty(KeyEvent.KEY_TYPED);
-    }
+    public createEventProperty<T extends Event>(eventType: EventType<T>): ObjectProperty<EventHandler<T>>  {
+        const prop: ObjectProperty<EventHandler<T>> = new SimpleObjectProperty<EventHandler<T>>(null, this.bean);
+        prop.addListener(ChangeListener.fromFunc((observable: ObservableValue<EventHandler<T>>, 
+                    oldHandler: EventHandler<T>, newHandler: EventHandler<T>) => {
+                if (newHandler !== null && oldHandler === null) {
+                    this.addEventHandlerByType(eventType, newHandler, false);
+                } else if (newHandler === null && oldHandler !== null) {
+                    this.removeEventHandlerByType(eventType, oldHandler);
+                //there can be situation when null is set to null
+                } else if (newHandler !== null && oldHandler !== null) {
+                    this.removeEventHandlerByType(eventType, oldHandler);
+                    this.addEventHandlerByType(eventType, newHandler, false);
+                }
+            }));
+        return prop;
+    } 
     
     /**
      * Registers an event filter to this node.
@@ -191,22 +196,6 @@ export abstract class AbstractEventHandlerManager {
     }
     
     protected abstract getEventBus(): EventBus;    
-    
-    private createEventProperty<T extends Event>(eventType: EventType<T>): ObjectProperty<EventHandler<T>>  {
-        const prop: ObjectProperty<EventHandler<T>> = new SimpleObjectProperty<EventHandler<T>>(null, this.bean);
-        prop.addListener(ChangeListener.fromFunc((observable: ObservableValue<EventHandler<T>>, 
-                    oldHandler: EventHandler<T>, newHandler: EventHandler<T>) => {
-                if (newHandler !== null && oldHandler === null) {
-                    this.addEventHandlerByType(eventType, newHandler, false);
-                } else if (newHandler === null && oldHandler !== null) {
-                    this.removeEventHandlerByType(eventType, oldHandler);
-                //there can be situation when null is set to null
-                } else if (newHandler !== null && oldHandler !== null) {
-                    this.removeEventHandlerByType(eventType, oldHandler);
-                    this.addEventHandlerByType(eventType, newHandler, false);
-                }
-            }));
-        return prop;
-    }    
+ 
 }
 
