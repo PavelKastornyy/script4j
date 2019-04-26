@@ -37,7 +37,6 @@ import { EventTarget } from 'script4jfx.base';
 import { BiFunction } from 'script4j.base';
 import { List } from 'script4j.base';
 import { ArrayList } from 'script4j.base';
-import { System } from 'script4j.base';
 import { Event } from 'script4jfx.base';
 import { HtmlKeyMapper } from './HtmlKeyMapper';
 import 'jquery';
@@ -206,7 +205,11 @@ export class HtmlEventListenerManager {
         let listener: EventListener = (e: KeyboardEvent) => {
             const node: Node = this.resolveNode(<HTMLElement>e.target);
             if (node !== null) {
-                node.fireEvent(this.createKeyEvent(e, eventType, node));
+                const event: KeyEvent = this.createKeyEvent(e, eventType, node);
+                node.fireEvent(event);
+                if (event.getOriginalResult() !== null) {
+                    return event.getOriginalResult();
+                }
             }
         };
         this.doCreateListener(htmlEventType, listener);
@@ -216,25 +219,20 @@ export class HtmlEventListenerManager {
         let oneClickListener: EventListener = (e: any) => {
             const node: Node = this.resolveNode(<HTMLElement>e.target);
             if (node !== null) {
-                node.fireEvent(this.createMouseEvent(e, eventType, node, 1));
+                const event: MouseEvent = this.createMouseEvent(e, eventType, node, 1);
+                node.fireEvent(event);
+                if (event.getOriginalResult() !== null) {
+                    return event.getOriginalResult();
+                }
             }
         };
         let dblClickListener: EventListener = (e: any) => {
             const node: Node = this.resolveNode(<HTMLElement>e.target);
             if (node !== null) {
-                node.fireEvent(this.createMouseEvent(e, eventType, node, 2));
-            }
-        };
-        let rightClickListener: EventListener = (e: any) => {
-            const node: Node = this.resolveNode(<HTMLElement>e.target);
-            if (node !== null) {
-                node.fireEvent(this.createMouseEvent(e, eventType, node, 1));
-            }
-            let hideBrowserContextMenu = System.getProperty("script4jfx.graphics.hide-context-menu");
-            if (hideBrowserContextMenu !== null) {
-                if (hideBrowserContextMenu.toLowerCase().equals("true")) {
-                    e.preventDefault();//for firefox and chrome
-                    return false;//for others
+                const event: MouseEvent = this.createMouseEvent(e, eventType, node, 2);
+                node.fireEvent(event);
+                if (event.getOriginalResult() !== null) {
+                    return event.getOriginalResult();
                 }
             }
         };
@@ -261,7 +259,7 @@ export class HtmlEventListenerManager {
             }
             htmlEventType = HtmlEventType.Mouse.CONEXT_MENU;
             if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
-                this.doCreateListener(htmlEventType, rightClickListener);
+                this.doCreateListener(htmlEventType, oneClickListener);
             }
         }
     }
