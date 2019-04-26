@@ -48,6 +48,11 @@ export class Event extends EventObject {
      * The event that was created by browser.
      */
     private originalEvent: any;
+    
+    /**
+     * This is the result that will be return to browser in html event listener.
+     */
+    private originalResult: boolean = null;
 
     /**
      * Construct a new Event with the specified event source, target and type.
@@ -111,6 +116,13 @@ export class Event extends EventObject {
     public getOriginalEvent(): any {
         return this.originalEvent;
     }
-
+    
+    public setOriginalResult(result: boolean): void {
+        this.originalResult = result;
+    }
+    
+    public getOriginalResult(): boolean {
+        return this.originalResult;
+    }
 }
 
