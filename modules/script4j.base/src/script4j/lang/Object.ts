@@ -60,7 +60,7 @@ declare global {
          * Return the class. This method must be used when we need a class literal,
          * for example, MyClass.class().
          */
-        class<T extends object>(this: T): Class<T>;
+        class<T extends new (...a: any[])=> any>(this:T): Class<InstanceType<T>>; 
 
         /**
         * Returns the runtime class of this {@code Object}. The returned
