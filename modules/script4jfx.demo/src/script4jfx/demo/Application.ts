@@ -31,7 +31,7 @@ export class Application {
         const viewModel: PersonViewModel = new PersonViewModel();
         const view: PersonView = new PersonView();
         view.initialize(viewModel);
-        $("body").append(view.getScene().getRoot().getElement());
+        $("body").append(view.getScene().getRoot().getSkin().getElement());
         
         const person: Person = new Person();
         viewModel.setModel(person);
@@ -71,18 +71,5 @@ export class Application {
         $("body").append($('<button>RemoveKeyReleased</button>').on("click", function () { 
             view.removeKeyReleased();
         }));
-        
-        let map: TreeMap<number, string> = new TreeMap();
-        map.put(100, "a");
-        map.put(110, "a");
-        map.put(120, "a");
-        map.put(130, "a");
-        map.put(140, "a");
-        map.put(150, "a");
-        map.put(160, "a");
-        map.put(170, "a");
-        map.put(180, "a");
-        //@ts-ignore
-        console.log(map.tree.rootNode);
     }
 }

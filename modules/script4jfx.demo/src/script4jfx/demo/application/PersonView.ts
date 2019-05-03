@@ -56,10 +56,6 @@ export class PersonView implements View {
             console.log("KeyPressed event for firstNameTextField came:");
             console.log(event);
         }));
-        this.lastNameTextField.setOnKeyPressed(EventHandler.fromFunc((event: KeyEvent) => {
-            console.log("KeyPressed event for lastNameTextField came:");
-            console.log(event);
-        }));        
         this.firstNameTextField.setOnKeyReleased(EventHandler.fromFunc((event: KeyEvent) => {
             console.log("KeyReleased event for firstNameTextField came:");
             console.log(event);
@@ -80,7 +76,6 @@ export class PersonView implements View {
         )
         this.scene = new Scene(this.pane);
         this.pane.setStyle("padding: 20px; background-color: yellow");
-        System.setProperty("script4jfx.graphics.hide-context-menu", "true");
         this.pane.setOnMouseClicked(EventHandler.fromFunc((event: MouseEvent) => {
             console.log(event);
         }));
