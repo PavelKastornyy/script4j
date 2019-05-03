@@ -24,25 +24,24 @@
  *
  */
 
-import { BusEvent } from './BusEvent'
+import { HtmlSkin } from './HtmlSkin';
+import { ObjectProperty } from 'script4jfx.base';
 
-//Functional interface
-export interface BusEventListener<T extends BusEvent> {
-    
-    //handleEvent
-    handle(event: T): void;
+export interface HtmlSkinnable {
+
+    /**
+     * Returns the html skin that renders this Node.
+     */    
+    getSkin(): HtmlSkin<any>
+
+    /**
+     * Sets the html skin that will render this Node.
+     */
+    setSkin​(value: HtmlSkin<any>): void;
+
+    /**
+     * Skin is responsible for rendering this Node.
+     */
+    skinProperty(): ObjectProperty<HtmlSkin<any>>;
 }
 
-type BusEventListenerFunc<T extends BusEvent> = (event: T) => void;
-
-export namespace BusEventListener {
-    
-    export function fromFunc<T extends BusEvent>(func: BusEventListenerFunc<T>): BusEventListener<T> {
-        return new class implements BusEventListener<T> {
-            
-            public handle(event: T): void {
-                func(event);
-            }
-        };
-    }
-}    

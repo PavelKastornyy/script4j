@@ -47,17 +47,18 @@ import { ObservableList } from 'script4jfx.base';
 import { Consumer } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { ParentUnlocker } from './../internal/scene/ParentUnlocker';
-import { JQueryDataKeys } from './../internal/scene/JQueryDataKeys';
 import { EventDispatcherImpl } from './../internal/scene/EventDispatcherImpl';
 import { ChangeListener } from 'script4jfx.base';
-import 'jquery';
+import { HtmlSkinFactoryManager } from './../html/HtmlSkinFactoryManager';
+import { HtmlSkinnable } from './../html/HtmlSkinnable';
+import { HtmlSkin } from './../html/HtmlSkin';
 
-export abstract class Node implements Styleable, EventTarget {
+export abstract class Node implements Styleable, EventTarget, HtmlSkinnable {
 
     /**
-     * Html element for this Node. No setter for this field!
+     * HtmlSkin
      */
-    private readonly element: ReadOnlyObjectWrapper<HTMLElement> = new ReadOnlyObjectWrapper<HTMLElement>(null, this);
+    private readonly skin: ObjectProperty<HtmlSkin<Node>> = new SimpleObjectProperty<HtmlSkin<Node>>(null, this);
     
     /**
      * The parent of this Node.
@@ -123,28 +124,47 @@ export abstract class Node implements Styleable, EventTarget {
      * Sets the element, taken from buildHtmlElement().
      */
     constructor() {
-        let element: HTMLElement = this.createElement();
-        this.element.set(element);
-        if (element.style.cssText !== "") {
-            this.setStyle(element.style.cssText);
-        }
+        this.skin.addListener(ChangeListener.fromFunc((observable: ObservableValue<HtmlSkin<any>>, 
+                oldSkin: HtmlSkin<any>, newSkin: HtmlSkin<any>) => {
+            if (oldSkin !== null) {
+                oldSkin.dispose();
+            }
+            if (newSkin !== null) {
+                let id = newSkin.getId();
+                if (id !== null) {
+                    this.setId(id);
+                }
+                let style = newSkin.getStyle();
+                if (style !== null) {
+                    this.setStyle(style);
+                }
+            }
+        }));
+        this.setSkin(this.createDefaultSkin());
         this.setEventDispatcher(new EventDispatcherImpl(this.eventHandlerManager));
     }
-
+    
     /**
-     * Gets the value of the property element.
-     */
-    public getElement(): HTMLElement {
-        return this.element.get();
+     * Returns the html skin that renders this Node.
+     */    
+    public getSkin(): HtmlSkin<any> {
+        return this.skin.get();
     }
 
     /**
-     * Specifies the element for this node.
-     */    
-    public elementProperty(): ReadOnlyObjectProperty<HTMLElement> {
-        return this.element.getReadOnlyProperty();
-    }    
-    
+     * Sets the html skin that will render this Node.
+     */
+    public setSkin​(value: HtmlSkin<any>): void {
+        this.skin.set(value);
+    }
+
+    /**
+     * Skin is responsible for rendering this Node.
+     */
+    public skinProperty(): ObjectProperty<HtmlSkin<any>> {
+        return this.skin;
+    }
+
     /**
      * The parent of this Node. If this Node has not been added to a scene graph, then parent will be null.
      */
@@ -219,7 +239,7 @@ export abstract class Node implements Styleable, EventTarget {
             this.id = new SimpleStringProperty(null, this);
             this.id.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, oldValue: string, 
                     newValue: string) => {
-                $(this.getElement()).attr("id", newValue);
+                this.getSkin().setId(newValue);
             }));
         }
         return this.id;
@@ -250,7 +270,7 @@ export abstract class Node implements Styleable, EventTarget {
             this.style = new SimpleStringProperty(null, this);
             this.style.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
                     oldValue: string, newValue: string) => {
-                $(this.getElement()).attr("style", newValue);
+                this.getSkin().setStyle(newValue);
             }));
         }
         return this.style;
@@ -448,9 +468,14 @@ export abstract class Node implements Styleable, EventTarget {
     public fireEvent(event: Event): void {
         Event.fireEvent(this, event);
     }
-
-
-    protected abstract createElement(): HTMLElement;
+    
+    /**
+     * Creates a new instance of the default skin for this Node. By default factory from HtmlSkinFactoryManager
+     * is used.
+     */
+    protected createDefaultSkin(): HtmlSkin<any> {
+        return HtmlSkinFactoryManager.getFactory(this.getClass()).create(this);
+    }
     
     /**
      * Use this method via NodeUnlocker.
@@ -464,11 +489,6 @@ export abstract class Node implements Styleable, EventTarget {
      */
     private setScene(scene: Scene): void {
         this.scene.set(scene);
-        if (scene !== null) {
-            $(this.element.get()).data(JQueryDataKeys.node, this);
-        } else {
-            $(this.element.get()).removeData(JQueryDataKeys.node);
-        }
     }
     
     /**

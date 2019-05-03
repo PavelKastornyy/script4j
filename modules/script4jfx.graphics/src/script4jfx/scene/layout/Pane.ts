@@ -27,7 +27,6 @@
 import { Region } from './Region';
 import { Node } from './../Node';
 import { ObservableList } from 'script4jfx.base';
-import 'jquery';
 
 export class Pane extends Region {
 
@@ -49,9 +48,5 @@ export class Pane extends Region {
      */    
     public getChildren(): ObservableList<Node> {
         return super.getChildren();
-    }
-
-    protected createElement(): HTMLElement {
-        return $('<div/>')[0];
     }
 }

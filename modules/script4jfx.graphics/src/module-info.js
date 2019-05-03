@@ -62,10 +62,16 @@ module.exports = {
         "script4jfx.internal.scene.ParentUnlocker",
         "script4jfx.internal.scene.EventDispatcherImpl",
         "script4jfx.scene.Scene",
+        "script4jfx.html.HtmlSkinnable",
         "script4jfx.scene.Node",
+        "script4jfx.html.HtmlSkin",
+        "script4jfx.html.HtmlSkinFactory",
+        "script4jfx.html.HtmlSkinFactoryManager",
+        "script4jfx.html.AbstractHtmlSkin",
         "script4jfx.scene.Parent",
         "script4jfx.scene.layout.Region",
         "script4jfx.scene.layout.Pane",
+        "script4jfx.scene.layout.skin.PaneSkin",
     ],
 
     export: {
@@ -73,6 +79,7 @@ module.exports = {
             "script4jfx.scene",
             "script4jfx.scene.input",
             "script4jfx.scene.layout",
+            "script4jfx.html",
 	]
     }
 };

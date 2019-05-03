@@ -125,7 +125,7 @@ export class Scene implements EventTarget {
                 this.htmlEventListenerManager.deinitialize();
             }
             if (newParent !== null) {
-                this.htmlEventListenerManager = new HtmlEventListenerManager(newParent.getElement(), this.eventBus);
+                this.htmlEventListenerManager = new HtmlEventListenerManager(newParent.getSkin().getElement(), this.eventBus);
                 const counter: EventHandlerCounter = new EventHandlerCounter();
                 (<ParentUnlocker><any>newParent).traverse(Consumer.fromFunc((node: Node) => {
                     (<NodeUnlocker><any>node).setScene(this);

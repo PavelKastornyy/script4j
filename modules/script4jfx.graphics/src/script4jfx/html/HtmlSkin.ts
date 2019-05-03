@@ -24,25 +24,43 @@
  *
  */
 
-import { BusEvent } from './BusEvent'
+import { HtmlSkinnable } from './HtmlSkinnable';
 
-//Functional interface
-export interface BusEventListener<T extends BusEvent> {
+export interface HtmlSkin<T extends HtmlSkinnable> {
+
+    /**
+     * Called by a Skinnable when the Skin is replaced on the Skinnable.
+     */    
+    dispose(): void;
     
-    //handleEvent
-    handle(event: T): void;
+    /**
+     * Root html element of this skin.
+     */
+    getElement(): HTMLElement;
+
+    /**
+     * Gets the Skinnable to which this Skin is assigned.
+     */    
+    getSkinnable(): T;
+    
+    /**
+     * Sets id to html element.
+     */
+    setId(id: string): void;
+    
+    /**
+     * Returns id of the html element. Returns null if there is no id.
+     */
+    getId(): string;
+    
+    /**
+     * Sets style to html element.
+     */
+    setStyle(style: string): void;
+    
+    /**
+     * Returns style of the html element. Returns null if there is no style.
+     */
+    getStyle(): string;
 }
 
-type BusEventListenerFunc<T extends BusEvent> = (event: T) => void;
-
-export namespace BusEventListener {
-    
-    export function fromFunc<T extends BusEvent>(func: BusEventListenerFunc<T>): BusEventListener<T> {
-        return new class implements BusEventListener<T> {
-            
-            public handle(event: T): void {
-                func(event);
-            }
-        };
-    }
-}    

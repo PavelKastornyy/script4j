@@ -24,25 +24,24 @@
  *
  */
 
-import { BusEvent } from './BusEvent'
+import { HtmlSkin } from './HtmlSkin';
+import { Node } from './../scene/Node';
 
-//Functional interface
-export interface BusEventListener<T extends BusEvent> {
+export interface HtmlSkinFactory<T extends Node> {
     
-    //handleEvent
-    handle(event: T): void;
+    create(node: T): HtmlSkin<T>;
 }
 
-type BusEventListenerFunc<T extends BusEvent> = (event: T) => void;
+type HtmlSkinFactoryFunc<T extends Node> = (t: T) => HtmlSkin<T>;
 
-export namespace BusEventListener {
+export namespace HtmlSkinFactory {
     
-    export function fromFunc<T extends BusEvent>(func: BusEventListenerFunc<T>): BusEventListener<T> {
-        return new class implements BusEventListener<T> {
+    export function fromFunc<T extends Node>(func: HtmlSkinFactoryFunc<T>): HtmlSkinFactory<T> {
+        return new class implements HtmlSkinFactory<T> {
             
-            public handle(event: T): void {
-                func(event);
+            public create(node: T): HtmlSkin<T> {
+                return func(node);
             }
         };
     }
-}    
+}

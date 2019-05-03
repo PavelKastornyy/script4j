@@ -26,36 +26,17 @@ import { beforeEach } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { DOMWindow } from 'jsdom';
 import { ObservableList } from 'script4jfx.base';
-import { Node } from './../../../src/script4jfx/scene/Node';
-import { Parent } from './../../../src/script4jfx/scene/Parent';
-import { Scene } from './../../../src/script4jfx/scene/Scene';
+import { Pane } from './../../../../src/script4jfx/scene/layout/Pane';
+import { Scene } from './../../../../src/script4jfx/scene/Scene';
 import { JQuery } from 'script4jfx.jquery';
 
 
-describe('NodeTest', () => {
+describe('PaneTest', () => {
 
     const dom: JSDOM = new JSDOM(`<!DOCTYPE html><html><body></body></html>`);
     const window: DOMWindow = dom.window;
     JQuery.setWindow(window);
     
-    class NodeImpl extends Node {
-        
-        protected createElement(): HTMLElement {
-            return $('<div/>')[0];
-        }
-    }
-    
-    class ParentImpl extends Parent {
-        
-        public getChildren(): ObservableList<Node> {
-            return super.getChildren();
-        }
-        
-        protected createElement(): HTMLElement {
-            return $('<div/>')[0];
-        }
-    }
-
 //    beforeEach(function() {
 //        console.log("aaa");
 //    });
@@ -100,33 +81,65 @@ describe('NodeTest', () => {
 //    });  
     
     it('setId​_notNullableId_idIsSet', () => {
-        const node: NodeImpl = new NodeImpl();
-        node.setId("TheId");
-        assert.isTrue(node.getId().equals("TheId"));
-        assert.isTrue($(node.getElement()).attr("id").equals("TheId"));
+        const pane: Pane = new Pane();
+        pane.setId("TheId");
+        assert.isTrue(pane.getId().equals("TheId"));
+        assert.isTrue($(pane.getSkin().getElement()).attr("id").equals("TheId"));
     });
     
-    /**
-     * integration test, must be redone.
-     */
     it('setScene​_treeOfNodes_sceneIsSetToAll', () => {
-        const parent1: ParentImpl = new ParentImpl();
-        const parent2: ParentImpl = new ParentImpl();
-        const node: Node = new NodeImpl();
-        parent2.getChildren().add(node);
+        const parent1: Pane = new Pane();
+        const parent2: Pane = new Pane();
+        const pane: Pane = new Pane();
+        parent2.getChildren().add(pane);
         parent1.getChildren().add(parent2);
         const scene: Scene = new Scene(parent1);
         assert.equal(scene, parent1.getScene());
         assert.equal(scene, parent2.getScene());
-        assert.equal(scene, node.getScene());
+        assert.equal(scene, pane.getScene());
         scene.setRoot(null);
         assert.equal(null, parent1.getScene());
         assert.equal(null, parent2.getScene());
-        assert.equal(null, node.getScene());
+        assert.equal(null, pane.getScene());
         scene.setRoot(parent1);
         parent1.getChildren().clear();
         assert.equal(scene, parent1.getScene());
         assert.equal(null, parent2.getScene());
-        assert.equal(null, node.getScene());
+        assert.equal(null, pane.getScene());
     });
+    
+    it('constructor_addingChild_childIsAdded', () => {
+        let child: Pane = new Pane();
+        child.setId("Child");
+        let parent: Pane = new Pane(child);
+        parent.setId("Parent");
+        assert.equal($(parent.getSkin().getElement()).children().length, 1);
+        assert.isTrue($(parent.getSkin().getElement()).children().eq(0).attr("id").equals("Child"));
+    });
+    
+    it('settingChildren_childrenOrder_childrenInCorrectOrder', () => {
+        let parent: Pane = new Pane();
+        parent.setId("Parent");
+        let child0: Pane = new Pane();
+        child0.setId("Child0");
+        parent.getChildren().add(child0);
+        
+        let child1: Pane = new Pane();
+        child1.setId("Child1");
+        parent.getChildren().add(child1);
+        
+        let child2: Pane = new Pane();
+        child2.setId("Child2");
+        parent.getChildren().add(child2);
+        
+        let child3: Pane = new Pane();
+        child3.setId("Child3");
+        parent.getChildren().set(1, child3);
+        
+        let children = $(parent.getSkin().getElement()).children();
+        assert.equal(children.length, 3);
+        assert.isTrue(children.eq(0).attr("id").equals("Child0"));
+        assert.isTrue(children.eq(1).attr("id").equals("Child3"));
+        assert.isTrue(children.eq(2).attr("id").equals("Child2"));
+    });    
 });

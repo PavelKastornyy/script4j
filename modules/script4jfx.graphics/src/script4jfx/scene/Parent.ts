@@ -77,7 +77,7 @@ export abstract class Parent extends Node {
                     counter.countAndAdd((<NodeUnlocker><any>currentNode).getEventHandlerManager());
                 });
         nodes.forEach(Consumer.fromFunc((node) => {
-            removedElements.push(node.getElement());
+            removedElements.push(node.getSkin().getElement());
             (<NodeUnlocker><any>node).setParent(null);
             //null scene from removed node and its possible children
             if (this.getScene() !== null) {
@@ -104,12 +104,12 @@ export abstract class Parent extends Node {
             if (this.getScene() !== null) {
                 (<NodeUnlocker> <any> node).traverse(tConsumer);
             }
-            addedElements.push(node.getElement());
+            addedElements.push(node.getSkin().getElement());
         }));
         if (fromPos === 0) {
-            $(this.getElement()).prepend(addedElements);
+            $(this.getSkin().getElement()).prepend(addedElements);
         } else {
-            let afterElement = $(this.getElement()).children().eq(fromPos - 1)[0];
+            let afterElement = $(this.getSkin().getElement()).children().eq(fromPos - 1)[0];
             $(afterElement).after(addedElements);
         }
         if (!counter.getResult().isEmpty() && this.getScene() !== null) {
