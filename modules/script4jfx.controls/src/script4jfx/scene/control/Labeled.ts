@@ -25,56 +25,56 @@
  */
 
 import { Control } from './Control';
+import { ChangeListener } from 'script4jfx.base';
 import { StringProperty } from 'script4jfx.base';
 import { SimpleStringProperty } from 'script4jfx.base';
-import { ObservableValue } from 'script4jfx.base';
-import { ChangeListener } from 'script4jfx.base';
-import { TextInputControlSkin } from './skin/TextInputControlSkin';
 
-export abstract class TextInputControl extends Control {
+export abstract class Labeled extends Control {
 
     /**
-     * The textual content of this TextInputControl.
+     * The text to display in the label.
      */    
-    private readonly text: StringProperty = new SimpleStringProperty();
-    
-    public constructor() {
-        super();
-        let ignoreTextChangeEvent: boolean = false;
-        $(this.getSkin().getElement()).on('input propertychange', ()=> {
-            try {
-                ignoreTextChangeEvent = true;
-                this.setText((<TextInputControlSkin<any>> this.getSkin()).getText());
-            } finally {
-                ignoreTextChangeEvent = false;
-            }
-        });
-        this.text.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
-            if (!ignoreTextChangeEvent) {
-                (<TextInputControlSkin<any>> this.getSkin()).setText(newValue);
-            }
-        }));
-    }
+    private text: StringProperty = null;
 
     /**
-     * The textual content of this TextInputControl.
+     * Creates a Label with text
+     */    
+    constructor​(text?: string) {
+        super();
+        if (text !== undefined) {
+            this.setText(text);
+        }
+    }
+    
+    /**
+     * The text to display in the label. The text may be null.
      */
     public textProperty(): StringProperty {
+        if (this.text === null) {
+            this.text = new SimpleStringProperty(null, this);
+            this.text.addListener(this.createDefaultTextListener());
+        }
         return this.text;
     }
-
+    
     /**
      * Gets the value of the property text.
      */
     public getText(): string {
-        return this.text.get();
+        return this.text === null ? null : this.text.get();
     }
 
     /**
      * Sets the value of the property text.
      */    
-    public setText​(value: string): void {
-        this.text.set(value);
+    public setText(value: string): void {
+        this.textProperty().set(value);
     }
+
+    /**
+     * This listener is required to modify html element.
+     */
+    protected abstract createDefaultTextListener(): ChangeListener<string>;
+
 }
 

@@ -24,15 +24,10 @@
  *
  */
 
-import { TextInputControl } from './TextInputControl';
-
-export class TextArea extends TextInputControl {
+import { HtmlSkin } from 'script4jfx.graphics';
+import { Skinnable } from './Skinnable';
+ 
+export interface Skin<C extends Skinnable> extends HtmlSkin<C> {
     
-    constructor(text?: string) {
-        super();
-        if (text !== undefined) {
-            this.setText(text);
-        }
-    }
 }
 

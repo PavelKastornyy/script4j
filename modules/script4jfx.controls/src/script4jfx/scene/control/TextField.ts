@@ -34,9 +34,5 @@ export class TextField extends TextInputControl {
             this.setText(text);
         }
     }
-    
-    protected createElement(): HTMLElement {
-        return $('<input type="text"/>')[0];
-    }
 }
 

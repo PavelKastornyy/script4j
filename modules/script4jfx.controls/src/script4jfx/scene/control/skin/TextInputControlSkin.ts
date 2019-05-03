@@ -24,15 +24,29 @@
  *
  */
 
-import { TextInputControl } from './TextInputControl';
+import { TextInputControl } from './../TextInputControl';
+import { SkinBase } from './../SkinBase';
 
-export class TextArea extends TextInputControl {
+export abstract class TextInputControlSkin<T extends TextInputControl> extends SkinBase<T> {
     
-    constructor(text?: string) {
-        super();
-        if (text !== undefined) {
-            this.setText(text);
+    public setText(text: string): void {
+        this.getElement().value = text;
+    }
+    
+    /**
+     * Returns null if there is empty string in input ("").
+     */
+    public getText(): string {
+        const text: string = this.getElement().value;
+        if (text !== "") {
+            return text;
+        } else {
+            return null;
         }
+    }
+    
+    public getElement(): HTMLInputElement {
+        return <HTMLInputElement>super.getElement();
     }
 }
 

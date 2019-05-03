@@ -24,15 +24,9 @@
  *
  */
 
-import { TextInputControl } from './TextInputControl';
+import { HtmlSkinnable } from 'script4jfx.graphics';
 
-export class TextArea extends TextInputControl {
+export interface Skinnable extends HtmlSkinnable {
     
-    constructor(text?: string) {
-        super();
-        if (text !== undefined) {
-            this.setText(text);
-        }
-    }
 }
 

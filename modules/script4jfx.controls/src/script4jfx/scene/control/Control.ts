@@ -27,8 +27,9 @@
 import { Region } from 'script4jfx.graphics';
 import { ObjectProperty } from 'script4jfx.base';
 import { SimpleObjectProperty } from 'script4jfx.base';
+import { Skinnable } from './Skinnable';
 
-export abstract class Control extends Region {
+export abstract class Control extends Region implements Skinnable {
 
 //    /**
 //     * The ContextMenu to show for this control.

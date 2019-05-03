@@ -24,15 +24,11 @@
  *
  */
 
-import { TextInputControl } from './TextInputControl';
+import { Skin } from './Skin';
+import { Control } from './Control';
+import { AbstractHtmlSkin } from 'script4jfx.graphics';
 
-export class TextArea extends TextInputControl {
+export abstract class SkinBase<C extends Control> extends AbstractHtmlSkin<C> implements Skin<C> {
     
-    constructor(text?: string) {
-        super();
-        if (text !== undefined) {
-            this.setText(text);
-        }
-    }
 }
 

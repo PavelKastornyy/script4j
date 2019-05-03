@@ -39,10 +39,16 @@ module.exports = {
      * Order matters!
      */
     classes: [
+        "script4jfx.scene.control.Skinnable",
+        "script4jfx.scene.control.Skin",
+        "script4jfx.scene.control.SkinBase",
         "script4jfx.scene.control.Control",
         "script4jfx.scene.control.TextInputControl",
+        "script4jfx.scene.control.skin.TextInputControlSkin",
         "script4jfx.scene.control.TextArea",
+        "script4jfx.scene.control.skin.TextAreaSkin",
         "script4jfx.scene.control.TextField",
+        "script4jfx.scene.control.skin.TextFieldSkin",
     ],
 
     export: {
