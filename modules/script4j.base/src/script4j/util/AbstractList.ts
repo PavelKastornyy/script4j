@@ -85,11 +85,7 @@ export abstract class AbstractList<E> extends AbstractCollection<E> implements L
         while (thisIterator.hasNext()) {
             let thisElement: Object = thisIterator.next();
             let thatElement: Object = thatIterator.next();
-            if (thisElement === null) {
-                if (thatElement !== null) {
-                    return false;
-                }
-            } else if (!thisElement.equals(thatElement)) {
+            if (!Objects.equals(thisElement, thatElement)) {
                 return false;
             }
         }
