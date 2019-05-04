@@ -26,19 +26,8 @@
 
 import { TextInputControlSkin } from './TextInputControlSkin';
 import { TextField } from './../TextField';
-import { HtmlSkinFactoryManager } from 'script4jfx.graphics';
-import { HtmlSkinFactory } from 'script4jfx.graphics';
 
 export class TextFieldSkin extends TextInputControlSkin<TextField> {
-    
-    private static registered: boolean = TextFieldSkin.register();
-    
-    public static register(): boolean {
-        HtmlSkinFactoryManager.registerFactory(TextField.class(), HtmlSkinFactory.fromFunc((control: TextField) => {
-            return new TextFieldSkin(control);
-        }));
-        return true;
-    }    
     
     protected createElement(): HTMLElement {
         return $('<input type="text" class="fx-text-field"/>')[0];

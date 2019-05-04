@@ -49,18 +49,18 @@ export abstract class AbstractHtmlSkin<T extends Node> implements HtmlSkin<T> {
         this.sceneListener = ChangeListener.fromFunc((observable: ObservableValue<Scene>, 
                 oldScene: Scene, newScene: Scene) => {
             if (newScene !== null) {
-                $(this.element).data(JQueryDataKeys.node, this);
+                $(this.element).data(JQueryDataKeys.NODE, this.node);
             } else {
-                $(this.element).removeData(JQueryDataKeys.node);
+                $(this.element).removeData(JQueryDataKeys.NODE);
             }
-        })
+        });
         this.node.sceneProperty().addListener(this.sceneListener);
     }
     
     public dispose(): void {
         this.node.sceneProperty().removeListener(this.sceneListener);
         if (this.node.getScene() !== null) {
-            $(this.element).removeData(JQueryDataKeys.node);
+            $(this.element).removeData(JQueryDataKeys.NODE);
         }
     }
     

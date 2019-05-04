@@ -19,23 +19,11 @@
  *
  */
 
-import {HtmlSkin} from './../../../html/HtmlSkin';
 import { AbstractHtmlSkin } from './../../../html/AbstractHtmlSkin';
 import { Pane } from './../../layout/Pane';
-import { HtmlSkinFactoryManager } from './../../../html/HtmlSkinFactoryManager';
-import { HtmlSkinFactory } from './../../../html/HtmlSkinFactory';
 import 'jquery';
 
 export class PaneSkin extends AbstractHtmlSkin<Pane> {
-    
-    private static registered: boolean = PaneSkin.register();
-    
-    public static register(): boolean {
-        HtmlSkinFactoryManager.registerFactory(Pane.class(), HtmlSkinFactory.fromFunc((pane: Pane) => {
-            return new PaneSkin(pane);
-        }));
-        return true;
-    }
     
     public constructor(node: Pane) {
         super(node);

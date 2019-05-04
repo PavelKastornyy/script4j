@@ -72,6 +72,7 @@ module.exports = {
         "script4jfx.scene.layout.Region",
         "script4jfx.scene.layout.Pane",
         "script4jfx.scene.layout.skin.PaneSkin",
+        "script4jfx.internal.html.ModuleSkinFactoryRegistrator",
     ],
 
     export: {

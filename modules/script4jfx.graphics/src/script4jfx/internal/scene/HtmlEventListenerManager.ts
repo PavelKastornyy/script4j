@@ -383,7 +383,7 @@ export class HtmlEventListenerManager {
     }
     
     private resolveNode(target: HTMLElement): Node {
-        let node: Node = $(target).data(JQueryDataKeys.node);
+        let node: Node = $(target).data(JQueryDataKeys.NODE);
         if (typeof node !== "undefined") {
             return node;
         } else {

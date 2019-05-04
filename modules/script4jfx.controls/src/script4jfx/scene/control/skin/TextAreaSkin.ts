@@ -26,20 +26,9 @@
 
 import { TextInputControlSkin } from './TextInputControlSkin';
 import { TextArea } from './../TextArea';
-import { HtmlSkinFactoryManager } from 'script4jfx.graphics';
-import { HtmlSkinFactory } from 'script4jfx.graphics';
 
 
 export class TextAreaSkin extends TextInputControlSkin<TextArea> {
-    
-    private static registered: boolean = TextAreaSkin.register();
-    
-    public static register(): boolean {
-        HtmlSkinFactoryManager.registerFactory(TextArea.class(), HtmlSkinFactory.fromFunc((control: TextArea) => {
-            return new TextAreaSkin(control);
-        }));
-        return true;
-    }    
     
     protected createElement(): HTMLElement {
         return $('<textarea class="fx-text-area" />')[0];
