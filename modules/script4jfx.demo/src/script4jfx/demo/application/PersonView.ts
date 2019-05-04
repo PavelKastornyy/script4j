@@ -79,18 +79,6 @@ export class PersonView implements View {
                 new NumberStringConverter());
         this.resumeTextArea.textProperty().bindBidirectional(viewModel.resumeProperty());
     }
-    
-    public removeKeyReleased() {
-        this.firstNameTextField.setOnKeyReleased(null);
-    }
-    
-    public removeKeyPressed() {
-        this.firstNameTextField.setOnKeyPressed(null);
-    }
-    
-    public removeKeyTyped() {
-        this.firstNameTextField.setOnKeyTyped(null);
-    }
 }
 
 
