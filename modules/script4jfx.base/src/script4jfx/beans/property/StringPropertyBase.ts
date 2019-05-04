@@ -34,41 +34,42 @@ export abstract class StringPropertyBase extends StringProperty {
 
     private delegate: PropertyDelegate<string>;
 
-    constructor() {
+    constructor(initialValue?: string) {
         super();
-        this.delegate = PropertyDelegate.newInstance<string>(this);
+        this.delegate = new PropertyDelegate<string>(this, initialValue);
     }
 
     public bind(observable: ObservableValue<string>): void {
-        PropertyDelegate.bind(this.delegate, observable);
+        this.delegate.bind(observable);
     }
 
     public isBound(): boolean {
-        return PropertyDelegate.isBound(this.delegate);
+        return this.delegate.isBound();
     }
 
     public unbind(): void {
-        PropertyDelegate.unbind(this.delegate);
+        this.delegate.unbind();
     }
 
     public addListener(listener: ChangeListener<string>): void {
-        PropertyDelegate.addListener(this.delegate, listener);
+        this.delegate.addListener(listener);
     }
 
     public removeListener(listener: ChangeListener<string>): void {
-        PropertyDelegate.removeListener(this.delegate, listener);
+        this.delegate.removeListener(listener);
     }
 
     public get(): string {
-        return PropertyDelegate.get(this.delegate);
+        return this.delegate.get();
     }
 
     public set(value: string) {
-        PropertyDelegate.set(this.delegate, value);
+        this.delegate.set(value);
+        this.fireValueChangedEvent();
     }
 
     protected fireValueChangedEvent(): void {
-        PropertyDelegate.fireValueChangedEvent(this.delegate);
+        this.delegate.fireValueChangedEvent();
     }
 }
 

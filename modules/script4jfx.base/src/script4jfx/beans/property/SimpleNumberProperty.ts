@@ -34,10 +34,7 @@ export class SimpleNumberProperty extends NumberPropertyBase {
     private readonly name: string;
 
     constructor(initialValue?: number, bean?: Object, name?: string) {
-        super();
-        if (initialValue !== undefined) {
-            this.set(initialValue);
-        }
+        super(initialValue);
         if (bean !== undefined) {
             this.bean = bean;
         }

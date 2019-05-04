@@ -33,10 +33,7 @@ export class SimpleStringProperty extends StringPropertyBase {
     private readonly name: string;
 
     constructor(initialValue?: string, bean?: Object, name?: string) {
-        super();
-        if (initialValue !== undefined) {
-            this.set(initialValue);
-        }
+        super(initialValue);
         if (bean !== undefined) {
             this.bean = bean;
         }

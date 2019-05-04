@@ -33,41 +33,42 @@ export abstract class ObjectPropertyBase<T> extends ObjectProperty<T> {
 
     private delegate: PropertyDelegate<T>;
 
-    constructor() {
+    constructor(initialValue?: T) {
         super();
-        this.delegate = PropertyDelegate.newInstance<T>(this);
+        this.delegate = new PropertyDelegate<T>(this, initialValue);
     }
 
     public bind(observable: ObservableValue<T>): void {
-        PropertyDelegate.bind(this.delegate, observable);
+        this.delegate.bind(observable);
     }
 
     public isBound(): boolean {
-        return PropertyDelegate.isBound(this.delegate);
+        return this.delegate.isBound();
     }
 
     public unbind(): void {
-        PropertyDelegate.unbind(this.delegate);
+        this.delegate.unbind();
     }
 
     public addListener(listener: ChangeListener<T>): void {
-        PropertyDelegate.addListener(this.delegate, listener);
+        this.delegate.addListener(listener);
     }
 
     public removeListener(listener: ChangeListener<T>): void {
-        PropertyDelegate.removeListener(this.delegate, listener);
+        this.delegate.removeListener(listener);
     }
 
     public get(): T {
-        return PropertyDelegate.get(this.delegate);
+        return this.delegate.get();
     }
 
     public set(value: T) {
-        PropertyDelegate.set(this.delegate, value);
+        this.delegate.set(value);
+        this.fireValueChangedEvent();
     }
 
     protected fireValueChangedEvent(): void {
-        PropertyDelegate.fireValueChangedEvent(this.delegate);
+        this.delegate.fireValueChangedEvent();
     }
 }
 

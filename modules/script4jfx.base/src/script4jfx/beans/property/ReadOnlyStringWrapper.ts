@@ -30,7 +30,7 @@ import { ReadOnlyStringProperty } from './ReadOnlyStringProperty';
 
 export class ReadOnlyStringWrapper extends SimpleStringProperty {
 
-    private readOnlyProperty: ReadOnlyStringPropertyBase;
+    private readOnlyProperty: ReadOnlyStringPropertyBase = null;
 
     constructor(initialValue?: string, bean?: Object, name?: string) {
         super(initialValue, bean, name);
@@ -46,7 +46,8 @@ export class ReadOnlyStringWrapper extends SimpleStringProperty {
     protected fireValueChangedEvent(): void {
         super.fireValueChangedEvent();
         if (this.readOnlyProperty !== null) {
-            (<any>this.readOnlyProperty).fireValueChangedEvent();
+            //@ts-ignore
+            this.readOnlyProperty.fireValueChangedEvent();
         }
     }
 }

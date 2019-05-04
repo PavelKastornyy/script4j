@@ -30,7 +30,7 @@ import { ReadOnlyNumberProperty } from './ReadOnlyNumberProperty';
 
 export class ReadOnlyNumberWrapper extends SimpleNumberProperty {
 
-    private readOnlyProperty: ReadOnlyNumberPropertyBase;
+    private readOnlyProperty: ReadOnlyNumberPropertyBase = null;
 
     constructor(initialValue?: number, bean?: Object, name?: string) {
         super(initialValue, bean, name);
@@ -41,6 +41,14 @@ export class ReadOnlyNumberWrapper extends SimpleNumberProperty {
             this.readOnlyProperty = new ReadOnlyNumberWrapper.ReadOnlyPropertyImpl(this);
         }
         return this.readOnlyProperty;
+    }
+    
+    protected fireValueChangedEvent(): void {
+        super.fireValueChangedEvent();
+        if (this.readOnlyProperty !== null) {
+            //@ts-ignore
+            this.readOnlyProperty.fireValueChangedEvent();
+        }
     }
 }
 

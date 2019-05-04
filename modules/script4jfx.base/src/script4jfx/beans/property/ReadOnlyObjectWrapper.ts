@@ -30,7 +30,7 @@ import { ReadOnlyObjectProperty } from './ReadOnlyObjectProperty';
 
 export class ReadOnlyObjectWrapper<T> extends SimpleObjectProperty<T> {
 
-    private readOnlyProperty: ReadOnlyObjectPropertyBase<T>;
+    private readOnlyProperty: ReadOnlyObjectWrapper.ReadOnlyPropertyImpl<T> = null;
 
     constructor(initialValue?: T, bean?: Object, name?: string) {
         super(initialValue, bean, name);
@@ -41,6 +41,14 @@ export class ReadOnlyObjectWrapper<T> extends SimpleObjectProperty<T> {
             this.readOnlyProperty = new ReadOnlyObjectWrapper.ReadOnlyPropertyImpl<T>(this);
         }
         return this.readOnlyProperty;
+    }
+    
+    protected fireValueChangedEvent(): void {
+        super.fireValueChangedEvent();
+        if (this.readOnlyProperty !== null) {
+            //@ts-ignore
+            this.readOnlyProperty.fireValueChangedEvent();
+        }
     }
 }
 

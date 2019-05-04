@@ -30,7 +30,7 @@ import { ReadOnlyBooleanProperty } from './ReadOnlyBooleanProperty';
 
 export class ReadOnlyBooleanWrapper extends SimpleBooleanProperty {
 
-    private readOnlyProperty: ReadOnlyBooleanPropertyBase;
+    private readOnlyProperty: ReadOnlyBooleanPropertyBase = null;
 
     constructor(initialValue?: boolean, bean?: Object, name?: string) {
         super(initialValue, bean, name);
@@ -42,6 +42,14 @@ export class ReadOnlyBooleanWrapper extends SimpleBooleanProperty {
         }
         return this.readOnlyProperty;
     }
+    
+    protected fireValueChangedEvent(): void {
+        super.fireValueChangedEvent();
+        if (this.readOnlyProperty !== null) {
+            //@ts-ignore
+            this.readOnlyProperty.fireValueChangedEvent();
+        }
+    }    
 }
 
 export namespace ReadOnlyBooleanWrapper {

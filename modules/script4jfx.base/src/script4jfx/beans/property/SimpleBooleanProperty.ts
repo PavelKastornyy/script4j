@@ -34,10 +34,7 @@ export class SimpleBooleanProperty extends BooleanPropertyBase {
     private readonly name: string;
 
     constructor(initialValue?: boolean, bean?: Object, name?: string) {
-        super();
-        if (initialValue !== undefined) {
-            this.set(initialValue);
-        }
+        super(initialValue);
         if (bean !== undefined) {
             this.bean = bean;
         }

@@ -33,10 +33,7 @@ export class SimpleObjectProperty<T> extends ObjectPropertyBase<T> {
     private readonly name: string;
 
     constructor(initialValue?: T, bean?: Object, name?: string) {
-        super();
-        if (initialValue !== undefined) {
-            this.set(initialValue);
-        }
+        super(initialValue);
         if (bean !== undefined) {
             this.bean = bean;
         }

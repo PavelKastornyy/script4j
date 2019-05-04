@@ -33,41 +33,42 @@ export abstract class BooleanPropertyBase extends BooleanProperty {
 
     private delegate: PropertyDelegate<boolean>;
 
-    constructor() {
+    constructor(initialValue?: boolean) {
         super();
-        this.delegate = PropertyDelegate.newInstance<boolean>(this);
+        this.delegate = new PropertyDelegate<boolean>(this, initialValue);
     }
 
     public bind(observable: ObservableValue<boolean>): void {
-        PropertyDelegate.bind(this.delegate, observable);
+        this.delegate.bind(observable);
     }
 
     public isBound(): boolean {
-        return PropertyDelegate.isBound(this.delegate);
+        return this.delegate.isBound();
     }
 
     public unbind(): void {
-        PropertyDelegate.unbind(this.delegate);
+        this.delegate.unbind();
     }
 
     public addListener(listener: ChangeListener<boolean>): void {
-        PropertyDelegate.addListener(this.delegate, listener);
+        this.delegate.addListener(listener);
     }
 
     public removeListener(listener: ChangeListener<boolean>): void {
-        PropertyDelegate.removeListener(this.delegate, listener);
+        this.delegate.removeListener(listener);
     }
 
     public get(): boolean {
-        return PropertyDelegate.get(this.delegate);
+        return this.delegate.get();
     }
 
     public set(value: boolean) {
-        PropertyDelegate.set(this.delegate, value);
+        this.delegate.set(value);
+        this.fireValueChangedEvent();
     }
 
     protected fireValueChangedEvent(): void {
-        PropertyDelegate.fireValueChangedEvent(this.delegate);
+        this.delegate.fireValueChangedEvent();
     }
 }
 
