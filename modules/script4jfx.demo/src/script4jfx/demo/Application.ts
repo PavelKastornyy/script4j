@@ -59,17 +59,5 @@ export class Application {
             console.log(person.toString());
         });
         $("body").append(printButton);
-        
-        $("body").append($('<button>RemoveKeyTyped</button>').on("click", function () { 
-            view.removeKeyTyped();
-        }));
-        
-        $("body").append($('<button>RemoveKeyPressed</button>').on("click", function () { 
-            view.removeKeyPressed();
-        }));
-        
-        $("body").append($('<button>RemoveKeyReleased</button>').on("click", function () { 
-            view.removeKeyReleased();
-        }));
     }
 }
