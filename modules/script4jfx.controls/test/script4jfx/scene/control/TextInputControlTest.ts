@@ -48,13 +48,13 @@ describe('TextInputControlTest', () => {
     it('constructor_textChanged_eventIsFired', () => {
         let control: TextInputControlImpl = new TextInputControlImpl();
         const document: Document = dom.window.document;
-        document.body.appendChild(control.getElement());
-        control.getElement().focus();
+        document.body.appendChild(control.getSkin().getElement());
+        control.getSkin().getElement().focus();
         var event = new window.KeyboardEvent("keypress", {key: "z"} as any);
         
         document.dispatchEvent(event);
         console.log(dom.serialize());
-        console.log((<HTMLInputElement>control.getElement()).value);
+        console.log((<HTMLInputElement>control.getSkin().getElement()).value);
     });
 });
 
