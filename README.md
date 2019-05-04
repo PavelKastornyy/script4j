@@ -24,12 +24,12 @@ handlers `Scene` creates on root `HTML element` `HTML listeners` that catch `HTM
 Using `jQuery.data` by `HTMLElement` target `Node` is resolved. After that `FX Event` is created and etc. For details 
 see `HtmlEventListenerManager` in `script4jfx.graphics` module.
 
-### HTML Skins
+### Skins
 There is a strict separation between `HTML layer` and `FX layer`. Every `Node` has a `HtmlSkin` which contains all the
 logic to work with `HTML code`. All `HtmlSkin`s are created by `HtmlSkinFactory`s. There is a `HtmlSkinFactoryManager`
 that contains all the factories (and first of all default factories) and which provide factory by `Node` class. Default
 factories are registered in `HtmlSkinFactoryManager` by `ModuleSkinFactoryRegistrator` that is created for every module.
-If it is necessary to change HtmlSkin for all instances of one `Node` (that are not created yet) then use 
+If it is necessary to change `HtmlSkin` for all instances of one `Node` (that are not created yet) then use 
 `HtmlSkinFactoryManager`. Note, that `Node#createDefaultSkin` implemented this way:
 
 ```
