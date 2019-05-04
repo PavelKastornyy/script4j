@@ -52,22 +52,9 @@ export class PersonView implements View {
     private readonly resumeTextArea: TextArea = new TextArea();
     
     constructor() {
-        this.firstNameTextField.setOnKeyPressed(EventHandler.fromFunc((event: KeyEvent) => {
-            console.log("KeyPressed event for firstNameTextField came:");
+        this.firstNameTextField.setOnKeyTyped(EventHandler.fromFunc((event: KeyEvent) => {
             console.log(event);
         }));
-        this.firstNameTextField.setOnKeyReleased(EventHandler.fromFunc((event: KeyEvent) => {
-            console.log("KeyReleased event for firstNameTextField came:");
-            console.log(event);
-        }));
-//        this.firstNameTextField.setOnKeyTyped(EventHandler.fromFunc((event: KeyEvent) => {
-//            console.log("KeyTyped event for firstNameTextField came:");
-//            console.log(event);
-//        }));
-//        this.firstNameTextField.addEventHandler(KeyEvent.ANY, EventHandler.fromFunc((event: KeyEvent) => {
-//            console.log("KeyEvent.ANY for firstNameTextField came:");
-//            console.log(event);
-//        }));
         this.pane = new Pane(
             this.firstNameTextField,
             this.lastNameTextField,
