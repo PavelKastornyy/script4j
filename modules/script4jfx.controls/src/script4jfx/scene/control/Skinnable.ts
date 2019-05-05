@@ -24,9 +24,9 @@
  *
  */
 
-import { HtmlSkinnable } from 'script4jfx.graphics';
+import { HTMLSkinnable } from 'script4jfx.graphics';
 
-export interface Skinnable extends HtmlSkinnable {
+export interface Skinnable extends HTMLSkinnable {
     
 }
 

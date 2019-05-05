@@ -24,24 +24,35 @@
  *
  */
 
-import { HtmlSkin } from './HtmlSkin';
-import { ObjectProperty } from 'script4jfx.base';
+export class HTMLEventType {
+    
+    public static readonly Key = class {
+        
+        public static readonly KEY_PRESSED = "keypress";
+    
+        public static readonly KEY_UP = "keyup";
+    
+        public static readonly KEY_DOWN = "keydown";
+    }
+    
+    public static readonly Mouse = class {
+        
+        public static readonly MOUSE_DOWN = "mousedown";
 
-export interface HtmlSkinnable {
+        public static readonly MOUSE_UP = "mouseup";
 
-    /**
-     * Returns the html skin that renders this Node.
-     */    
-    getSkin(): HtmlSkin<any>
+        public static readonly MOUSE_OVER = "mouseover";
 
-    /**
-     * Sets the html skin that will render this Node.
-     */
-    setSkin​(value: HtmlSkin<any>): void;
+        public static readonly MOUSE_OUT = "mouseout";
 
-    /**
-     * Skin is responsible for rendering this Node.
-     */
-    skinProperty(): ObjectProperty<HtmlSkin<any>>;
+        public static readonly MOUSE_MOVE = "mousemove";
+
+        public static readonly CLICK = "click";
+
+        public static readonly CONEXT_MENU = "contextmenu";
+
+        public static readonly DOUBLE_CLICK = "dblclick";
+    }    
+    
 }
 

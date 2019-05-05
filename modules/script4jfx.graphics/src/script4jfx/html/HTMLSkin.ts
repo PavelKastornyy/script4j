@@ -24,35 +24,43 @@
  *
  */
 
-export class HtmlEventType {
+import { HTMLSkinnable } from './HTMLSkinnable';
+
+export interface HTMLSkin<T extends HTMLSkinnable> {
+
+    /**
+     * Called by a Skinnable when the Skin is replaced on the Skinnable.
+     */    
+    dispose(): void;
     
-    public static readonly Key = class {
-        
-        public static readonly KEY_PRESSED = "keypress";
+    /**
+     * Root html element of this skin.
+     */
+    getElement(): HTMLElement;
+
+    /**
+     * Gets the Skinnable to which this Skin is assigned.
+     */    
+    getSkinnable(): T;
     
-        public static readonly KEY_UP = "keyup";
+    /**
+     * Sets id to html element.
+     */
+    setId(id: string): void;
     
-        public static readonly KEY_DOWN = "keydown";
-    }
+    /**
+     * Returns id of the html element. Returns null if there is no id.
+     */
+    getId(): string;
     
-    public static readonly Mouse = class {
-        
-        public static readonly MOUSE_DOWN = "mousedown";
-
-        public static readonly MOUSE_UP = "mouseup";
-
-        public static readonly MOUSE_OVER = "mouseover";
-
-        public static readonly MOUSE_OUT = "mouseout";
-
-        public static readonly MOUSE_MOVE = "mousemove";
-
-        public static readonly CLICK = "click";
-
-        public static readonly CONEXT_MENU = "contextmenu";
-
-        public static readonly DOUBLE_CLICK = "dblclick";
-    }    
+    /**
+     * Sets style to html element.
+     */
+    setStyle(style: string): void;
     
+    /**
+     * Returns style of the html element. Returns null if there is no style.
+     */
+    getStyle(): string;
 }
 

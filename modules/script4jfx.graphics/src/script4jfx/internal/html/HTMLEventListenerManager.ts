@@ -28,14 +28,14 @@ import { EventType } from 'script4jfx.base';
 import { Map } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { HashMap } from 'script4j.base'
-import { EventBus } from './eventbus/EventBus';
-import { BusEventListener } from './eventbus/BusEventListener';
-import { HandlerEvent } from './busevents/HandlerEvent';
+import { EventBus } from './../scene/eventbus/EventBus';
+import { BusEventListener } from './../scene/eventbus/BusEventListener';
+import { HandlerEvent } from './../scene/busevents/HandlerEvent';
 import { KeyEvent } from './../../scene/input/KeyEvent';
 import { MouseEvent } from './../../scene/input/MouseEvent';
 import { MouseButton } from './../../scene/input/MouseButton';
 import { KeyCode } from './../../scene/input/KeyCode';
-import { HtmlEventType } from './HtmlEventType';
+import { HTMLEventType } from './HTMLEventType';
 import { JQueryDataKeys } from './JQueryDataKeys';
 import { Node } from './../../scene/Node';
 import { EventTarget } from 'script4jfx.base';
@@ -43,7 +43,7 @@ import { BiFunction } from 'script4j.base';
 import { List } from 'script4j.base';
 import { ArrayList } from 'script4j.base';
 import { Event } from 'script4jfx.base';
-import { HtmlKeyMapper } from './HtmlKeyMapper';
+import { HTMLKeyMapper } from './HTMLKeyMapper';
 import 'jquery';
 
 /**
@@ -55,7 +55,7 @@ import 'jquery';
  * When new nodes are added/removed to/from scene this manager calculates the difference.
  * When a handler is added/removed to/from scene or its existing nodes we use EventHandlerListener.
  */
-export class HtmlEventListenerManager {
+export class HTMLEventListenerManager {
     
     private rootElement: HTMLElement = null;
     
@@ -198,11 +198,11 @@ export class HtmlEventListenerManager {
     private createKeyListenerIfAbsent(eventType: EventType<KeyEvent>): void {
         let htmlEventType: string = null;
         if (eventType === KeyEvent.KEY_TYPED) {
-            htmlEventType = HtmlEventType.Key.KEY_PRESSED;
+            htmlEventType = HTMLEventType.Key.KEY_PRESSED;
         } else if (eventType === KeyEvent.KEY_PRESSED) {
-            htmlEventType = HtmlEventType.Key.KEY_DOWN;
+            htmlEventType = HTMLEventType.Key.KEY_DOWN;
         } else if (eventType === KeyEvent.KEY_RELEASED) {
-            htmlEventType = HtmlEventType.Key.KEY_UP;
+            htmlEventType = HTMLEventType.Key.KEY_UP;
         }
         if (this.listenersByHtmlType.containsKey(htmlEventType)) {
             return;
@@ -243,9 +243,9 @@ export class HtmlEventListenerManager {
         };
         let htmlEventType: string = null;
         if (eventType === MouseEvent.MOUSE_PRESSED) {
-            htmlEventType = HtmlEventType.Mouse.MOUSE_DOWN;
+            htmlEventType = HTMLEventType.Mouse.MOUSE_DOWN;
         } else if (eventType === MouseEvent.MOUSE_RELEASED) {
-            htmlEventType = HtmlEventType.Mouse.MOUSE_UP;
+            htmlEventType = HTMLEventType.Mouse.MOUSE_UP;
         }
         if (htmlEventType !== null) {
             if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
@@ -254,15 +254,15 @@ export class HtmlEventListenerManager {
             this.doCreateListener(htmlEventType, oneClickListener);
         //clicked - multiple events
         } else {
-            htmlEventType = HtmlEventType.Mouse.CLICK;
+            htmlEventType = HTMLEventType.Mouse.CLICK;
             if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
                 this.doCreateListener(htmlEventType, oneClickListener);
             }
-            htmlEventType = HtmlEventType.Mouse.DOUBLE_CLICK;
+            htmlEventType = HTMLEventType.Mouse.DOUBLE_CLICK;
             if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
                 this.doCreateListener(htmlEventType, dblClickListener);
             }
-            htmlEventType = HtmlEventType.Mouse.CONEXT_MENU;
+            htmlEventType = HTMLEventType.Mouse.CONEXT_MENU;
             if (!this.listenersByHtmlType.containsKey(htmlEventType)) {
                 this.doCreateListener(htmlEventType, oneClickListener);
             }
@@ -278,11 +278,11 @@ export class HtmlEventListenerManager {
     private destroyKeyListenerIfPresent(eventType: EventType<KeyEvent>): void {
         let htmlEventType: string = null;
         if (eventType === KeyEvent.KEY_TYPED) {
-            htmlEventType = HtmlEventType.Key.KEY_PRESSED;
+            htmlEventType = HTMLEventType.Key.KEY_PRESSED;
         } else if (eventType === KeyEvent.KEY_PRESSED) {
-            htmlEventType = HtmlEventType.Key.KEY_DOWN;
+            htmlEventType = HTMLEventType.Key.KEY_DOWN;
         } else if (eventType === KeyEvent.KEY_RELEASED) {
-            htmlEventType = HtmlEventType.Key.KEY_UP;
+            htmlEventType = HTMLEventType.Key.KEY_UP;
         }
         if (htmlEventType !== null) {
             this.doDestroyListener(htmlEventType);
@@ -293,19 +293,19 @@ export class HtmlEventListenerManager {
         let htmlEventType: string = null;
         let listener: EventListener = null;
         if (eventType === MouseEvent.MOUSE_PRESSED) {
-            htmlEventType = HtmlEventType.Mouse.MOUSE_DOWN;
+            htmlEventType = HTMLEventType.Mouse.MOUSE_DOWN;
         } else if (eventType === MouseEvent.MOUSE_RELEASED) {
-            htmlEventType = HtmlEventType.Mouse.MOUSE_UP;
+            htmlEventType = HTMLEventType.Mouse.MOUSE_UP;
         }
         if (htmlEventType !== null) {
             this.doDestroyListener(htmlEventType);
         //clicked - multiple events
         } else {
-            htmlEventType = HtmlEventType.Mouse.CLICK;
+            htmlEventType = HTMLEventType.Mouse.CLICK;
             this.doDestroyListener(htmlEventType);
-            htmlEventType = HtmlEventType.Mouse.DOUBLE_CLICK;
+            htmlEventType = HTMLEventType.Mouse.DOUBLE_CLICK;
             this.doDestroyListener(htmlEventType);
-            htmlEventType = HtmlEventType.Mouse.CONEXT_MENU;
+            htmlEventType = HTMLEventType.Mouse.CONEXT_MENU;
             this.doDestroyListener(htmlEventType);
         }
     }
@@ -409,7 +409,7 @@ export class HtmlEventListenerManager {
     }    
     
     private resolveKeyCode(code: string): KeyCode {
-        return HtmlKeyMapper.map(code);
+        return HTMLKeyMapper.map(code);
 //        if (code.startsWith("Key")) {
 //            code = code.substr(3);
 //        } else if (code.startsWith("Digit")) {

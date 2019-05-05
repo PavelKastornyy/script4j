@@ -24,10 +24,10 @@
  *
  */
 
-import { HtmlSkin } from 'script4jfx.graphics';
+import { HTMLSkin } from 'script4jfx.graphics';
 import { Skinnable } from './Skinnable';
  
-export interface Skin<C extends Skinnable> extends HtmlSkin<C> {
+export interface Skin<C extends Skinnable> extends HTMLSkin<C> {
     
 }
 

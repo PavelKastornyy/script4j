@@ -49,16 +49,16 @@ import { Iterator } from 'script4j.base';
 import { ParentUnlocker } from './../internal/scene/ParentUnlocker';
 import { EventDispatcherImpl } from './../internal/scene/EventDispatcherImpl';
 import { ChangeListener } from 'script4jfx.base';
-import { HtmlSkinFactoryManager } from './../html/HtmlSkinFactoryManager';
-import { HtmlSkinnable } from './../html/HtmlSkinnable';
-import { HtmlSkin } from './../html/HtmlSkin';
+import { HTMLSkinFactoryManager } from './../html/HTMLSkinFactoryManager';
+import { HTMLSkinnable } from './../html/HTMLSkinnable';
+import { HTMLSkin } from './../html/HTMLSkin';
 
-export abstract class Node implements Styleable, EventTarget, HtmlSkinnable {
+export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
 
     /**
      * HtmlSkin
      */
-    private readonly skin: ObjectProperty<HtmlSkin<Node>> = new SimpleObjectProperty<HtmlSkin<Node>>(null, this);
+    private readonly skin: ObjectProperty<HTMLSkin<Node>> = new SimpleObjectProperty<HTMLSkin<Node>>(null, this);
     
     /**
      * The parent of this Node.
@@ -124,8 +124,8 @@ export abstract class Node implements Styleable, EventTarget, HtmlSkinnable {
      * Sets the element, taken from buildHtmlElement().
      */
     constructor() {
-        this.skin.addListener(ChangeListener.fromFunc((observable: ObservableValue<HtmlSkin<any>>, 
-                oldSkin: HtmlSkin<any>, newSkin: HtmlSkin<any>) => {
+        this.skin.addListener(ChangeListener.fromFunc((observable: ObservableValue<HTMLSkin<Node>>, 
+                oldSkin: HTMLSkin<Node>, newSkin: HTMLSkin<Node>) => {
             if (oldSkin !== null) {
                 oldSkin.dispose();
             }
@@ -147,21 +147,21 @@ export abstract class Node implements Styleable, EventTarget, HtmlSkinnable {
     /**
      * Returns the html skin that renders this Node.
      */    
-    public getSkin(): HtmlSkin<any> {
+    public getSkin(): HTMLSkin<Node> {
         return this.skin.get();
     }
 
     /**
      * Sets the html skin that will render this Node.
      */
-    public setSkin​(value: HtmlSkin<any>): void {
+    public setSkin​(value: HTMLSkin<Node>): void {
         this.skin.set(value);
     }
 
     /**
      * Skin is responsible for rendering this Node.
      */
-    public skinProperty(): ObjectProperty<HtmlSkin<any>> {
+    public skinProperty(): ObjectProperty<HTMLSkin<any>> {
         return this.skin;
     }
 
@@ -473,8 +473,8 @@ export abstract class Node implements Styleable, EventTarget, HtmlSkinnable {
      * Creates a new instance of the default skin for this Node. By default factory from HtmlSkinFactoryManager
      * is used.
      */
-    protected createDefaultSkin(): HtmlSkin<any> {
-        return HtmlSkinFactoryManager.getFactory(this.getClass()).create(this);
+    protected createDefaultSkin(): HTMLSkin<Node> {
+        return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this);
     }
     
     /**

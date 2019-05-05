@@ -21,8 +21,8 @@
 
 import { Pane } from './../../scene/layout/Pane';
 import { PaneSkin } from './../../scene/layout/skin/PaneSkin';
-import { HtmlSkinFactoryManager } from './../../html/HtmlSkinFactoryManager';
-import { HtmlSkinFactory } from './../../html/HtmlSkinFactory';
+import { HTMLSkinFactoryManager } from './../../html/HTMLSkinFactoryManager';
+import { HTMLSkinFactory } from './../../html/HTMLSkinFactory';
 import 'jquery';
 
 export class ModuleSkinFactoryRegistrator {
@@ -30,7 +30,7 @@ export class ModuleSkinFactoryRegistrator {
     private static hasRegistered: boolean = ModuleSkinFactoryRegistrator.register();
     
     private static register(): boolean {
-        HtmlSkinFactoryManager.registerFactory(Pane.class(), HtmlSkinFactory.fromFunc((pane: Pane) => {
+        HTMLSkinFactoryManager.registerFactory(Pane.class(), HTMLSkinFactory.fromFunc((pane: Pane) => {
             return new PaneSkin(pane);
         }));
         return true;

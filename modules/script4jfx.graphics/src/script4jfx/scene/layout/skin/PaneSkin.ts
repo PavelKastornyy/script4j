@@ -19,11 +19,11 @@
  *
  */
 
-import { AbstractHtmlSkin } from './../../../html/AbstractHtmlSkin';
+import { AbstractHTMLSkin } from './../../../html/AbstractHTMLSkin';
 import { Pane } from './../../layout/Pane';
 import 'jquery';
 
-export class PaneSkin extends AbstractHtmlSkin<Pane> {
+export class PaneSkin extends AbstractHTMLSkin<Pane> {
     
     public constructor(node: Pane) {
         super(node);

@@ -24,24 +24,25 @@
  *
  */
 
-import { HtmlSkin } from './HtmlSkin';
+import { HTMLSkin } from './HTMLSkin';
 import { Node } from './../scene/Node';
+import { ObjectProperty } from 'script4jfx.base';
 
-export interface HtmlSkinFactory<T extends Node> {
-    
-    create(node: T): HtmlSkin<T>;
+export interface HTMLSkinnable {
+
+    /**
+     * Returns the html skin that renders this Node.
+     */    
+    getSkin(): HTMLSkin<Node>
+
+    /**
+     * Sets the html skin that will render this Node.
+     */
+    setSkin​(value: HTMLSkin<Node>): void;
+
+    /**
+     * Skin is responsible for rendering this Node.
+     */
+    skinProperty(): ObjectProperty<HTMLSkin<any>>;
 }
 
-type HtmlSkinFactoryFunc<T extends Node> = (t: T) => HtmlSkin<T>;
-
-export namespace HtmlSkinFactory {
-    
-    export function fromFunc<T extends Node>(func: HtmlSkinFactoryFunc<T>): HtmlSkinFactory<T> {
-        return new class implements HtmlSkinFactory<T> {
-            
-            public create(node: T): HtmlSkin<T> {
-                return func(node);
-            }
-        };
-    }
-}

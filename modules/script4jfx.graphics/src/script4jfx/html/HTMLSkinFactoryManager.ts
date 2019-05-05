@@ -24,43 +24,33 @@
  *
  */
 
-import { HtmlSkinnable } from './HtmlSkinnable';
+import { Class } from 'script4j.base';
+import { Map } from 'script4j.base';
+import { HashMap } from 'script4j.base';
+import { Node } from './../scene/Node';
+import { HTMLSkinFactory } from './HTMLSkinFactory';
 
-export interface HtmlSkin<T extends HtmlSkinnable> {
-
-    /**
-     * Called by a Skinnable when the Skin is replaced on the Skinnable.
-     */    
-    dispose(): void;
+/**
+ * This class is used for setting default skins for all nodes - it gives a full controll over html code that will
+ * be created. If someone wants to change default html code he should create his own factory, skin and register
+ * the factory in this manager.
+ */
+export class HTMLSkinFactoryManager {
+    
+    private static factoriesByClassMap: Map<Class<any>, HTMLSkinFactory<any>> = new HashMap();
     
     /**
-     * Root html element of this skin.
+     * There can be only one factory per class.
      */
-    getElement(): HTMLElement;
-
-    /**
-     * Gets the Skinnable to which this Skin is assigned.
-     */    
-    getSkinnable(): T;
+    public static registerFactory<T extends Node>(nodeClass: Class<T>, factory: HTMLSkinFactory<T>): void {
+        HTMLSkinFactoryManager.factoriesByClassMap.put(nodeClass, factory);
+    }
     
-    /**
-     * Sets id to html element.
-     */
-    setId(id: string): void;
+    public static unregisterFactory<T extends Node>(nodeClass: Class<T>): void {
+        HTMLSkinFactoryManager.factoriesByClassMap.remove(nodeClass);
+    }
     
-    /**
-     * Returns id of the html element. Returns null if there is no id.
-     */
-    getId(): string;
-    
-    /**
-     * Sets style to html element.
-     */
-    setStyle(style: string): void;
-    
-    /**
-     * Returns style of the html element. Returns null if there is no style.
-     */
-    getStyle(): string;
+    public static getFactory<T extends Node>(nodeClass: Class<T>): HTMLSkinFactory<T> {
+        return HTMLSkinFactoryManager.factoriesByClassMap.get(nodeClass);
+    }
 }
-

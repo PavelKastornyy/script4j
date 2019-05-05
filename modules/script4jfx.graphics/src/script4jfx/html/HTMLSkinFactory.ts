@@ -24,11 +24,24 @@
  *
  */
 
-import { Skin } from './Skin';
-import { Control } from './Control';
-import { AbstractHTMLSkin } from 'script4jfx.graphics';
+import { HTMLSkin } from './HTMLSkin';
+import { Node } from './../scene/Node';
 
-export abstract class SkinBase<C extends Control> extends AbstractHTMLSkin<C> implements Skin<C> {
+export interface HTMLSkinFactory<T extends Node> {
     
+    create(node: T): HTMLSkin<T>;
 }
 
+type HtmlSkinFactoryFunc<T extends Node> = (t: T) => HTMLSkin<T>;
+
+export namespace HTMLSkinFactory {
+    
+    export function fromFunc<T extends Node>(func: HtmlSkinFactoryFunc<T>): HTMLSkinFactory<T> {
+        return new class implements HTMLSkinFactory<T> {
+            
+            public create(node: T): HTMLSkin<T> {
+                return func(node);
+            }
+        };
+    }
+}

@@ -24,16 +24,16 @@
  *
  */
 
-import { HtmlSkin } from './HtmlSkin';
-import { HtmlSkinnable } from './HtmlSkinnable';
+import { HTMLSkin } from './HTMLSkin';
+import { HTMLSkinnable } from './HTMLSkinnable';
 import { Node } from './../scene/Node';
 import { Scene } from './../scene/Scene';
-import { JQueryDataKeys } from './../internal/scene/JQueryDataKeys';
+import { JQueryDataKeys } from './../internal/html/JQueryDataKeys';
 import { ChangeListener } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
 import 'jquery';
 
-export abstract class AbstractHtmlSkin<T extends Node> implements HtmlSkin<T> {
+export abstract class AbstractHTMLSkin<T extends Node> implements HTMLSkin<T> {
     
     private readonly node: T;
     

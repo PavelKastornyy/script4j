@@ -24,33 +24,10 @@
  *
  */
 
-import { Class } from 'script4j.base';
-import { Map } from 'script4j.base';
-import { HashMap } from 'script4j.base';
-import { Node } from './../scene/Node';
-import { HtmlSkinFactory } from './HtmlSkinFactory';
+import 'reflect-metadata';
 
-/**
- * This class is used for setting default skins for all nodes - it gives a full controll over html code that will
- * be created. If someone wants to change default html code he should create his own factory, skin and register
- * the factory in this manager.
- */
-export class HtmlSkinFactoryManager {
-    
-    private static factoriesByClassMap: Map<Class<any>, HtmlSkinFactory<any>> = new HashMap();
-    
-    /**
-     * There can be only one factory per class.
-     */
-    public static registerFactory<T extends Node>(nodeClass: Class<T>, factory: HtmlSkinFactory<T>): void {
-        HtmlSkinFactoryManager.factoriesByClassMap.put(nodeClass, factory);
-    }
-    
-    public static unregisterFactory<T extends Node>(nodeClass: Class<T>): void {
-        HtmlSkinFactoryManager.factoriesByClassMap.remove(nodeClass);
-    }
-    
-    public static getFactory<T extends Node>(nodeClass: Class<T>): HtmlSkinFactory<T> {
-        return HtmlSkinFactoryManager.factoriesByClassMap.get(nodeClass);
-    }
+export function HTML(target : any, key : string) {
+    //we don't need any code here
 }
+
+

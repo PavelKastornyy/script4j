@@ -40,7 +40,7 @@ import { Scene } from './../../scene/Scene';
 import { SceneUnlocker } from './SceneUnlocker';
 import { Node } from './../../scene/Node';
 import { NodeUnlocker } from './NodeUnlocker';
-import {HtmlKeyMapper} from './HtmlKeyMapper';
+import { HTMLKeyMapper } from './../html/HTMLKeyMapper';
 
 
 export class EventDispatcherImpl implements EventDispatcher {

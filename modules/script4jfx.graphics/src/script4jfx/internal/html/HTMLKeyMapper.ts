@@ -29,9 +29,9 @@ import { KeyCode } from './../../scene/input/KeyCode';
 /**
  * Map from all codes from https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
  */
-export class HtmlKeyMapper {
+export class HTMLKeyMapper {
     
-    private static readonly keyCodesByHtmlKeys: Object = {
+    private static readonly keyCodesByHTMLKeys: Object = {
         AGAIN: KeyCode.AGAIN,
         ALTLEFT: KeyCode.ALT,
         ALTRIGHT: KeyCode.ALT,
@@ -207,7 +207,7 @@ export class HtmlKeyMapper {
     }
     
     public static map(htmlKey: string): KeyCode {
-        return HtmlKeyMapper.keyCodesByHtmlKeys[htmlKey.toUpperCase()];
+        return HTMLKeyMapper.keyCodesByHTMLKeys[htmlKey.toUpperCase()];
     }
 }
 

@@ -35,7 +35,7 @@ import { Node } from './Node';
 import { EventType } from 'script4jfx.base';
 import { SceneEventHandlerManager } from './../internal/scene/SceneEventHandlerManager';
 import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
-import { HtmlEventListenerManager } from './../internal/scene/HtmlEventListenerManager';
+import { HTMLEventListenerManager } from './../internal/html/HTMLEventListenerManager';
 import { EventHandlerCounter } from './../internal/scene/EventHandlerCounter';
 import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from './input/KeyEvent';
@@ -79,7 +79,7 @@ export class Scene implements EventTarget {
     /**
      * This manager is created for every new root.
      */
-    private htmlEventListenerManager: HtmlEventListenerManager = null;
+    private htmlEventListenerManager: HTMLEventListenerManager = null;
     
     /**
      * Defines a function to be called when some Node of this Scene has input focus and a key has been pressed.
@@ -125,7 +125,7 @@ export class Scene implements EventTarget {
                 this.htmlEventListenerManager.deinitialize();
             }
             if (newParent !== null) {
-                this.htmlEventListenerManager = new HtmlEventListenerManager(newParent.getSkin().getElement(), this.eventBus);
+                this.htmlEventListenerManager = new HTMLEventListenerManager(newParent.getSkin().getElement(), this.eventBus);
                 const counter: EventHandlerCounter = new EventHandlerCounter();
                 (<ParentUnlocker><any>newParent).traverse(Consumer.fromFunc((node: Node) => {
                     (<NodeUnlocker><any>node).setScene(this);
