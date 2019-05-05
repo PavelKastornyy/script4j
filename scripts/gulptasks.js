@@ -22,6 +22,7 @@
 import gulp from 'gulp';
 import fs from 'fs';
 import packageJson from './../package.json'
+import tsConfigJson from './../tsconfig.json'
 const execSync = require('child_process').execSync;
 import path from 'path';
 import rimraf from 'rimraf';
@@ -262,8 +263,8 @@ function doBuildModule(modulePath, moduleType) {
             if(err) return console.error(err);
         });
         //now we can compile, we don't use gulp-typescript as wee need more controll.
-        execSync('npx tsc "' + targetFolderPath + path.sep + moduleTsFileName
-                        + '" --target ES6 --removeComments --moduleResolution Node', {stdio: 'inherit', shell: true});
+        execSync('npx tsc "' + targetFolderPath + path.sep + moduleTsFileName + '" ' 
+                + buildTscCommandLineString(), {stdio: 'inherit', shell: true});
         if (moduleType === MODULE_TYPE.DIST) {
             if (!fs.existsSync(MAIN_DIST_PATH)){
                 fs.mkdirSync(MAIN_DIST_PATH, { recursive: false }, (err) => {
@@ -440,6 +441,28 @@ function buildExport(classesToExport) {
 
 function resolve4SpecModuleName(moduleName) {
     return moduleName.replace(".spec", ".4spec")
+}
+
+/**
+ * This function exists until the following issue is resolved: https://github.com/Microsoft/TypeScript/issues/27379
+ * 
+ */
+function buildTscCommandLineString() {
+    let result = "";
+    for (var key in tsConfigJson.compilerOptions) {
+        if (!tsConfigJson.compilerOptions.hasOwnProperty(key)) {
+            continue;
+        }
+        let value = tsConfigJson.compilerOptions[key];
+        if (typeof value === "boolean"){
+            if (value) {
+                result += " --" + key;
+            }
+        } else {
+            result += " --" + key + " " + value;
+        }
+    }
+    return result;
 }
 
 function makeDistFile(src, dest, module) {
