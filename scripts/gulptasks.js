@@ -26,7 +26,7 @@ import tsConfigJson from './../tsconfig.json'
 const execSync = require('child_process').execSync;
 import path from 'path';
 import rimraf from 'rimraf';
-import DIST_MODULE_PATHS from './../dist.module.paths';
+import MODULE_DIST_PATHS from './../module.dist.paths';
 
 const MODULES_PATH = __dirname + path.sep + '..' + path.sep + 'modules';
 const TEMP_FOLDER = 'tmp';
@@ -496,7 +496,7 @@ function fixModulePathsInDistFile(data, module) {
     let regExp = new RegExp(regExpStr, "gm");
     data = data.replace(regExp, function(param, p1) {
         //param is the full expression: import ... 'module';
-        return param.replace(p1, DIST_MODULE_PATHS[p1]);
+        return param.replace(p1, MODULE_DIST_PATHS[p1]);
     })
     return data;
 }

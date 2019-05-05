@@ -26,13 +26,19 @@ import path from 'path';
 import packageJson from './package.json'
 
 const JQUERY_VERSION = packageJson.devDependencies.jquery;
+const REFLECT_VERSION =  packageJson.devDependencies["reflect-metadata"];
 
 gulp.task('build-module', function(done) { 
     buildModule(__dirname);
     const sep = path.sep;
-    let src = __dirname + sep + "node_modules" + sep + "jquery" + sep + "dist" + sep + "jquery.min.js";
-    let dest = __dirname + sep + ".." + sep + ".." + sep + "dist" + sep + "jquery-" + JQUERY_VERSION + ".min.js";
-    fs.copyFileSync(src, dest);
+    const nodeModulePath = __dirname + sep + "node_modules";
+    const distPath = __dirname + sep + ".." + sep + ".." + sep + "dist";
+    const jQuerSrc = nodeModulePath + sep + "jquery" + sep + "dist" + sep + "jquery.min.js";
+    const jQueryDest = distPath + sep + "jquery-" + JQUERY_VERSION + ".min.js";
+    fs.copyFileSync(jQuerSrc, jQueryDest);
+    const reflectSrc = nodeModulePath + sep + "reflect-metadata" + sep + "Reflect.js";
+    const reflectDest = distPath + sep + "reflect-" + REFLECT_VERSION + ".js";
+    fs.copyFileSync(reflectSrc, reflectDest);
     done(); 
 });
 

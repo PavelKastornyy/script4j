@@ -24,6 +24,7 @@ import graphicsPackageJson from './modules/script4jfx.graphics/package.json'
 
 const PROJECT_VERSION = mainPackageJson.version;
 const JQUERY_VERSION = graphicsPackageJson.devDependencies.jquery;
+const REFLECT_VERSION =  graphicsPackageJson.devDependencies["reflect-metadata"];
 
 const PATHS = {
     "script4j.base" : "./script4j.base-" + PROJECT_VERSION + ".js",
@@ -33,6 +34,7 @@ const PATHS = {
     "script4jfx.graphics" : "./script4jfx.graphics-" + PROJECT_VERSION + ".js",
     "script4jfx.controls" : "./script4jfx.controls-" + PROJECT_VERSION + ".js",
     "jquery" : "./jquery-" + JQUERY_VERSION + ".min.js",
+    "reflect-metadata": "./reflect-" + REFLECT_VERSION + ".js",
 }
 
 export default PATHS;

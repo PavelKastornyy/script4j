@@ -17,6 +17,7 @@
         "jsdom": "13.2.0",
         "jquery": "3.4.0",
         "@types/jquery": "3.3.29",
+        "reflect-metadata": "0.1.13",
         "script4j.base": "file:./../script4j.base",
         "script4jfx.base": "file:./../script4jfx.base",
         "script4jfx.graphics": "file:./../script4jfx.graphics"
