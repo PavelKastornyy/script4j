@@ -22,19 +22,19 @@ The target JavaFX version is 11.
 `Scene` always controls the number of event handlers for every event type for all its nodes. Knowing number of event
 handlers `Scene` creates on root `HTML element` `HTML listeners` that catch `HTML events` on capturing phase. 
 Using `jQuery.data` by `HTMLElement` target `Node` is resolved. After that `FX Event` is created and etc. For details 
-see `HtmlEventListenerManager` in `script4jfx.graphics` module.
+see `HTMLEventListenerManager` in `script4jfx.graphics` module.
 
 ### Skins
-There is a strict separation between `HTML layer` and `FX layer`. Every `Node` has a `HtmlSkin` which contains all the
-logic to work with `HTML code`. All `HtmlSkin`s are created by `HtmlSkinFactory`s. There is a `HtmlSkinFactoryManager`
+There is a strict separation between `HTML layer` and `FX layer`. Every `Node` has a `HTMLSkin` which contains all the
+logic to work with `HTML code`. All `HTMLSkin`s are created by `HTMLSkinFactory`s. There is a `HTMLSkinFactoryManager`
 that contains all the factories (and first of all default factories) and which provide factory by `Node` class. Default
-factories are registered in `HtmlSkinFactoryManager` by `ModuleSkinFactoryRegistrator` that is created for every module.
-If it is necessary to change `HtmlSkin` for all instances of one `Node` (that are not created yet) then use 
-`HtmlSkinFactoryManager`. Note, that `Node#createDefaultSkin` implemented this way:
+factories are registered in `HTMLSkinFactoryManager` by `ModuleSkinFactoryRegistrator` that is created for every module.
+If it is necessary to change `HTMLSkin` for all instances of one `Node` (that are not created yet) then use 
+`HTMLSkinFactoryManager`. Note, that `Node#createDefaultSkin` implemented this way:
 
 ```
-protected createDefaultSkin(): HtmlSkin<any> {
-    return HtmlSkinFactoryManager.getFactory(this.getClass()).create(this);
+protected createDefaultSkin(): HTMLSkin<Node> {
+    return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this);
 }
 ```
 
@@ -43,8 +43,8 @@ more control. For example, to add `Scene` to document body the following code ca
 ```
 $("body").append(scene.getRoot().getSkin().getElement());
 ```
-That's why `HtmlSkin` is defined in `script4jfx.graphics` but not in `script4jfx.control`. At the same time Skin in
-`script4jfx.control` extends `HtmlSkin` so it doesn't conflict much with JavaFX API.
+That's why `HTMLSkin` is defined in `script4jfx.graphics` but not in `script4jfx.control`. At the same time Skin in
+`script4jfx.control` extends `HTMLSkin` so it doesn't conflict much with JavaFX API.
 
 ## Advantages
 * Script4J decreases development time as it is very convenient to use the same API for building JavaScript frontend and
