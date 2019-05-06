@@ -63,6 +63,7 @@ module.exports = {
         "script4jfx.internal.scene.ParentUnlocker",
         "script4jfx.internal.scene.EventDispatcherImpl",
         "script4jfx.html.HTML",
+        "script4jfx.html.HTMLElementFXAttributes",
         "script4jfx.scene.Scene",
         "script4jfx.html.HTMLSkinnable",
         "script4jfx.scene.Node",
@@ -74,6 +75,8 @@ module.exports = {
         "script4jfx.scene.layout.Region",
         "script4jfx.scene.layout.Pane",
         "script4jfx.scene.layout.skin.PaneSkin",
+        "script4jfx.internal.html.LoadingElementQueue",
+        "script4jfx.html.HTMLLoader",
         "script4jfx.internal.html.ModuleSkinFactoryRegistrator",
     ],
 

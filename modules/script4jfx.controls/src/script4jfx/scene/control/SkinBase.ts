@@ -30,5 +30,8 @@ import { AbstractHTMLSkin } from 'script4jfx.graphics';
 
 export abstract class SkinBase<C extends Control> extends AbstractHTMLSkin<C> implements Skin<C> {
     
+    public constructor(node: C, element: HTMLElement) {
+        super(node, element);
+    }
 }
 

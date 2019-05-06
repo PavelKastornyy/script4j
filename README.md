@@ -34,7 +34,7 @@ If it is necessary to change `HTMLSkin` for all instances of one `Node` (that ar
 
 ```
 protected createDefaultSkin(): HTMLSkin<Node> {
-    return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this);
+    return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this, LoadingElementQueue.pollElement());
 }
 ```
 
@@ -45,6 +45,61 @@ $("body").append(scene.getRoot().getSkin().getElement());
 ```
 That's why `HTMLSkin` is defined in `script4jfx.graphics` but not in `script4jfx.control`. At the same time Skin in
 `script4jfx.control` extends `HTMLSkin` so it doesn't conflict much with JavaFX API.
+
+### HTMLLoader
+As Script4J is supposed to be used mainly in browsers there is no much sense to use FXML - relations between nodes and
+HTML settings are already in DOM. So, Script4J doesn't support FXML, but supports loading `Node`s from HTML. Consider
+the following example:
+
+HTML:
+```
+<div data-fx-id="pane1" id="theRoot">
+    <div data-fx-id="pane2" class="some-class" style="background-color: yellow">
+        <div data-fx-id="pane3"></div>
+    </div>
+</div>
+```
+TypeScript:
+```
+class Controller {
+
+    @HTML
+    private pane1: Pane = null;    
+
+    @HTML
+    private pane2: Pane = null;
+
+    @HTML
+    private pane3: Pane = null;
+
+    constructor() {
+
+    }
+
+    public getPane1(): Pane {
+        return this.pane1;
+    }
+
+    public getPane2(): Pane {
+        return this.pane2;
+    }
+
+    public getPane3(): Pane {
+        return this.pane3;
+    }
+}
+...
+const htmlLoader: HTMLLoader = new HTMLLoader();
+const ctrl: Controller = new Controller();
+htmlLoader.setController(ctrl);
+const rootPane: Pane = htmlLoader.load(document.getElementById("theRoot"));
+console.log(rootPane.getId());//output: theRoot
+console.log(ctrl.getPane2().getStyle());//output: background-color: yellow;
+console.log(ctrl.getPane2().getSkin().getElement().className);//output: fx-pane some-class
+console.log(ctrl.getPane3() === ctrl.getPane2().getChildren().get(0));//output: true
+```
+In JavaFX using FXML is optional. However, in Script4J HTML elements are used always, that's why `HTMLLoader` and
+other `HTML` classes are in `script4jfx.graphics` module.
 
 ## Advantages
 * Script4J decreases development time as it is very convenient to use the same API for building JavaScript frontend and

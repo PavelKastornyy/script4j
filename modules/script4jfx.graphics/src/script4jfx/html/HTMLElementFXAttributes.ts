@@ -24,28 +24,8 @@
  *
  */
 
-import { HTMLSkin } from './HTMLSkin';
-import { Node } from './../scene/Node';
-
-export interface HTMLSkinFactory<T extends Node> {
+export class HTMLElementFXAttributes {
     
-    /**
-     * Node is the node for which this skin is created and element is the HTML element for the skin.
-     * If element is null, then skin will call createDefaultElement method.
-     */
-    create(node: T, element: HTMLElement): HTMLSkin<T>;
+    public static readonly ID = "data-fx-id";
 }
 
-type HtmlSkinFactoryFunc<T extends Node> = (t: T, element: HTMLElement) => HTMLSkin<T>;
-
-export namespace HTMLSkinFactory {
-    
-    export function fromFunc<T extends Node>(func: HtmlSkinFactoryFunc<T>): HTMLSkinFactory<T> {
-        return new class implements HTMLSkinFactory<T> {
-            
-            public create(node: T, element: HTMLElement): HTMLSkin<T> {
-                return func(node, element);
-            }
-        };
-    }
-}

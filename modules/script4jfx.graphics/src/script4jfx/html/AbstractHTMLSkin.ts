@@ -41,9 +41,18 @@ export abstract class AbstractHTMLSkin<T extends Node> implements HTMLSkin<T> {
     
     private readonly sceneListener: ChangeListener<Scene>;
     
-    public constructor(node: T) {
+    public constructor(node: T, element: HTMLElement) {
         this.node = node;
-        this.element = this.createElement();
+        if (element !== null) {
+            this.element = element;
+            if (this.element.className === "") {
+                this.element.className = this.getDefaultCssClass();
+            } else {
+                this.element.className = this.getDefaultCssClass() + " " + this.element.className;
+            }
+        } else {
+            this.element = this.createDefaultElement();
+        }
         //if Node is on Scene then there is link in jquery between the Node and the element.
         //if not, the link is removed.
         this.sceneListener = ChangeListener.fromFunc((observable: ObservableValue<Scene>, 
@@ -98,7 +107,8 @@ export abstract class AbstractHTMLSkin<T extends Node> implements HTMLSkin<T> {
         return this.element;
     }
     
-    protected abstract createElement(): HTMLElement;
+    public abstract getDefaultCssClass(): string;
     
+    protected abstract createDefaultElement(): HTMLElement;
 }
 

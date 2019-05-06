@@ -52,6 +52,7 @@ import { ChangeListener } from 'script4jfx.base';
 import { HTMLSkinFactoryManager } from './../html/HTMLSkinFactoryManager';
 import { HTMLSkinnable } from './../html/HTMLSkinnable';
 import { HTMLSkin } from './../html/HTMLSkin';
+import { LoadingElementQueue } from './../internal/html/LoadingElementQueue';
 
 export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
 
@@ -474,7 +475,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
      * is used.
      */
     protected createDefaultSkin(): HTMLSkin<Node> {
-        return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this);
+        return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this, LoadingElementQueue.pollElement());
     }
     
     /**

@@ -24,28 +24,23 @@
  *
  */
 
-import { HTMLSkin } from './HTMLSkin';
-import { Node } from './../scene/Node';
+import { List } from 'script4j.base';
+import { ArrayList } from 'script4j.base';
 
-export interface HTMLSkinFactory<T extends Node> {
+export class LoadingElementQueue {
     
-    /**
-     * Node is the node for which this skin is created and element is the HTML element for the skin.
-     * If element is null, then skin will call createDefaultElement method.
-     */
-    create(node: T, element: HTMLElement): HTMLSkin<T>;
-}
-
-type HtmlSkinFactoryFunc<T extends Node> = (t: T, element: HTMLElement) => HTMLSkin<T>;
-
-export namespace HTMLSkinFactory {
+    private static elements: List<HTMLElement> = new ArrayList();
     
-    export function fromFunc<T extends Node>(func: HtmlSkinFactoryFunc<T>): HTMLSkinFactory<T> {
-        return new class implements HTMLSkinFactory<T> {
-            
-            public create(node: T, element: HTMLElement): HTMLSkin<T> {
-                return func(node, element);
-            }
-        };
+    public static pollElement(): HTMLElement {
+        if (LoadingElementQueue.elements.isEmpty()) {
+            return null;
+        } else {
+            return LoadingElementQueue.elements.removeByIndex(0);
+        }
+    }
+    
+    public static addElement(loadingElement: HTMLElement) {
+        LoadingElementQueue.elements.add(loadingElement);
     }
 }
+

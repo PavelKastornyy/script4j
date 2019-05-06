@@ -32,11 +32,13 @@ export class ModuleSkinFactoryRegistrator {
     private static hasRegistered: boolean = ModuleSkinFactoryRegistrator.register();
     
     private static register(): boolean {
-        HTMLSkinFactoryManager.registerFactory(TextArea.class(), HTMLSkinFactory.fromFunc((control: TextArea) => {
-            return new TextAreaSkin(control);
+        HTMLSkinFactoryManager.registerFactory(TextArea.class(), 
+                HTMLSkinFactory.fromFunc((control: TextArea, element: HTMLElement) => {
+            return new TextAreaSkin(control, element);
         }));
-        HTMLSkinFactoryManager.registerFactory(TextField.class(), HTMLSkinFactory.fromFunc((control: TextField) => {
-            return new TextFieldSkin(control);
+        HTMLSkinFactoryManager.registerFactory(TextField.class(), 
+                HTMLSkinFactory.fromFunc((control: TextField, element: HTMLElement) => {
+            return new TextFieldSkin(control, element);
         }));
         return true;
     }

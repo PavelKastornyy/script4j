@@ -62,5 +62,10 @@ export interface HTMLSkin<T extends HTMLSkinnable> {
      * Returns style of the html element. Returns null if there is no style.
      */
     getStyle(): string;
+    
+    /**
+     * Returns the default class for this node, for example fx-pane.
+     */
+    getDefaultCssClass(): string;
 }
 

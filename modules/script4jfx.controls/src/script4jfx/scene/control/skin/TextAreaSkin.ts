@@ -30,8 +30,16 @@ import { TextArea } from './../TextArea';
 
 export class TextAreaSkin extends TextInputControlSkin<TextArea> {
     
-    protected createElement(): HTMLElement {
-        return $('<textarea class="fx-text-area" />')[0];
+    public constructor(node: TextArea, element: HTMLElement) {
+        super(node, element);
+    }
+    
+    public getDefaultCssClass(): string {
+        return "fx-text-area";
+    }
+    
+    protected createDefaultElement(): HTMLElement {
+        return $('<textarea />')[0];
     }
 }
 

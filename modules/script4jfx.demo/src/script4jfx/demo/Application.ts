@@ -22,14 +22,13 @@
 import { Person } from './application/Person';
 import { PersonView } from './application/PersonView';
 import { PersonViewModel } from './application/PersonViewModel';
-import { TreeMap } from 'script4j.base';
 import 'jquery';
  
 export class Application {
     
-    public static main(): void {
+    public static main(id: string): void {
         const viewModel: PersonViewModel = new PersonViewModel();
-        const view: PersonView = new PersonView();
+        const view: PersonView = new PersonView(document.getElementById("root"));
         view.initialize(viewModel);
         $("body").append(view.getScene().getRoot().getSkin().getElement());
         

@@ -25,12 +25,16 @@ import 'jquery';
 
 export class PaneSkin extends AbstractHTMLSkin<Pane> {
     
-    public constructor(node: Pane) {
-        super(node);
+    public constructor(node: Pane, element: HTMLElement) {
+        super(node, element);
     }
     
-    protected createElement(): HTMLElement {
-        return $('<div class="fx-pane"/>')[0];
+    public getDefaultCssClass(): string {
+        return "fx-pane";
+    }
+    
+    protected createDefaultElement(): HTMLElement {
+        return $('<div/>')[0];
     }
 }
 

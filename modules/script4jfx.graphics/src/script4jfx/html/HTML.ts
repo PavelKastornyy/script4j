@@ -26,8 +26,14 @@
 
 import 'reflect-metadata';
 
-export function HTML(target : any, key : string) {
-    //we don't need any code here
+export function HTML(target: object, propertyKey: string) {
+    let properties: string[] = Reflect.getMetadata("HTML", target);
+    if (properties) {
+        properties.push(propertyKey);
+    } else {
+        properties = [propertyKey];
+        Reflect.defineMetadata("HTML", properties, target);
+    }
 }
 
 

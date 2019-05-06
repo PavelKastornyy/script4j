@@ -29,8 +29,12 @@ import { TextField } from './../TextField';
 
 export class TextFieldSkin extends TextInputControlSkin<TextField> {
     
-    protected createElement(): HTMLElement {
-        return $('<input type="text" class="fx-text-field"/>')[0];
+    public getDefaultCssClass(): string {
+        return "fx-text-field";
+    }
+    
+    protected createDefaultElement(): HTMLElement {
+        return $('<input type="text" />')[0];
     }
 }
 

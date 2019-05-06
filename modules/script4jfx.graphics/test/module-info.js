@@ -42,5 +42,6 @@ module.exports = {
         "script4jfx.scene.input.KeyCodeTest",
         "script4jfx.scene.layout.PaneTest",
         "script4jfx.internal.scene.HandlerTreeTest",
+        "script4jfx.html.HTMLLoaderTest",
     ]
 };

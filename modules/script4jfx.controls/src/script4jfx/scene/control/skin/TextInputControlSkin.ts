@@ -29,6 +29,10 @@ import { SkinBase } from './../SkinBase';
 
 export abstract class TextInputControlSkin<T extends TextInputControl> extends SkinBase<T> {
     
+    public constructor(node: T, element: HTMLElement) {
+        super(node, element);
+    }
+    
     public setText(text: string): void {
         this.getElement().value = text;
     }
