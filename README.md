@@ -47,9 +47,9 @@ That's why `HTMLSkin` is defined in `script4jfx.graphics` but not in `script4jfx
 `script4jfx.control` extends `HTMLSkin` so it doesn't conflict much with JavaFX API.
 
 ### HTMLLoader
-As Script4J is supposed to be used mainly in browsers there is no much sense to use FXML - relations between nodes and
-HTML settings are already in DOM. So, Script4J doesn't support FXML, but supports loading `Node`s from HTML. Consider
-the following example:
+As Script4J is supposed to be used mainly in browsers there is no much sense to use `FXML` - relations between nodes and
+`HTML` settings are already in `DOM`. So, Script4J doesn't support `FXML`, but supports loading `Node`s from `HTML`. 
+Consider the following example:
 
 HTML:
 ```
@@ -95,10 +95,8 @@ htmlLoader.setController(ctrl);
 const rootPane: Pane = htmlLoader.load(document.getElementById("theRoot"));
 console.log(rootPane.getId());//output: theRoot
 console.log(ctrl.getPane2().getStyle());//output: background-color: yellow;
-console.log(ctrl.getPane2().getSkin().getElement().className);//output: fx-pane some-class
-console.log(ctrl.getPane3() === ctrl.getPane2().getChildren().get(0));//output: true
 ```
-In JavaFX using FXML is optional. However, in Script4J HTML elements are used always, that's why `HTMLLoader` and
+In JavaFX using `FXML` is optional. However, in Script4J `HTML` elements are used always, that's why `HTMLLoader` and
 other `HTML` classes are in `script4jfx.graphics` module.
 
 ## Advantages
