@@ -49,6 +49,11 @@ module.exports = {
         "script4jfx.scene.control.skin.TextAreaSkin",
         "script4jfx.scene.control.TextField",
         "script4jfx.scene.control.skin.TextFieldSkin",
+        "script4jfx.scene.control.Labeled",
+        "script4jfx.scene.control.ButtonBase",
+        "script4jfx.scene.control.Button",
+        "script4jfx.scene.control.skin.LabeledSkinBase",
+        "script4jfx.scene.control.skin.ButtonSkin",
         "script4jfx.internal.html.ModuleSkinFactoryRegistrator",
     ],
 

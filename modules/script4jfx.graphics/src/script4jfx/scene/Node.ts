@@ -131,14 +131,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
                 oldSkin.dispose();
             }
             if (newSkin !== null) {
-                let id = newSkin.getId();
-                if (id !== null) {
-                    this.setId(id);
-                }
-                let style = newSkin.getStyle();
-                if (style !== null) {
-                    this.setStyle(style);
-                }
+                newSkin.initialize();
             }
         }));
         this.setSkin(this.createDefaultSkin());
@@ -271,7 +264,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
             this.style = new SimpleStringProperty(null, this);
             this.style.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
                     oldValue: string, newValue: string) => {
-                this.getSkin().setStyle(newValue);
+                    this.getSkin().setStyle(newValue);
             }));
         }
         return this.style;

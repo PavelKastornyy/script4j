@@ -24,53 +24,20 @@
  *
  */
 
-import { HTMLSkinnable } from './HTMLSkinnable';
+import { Labeled } from './../Labeled';
+import { SkinBase } from './../SkinBase';
 
-export interface HTMLSkin<T extends HTMLSkinnable> {
+export abstract class LabeledSkinBase<C extends Labeled> extends SkinBase<C> {
+    
+    public constructor(node: C, element: HTMLElement) {
+        super(node, element);
+    }
+    
+    public abstract setText(text: string): void;
     
     /**
-     * Called by a Skinnable when the Skin is set to Skinnable.
+     * Returns null if there is no text.
      */
-    initialize(): void;
-
-    /**
-     * Called by a Skinnable when the Skin is replaced on the Skinnable.
-     */    
-    dispose(): void;
-    
-    /**
-     * Root html element of this skin.
-     */
-    getElement(): HTMLElement;
-
-    /**
-     * Gets the Skinnable to which this Skin is assigned.
-     */    
-    getSkinnable(): T;
-    
-    /**
-     * Sets id to html element.
-     */
-    setId(id: string): void;
-    
-    /**
-     * Returns id of the html element. Returns null if there is no id.
-     */
-    getId(): string;
-    
-    /**
-     * Sets style to html element.
-     */
-    setStyle(style: string): void;
-    
-    /**
-     * Returns style of the html element. Returns null if there is no style.
-     */
-    getStyle(): string;
-    
-    /**
-     * Returns the default class for this node, for example fx-pane.
-     */
-    getDefaultCssClass(): string;
+    public abstract getText(): string;
 }
 

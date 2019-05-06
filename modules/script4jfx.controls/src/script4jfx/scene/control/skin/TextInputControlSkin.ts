@@ -31,9 +31,20 @@ export abstract class TextInputControlSkin<T extends TextInputControl> extends S
     
     public constructor(node: T, element: HTMLElement) {
         super(node, element);
+        $(element).on('input propertychange', ()=> {
+            try {
+                this.setChangeBlocked(true)
+                this.getSkinnable().setText(this.getText());
+            } finally {
+                this.setChangeBlocked(false)
+            }
+        });
     }
     
     public setText(text: string): void {
+        if (this.isChangeBlocked()) {
+            return;
+        }
         this.getElement().value = text;
     }
     

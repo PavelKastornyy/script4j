@@ -23,6 +23,7 @@ import { View } from './../mvvm/View';
 import { PersonViewModel } from './PersonViewModel';
 import { TextField } from 'script4jfx.controls';
 import { TextArea } from 'script4jfx.controls';
+import { Button } from 'script4jfx.controls';
 import { Pane } from 'script4jfx.graphics';
 import { System } from 'script4j.base';
 import { Node } from 'script4jfx.graphics';
@@ -35,6 +36,7 @@ import { KeyEvent } from 'script4jfx.graphics';
 import { MouseEvent } from 'script4jfx.graphics';
 import { HTML } from 'script4jfx.graphics';
 import { HTMLLoader } from 'script4jfx.graphics';
+
 import 'reflect-metadata';
 
 export class PersonView implements View {
@@ -58,6 +60,9 @@ export class PersonView implements View {
     @HTML
     private readonly resumeTextArea: TextArea = null;
     
+    @HTML
+    private readonly createButton: Button = null;
+    
     constructor(rootElement: HTMLElement) {
         const htmlLoader: HTMLLoader = new HTMLLoader(rootElement);
         htmlLoader.setController(this);
@@ -69,6 +74,9 @@ export class PersonView implements View {
         this.pane.setStyle("padding: 20px; background-color: yellow");
         this.pane.setOnMouseClicked(EventHandler.fromFunc((event: MouseEvent) => {
             console.log(event);
+        }));
+        this.createButton.setOnMouseClicked(EventHandler.fromFunc((event: MouseEvent) => {
+            console.log("Button was clicked:" + this.createButton.getText());
         }));
     }
     

@@ -25,28 +25,21 @@ import { it } from 'mocha';
 import { afterEach } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { DOMWindow } from 'jsdom';
-import { TextInputControl } from './../../../../src/script4jfx/scene/control/TextInputControl';
+import { TextField } from './../../../../src/script4jfx/scene/control/TextField';
 import { JQuery } from 'script4jfx.jquery';
 
-describe('TextInputControlTest', () => {
+describe('TextFieldTest', () => {
 
     const dom: JSDOM = new JSDOM(`<!DOCTYPE html><html><body></body></html>`);
     const window: DOMWindow = dom.window;
     JQuery.setWindow(window);
-    
-    class TextInputControlImpl extends TextInputControl {
-        
-        protected buildElement(): HTMLElement {
-            return $('<textarea/>')[0];
-        }
-    }
     
     afterEach(function() {
         $(window.document.body).empty();
     });
     
     it('constructor_textChanged_eventIsFired', () => {
-        let control: TextInputControlImpl = new TextInputControlImpl();
+        let control: TextField = new TextField();
         const document: Document = dom.window.document;
         document.body.appendChild(control.getSkin().getElement());
         control.getSkin().getElement().focus();

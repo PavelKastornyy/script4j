@@ -40,19 +40,9 @@ export abstract class TextInputControl extends Control {
     
     public constructor() {
         super();
-        let ignoreTextChangeEvent: boolean = false;
-        $(this.getSkin().getElement()).on('input propertychange', ()=> {
-            try {
-                ignoreTextChangeEvent = true;
-                this.setText((<TextInputControlSkin<any>> this.getSkin()).getText());
-            } finally {
-                ignoreTextChangeEvent = false;
-            }
-        });
-        this.text.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, oldValue: string, newValue: string) => {
-            if (!ignoreTextChangeEvent) {
-                (<TextInputControlSkin<any>> this.getSkin()).setText(newValue);
-            }
+        this.text.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
+                oldValue: string, newValue: string) => {
+            (<TextInputControlSkin<any>> this.getSkin()).setText(newValue);
         }));
     }
 

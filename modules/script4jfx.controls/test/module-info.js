@@ -40,6 +40,7 @@ module.exports = {
      * Order matters!
      */
     classes: [
-        "script4jfx.scene.control.TextInputControlTest",
+        "script4jfx.scene.control.TextFieldTest",
+        "script4jfx.scene.control.ButtonTest",
     ]
 };

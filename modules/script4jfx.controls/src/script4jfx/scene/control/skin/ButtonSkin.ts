@@ -24,53 +24,50 @@
  *
  */
 
-import { HTMLSkinnable } from './HTMLSkinnable';
+import { Button } from './../Button';
+import { LabeledSkinBase } from './LabeledSkinBase';
 
-export interface HTMLSkin<T extends HTMLSkinnable> {
+export class ButtonSkin extends LabeledSkinBase<Button> {
     
-    /**
-     * Called by a Skinnable when the Skin is set to Skinnable.
-     */
-    initialize(): void;
-
-    /**
-     * Called by a Skinnable when the Skin is replaced on the Skinnable.
-     */    
-    dispose(): void;
+    public constructor(node: Button, element: HTMLElement) {
+        super(node, element);
+    }
     
-    /**
-     * Root html element of this skin.
-     */
-    getElement(): HTMLElement;
-
-    /**
-     * Gets the Skinnable to which this Skin is assigned.
-     */    
-    getSkinnable(): T;
+    public getDefaultCssClass(): string {
+        return "fx-button";
+    }
     
-    /**
-     * Sets id to html element.
-     */
-    setId(id: string): void;
+    public setText(text: string): void {
+        if (this.isChangeBlocked()) {
+            return;
+        }
+        this.getElement().innerHTML = text;
+    }
     
-    /**
-     * Returns id of the html element. Returns null if there is no id.
-     */
-    getId(): string;
+    public getText(): string {
+        let text = this.getElement().innerHTML;
+        if (text === "") {
+            return null;
+        } else {
+            return text;
+        }
+    }
     
-    /**
-     * Sets style to html element.
-     */
-    setStyle(style: string): void;
+    public initialize(): void {
+        super.initialize();
+        let text = this.getText();
+        if (text !== null) {
+            try {
+                this.setChangeBlocked(true);
+                this.getSkinnable().setText(text);
+            } finally {
+                this.setChangeBlocked(false);
+            }
+        }
+    }
     
-    /**
-     * Returns style of the html element. Returns null if there is no style.
-     */
-    getStyle(): string;
-    
-    /**
-     * Returns the default class for this node, for example fx-pane.
-     */
-    getDefaultCssClass(): string;
+    protected createDefaultElement(): HTMLElement {
+        return $('<button type="button"></button>')[0];
+    }
 }
 

@@ -23,6 +23,8 @@ import { TextArea } from './../../scene/control/TextArea';
 import { TextAreaSkin } from './../../scene/control/skin/TextAreaSkin';
 import { TextField } from './../../scene/control/TextField';
 import { TextFieldSkin } from './../../scene/control/skin/TextFieldSkin';
+import { Button } from './../../scene/control/Button';
+import { ButtonSkin } from './../../scene/control/skin/ButtonSkin';
 import { HTMLSkinFactoryManager } from 'script4jfx.graphics';
 import { HTMLSkinFactory } from 'script4jfx.graphics';
 import 'jquery';
@@ -39,6 +41,10 @@ export class ModuleSkinFactoryRegistrator {
         HTMLSkinFactoryManager.registerFactory(TextField.class(), 
                 HTMLSkinFactory.fromFunc((control: TextField, element: HTMLElement) => {
             return new TextFieldSkin(control, element);
+        }));
+        HTMLSkinFactoryManager.registerFactory(Button.class(), 
+                HTMLSkinFactory.fromFunc((control: Button, element: HTMLElement) => {
+            return new ButtonSkin(control, element);
         }));
         return true;
     }

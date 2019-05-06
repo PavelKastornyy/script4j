@@ -41,9 +41,9 @@ export abstract class Control extends Region implements Skinnable {
 //     */
 //    private tooltip: ObjectProperty<Tooltip> = null;
 //    
-//    constructor() {
-//        super();
-//    }
+    constructor() {
+        super();
+    }
 //
 //    /**
 //     * The ContextMenu to show for this control.

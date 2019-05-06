@@ -27,15 +27,18 @@
 import { Control } from './Control';
 import { ChangeListener } from 'script4jfx.base';
 import { StringProperty } from 'script4jfx.base';
+import { ObservableValue } from 'script4jfx.base';
 import { SimpleStringProperty } from 'script4jfx.base';
+import { LabeledSkinBase } from './skin/LabeledSkinBase';
 
 export abstract class Labeled extends Control {
 
     /**
-     * The text to display in the label.
+     * The text to display in the label. Don't put any value to this field, because textProperty
+     * will be called before the value is set to this field.
      */    
-    private text: StringProperty = null;
-
+    private text: StringProperty;
+    
     /**
      * Creates a Label with text
      */    
@@ -50,9 +53,13 @@ export abstract class Labeled extends Control {
      * The text to display in the label. The text may be null.
      */
     public textProperty(): StringProperty {
-        if (this.text === null) {
+        //undefined because skin well be created in parent constructor, while this.text is undefined in this constructor.
+        if (this.text === null || this.text === undefined) {
             this.text = new SimpleStringProperty(null, this);
-            this.text.addListener(this.createDefaultTextListener());
+            this.text.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
+                    oldValue: string, newValue: string) => {
+                (<LabeledSkinBase<Labeled>> this.getSkin()).setText(newValue);
+            }));
         }
         return this.text;
     }
@@ -70,11 +77,6 @@ export abstract class Labeled extends Control {
     public setText(value: string): void {
         this.textProperty().set(value);
     }
-
-    /**
-     * This listener is required to modify html element.
-     */
-    protected abstract createDefaultTextListener(): ChangeListener<string>;
 
 }
 

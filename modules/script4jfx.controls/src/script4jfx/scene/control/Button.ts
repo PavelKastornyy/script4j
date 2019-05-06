@@ -24,53 +24,12 @@
  *
  */
 
-import { HTMLSkinnable } from './HTMLSkinnable';
+import { ButtonBase } from './ButtonBase';
 
-export interface HTMLSkin<T extends HTMLSkinnable> {
+export class Button extends ButtonBase {
     
-    /**
-     * Called by a Skinnable when the Skin is set to Skinnable.
-     */
-    initialize(): void;
-
-    /**
-     * Called by a Skinnable when the Skin is replaced on the Skinnable.
-     */    
-    dispose(): void;
-    
-    /**
-     * Root html element of this skin.
-     */
-    getElement(): HTMLElement;
-
-    /**
-     * Gets the Skinnable to which this Skin is assigned.
-     */    
-    getSkinnable(): T;
-    
-    /**
-     * Sets id to html element.
-     */
-    setId(id: string): void;
-    
-    /**
-     * Returns id of the html element. Returns null if there is no id.
-     */
-    getId(): string;
-    
-    /**
-     * Sets style to html element.
-     */
-    setStyle(style: string): void;
-    
-    /**
-     * Returns style of the html element. Returns null if there is no style.
-     */
-    getStyle(): string;
-    
-    /**
-     * Returns the default class for this node, for example fx-pane.
-     */
-    getDefaultCssClass(): string;
+    constructor​(text?: string) {
+        super(text);
+    }
 }
 
