@@ -109,7 +109,7 @@ const objectPrototypeToString = Object.prototype.toString;
 
 defineObjectPrototype("toString", function () {
     //if this method is called outside script4j.
-    if (this === null) {
+    if (this === null || this === undefined) {
         return;
     }
     if (this.getClass().getName() === "Function") {
