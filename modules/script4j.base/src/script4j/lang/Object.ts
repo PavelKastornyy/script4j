@@ -108,6 +108,10 @@ defineObjectPrototype("hashCode", function () {
 const objectPrototypeToString = Object.prototype.toString;
 
 defineObjectPrototype("toString", function () {
+    //if this method is called outside script4j.
+    if (this === null) {
+        return;
+    }
     if (this.getClass().getName() === "Function") {
         return objectPrototypeToString.call(this);
     } else {
