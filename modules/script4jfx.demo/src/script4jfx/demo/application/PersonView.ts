@@ -33,34 +33,38 @@ import { NumberStringConverter } from 'script4jfx.base';
 import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from 'script4jfx.graphics';
 import { MouseEvent } from 'script4jfx.graphics';
-
+import { HTML } from 'script4jfx.graphics';
+import { HTMLLoader } from 'script4jfx.graphics';
+import 'reflect-metadata';
 
 export class PersonView implements View {
 
-    private readonly scene: Scene;
+    private scene: Scene = null;
     
-    private readonly pane: Pane;    
-
-    private readonly firstNameTextField: TextField = new TextField();
+    @HTML
+    private pane: Pane = null;    
     
-    private readonly lastNameTextField: TextField = new TextField();
+    @HTML
+    private firstNameTextField: TextField = null;
     
-    private readonly ageTextField: TextField = new TextField();
+    @HTML
+    private lastNameTextField: TextField = null;
+    
+    @HTML
+    private ageTextField: TextField = null;
     
     //private readonly country...: ... = new ...();
     
-    private readonly resumeTextArea: TextArea = new TextArea();
+    @HTML
+    private readonly resumeTextArea: TextArea = null;
     
-    constructor() {
+    constructor(rootElement: HTMLElement) {
+        const htmlLoader: HTMLLoader = new HTMLLoader(rootElement);
+        htmlLoader.setController(this);
+        htmlLoader.load();
         this.firstNameTextField.setOnKeyTyped(EventHandler.fromFunc((event: KeyEvent) => {
             console.log(event);
         }));
-        this.pane = new Pane(
-            this.firstNameTextField,
-            this.lastNameTextField,
-            this.ageTextField,
-            this.resumeTextArea
-        )
         this.scene = new Scene(this.pane);
         this.pane.setStyle("padding: 20px; background-color: yellow");
         this.pane.setOnMouseClicked(EventHandler.fromFunc((event: MouseEvent) => {
@@ -80,7 +84,3 @@ export class PersonView implements View {
         this.resumeTextArea.textProperty().bindBidirectional(viewModel.resumeProperty());
     }
 }
-
-
-
-
