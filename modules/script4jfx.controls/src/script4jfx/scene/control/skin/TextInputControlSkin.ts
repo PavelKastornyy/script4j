@@ -42,10 +42,9 @@ export abstract class TextInputControlSkin<T extends TextInputControl> extends S
     }
     
     public setText(text: string): void {
-        if (this.isChangeBlocked()) {
-            return;
+        if (!this.isChangeBlocked()) {
+            this.getElement().value = text;
         }
-        this.getElement().value = text;
     }
     
     /**

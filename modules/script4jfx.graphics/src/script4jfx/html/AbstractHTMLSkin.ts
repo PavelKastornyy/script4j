@@ -102,13 +102,18 @@ export abstract class AbstractHTMLSkin<T extends Node> implements HTMLSkin<T> {
         }
     }
     
+    /**
+     * Sets id to html element.
+     */
     public setId(id: string): void {
-        if (this.isChangeBlocked()) {
-            return;
+        if (!this.isChangeBlocked()) {
+            this.element.id = id;
         }
-        this.element.id = id;
     }
     
+    /**
+     * Returns id of the html element. Returns null if there is no id.
+     */
     public getId(): string {
         let id = this.element.id;
         if (id !== "") {
@@ -118,13 +123,18 @@ export abstract class AbstractHTMLSkin<T extends Node> implements HTMLSkin<T> {
         }
     }
     
+    /**
+     * Sets style to html element.
+     */
     public setStyle(style: string): void {
-        if (this.isChangeBlocked()) {
-            return;
+        if (!this.isChangeBlocked()) {
+            this.element.style.cssText = style;
         }
-        this.element.style.cssText = style;
     }
     
+    /**
+     * Returns style of the html element. Returns null if there is no style.
+     */
     public getStyle(): string {
         let style = this.element.style.cssText;
         if (style !== "") {
@@ -142,6 +152,9 @@ export abstract class AbstractHTMLSkin<T extends Node> implements HTMLSkin<T> {
         return this.element;
     }
     
+    /**
+     * Returns the default class for this node, for example fx-pane.
+     */
     public abstract getDefaultCssClass(): string;
     
     protected isChangeBlocked(): boolean {

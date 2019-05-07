@@ -47,30 +47,4 @@ export interface HTMLSkin<T extends HTMLSkinnable> {
      * Gets the Skinnable to which this Skin is assigned.
      */    
     getSkinnable(): T;
-    
-    /**
-     * Sets id to html element.
-     */
-    setId(id: string): void;
-    
-    /**
-     * Returns id of the html element. Returns null if there is no id.
-     */
-    getId(): string;
-    
-    /**
-     * Sets style to html element.
-     */
-    setStyle(style: string): void;
-    
-    /**
-     * Returns style of the html element. Returns null if there is no style.
-     */
-    getStyle(): string;
-    
-    /**
-     * Returns the default class for this node, for example fx-pane.
-     */
-    getDefaultCssClass(): string;
 }
-

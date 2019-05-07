@@ -53,6 +53,7 @@ import { HTMLSkinFactoryManager } from './../html/HTMLSkinFactoryManager';
 import { HTMLSkinnable } from './../html/HTMLSkinnable';
 import { HTMLSkin } from './../html/HTMLSkin';
 import { LoadingElementQueue } from './../internal/html/LoadingElementQueue';
+import { AbstractHTMLSkin } from './../html/AbstractHTMLSkin';
 
 export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
 
@@ -233,7 +234,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
             this.id = new SimpleStringProperty(null, this);
             this.id.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, oldValue: string, 
                     newValue: string) => {
-                this.getSkin().setId(newValue);
+                (<AbstractHTMLSkin<Node>>this.getSkin()).setId(newValue);
             }));
         }
         return this.id;
@@ -264,7 +265,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
             this.style = new SimpleStringProperty(null, this);
             this.style.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
                     oldValue: string, newValue: string) => {
-                    this.getSkin().setStyle(newValue);
+                    (<AbstractHTMLSkin<Node>>this.getSkin()).setStyle(newValue);
             }));
         }
         return this.style;

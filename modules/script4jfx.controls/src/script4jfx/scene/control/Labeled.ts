@@ -34,7 +34,7 @@ import { LabeledSkinBase } from './skin/LabeledSkinBase';
 export abstract class Labeled extends Control {
 
     /**
-     * The text to display in the label. Don't put any value to this field, because textProperty
+     * The text to display in the label. Don't set any value to this field, because textProperty
      * will be called before the value is set to this field.
      */    
     private text: StringProperty;
@@ -44,6 +44,9 @@ export abstract class Labeled extends Control {
      */    
     constructor​(text?: string) {
         super();
+        if (this.text === undefined) {
+            this.text = null;
+        }
         if (text !== undefined) {
             this.setText(text);
         }

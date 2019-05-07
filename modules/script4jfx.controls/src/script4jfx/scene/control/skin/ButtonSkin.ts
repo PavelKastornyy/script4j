@@ -38,10 +38,9 @@ export class ButtonSkin extends LabeledSkinBase<Button> {
     }
     
     public setText(text: string): void {
-        if (this.isChangeBlocked()) {
-            return;
+        if (!this.isChangeBlocked()) {
+            this.getElement().innerHTML = text;
         }
-        this.getElement().innerHTML = text;
     }
     
     public getText(): string {
