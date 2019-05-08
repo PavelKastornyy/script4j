@@ -43,7 +43,7 @@ export abstract class AbstractHTMLSkin<T extends Node> implements HTMLSkin<T> {
     /**
      * Important! When Node state changes it must change its Skin. However, Skin can also change Node
      * state. So, we get circular events. In order to prevent it Skin before calling Node setters
-     * must change changeBlocked value to false and in ALL own setters checks its state.
+     * must change changeBlocked value to true and in ALL own setters checks its state.
      */
     private changeBlocked: boolean = false;
     
