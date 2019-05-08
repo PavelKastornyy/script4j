@@ -28,13 +28,13 @@ see `HTMLEventListenerManager` in `script4jfx.graphics` module.
 There is a strict separation between `HTML layer` and `FX layer`. Every `Node` has a `HTMLSkin` which contains all the
 logic to work with `HTML code`. All `HTMLSkin`s are created by `HTMLSkinFactory`s. There is a `HTMLSkinFactoryManager`
 that contains all the factories (and first of all default factories) and which provide factory by `Node` class. Default
-factories are registered in `HTMLSkinFactoryManager` by `ModuleSkinFactoryRegistrator` that is created for every module.
+factories are registered in `HTMLSkinFactoryManager` by `SkinFactoryRegistrator` from `skin` package.
 If it is necessary to change `HTMLSkin` for all instances of one `Node` (that are not created yet) then use 
 `HTMLSkinFactoryManager`. Note, that `Node#createDefaultSkin` implemented this way:
 
 ```
 protected createDefaultSkin(): HTMLSkin<Node> {
-    return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this, LoadingElementQueue.pollElement());
+    return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this, LoadedHTMLElementQueue.pollElement());
 }
 ```
 
@@ -96,8 +96,7 @@ const rootPane: Pane = htmlLoader.load(document.getElementById("theRoot"));
 console.log(rootPane.getId());//output: theRoot
 console.log(ctrl.getPane2().getStyle());//output: background-color: yellow;
 ```
-In JavaFX using `FXML` is optional. However, in Script4J `HTML` elements are used always, that's why `HTMLLoader` and
-other `HTML` classes are in `script4jfx.graphics` module.
+Note, that `HTMLLoader` is in `script4jfx.loader` module, and there is no `script4jfx.fxml` module.
 
 ## Advantages
 * Script4J decreases development time as it is very convenient to use the same API for building JavaScript frontend and
