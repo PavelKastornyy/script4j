@@ -50,13 +50,9 @@ export class Class<T> {
 
     private static createdClasses: Class<any>[] = new Array();
 
-    private construc: Constructor<T> = null;
+    private readonly construc: Constructor<T> = null;
 
-    private constructor(construc: any) {
-        this.construc = construc;
-    }
-
-    public static forConstructor<S extends Object>(construc: { new (...args: any[]): S }): Class<S> {
+    public static forConstructor<S extends Object>(construc: Constructor<S>): Class<S> {
         let index = Class.constructors.indexOf(construc);
         let klass: Class<S> = null;
         if (index === -1) {
@@ -68,6 +64,10 @@ export class Class<T> {
         }
         return klass;
     }
+    
+    private constructor(construc: any) {
+        this.construc = construc;
+    }    
 
     /**
      * Returns the  name of the entity (class, interface, array class,
@@ -79,5 +79,9 @@ export class Class<T> {
      */
     public getName(): string {
         return (<any>this.construc).name;
+    }
+    
+    public getConstructor(): Constructor<T> {
+        return this.construc;
     }
 }
