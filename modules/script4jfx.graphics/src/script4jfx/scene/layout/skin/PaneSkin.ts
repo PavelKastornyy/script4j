@@ -19,7 +19,7 @@
  *
  */
 
-import { AbstractHTMLSkin } from './../../../html/AbstractHTMLSkin';
+import {AbstractHTMLSkin} from './../../skin/AbstractHTMLSkin';
 import { Pane } from './../../layout/Pane';
 import 'jquery';
 

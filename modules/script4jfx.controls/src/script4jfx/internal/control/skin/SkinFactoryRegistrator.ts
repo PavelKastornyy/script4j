@@ -19,19 +19,21 @@
  *
  */
 
-import { TextArea } from './../../scene/control/TextArea';
-import { TextAreaSkin } from './../../scene/control/skin/TextAreaSkin';
-import { TextField } from './../../scene/control/TextField';
-import { TextFieldSkin } from './../../scene/control/skin/TextFieldSkin';
-import { Button } from './../../scene/control/Button';
-import { ButtonSkin } from './../../scene/control/skin/ButtonSkin';
+import { TextArea } from './../../../scene/control/TextArea';
+import { TextAreaSkin } from './../../../scene/control/skin/TextAreaSkin';
+import { TextField } from './../../../scene/control/TextField';
+import { TextFieldSkin } from './../../../scene/control/skin/TextFieldSkin';
+import { Button } from './../../../scene/control/Button';
+import { ButtonSkin } from './../../../scene/control/skin/ButtonSkin';
+import { Label } from './../../../scene/control/Label';
+import { LabelSkin } from './../../../scene/control/skin/LabelSkin';
 import { HTMLSkinFactoryManager } from 'script4jfx.graphics';
 import { HTMLSkinFactory } from 'script4jfx.graphics';
 import 'jquery';
 
-export class ModuleSkinFactoryRegistrator {
+export class SkinFactoryRegistrator {
     
-    private static hasRegistered: boolean = ModuleSkinFactoryRegistrator.register();
+    private static hasRegistered: boolean = SkinFactoryRegistrator.register();
     
     private static register(): boolean {
         HTMLSkinFactoryManager.registerFactory(TextArea.class(), 
@@ -45,6 +47,10 @@ export class ModuleSkinFactoryRegistrator {
         HTMLSkinFactoryManager.registerFactory(Button.class(), 
                 HTMLSkinFactory.fromFunc((control: Button, element: HTMLElement) => {
             return new ButtonSkin(control, element);
+        }));
+        HTMLSkinFactoryManager.registerFactory(Label.class(), 
+                HTMLSkinFactory.fromFunc((control: Label, element: HTMLElement) => {
+            return new LabelSkin(control, element);
         }));
         return true;
     }

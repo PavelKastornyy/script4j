@@ -37,34 +37,6 @@ export class ButtonSkin extends LabeledSkinBase<Button> {
         return "fx-button";
     }
     
-    public setText(text: string): void {
-        if (!this.isChangeBlocked()) {
-            this.getElement().innerHTML = text;
-        }
-    }
-    
-    public getText(): string {
-        let text = this.getElement().innerHTML;
-        if (text === "") {
-            return null;
-        } else {
-            return text;
-        }
-    }
-    
-    public initialize(): void {
-        super.initialize();
-        let text = this.getText();
-        if (text !== null) {
-            try {
-                this.setChangeBlocked(true);
-                this.getSkinnable().setText(text);
-            } finally {
-                this.setChangeBlocked(false);
-            }
-        }
-    }
-    
     protected createDefaultElement(): HTMLElement {
         return $('<button type="button"></button>')[0];
     }

@@ -54,12 +54,15 @@ module.exports = {
         "script4jfx.scene.control.Button",
         "script4jfx.scene.control.skin.LabeledSkinBase",
         "script4jfx.scene.control.skin.ButtonSkin",
-        "script4jfx.internal.html.ModuleSkinFactoryRegistrator",
+        "script4jfx.scene.control.Label",
+        "script4jfx.scene.control.skin.LabelSkin",
+        "script4jfx.internal.control.skin.SkinFactoryRegistrator",
     ],
 
     export: {
 	packages: [
             "script4jfx.scene.control",
+            "script4jfx.scene.control.skin",
 	]
     }
 };

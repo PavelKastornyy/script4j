@@ -35,7 +35,7 @@ import { Node } from './Node';
 import { EventType } from 'script4jfx.base';
 import { SceneEventHandlerManager } from './../internal/scene/SceneEventHandlerManager';
 import { NodeEventHandlerManager } from './../internal/scene/NodeEventHandlerManager';
-import { HTMLEventListenerManager } from './../internal/html/HTMLEventListenerManager';
+import { HTMLEventListenerManager } from './../internal/scene/event/HTMLEventListenerManager';
 import { EventHandlerCounter } from './../internal/scene/EventHandlerCounter';
 import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from './input/KeyEvent';

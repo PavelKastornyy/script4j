@@ -24,23 +24,25 @@
  *
  */
 
-import { List } from 'script4j.base';
-import { ArrayList } from 'script4j.base';
+import { HTMLSkin } from './HTMLSkin';
+import { Node } from './../Node';
+import { ObjectProperty } from 'script4jfx.base';
 
-export class LoadingElementQueue {
-    
-    private static elements: List<HTMLElement> = new ArrayList();
-    
-    public static pollElement(): HTMLElement {
-        if (LoadingElementQueue.elements.isEmpty()) {
-            return null;
-        } else {
-            return LoadingElementQueue.elements.removeByIndex(0);
-        }
-    }
-    
-    public static addElement(loadingElement: HTMLElement) {
-        LoadingElementQueue.elements.add(loadingElement);
-    }
+export interface HTMLSkinnable {
+
+    /**
+     * Returns the html skin that renders this Node.
+     */    
+    getSkin(): HTMLSkin<Node>
+
+    /**
+     * Sets the html skin that will render this Node.
+     */
+    setSkin​(value: HTMLSkin<Node>): void;
+
+    /**
+     * Skin is responsible for rendering this Node.
+     */
+    skinProperty(): ObjectProperty<HTMLSkin<any>>;
 }
 

@@ -1,9 +1,9 @@
 {
-    "name": "script4jfx.demo",
+    "name": "script4jfx.loader",
     "version": "0.1.0",
-    "description": "The demo module for FX of Script4J",
-    "main": "./dist/script4jfx.demo.js",
-    "types": "./dist/script4jfx.demo.ts",
+    "description": "The loader module for FX of Script4J",
+    "main": "./dist/script4jfx.loader.js",
+    "types": "./dist/script4jfx.loader.ts",
     "author": "Pavel Kastornyy <pavelkastornyy@gmail.com>",
     "license": "GNU General Public License, version 2, with the Classpath Exception",
     "devDependencies": {
@@ -19,17 +19,17 @@
         "@types/jquery": "3.3.29",
         "reflect-metadata": "0.1.13",
         "script4j.base": "file:./../script4j.base",
+        "script4jfx.jquery": "file:./../script4jfx.jquery",
         "script4jfx.base": "file:./../script4jfx.base",
         "script4jfx.graphics": "file:./../script4jfx.graphics",
-        "script4jfx.controls": "file:./../script4jfx.controls",
-        "script4jfx.loader": "file:./../script4jfx.loader"
+        "script4jfx.controls": "file:./../script4jfx.controls"
     },
     "dependencies": {
         "script4j.base": "file:./../script4j.base",
+        "script4jfx.jquery": "file:./../script4jfx.jquery",
         "script4jfx.base": "file:./../script4jfx.base",
         "script4jfx.graphics": "file:./../script4jfx.graphics",
-        "script4jfx.controls": "file:./../script4jfx.controls",
-        "script4jfx.loader": "file:./../script4jfx.loader"
+        "script4jfx.controls": "file:./../script4jfx.controls"
     },
     "scripts": {
         "install-module": "npm install && npx jsonlint -i package.json -t '    '",

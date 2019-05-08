@@ -24,25 +24,37 @@
  *
  */
 
-import { HTMLSkin } from './HTMLSkin';
-import { Node } from './../scene/Node';
-import { ObjectProperty } from 'script4jfx.base';
+import { LabeledSkinBase } from './LabeledSkinBase';
+import { Label } from './../Label';
 
-export interface HTMLSkinnable {
-
-    /**
-     * Returns the html skin that renders this Node.
-     */    
-    getSkin(): HTMLSkin<Node>
-
-    /**
-     * Sets the html skin that will render this Node.
-     */
-    setSkin​(value: HTMLSkin<Node>): void;
-
-    /**
-     * Skin is responsible for rendering this Node.
-     */
-    skinProperty(): ObjectProperty<HTMLSkin<any>>;
+export class LabelSkin extends LabeledSkinBase<Label> {
+    
+    public constructor(node: Label, element: HTMLElement) {
+        super(node, element);
+    }
+    
+    public getLabelFor(): string {
+        let label = (<HTMLLabelElement>this.getElement()).htmlFor;
+        if (label === "") {
+            return null;
+        } else {
+            return label;
+        }
+    }
+    
+    public setLabelFor(labelFor: string) {
+        if (!this.isChangeBlocked()) {
+            (<HTMLLabelElement>this.getElement()).htmlFor = labelFor;
+        }
+    }
+    
+    public getDefaultCssClass(): string {
+        return "fx-label";
+    }
+    
+    protected createDefaultElement(): HTMLElement {
+        return $('<label></label>')[0];
+    }    
+    
 }
 

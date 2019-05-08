@@ -25,10 +25,10 @@ import { it } from 'mocha';
 import { beforeEach } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { DOMWindow } from 'jsdom';
-import { Pane } from './../../../src/script4jfx/scene/layout/Pane';
-import { Scene } from './../../../src/script4jfx/scene/Scene';
-import { HTML } from './../../../src/script4jfx/html/HTML';
-import { HTMLLoader } from './../../../src/script4jfx/html/HTMLLoader';
+import { Pane } from 'script4jfx.graphics';
+import { Scene } from 'script4jfx.graphics';
+import { HTML } from './../../../src/script4jfx/loader/HTML';
+import { HTMLLoader } from './../../../src/script4jfx/loader/HTMLLoader';
 import { JQuery } from 'script4jfx.jquery';
 
 

@@ -26,15 +26,28 @@
 
 import 'reflect-metadata';
 
-import { Node } from './../scene/Node';
-import { Parent } from './../scene/Parent';
-import { HTMLElementFXAttributes } from './HTMLElementFXAttributes';
-import { LoadingElementQueue } from './../internal/html/LoadingElementQueue';
+import { Node } from 'script4jfx.graphics';
+import { Pane } from 'script4jfx.graphics';
+import { AbstractHTMLSkin } from 'script4jfx.graphics';
+import { LabelSkin } from 'script4jfx.controls';
+import { Label } from 'script4jfx.controls';
+import { LoadedHTMLElementQueue } from 'script4jfx.graphics';
 import { IllegalStateError } from 'script4j.base';
-import { ParentUnlocker } from './../internal/scene/ParentUnlocker';
+import { Map } from 'script4j.base';
+import { HashMap } from 'script4j.base';
+import { List } from 'script4j.base';
+import { ArrayList } from 'script4j.base';
+import { BuilderFactory } from 'script4jfx.base';
+import { Builder } from 'script4jfx.base';
+import { Script4JFXBuilderFactory } from './Script4JFXBuilderFactory';
+import { Class } from 'script4j.base';
 import "jquery";
 
 export class HTMLLoader {
+    
+    public static readonly FX_ID_ATTRIBUTE: string = "data-fx-id";
+
+    private static readonly DEFAULT_BUILDER_FACTORY: BuilderFactory = new Script4JFXBuilderFactory();
     
     private rootElement: HTMLElement = null;
     
@@ -44,9 +57,18 @@ export class HTMLLoader {
     
     private controllerHTMLFields: Object = null;
     
-    public constructor(rootElement?: HTMLElement) {
+    private builderFactory: BuilderFactory = null;
+    
+    private loadedNodesById: Map<string, Node> = new HashMap();
+    
+    private loadedLabels: List<Label> = new ArrayList<Label>();
+    
+    public constructor(rootElement?: HTMLElement, builderFactory?: BuilderFactory) {
         if (rootElement !== undefined) {
             this.rootElement = rootElement;
+        }
+        if (builderFactory !== undefined) {
+            this.builderFactory = builderFactory;
         }
     }
     
@@ -94,9 +116,26 @@ export class HTMLLoader {
         }
         this.controllerHTMLFields = this.getHTMLAnnotatedFields(this.controller);
         this.loadNodeAndElement(this.rootElement, null);
+        this.bindLabels();
+        this.loadedNodesById.clear();
+        this.loadedLabels.clear();
 //        const selector: string = "[data-fx-id]";
 //        let elements: HTMLElement[] = $(this.rootElement).find(selector).addBack(selector).toArray();
         return <T><unknown>this.root;
+    }
+
+    /**
+     * Returns the builder factory used by this loader.
+     */    
+    public getBuilderFactory() {
+        return this.builderFactory;
+    }	
+
+    /**
+     * Sets the builder factory used by this loader.
+     */    
+    public setBuilderFactory​(builderFactory: BuilderFactory): void {
+        this.builderFactory = builderFactory;
     }
     
     private getHTMLAnnotatedFields(controller: Object) {
@@ -106,26 +145,55 @@ export class HTMLLoader {
         return result;
     }
    
-    private loadNodeAndElement(element: HTMLElement, parent: Parent): void {
-        let newParent: Parent;
-        if (element.hasAttribute(HTMLElementFXAttributes.ID)) {
-            let fieldName: string = element.getAttribute(HTMLElementFXAttributes.ID);
+    private loadNodeAndElement(element: HTMLElement, parent: Node): void {
+        let node: Node = null;
+        if (element.hasAttribute(HTMLLoader.FX_ID_ATTRIBUTE)) {
+            let fieldName: string = element.getAttribute(HTMLLoader.FX_ID_ATTRIBUTE);
             if (fieldName in this.controllerHTMLFields) {
-                var klass = Reflect.getMetadata("design:type", this.controller, fieldName);
-                LoadingElementQueue.addElement(element);
-                let node: Node = new klass();
-                newParent = <Parent>node;
-                this.controller[fieldName] = node;
-                if (parent === null) {
-                    this.root = newParent;
+                let construc = Reflect.getMetadata("design:type", this.controller, fieldName);
+                const klass: Class<any> = Class.forConstructor(construc);
+                LoadedHTMLElementQueue.addElement(element);
+                let builder: Builder<Node> = null;
+                if (this.builderFactory !== null) {
+                    builder = <Builder<Node>>this.builderFactory.getBuilder(klass);
+                }
+                if (builder === null) {
+                    builder = <Builder<Node>> HTMLLoader.DEFAULT_BUILDER_FACTORY.getBuilder(klass);
+                }
+                if (builder !== null) {
+                    node = builder.build();
                 } else {
-                    (<ParentUnlocker><unknown>parent).getChildren().add(node);
+                    throw new Error("Could not find builder for Node of " + klass.getName());
+                }
+                this.controller[fieldName] = node;
+                if (node.getId() !== null) {
+                    this.loadedNodesById.put(node.getId(), node);
+                }
+                if (node instanceof Label) {
+                    this.loadedLabels.add(node);
+                }
+                if (parent === null) {
+                    this.root = node;
+                } else {
+                    if (parent instanceof Pane) {
+                        (<Pane>parent).getChildren().add(node);
+                    }
                 }
             }
         }
         for (let i = 0; i < element.children.length; i++) {
-            this.loadNodeAndElement(<HTMLElement>element.children[i], newParent);
+            this.loadNodeAndElement(<HTMLElement>element.children[i], node);
         }
+   }
+   
+   private bindLabels(): void {
+       for (let i: number = 0; i < this.loadedLabels.size(); i++) {
+           const label: Label = this.loadedLabels.get(0);
+           const node: Node = this.loadedNodesById.get((<LabelSkin> label.getSkin()).getLabelFor());
+           if (node !== null) {
+               label.setLabelFor(node);
+           }
+       }
    }
 }
 

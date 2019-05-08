@@ -30,11 +30,8 @@ export class Application {
         const viewModel: PersonViewModel = new PersonViewModel();
         const view: PersonView = new PersonView(document.getElementById("root"));
         view.initialize(viewModel);
-        $("body").append(view.getScene().getRoot().getSkin().getElement());
-        
         const person: Person = new Person();
         viewModel.setModel(person);
-        
         const resetButton= $('<button>Reset</button>').on("click", function (e: Event) { 
             viewModel.reset();
         })[0];

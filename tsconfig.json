@@ -5,7 +5,9 @@
         "removeComments": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "sourceMap": false
+        "sourceMap": false,
+        "alwaysStrict": true,
+        "strictFunctionTypes": true
     },
     "exclude": [
         "node_modules"

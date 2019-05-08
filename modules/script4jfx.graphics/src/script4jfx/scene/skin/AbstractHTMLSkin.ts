@@ -25,10 +25,9 @@
  */
 
 import { HTMLSkin } from './HTMLSkin';
-import { HTMLSkinnable } from './HTMLSkinnable';
-import { Node } from './../scene/Node';
-import { Scene } from './../scene/Scene';
-import { JQueryDataKeys } from './../internal/html/JQueryDataKeys';
+import { Node } from './../Node';
+import { Scene } from './../Scene';
+import { JQueryDataKeys } from './../../internal/jquery/JQueryDataKeys';
 import { ChangeListener } from 'script4jfx.base';
 import { ObservableValue } from 'script4jfx.base';
 import 'jquery';

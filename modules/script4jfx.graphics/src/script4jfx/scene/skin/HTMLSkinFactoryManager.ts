@@ -27,7 +27,7 @@
 import { Class } from 'script4j.base';
 import { Map } from 'script4j.base';
 import { HashMap } from 'script4j.base';
-import { Node } from './../scene/Node';
+import { Node } from './../Node';
 import { HTMLSkinFactory } from './HTMLSkinFactory';
 
 /**

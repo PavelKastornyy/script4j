@@ -27,20 +27,7 @@
 import { EventDispatcher } from 'script4jfx.base';
 import { EventDispatchChain } from 'script4jfx.base';
 import { Event } from 'script4jfx.base';
-import { EventType } from 'script4jfx.base';
-import { EventHandler } from 'script4jfx.base';
-import { UnsupportedOperationError } from 'script4j.base';
-import { SortedMap } from 'script4j.base';
-import { List } from 'script4j.base';
-import { Map } from 'script4j.base';
-import { Consumer } from 'script4j.base';
-import { Iterator } from 'script4j.base';
 import { AbstractEventHandlerManager } from './AbstractEventHandlerManager';
-import { Scene } from './../../scene/Scene';
-import { SceneUnlocker } from './SceneUnlocker';
-import { Node } from './../../scene/Node';
-import { NodeUnlocker } from './NodeUnlocker';
-import { HTMLKeyMapper } from './../html/HTMLKeyMapper';
 
 
 export class EventDispatcherImpl implements EventDispatcher {

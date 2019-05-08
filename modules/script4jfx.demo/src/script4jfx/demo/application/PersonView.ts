@@ -34,8 +34,9 @@ import { NumberStringConverter } from 'script4jfx.base';
 import { EventHandler } from 'script4jfx.base';
 import { KeyEvent } from 'script4jfx.graphics';
 import { MouseEvent } from 'script4jfx.graphics';
-import { HTML } from 'script4jfx.graphics';
-import { HTMLLoader } from 'script4jfx.graphics';
+import { Label } from 'script4jfx.controls';
+import { HTML } from 'script4jfx.loader';
+import { HTMLLoader } from 'script4jfx.loader';
 
 import 'reflect-metadata';
 
@@ -48,6 +49,9 @@ export class PersonView implements View {
     
     @HTML
     private firstNameTextField: TextField = null;
+    
+    @HTML
+    private firstNameLabel: Label = null;
     
     @HTML
     private lastNameTextField: TextField = null;

@@ -28,16 +28,16 @@ import { EventType } from 'script4jfx.base';
 import { Map } from 'script4j.base';
 import { Iterator } from 'script4j.base';
 import { HashMap } from 'script4j.base'
-import { EventBus } from './../scene/eventbus/EventBus';
-import { BusEventListener } from './../scene/eventbus/BusEventListener';
-import { HandlerEvent } from './../scene/busevents/HandlerEvent';
-import { KeyEvent } from './../../scene/input/KeyEvent';
-import { MouseEvent } from './../../scene/input/MouseEvent';
-import { MouseButton } from './../../scene/input/MouseButton';
-import { KeyCode } from './../../scene/input/KeyCode';
+import { EventBus } from './../../scene/eventbus/EventBus';
+import { BusEventListener } from './../../scene/eventbus/BusEventListener';
+import { HandlerEvent } from './../../scene/busevents/HandlerEvent';
+import { KeyEvent } from './../../../scene/input/KeyEvent';
+import { MouseEvent } from './../../../scene/input/MouseEvent';
+import { MouseButton } from './../../../scene/input/MouseButton';
+import { KeyCode } from './../../../scene/input/KeyCode';
 import { HTMLEventType } from './HTMLEventType';
-import { JQueryDataKeys } from './JQueryDataKeys';
-import { Node } from './../../scene/Node';
+import { JQueryDataKeys } from './../../jquery/JQueryDataKeys';
+import { Node } from './../../../scene/Node';
 import { EventTarget } from 'script4jfx.base';
 import { BiFunction } from 'script4j.base';
 import { List } from 'script4j.base';
@@ -207,6 +207,7 @@ export class HTMLEventListenerManager {
         if (this.listenersByHtmlType.containsKey(htmlEventType)) {
             return;
         }
+        //@ts-ignore
         let listener: EventListener = (e: KeyboardEvent) => {
             const node: Node = this.resolveNode(<HTMLElement>e.target);
             if (node !== null) {

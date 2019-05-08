@@ -24,41 +24,28 @@
  *
  */
 
-import { Labeled } from './../Labeled';
-import { SkinBase } from './../SkinBase';
+import { HTMLSkin } from './HTMLSkin';
+import { Node } from './../Node';
 
-export abstract class LabeledSkinBase<C extends Labeled> extends SkinBase<C> {
+export interface HTMLSkinFactory<T extends Node> {
     
-    public constructor(node: C, element: HTMLElement) {
-        super(node, element);
-    }
-    
-    public setText(text: string): void {
-        if (!this.isChangeBlocked()) {
-            this.getElement().innerHTML = text;
-        }
-    }
-    
-    public getText(): string {
-        let text = this.getElement().innerHTML;
-        if (text === "") {
-            return null;
-        } else {
-            return text;
-        }
-    }
-    
-    public initialize(): void {
-        super.initialize();
-        let text = this.getText();
-        if (text !== null) {
-            try {
-                this.setChangeBlocked(true);
-                this.getSkinnable().setText(text);
-            } finally {
-                this.setChangeBlocked(false);
-            }
-        }
-    }
+    /**
+     * Node is the node for which this skin is created and element is the HTML element for the skin.
+     * If element is null, then skin will call createDefaultElement method.
+     */
+    create(node: T, element: HTMLElement): HTMLSkin<T>;
 }
 
+type HtmlSkinFactoryFunc<T extends Node> = (t: T, element: HTMLElement) => HTMLSkin<T>;
+
+export namespace HTMLSkinFactory {
+    
+    export function fromFunc<T extends Node>(func: HtmlSkinFactoryFunc<T>): HTMLSkinFactory<T> {
+        return new class implements HTMLSkinFactory<T> {
+            
+            public create(node: T, element: HTMLElement): HTMLSkin<T> {
+                return func(node, element);
+            }
+        };
+    }
+}

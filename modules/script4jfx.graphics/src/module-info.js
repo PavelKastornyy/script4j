@@ -27,8 +27,7 @@ module.exports = {
         modules: [
             "script4j.base",
 	    "script4jfx.base",
-            "jquery",
-            "reflect-metadata"
+            "jquery"
         ],
         forspecmap: {
             "jquery":"script4jfx.jquery"
@@ -54,30 +53,27 @@ module.exports = {
         "script4jfx.internal.scene.SceneEventHandlerManager",
         "script4jfx.internal.scene.busevents.HandlerEvent",
         "script4jfx.internal.scene.EventHandlerCounter",
-        "script4jfx.internal.html.JQueryDataKeys",
-        "script4jfx.internal.html.HTMLKeyMapper",
-        "script4jfx.internal.html.HTMLEventType",
-        "script4jfx.internal.html.HTMLEventListenerManager",
+        "script4jfx.internal.jquery.JQueryDataKeys",
+        "script4jfx.internal.scene.event.HTMLKeyMapper",
+        "script4jfx.internal.scene.event.HTMLEventType",
+        "script4jfx.internal.scene.event.HTMLEventListenerManager",
         "script4jfx.internal.scene.SceneUnlocker",
         "script4jfx.internal.scene.NodeUnlocker",
         "script4jfx.internal.scene.ParentUnlocker",
         "script4jfx.internal.scene.EventDispatcherImpl",
-        "script4jfx.html.HTML",
-        "script4jfx.html.HTMLElementFXAttributes",
         "script4jfx.scene.Scene",
-        "script4jfx.html.HTMLSkinnable",
+        "script4jfx.scene.skin.HTMLSkinnable",
         "script4jfx.scene.Node",
-        "script4jfx.html.HTMLSkin",
-        "script4jfx.html.HTMLSkinFactory",
-        "script4jfx.html.HTMLSkinFactoryManager",
-        "script4jfx.html.AbstractHTMLSkin",
+        "script4jfx.scene.skin.HTMLSkin",
+        "script4jfx.scene.skin.HTMLSkinFactory",
+        "script4jfx.scene.skin.HTMLSkinFactoryManager",
+        "script4jfx.scene.skin.AbstractHTMLSkin",
         "script4jfx.scene.Parent",
         "script4jfx.scene.layout.Region",
         "script4jfx.scene.layout.Pane",
         "script4jfx.scene.layout.skin.PaneSkin",
-        "script4jfx.internal.html.LoadingElementQueue",
-        "script4jfx.html.HTMLLoader",
-        "script4jfx.internal.html.ModuleSkinFactoryRegistrator",
+        "script4jfx.scene.skin.LoadedHTMLElementQueue",
+        "script4jfx.internal.scene.skin.SkinFactoryRegistrator",
     ],
 
     export: {
@@ -85,7 +81,7 @@ module.exports = {
             "script4jfx.scene",
             "script4jfx.scene.input",
             "script4jfx.scene.layout",
-            "script4jfx.html",
+            "script4jfx.scene.skin",
 	]
     }
 };

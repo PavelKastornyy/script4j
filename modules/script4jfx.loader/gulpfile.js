@@ -1,16 +1,11 @@
 /*
  * Copyright (c) 2018-2019 Pavel Kastornyy. All rights reserved.
- * The specified copyright does not cover application programming interface
- * (API) and the documentation for this API, which were taken from other
- * libraries. See NOTICE file for more information.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation. Copyright holder designates
- * this particular file as subject to the "Classpath" exception as provided
- * by copyright holder in the LICENSE file that accompanied this code.
+ * published by the Free Software Foundation.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -24,8 +19,5 @@
  *
  */
 
-export class HTMLElementFXAttributes {
-    
-    public static readonly ID = "data-fx-id";
-}
-
+require('./../../scripts/babel.register');
+require('./gulptasks');

@@ -19,21 +19,28 @@
  *
  */
 
-import { Pane } from './../../scene/layout/Pane';
-import { PaneSkin } from './../../scene/layout/skin/PaneSkin';
-import { HTMLSkinFactoryManager } from './../../html/HTMLSkinFactoryManager';
-import { HTMLSkinFactory } from './../../html/HTMLSkinFactory';
-import 'jquery';
+module.exports = {
 
-export class ModuleSkinFactoryRegistrator {
-    
-    private static hasRegistered: boolean = ModuleSkinFactoryRegistrator.register();
-    
-    private static register(): boolean {
-        HTMLSkinFactoryManager.registerFactory(Pane.class(), HTMLSkinFactory.fromFunc((pane: Pane, element: HTMLElement) => {
-            return new PaneSkin(pane, element);
-        }));
-        return true;
-    }
-}    
+    name: 'script4jfx.loader.spec',
 
+    import: {
+        modules: [
+            'script4jfx.loader.4spec',
+            'script4j.base',
+            'script4jfx.base',
+            'script4jfx.jquery',
+            "script4jfx.graphics",
+            "script4jfx.controls",
+            'chai',
+            'mocha',
+            'jsdom'
+        ]
+    },
+
+    /**
+     * Order matters!
+     */
+    classes: [
+        "script4jfx.loader.HTMLLoaderTest",
+    ]
+};

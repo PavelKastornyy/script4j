@@ -49,11 +49,11 @@ import { Iterator } from 'script4j.base';
 import { ParentUnlocker } from './../internal/scene/ParentUnlocker';
 import { EventDispatcherImpl } from './../internal/scene/EventDispatcherImpl';
 import { ChangeListener } from 'script4jfx.base';
-import { HTMLSkinFactoryManager } from './../html/HTMLSkinFactoryManager';
-import { HTMLSkinnable } from './../html/HTMLSkinnable';
-import { HTMLSkin } from './../html/HTMLSkin';
-import { LoadingElementQueue } from './../internal/html/LoadingElementQueue';
-import { AbstractHTMLSkin } from './../html/AbstractHTMLSkin';
+import { HTMLSkinFactoryManager } from './skin/HTMLSkinFactoryManager';
+import { HTMLSkinnable } from './skin/HTMLSkinnable';
+import { HTMLSkin } from './skin/HTMLSkin';
+import { LoadedHTMLElementQueue } from './../scene/skin/LoadedHTMLElementQueue';
+import { AbstractHTMLSkin } from './skin/AbstractHTMLSkin';
 
 export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
 
@@ -469,7 +469,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
      * is used.
      */
     protected createDefaultSkin(): HTMLSkin<Node> {
-        return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this, LoadingElementQueue.pollElement());
+        return HTMLSkinFactoryManager.getFactory(this.getClass()).create(this, LoadedHTMLElementQueue.pollElement());
     }
     
     /**

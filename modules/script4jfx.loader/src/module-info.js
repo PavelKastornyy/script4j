@@ -21,26 +21,35 @@
 
 module.exports = {
 
-    name: 'script4jfx.graphics.spec',
+    name: "script4jfx.loader",
 
     import: {
         modules: [
-            'script4jfx.graphics.4spec',
-            'script4j.base',
-            'script4jfx.base',
-            'script4jfx.jquery',
-            'chai',
-            'mocha',
-            'jsdom'
-        ]
+            "script4j.base",
+	    "script4jfx.base",
+            "script4jfx.graphics",
+            "script4jfx.controls",
+            "jquery",
+            "reflect-metadata"
+        ],
+        forspecmap: {
+            "jquery":"script4jfx.jquery"
+        }
     },
 
     /**
      * Order matters!
      */
     classes: [
-        "script4jfx.scene.input.KeyCodeTest",
-        "script4jfx.scene.layout.PaneTest",
-        "script4jfx.internal.scene.HandlerTreeTest",
-    ]
+        "script4jfx.loader.HTML",
+        "script4jfx.loader.Script4JFXBuilderFactory",
+        "script4jfx.loader.HTMLLoader",
+    ],
+
+    export: {
+	packages: [
+            "script4jfx.loader",
+	]
+    }
 };
+

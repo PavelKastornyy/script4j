@@ -24,7 +24,7 @@
  *
  */
 
-import { KeyCode } from './../../scene/input/KeyCode';
+import { KeyCode } from './../../../scene/input/KeyCode';
 
 /**
  * Map from all codes from https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code

@@ -19,28 +19,21 @@
  *
  */
 
-module.exports = {
+import { Pane } from './../../../scene/layout/Pane';
+import { PaneSkin } from './../../../scene/layout/skin/PaneSkin';
+import { HTMLSkinFactoryManager } from './../../../scene/skin/HTMLSkinFactoryManager';
+import { HTMLSkinFactory } from './../../../scene/skin/HTMLSkinFactory';
+import 'jquery';
 
-    name: 'script4jfx.graphics.spec',
+export class SkinFactoryRegistrator {
+    
+    private static hasRegistered: boolean = SkinFactoryRegistrator.register();
+    
+    private static register(): boolean {
+        HTMLSkinFactoryManager.registerFactory(Pane.class(), HTMLSkinFactory.fromFunc((pane: Pane, element: HTMLElement) => {
+            return new PaneSkin(pane, element);
+        }));
+        return true;
+    }
+}    
 
-    import: {
-        modules: [
-            'script4jfx.graphics.4spec',
-            'script4j.base',
-            'script4jfx.base',
-            'script4jfx.jquery',
-            'chai',
-            'mocha',
-            'jsdom'
-        ]
-    },
-
-    /**
-     * Order matters!
-     */
-    classes: [
-        "script4jfx.scene.input.KeyCodeTest",
-        "script4jfx.scene.layout.PaneTest",
-        "script4jfx.internal.scene.HandlerTreeTest",
-    ]
-};

@@ -29,6 +29,7 @@ module.exports = {
 	    "script4jfx.base",
             "script4jfx.graphics",
             "script4jfx.controls",
+            "script4jfx.loader",
             "jquery",
             "reflect-metadata",
         ]

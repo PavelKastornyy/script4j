@@ -24,41 +24,17 @@
  *
  */
 
-import { Labeled } from './../Labeled';
-import { SkinBase } from './../SkinBase';
+import { BuilderFactory } from 'script4jfx.base';
+import { Builder } from 'script4jfx.base';
+import { Class } from 'script4j.base';
 
-export abstract class LabeledSkinBase<C extends Labeled> extends SkinBase<C> {
+export class Script4JFXBuilderFactory implements BuilderFactory {
     
-    public constructor(node: C, element: HTMLElement) {
-        super(node, element);
-    }
-    
-    public setText(text: string): void {
-        if (!this.isChangeBlocked()) {
-            this.getElement().innerHTML = text;
-        }
-    }
-    
-    public getText(): string {
-        let text = this.getElement().innerHTML;
-        if (text === "") {
-            return null;
-        } else {
-            return text;
-        }
-    }
-    
-    public initialize(): void {
-        super.initialize();
-        let text = this.getText();
-        if (text !== null) {
-            try {
-                this.setChangeBlocked(true);
-                this.getSkinnable().setText(text);
-            } finally {
-                this.setChangeBlocked(false);
-            }
-        }
+    getBuilder​(theType: Class<unknown>): Builder<unknown> {
+        return Builder.fromFunc(() => {
+            let construc = theType.getConstructor();
+            return new construc();
+        });
     }
 }
 
