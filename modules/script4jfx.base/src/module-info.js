@@ -105,6 +105,8 @@ module.exports = {
         "script4jfx.internal.collections.UnmodifiableObservableListWrapper",
         "script4jfx.internal.collections.UnmodifiableObservableSetWrapper",
         "script4jfx.collections.FXCollections",
+        "script4jfx.util.Builder",
+        "script4jfx.util.BuilderFactory",
     ],
 
     export: {
