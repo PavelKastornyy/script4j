@@ -84,7 +84,7 @@ export class HTMLEventListenerManager {
      * will be added/removed to/from scene.
      */
     private readonly handlerListener: BusEventListener<HandlerEvent> = 
-            BusEventListener.fromFunc((event: HandlerEvent)=> {
+            BusEventListener.lambda((event: HandlerEvent)=> {
                 const eventType: EventType<HandlerEvent> = event.getEventType();
                 if (eventType === HandlerEvent.HANDLER_ADDED) {
                     this.addCounts(event.getСountsByType());
@@ -117,7 +117,7 @@ export class HTMLEventListenerManager {
         if (value === null) {
             return;
         }
-        this.handlerCountsByEventType.compute(eventType, BiFunction.fromFunc((k: EventType<any>, v: number) => {
+        this.handlerCountsByEventType.compute(eventType, BiFunction.lambda((k: EventType<any>, v: number) => {
             if (v === null) {
                 v = 0;
             }
@@ -133,7 +133,7 @@ export class HTMLEventListenerManager {
         if (value === null) {
             return;
         }
-        this.handlerCountsByEventType.compute(eventType, BiFunction.fromFunc((k: EventType<any>, v: number) => {
+        this.handlerCountsByEventType.compute(eventType, BiFunction.lambda((k: EventType<any>, v: number) => {
             if (v === null) {
                 return null;
             }
@@ -402,7 +402,7 @@ export class HTMLEventListenerManager {
             if (types.isEmpty()) {
                 types.add(eventType);
             } else {
-                types.addByIndex(0, eventType);
+                types.addAt(0, eventType);
             }
             eventType = eventType.getSuperType();
         }

@@ -168,7 +168,7 @@ export class PropertyDelegate<T> extends ReadOnlyPropertyDelegate<T> {
     }    
 
     private createInternalListener(): ChangeListener<T> {
-        return ChangeListener.fromFunc<any>((observable: ObservableValue<T>, oldValue: T, newValue: T) => {
+        return ChangeListener.lambda<any>((observable: ObservableValue<T>, oldValue: T, newValue: T) => {
             //no bind see ES6 var https://hackernoon.com/javascript-es6-arrow-functions-and-lexical-this-f2a3e2a5e8c4
             //we need to stop cyclic setting value
             let newConvertedValue: T = this.convertValue(<ReadOnlyProperty<T>>observable, newValue);

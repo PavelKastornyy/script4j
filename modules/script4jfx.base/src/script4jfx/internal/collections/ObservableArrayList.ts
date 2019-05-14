@@ -40,8 +40,8 @@ export class ObservableArrayList<E> extends AbstractObservableListBase<E> {
         this.list.addAll(col);
     }
 
-    public addByIndex(index: number, obj: E): void {
-        this.list.addByIndex(index, obj);
+    public addAt(index: number, obj: E): void {
+        this.list.addAt(index, obj);
         let change: ListChangeListenerChange<E> = this.createInitialChange();
         let node: ListChangeListenerChange.Node<E> = change.newNode();
         node.setFrom(index);
@@ -49,9 +49,9 @@ export class ObservableArrayList<E> extends AbstractObservableListBase<E> {
         this.fireChangeEvent(change);
     }
 
-    public removeByIndex(index: number): E {
+    public removeAt(index: number): E {
         let prevSize: number = this.list.size();
-        let prevValue: E = this.list.removeByIndex(index);
+        let prevValue: E = this.list.removeAt(index);
         if (prevSize !== this.list.size()) {
             let change: ListChangeListenerChange<E> = this.createInitialChange();
             let node: ListChangeListenerChange.Node<E> = change.newNode();
@@ -102,8 +102,8 @@ export class ObservableArrayList<E> extends AbstractObservableListBase<E> {
         }
     }
     
-    public addAllByIndex(index: number, collection: Collection<E>): boolean {
-        if (this.list.addAllByIndex(index, collection)) {
+    public addAllAt(index: number, collection: Collection<E>): boolean {
+        if (this.list.addAllAt(index, collection)) {
             let change: ListChangeListenerChange<E> = this.createInitialChange();
             let node: ListChangeListenerChange.Node<E> = change.newNode();
             node.setFrom(index);//inclusive
@@ -131,7 +131,7 @@ export class ObservableArrayList<E> extends AbstractObservableListBase<E> {
             return false;
         }
         //for perfomance we remove by index as we know it already
-        this.list.removeByIndex(index)
+        this.list.removeAt(index)
         let change: ListChangeListenerChange<E> = this.createInitialChange();
         let node: ListChangeListenerChange.Node<E> = change.newNode();
         node.setFrom(index);
@@ -174,7 +174,7 @@ export class ObservableArrayList<E> extends AbstractObservableListBase<E> {
             } else {
                 nextIndexAndValue = null;
             }
-            this.list.removeByIndex(i);
+            this.list.removeAt(i);
             //now we see, if we start a change node
             if (currentChangeNode === null) {
                 currentChangeNode = change.newNode();

@@ -56,7 +56,7 @@ export class EventHandlerCounter {
     }
     
     private add(eventType:EventType<any>, value: number) {
-        this.result.compute(eventType, BiFunction.fromFunc((k: EventType<any>, v: number)=>{
+        this.result.compute(eventType, BiFunction.lambda((k: EventType<any>, v: number)=>{
             if (v === null) {
                 v = 0;
             }
@@ -65,7 +65,7 @@ export class EventHandlerCounter {
     }
     
     private subtract(eventType:EventType<any>, value: number) {
-        this.result.compute(eventType, BiFunction.fromFunc((k: EventType<any>, v: number)=>{
+        this.result.compute(eventType, BiFunction.lambda((k: EventType<any>, v: number)=>{
             if (v === null) {
                 v = 0;
             }

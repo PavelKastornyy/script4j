@@ -126,7 +126,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
      * Sets the element, taken from buildHtmlElement().
      */
     constructor() {
-        this.skin.addListener(ChangeListener.fromFunc((observable: ObservableValue<HTMLSkin<Node>>, 
+        this.skin.addListener(ChangeListener.lambda((observable: ObservableValue<HTMLSkin<Node>>, 
                 oldSkin: HTMLSkin<Node>, newSkin: HTMLSkin<Node>) => {
             if (oldSkin !== null) {
                 oldSkin.dispose();
@@ -232,7 +232,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
     public idProperty(): StringProperty {
         if (this.id === null) {
             this.id = new SimpleStringProperty(null, this);
-            this.id.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, oldValue: string, 
+            this.id.addListener(ChangeListener.lambda((observable: ObservableValue<string>, oldValue: string, 
                     newValue: string) => {
                 (<AbstractHTMLSkin<Node>>this.getSkin()).setId(newValue);
             }));
@@ -263,7 +263,7 @@ export abstract class Node implements Styleable, EventTarget, HTMLSkinnable {
     public styleProperty(): StringProperty {
         if (this.style === null) {
             this.style = new SimpleStringProperty(null, this);
-            this.style.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
+            this.style.addListener(ChangeListener.lambda((observable: ObservableValue<string>, 
                     oldValue: string, newValue: string) => {
                     (<AbstractHTMLSkin<Node>>this.getSkin()).setStyle(newValue);
             }));

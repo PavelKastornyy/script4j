@@ -37,19 +37,19 @@ export class SkinFactoryRegistrator {
     
     private static register(): boolean {
         HTMLSkinFactoryManager.registerFactory(TextArea.class(), 
-                HTMLSkinFactory.fromFunc((control: TextArea, element: HTMLElement) => {
+                HTMLSkinFactory.lambda((control: TextArea, element: HTMLElement) => {
             return new TextAreaSkin(control, element);
         }));
         HTMLSkinFactoryManager.registerFactory(TextField.class(), 
-                HTMLSkinFactory.fromFunc((control: TextField, element: HTMLElement) => {
+                HTMLSkinFactory.lambda((control: TextField, element: HTMLElement) => {
             return new TextFieldSkin(control, element);
         }));
         HTMLSkinFactoryManager.registerFactory(Button.class(), 
-                HTMLSkinFactory.fromFunc((control: Button, element: HTMLElement) => {
+                HTMLSkinFactory.lambda((control: Button, element: HTMLElement) => {
             return new ButtonSkin(control, element);
         }));
         HTMLSkinFactoryManager.registerFactory(Label.class(), 
-                HTMLSkinFactory.fromFunc((control: Label, element: HTMLElement) => {
+                HTMLSkinFactory.lambda((control: Label, element: HTMLElement) => {
             return new LabelSkin(control, element);
         }));
         return true;

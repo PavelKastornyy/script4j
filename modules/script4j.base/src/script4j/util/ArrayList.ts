@@ -131,12 +131,12 @@ export class ArrayList<E> extends AbstractList<E> {
         return this.array.length;
     }
 
-    public addByIndex(index: number, obj: E): void {
+    public addAt(index: number, obj: E): void {
         this.checkIndexIsInRange(index);
         this.array.splice(index, 0, obj);
     }
     
-    public addAllByIndex(index: number, c: Collection<E>): boolean {
+    public addAllAt(index: number, c: Collection<E>): boolean {
         if (index < 0 || index > this.size()) {
             throw new IndexOutOfBoundsError();
         }
@@ -159,7 +159,7 @@ export class ArrayList<E> extends AbstractList<E> {
         return this.array[index];
     }
 
-    public removeByIndex(index: number): E {
+    public removeAt(index: number): E {
         let previous: E = this.get(index);
         this.array.splice(index, 1);
         return previous;

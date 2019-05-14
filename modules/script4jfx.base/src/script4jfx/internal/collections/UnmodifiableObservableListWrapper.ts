@@ -49,15 +49,15 @@ export class UnmodifiableObservableListWrapper<E> extends AbstractObservableList
         this.list.removeListener(listener);
     }
 
-    public addByIndex(index: number, obj: E): void {
+    public addAt(index: number, obj: E): void {
         throw new UnsupportedOperationError();
     }
     
-    public addAllByIndex(index: number, collection: Collection<E>): boolean {    
+    public addAllAt(index: number, collection: Collection<E>): boolean {    
         throw new UnsupportedOperationError();
     }
 
-    public removeByIndex(index: number): E {
+    public removeAt(index: number): E {
         throw new UnsupportedOperationError();
     }
 

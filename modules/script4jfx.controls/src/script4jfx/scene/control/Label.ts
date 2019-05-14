@@ -59,7 +59,7 @@ export class Label extends Labeled {
     public labelForProperty(): ObjectProperty<Node> {
         if (this.labelFor === null || this.labelFor === undefined) {
             this.labelFor = new SimpleObjectProperty(null, this);
-            this.labelFor.addListener(ChangeListener.fromFunc((observable: ObservableValue<Node>, 
+            this.labelFor.addListener(ChangeListener.lambda((observable: ObservableValue<Node>, 
                     oldValue: Node, newValue: Node) => {
                 (<LabelSkin> this.getSkin()).setLabelFor(newValue.getId());
             }));

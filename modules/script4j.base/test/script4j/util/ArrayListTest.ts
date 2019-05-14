@@ -92,21 +92,21 @@ describe('ArrayListTest', () => {
         assert.equal(list.size(), 1);
     });
 
-    it('addByIndex_shiftingObjects_addsObject', () => {
+    it('addAt_shiftingObjects_addsObject', () => {
         let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
-        list.addByIndex(0, obj2);
+        list.addAt(0, obj2);
         assert.isTrue(list.get(0).equals(obj2));
         assert.isTrue(list.get(1).equals(obj1));
         assert.equal(list.size(), 2);
-        list.addByIndex(1, obj3);
+        list.addAt(1, obj3);
         assert.isTrue(list.get(0).equals(obj2));
         assert.isTrue(list.get(1).equals(obj3));
         assert.isTrue(list.get(2).equals(obj1));
         assert.equal(list.size(), 3);
     });
     
-    it('addAllByIndex_shiftingObjects_addsObject', () => {
+    it('addAllAt_shiftingObjects_addsObject', () => {
         let list: List<number> = new ArrayList<number>();
         list.add(1);
         list.add(2);
@@ -116,7 +116,7 @@ describe('ArrayListTest', () => {
         list2.add(5);
         list2.add(6);
         list2.add(7);
-        assert.equal(list.addAllByIndex(2, list2), true);
+        assert.equal(list.addAllAt(2, list2), true);
         assert.equal(list.get(0), 1);
         assert.equal(list.get(1), 2);
         assert.equal(list.get(2), 5);
@@ -134,16 +134,16 @@ describe('ArrayListTest', () => {
         assert.throws(() => list.get(2), IndexOutOfBoundsError);
     });
 
-    it('removeByIndex_shiftingObjects_removesObjects', () => {
+    it('removeAt_shiftingObjects_removesObjects', () => {
         let list: List<Object> = new ArrayList<Object>();
         list.add(obj1);
         list.add(obj2);
         list.add(obj3);
-        assert.equal(list.removeByIndex(1), obj2);
+        assert.equal(list.removeAt(1), obj2);
         assert.isTrue(list.get(0).equals(obj1));
         assert.isTrue(list.get(1).equals(obj3));
         assert.equal(list.size(), 2);
-        assert.isTrue(list.removeByIndex(0).equals(obj1));
+        assert.isTrue(list.removeAt(0).equals(obj1));
         assert.isTrue(list.get(0).equals(obj3));
         assert.equal(list.size(), 1);
     });
@@ -250,7 +250,7 @@ describe('ArrayListTest', () => {
         list.add(obj1);
         list.add(obj2);
         let arr: Object[] = [];
-        let consumer: Consumer<Object> = Consumer.fromFunc((e: Object) => {
+        let consumer: Consumer<Object> = Consumer.lambda((e: Object) => {
             arr.push(e);
         });
         list.forEach(consumer);

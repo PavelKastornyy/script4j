@@ -117,9 +117,9 @@ export class Scene implements EventTarget {
     constructor​(root: Parent) {
         this.setEventDispatcher(new EventDispatcherImpl(this.eventHandlerManager));
         //root can be set via property that is not ReadOnlyProperty
-        this.root.addListener(ChangeListener.fromFunc((observable: ObservableValue<Parent>, oldParent: Parent, newParent: Parent) => {
+        this.root.addListener(ChangeListener.lambda((observable: ObservableValue<Parent>, oldParent: Parent, newParent: Parent) => {
             if (oldParent !== null) {
-                (<ParentUnlocker> <any> oldParent).traverse(Consumer.fromFunc((node: Node) => {
+                (<ParentUnlocker> <any> oldParent).traverse(Consumer.lambda((node: Node) => {
                     (<NodeUnlocker><any>node).setScene(null);
                 }));
                 this.htmlEventListenerManager.deinitialize();
@@ -127,7 +127,7 @@ export class Scene implements EventTarget {
             if (newParent !== null) {
                 this.htmlEventListenerManager = new HTMLEventListenerManager(newParent.getSkin().getElement(), this.eventBus);
                 const counter: EventHandlerCounter = new EventHandlerCounter();
-                (<ParentUnlocker><any>newParent).traverse(Consumer.fromFunc((node: Node) => {
+                (<ParentUnlocker><any>newParent).traverse(Consumer.lambda((node: Node) => {
                     (<NodeUnlocker><any>node).setScene(this);
                      counter.countAndAdd((<NodeUnlocker><any>node).getEventHandlerManager());
                 }));

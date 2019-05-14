@@ -71,15 +71,15 @@ export class PersonView implements View {
         const htmlLoader: HTMLLoader = new HTMLLoader(rootElement);
         htmlLoader.setController(this);
         htmlLoader.load();
-        this.firstNameTextField.setOnKeyTyped(EventHandler.fromFunc((event: KeyEvent) => {
+        this.firstNameTextField.setOnKeyTyped(EventHandler.lambda((event: KeyEvent) => {
             console.log(event);
         }));
         this.scene = new Scene(this.pane);
         this.pane.setStyle("padding: 20px; background-color: yellow");
-        this.pane.setOnMouseClicked(EventHandler.fromFunc((event: MouseEvent) => {
+        this.pane.setOnMouseClicked(EventHandler.lambda((event: MouseEvent) => {
             console.log(event);
         }));
-        this.createButton.setOnMouseClicked(EventHandler.fromFunc((event: MouseEvent) => {
+        this.createButton.setOnMouseClicked(EventHandler.lambda((event: MouseEvent) => {
             console.log("Button was clicked:" + this.createButton.getText());
         }));
     }

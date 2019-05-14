@@ -39,7 +39,7 @@ type BuilderFactoryFunc = (theType: Class<unknown>) => Builder<unknown>;
 
 export namespace BuilderFactory {
     
-    export function fromFunc<T>(func: BuilderFactoryFunc): BuilderFactory {
+    export function lambda<T>(func: BuilderFactoryFunc): BuilderFactory {
         return new class implements BuilderFactory {
             
             public getBuilder(theType: Class<unknown>): Builder<unknown> {

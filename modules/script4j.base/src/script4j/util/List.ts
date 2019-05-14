@@ -29,11 +29,11 @@ import { Collection } from './Collection';
 
 export interface List<E> extends Collection<E> {
 
-    addByIndex(index: number, obj: E): void;
+    addAt(index: number, obj: E): void;
 
     get(index: number): E;
 
-    removeByIndex(index: number): E;
+    removeAt(index: number): E;
 
     set(index: number, obj: E): E;
 
@@ -41,6 +41,6 @@ export interface List<E> extends Collection<E> {
 
     indexOf(obj: E): number;
     
-    addAllByIndex(index: number, c: Collection<E>): boolean;
+    addAllAt(index: number, c: Collection<E>): boolean;
 
 }

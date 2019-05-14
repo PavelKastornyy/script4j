@@ -43,7 +43,7 @@ export class EventDispatchChainImpl implements EventDispatchChain {
         if (this.dispatchers.isEmpty()) {
             return event;
         }
-        const dispatcher: EventDispatcher = this.dispatchers.removeByIndex(0);
+        const dispatcher: EventDispatcher = this.dispatchers.removeAt(0);
         if (dispatcher !== null) {
             event = dispatcher.dispatchEvent(event, this);
             return event;
@@ -55,7 +55,7 @@ export class EventDispatchChainImpl implements EventDispatchChain {
         if (this.dispatchers.isEmpty()) {
             this.dispatchers.add(eventDispatcher);
         } else {
-            this.dispatchers.addByIndex(0, eventDispatcher);
+            this.dispatchers.addAt(0, eventDispatcher);
         }
         return this;
     }

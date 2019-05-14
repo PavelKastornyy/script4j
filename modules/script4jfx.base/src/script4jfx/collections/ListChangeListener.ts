@@ -43,7 +43,7 @@ type ListChangeListenerFunc<E> = (c: ListChangeListener.Change<E>) => void;
 
 export namespace ListChangeListener {
     
-    export function fromFunc<E>(func: ListChangeListenerFunc<E>): ListChangeListener<E> {
+    export function lambda<E>(func: ListChangeListenerFunc<E>): ListChangeListener<E> {
         return new class implements ListChangeListener<E> {
             
             public onChanged(c: ListChangeListener.Change<E>): void {

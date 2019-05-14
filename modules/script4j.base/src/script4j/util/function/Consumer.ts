@@ -39,7 +39,7 @@ type ConsumerFunc<T> = (t: T) => void;
 
 export namespace Consumer {
     
-    export function fromFunc<T>(func: ConsumerFunc<T>): Consumer<T> {
+    export function lambda<T>(func: ConsumerFunc<T>): Consumer<T> {
         return new class implements Consumer<T> {
             
             public accept​(t: T): void {

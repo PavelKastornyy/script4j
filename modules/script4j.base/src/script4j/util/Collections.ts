@@ -33,7 +33,7 @@ export class Collections {
      * This is reverse order for those classes that implements Comparable.
      */
     private static readonly REVERSE_ORDER_COMPARATOR: Comparator<Comparable<Object>> = 
-            Comparator.fromFunc<Comparable<Object>>((o1: Comparable<Object>, o2: Comparable<Object>): number => {
+            Comparator.lambda<Comparable<Object>>((o1: Comparable<Object>, o2: Comparable<Object>): number => {
                 return o2.compareTo(o1);
             });
             
@@ -53,7 +53,7 @@ export class Collections {
             } else if (comparator === <Comparator<T>><any>Collections.REVERSE_ORDER_COMPARATOR) {
                 return <Comparator<T>><any>Comparator.naturalOrder();
             } else {
-                return Comparator.fromFunc<T>((o1: T, o2: T): number => {
+                return Comparator.lambda<T>((o1: T, o2: T): number => {
                     return comparator.compare(o2, o1);
                 });
             }

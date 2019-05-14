@@ -47,7 +47,7 @@ describe('ReadOnlyStringWrapperTest', () => {
         const readOnly: ReadOnlyStringProperty = wrapper1.getReadOnlyProperty();
         const str: string = "test string";
         let counter: number = 0;
-        readOnly.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
+        readOnly.addListener(ChangeListener.lambda((observable: ObservableValue<string>, 
                 oldStr: string, newStr: string) => {
             assert.equal(oldStr, null);
             assert.equal(newStr, str);

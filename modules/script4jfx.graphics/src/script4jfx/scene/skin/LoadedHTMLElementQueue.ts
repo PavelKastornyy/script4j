@@ -35,7 +35,7 @@ export class LoadedHTMLElementQueue {
         if (LoadedHTMLElementQueue.elements.isEmpty()) {
             return null;
         } else {
-            return LoadedHTMLElementQueue.elements.removeByIndex(0);
+            return LoadedHTMLElementQueue.elements.removeAt(0);
         }
     }
     

@@ -41,7 +41,7 @@ type MapChangeListenerFunc<K, V> = (change: MapChangeListener.Change<K, V>) => v
 
 export namespace MapChangeListener {
     
-    export function fromFunc<K, V>(func: MapChangeListenerFunc<K, V>): MapChangeListener<K, V> {
+    export function lambda<K, V>(func: MapChangeListenerFunc<K, V>): MapChangeListener<K, V> {
         return new class implements MapChangeListener<K, V> {
             
             public onChanged(change: MapChangeListener.Change<K, V>): void {

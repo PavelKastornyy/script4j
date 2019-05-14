@@ -42,7 +42,7 @@ export abstract class Parent extends Node {
 
     public constructor() {
         super();
-        this.children.addListener(ListChangeListener.fromFunc((change)=> {
+        this.children.addListener(ListChangeListener.lambda((change)=> {
             while (change.next()) {
                 //after set method both added and removed are true
                 if (change.wasRemoved()) {
@@ -72,11 +72,11 @@ export abstract class Parent extends Node {
     private workRemovedChildlen(nodes: List<Node>): void {
         let removedElements: HTMLElement[] = new Array();
         const counter: EventHandlerCounter = new EventHandlerCounter();
-        const tConsumer: Consumer<Node> = Consumer.fromFunc((currentNode: Node) => {
+        const tConsumer: Consumer<Node> = Consumer.lambda((currentNode: Node) => {
                     (<NodeUnlocker><any>currentNode).setScene(null);
                     counter.countAndAdd((<NodeUnlocker><any>currentNode).getEventHandlerManager());
                 });
-        nodes.forEach(Consumer.fromFunc((node) => {
+        nodes.forEach(Consumer.lambda((node) => {
             removedElements.push(node.getSkin().getElement());
             (<NodeUnlocker><any>node).setParent(null);
             //null scene from removed node and its possible children
@@ -94,11 +94,11 @@ export abstract class Parent extends Node {
     private workAddedChildren(nodes: List<Node>, fromPos: number): void {
         let addedElements: HTMLElement[] = new Array();
         const counter: EventHandlerCounter = new EventHandlerCounter();
-        const tConsumer: Consumer<Node> = Consumer.fromFunc((currentNode: Node) => {
+        const tConsumer: Consumer<Node> = Consumer.lambda((currentNode: Node) => {
                     (<NodeUnlocker><any>currentNode).setScene(this.getScene());
                     counter.countAndAdd((<NodeUnlocker><any>currentNode).getEventHandlerManager());
                 });
-        nodes.forEach(Consumer.fromFunc((node)=> {
+        nodes.forEach(Consumer.lambda((node)=> {
             (<NodeUnlocker><any>node).setParent(this);
             //add scene for added node and its possible children
             if (this.getScene() !== null) {

@@ -36,7 +36,7 @@ type BuilderFunc<T> = () => T;
 
 export namespace Builder {
     
-    export function fromFunc<T>(func: BuilderFunc<T>): Builder<T> {
+    export function lambda<T>(func: BuilderFunc<T>): Builder<T> {
         return new class implements Builder<T> {
             
             public build(): T {

@@ -43,7 +43,7 @@ type SetChangeListenerFunc<E> = (c: SetChangeListener.Change<E>) => void;
 
 export namespace SetChangeListener {
     
-    export function fromFunc<E>(func: SetChangeListenerFunc<E>): SetChangeListener<E> {
+    export function lambda<E>(func: SetChangeListenerFunc<E>): SetChangeListener<E> {
         return new class implements SetChangeListener<E> {
             
             public ​onChanged(change: SetChangeListener.Change<E>): void {

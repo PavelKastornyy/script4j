@@ -37,7 +37,7 @@ type BusEventListenerFunc<T extends BusEvent> = (event: T) => void;
 
 export namespace BusEventListener {
     
-    export function fromFunc<T extends BusEvent>(func: BusEventListenerFunc<T>): BusEventListener<T> {
+    export function lambda<T extends BusEvent>(func: BusEventListenerFunc<T>): BusEventListener<T> {
         return new class implements BusEventListener<T> {
             
             public handle(event: T): void {

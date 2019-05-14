@@ -40,7 +40,7 @@ type HtmlSkinFactoryFunc<T extends Node> = (t: T, element: HTMLElement) => HTMLS
 
 export namespace HTMLSkinFactory {
     
-    export function fromFunc<T extends Node>(func: HtmlSkinFactoryFunc<T>): HTMLSkinFactory<T> {
+    export function lambda<T extends Node>(func: HtmlSkinFactoryFunc<T>): HTMLSkinFactory<T> {
         return new class implements HTMLSkinFactory<T> {
             
             public create(node: T, element: HTMLElement): HTMLSkin<T> {

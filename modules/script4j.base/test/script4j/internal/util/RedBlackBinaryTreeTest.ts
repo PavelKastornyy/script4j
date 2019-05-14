@@ -27,7 +27,7 @@ import { RedBlackBinaryTree } from './../../../../src/script4j/internal/util/Red
 
 describe('RedBlackBinaryTree', () => {
     
-    const comparator: Comparator<number> = Comparator.fromFunc<number>((o1: number, o2: number): number => {
+    const comparator: Comparator<number> = Comparator.lambda<number>((o1: number, o2: number): number => {
         if (o1 < o2) {
             return -1;
         } else if (o1 === o2) { 

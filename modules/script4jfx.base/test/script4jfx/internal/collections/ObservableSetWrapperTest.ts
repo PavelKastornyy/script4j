@@ -52,7 +52,7 @@ describe('ObservableSetWrapperTest', () => {
 
     it('add_addingOneElement_correctEvent', () => {
         let counter: number = 0;
-        set.addListener(SetChangeListener.fromFunc((change) => {
+        set.addListener(SetChangeListener.lambda((change) => {
             counter++;
             assert.isTrue(change.wasAdded());
             assert.isFalse(change.wasRemoved());
@@ -68,7 +68,7 @@ describe('ObservableSetWrapperTest', () => {
         let counter: number = 0;
         let temp0: Set<string> = new HashSet<string>();
         let temp1: Set<string> = new HashSet<string>();
-        set.addListener(SetChangeListener.fromFunc((change) => {
+        set.addListener(SetChangeListener.lambda((change) => {
             counter++;
             if (counter === 1) {
                 assert.isTrue(change.wasAdded());
@@ -103,7 +103,7 @@ describe('ObservableSetWrapperTest', () => {
 
     it('remove_addingOneElement_correctEvent', () => {
         let counter: number = 0;
-        set.addListener(SetChangeListener.fromFunc((change) => {
+        set.addListener(SetChangeListener.lambda((change) => {
             counter++;
             assert.isFalse(change.wasAdded());
             assert.isTrue(change.wasRemoved());
@@ -119,7 +119,7 @@ describe('ObservableSetWrapperTest', () => {
         let counter: number = 0;
         let temp0: Set<string> = new HashSet<string>();
         let temp1: Set<string> = new HashSet<string>();
-        set.addListener(SetChangeListener.fromFunc((change) => {
+        set.addListener(SetChangeListener.lambda((change) => {
             counter++;
             if (counter === 1) {
                 assert.isFalse(change.wasAdded());
@@ -155,7 +155,7 @@ describe('ObservableSetWrapperTest', () => {
     it('iterator_removingTwoElements_correctEvent', () => {
         let counter: number = 0;
         let temp: Set<string> = new HashSet<string>();
-        set.addListener(SetChangeListener.fromFunc((change) => {
+        set.addListener(SetChangeListener.lambda((change) => {
             counter++;
             if (counter === 1) {
                 assert.isFalse(change.wasAdded());
@@ -199,7 +199,7 @@ describe('ObservableSetWrapperTest', () => {
     it('clear_removingAllElements_correctEvents', () => {
         let temp: Set<string> = new HashSet<string>();
         let counter: number = 0;
-        set.addListener(SetChangeListener.fromFunc((change) => {
+        set.addListener(SetChangeListener.lambda((change) => {
             counter++;
             assert.isFalse(change.wasAdded());
             assert.isTrue(change.wasRemoved());

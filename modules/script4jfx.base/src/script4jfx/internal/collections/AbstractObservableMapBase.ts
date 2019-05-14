@@ -92,7 +92,7 @@ export abstract class AbstractObservableMapBase<K, V> implements ObservableMap<K
     protected abstract getMap(): Map<K, V>;
 
     protected fireChangeEvent(event: MapChangeListener.Change<K, V>) {
-        let consumer: Consumer<MapChangeListener<K, V>> = Consumer.fromFunc((listener) => {
+        let consumer: Consumer<MapChangeListener<K, V>> = Consumer.lambda((listener) => {
             listener.onChanged(event);
         });
         this.listeners.forEach(consumer);

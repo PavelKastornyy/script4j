@@ -81,7 +81,7 @@ export class CommonMapTest {
     
     public compute_resultIsNull_valueRemoved(map: Map<string, number>): void {
         map.put("a", 10);
-        let result = map.compute("a", BiFunction.fromFunc((k: string, n: number) => {
+        let result = map.compute("a", BiFunction.lambda((k: string, n: number) => {
             return null;
         }));
         assert.equal(result, null);
@@ -90,7 +90,7 @@ export class CommonMapTest {
     
     public compute_valueNotExists_valuePut(map: Map<string, number>): void {
         map.put("a", 10);
-        let result = map.compute("b", BiFunction.fromFunc((k: string, n: number) => {
+        let result = map.compute("b", BiFunction.lambda((k: string, n: number) => {
             if (n === null) {
                 n = 1;
             }
@@ -105,7 +105,7 @@ export class CommonMapTest {
     public compute_valueExists_valueReplaced(map: Map<string, number>): void {
         map.put("a", 10);
         map.put("b", 20);
-        let result = map.compute("a", BiFunction.fromFunc((k: string, n: number) => {
+        let result = map.compute("a", BiFunction.lambda((k: string, n: number) => {
             return 10 * 10;
         }));
         assert.equal(result, 100);

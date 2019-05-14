@@ -59,7 +59,7 @@ export abstract class Labeled extends Control {
         //undefined because skin well be created in parent constructor, while this.text is undefined in this constructor.
         if (this.text === null || this.text === undefined) {
             this.text = new SimpleStringProperty(null, this);
-            this.text.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
+            this.text.addListener(ChangeListener.lambda((observable: ObservableValue<string>, 
                     oldValue: string, newValue: string) => {
                 (<LabeledSkinBase<Labeled>> this.getSkin()).setText(newValue);
             }));

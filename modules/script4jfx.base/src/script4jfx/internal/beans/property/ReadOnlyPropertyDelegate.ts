@@ -71,7 +71,7 @@ export class ReadOnlyPropertyDelegate<T> {
         const currentValue: T = this.property.getValue();
         this.previousValue = currentValue;
         if (!Objects.equals(savedPrivousValue, currentValue)) {
-            let consumer: Consumer<ChangeListener<T>> = Consumer.fromFunc((listener) => {
+            let consumer: Consumer<ChangeListener<T>> = Consumer.lambda((listener) => {
                 listener.changed(this.property, savedPrivousValue, currentValue);
             });
             this.externalListeners.forEach(consumer);

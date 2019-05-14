@@ -48,7 +48,7 @@ describe('ObservableMapWrapperTest', () => {
         let counter: number = 0;
         let expected: Map<number, string> = new HashMap<number, string>();
         let actual: Map<number, string> = new HashMap<number, string>();
-        map.addListener(MapChangeListener.fromFunc((change) => {
+        map.addListener(MapChangeListener.lambda((change) => {
             counter++;
             if (counter === 1) {
                 assert.isFalse(change.wasAdded());
@@ -81,7 +81,7 @@ describe('ObservableMapWrapperTest', () => {
     it('clear_removingAllElements_correctEvent', () => {
         let mapCopy: Map<number, string> = new HashMap<number, string>();
         let counter: number = 0;
-        map.addListener(MapChangeListener.fromFunc((change) => {
+        map.addListener(MapChangeListener.lambda((change) => {
             counter++;
             assert.isFalse(change.wasAdded());
             assert.isTrue(change.wasRemoved());
@@ -99,7 +99,7 @@ describe('ObservableMapWrapperTest', () => {
         let counter: number = 0;
         let expected: Map<number, string> = new HashMap<number, string>();
         let actual: Map<number, string> = new HashMap<number, string>();
-        map.addListener(MapChangeListener.fromFunc((change) => {
+        map.addListener(MapChangeListener.lambda((change) => {
             counter++;
             if (counter === 1) {
                 assert.isFalse(change.wasAdded());
@@ -131,7 +131,7 @@ describe('ObservableMapWrapperTest', () => {
 
     it('put_keyExists_correctEvent', () => {
         let counter: number = 0;
-        map.addListener(MapChangeListener.fromFunc((change) => {
+        map.addListener(MapChangeListener.lambda((change) => {
             counter++;
             assert.isTrue(change.wasAdded());
             assert.isTrue(change.wasRemoved());
@@ -146,7 +146,7 @@ describe('ObservableMapWrapperTest', () => {
 
     it('put_keyNotExists_correctEvent', () => {
         let counter: number = 0;
-        map.addListener(MapChangeListener.fromFunc((change) => {
+        map.addListener(MapChangeListener.lambda((change) => {
             counter++;
             assert.isTrue(change.wasAdded());
             assert.isFalse(change.wasRemoved());
@@ -161,7 +161,7 @@ describe('ObservableMapWrapperTest', () => {
 
     it('remove_elementExists_correctEvent', () => {
         let counter: number = 0;
-        map.addListener(MapChangeListener.fromFunc((change) => {
+        map.addListener(MapChangeListener.lambda((change) => {
             counter++;
             assert.isFalse(change.wasAdded());
             assert.isTrue(change.wasRemoved());
@@ -179,7 +179,7 @@ describe('ObservableMapWrapperTest', () => {
         let counter: number = 0;
         let expected: Map<number, string> = new HashMap<number, string>();
         let actual: Map<number, string> = new HashMap<number, string>();
-        map.addListener(MapChangeListener.fromFunc((change) => {
+        map.addListener(MapChangeListener.lambda((change) => {
             counter++;
             if (counter === 1) {
                 assert.isFalse(change.wasAdded());

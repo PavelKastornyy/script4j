@@ -47,7 +47,7 @@ describe('TreeMapTest', () => {
     numberMap.put(commonMapTest.getEqualObj1(), 4);
     numberMap.put(commonMapTest.getEqualObj2(), 5);
     
-    const comparator: Comparator<Object> = Comparator.fromFunc<Object>((obj1: Object, obj2: Object): number => {
+    const comparator: Comparator<Object> = Comparator.lambda<Object>((obj1: Object, obj2: Object): number => {
         return numberMap.get(obj1) - numberMap.get(obj2);
     });
     

@@ -133,7 +133,7 @@ describe('HashSetTest', () => {
         assert.equal(set.add(notEqualObj2), true);
         assert.equal(set.add(notEqualObj3), true);
         let list: List<Object> = new ArrayList<Object>();
-        let consumer: Consumer<Object> = Consumer.fromFunc((obj: Object) => {list.add(obj)});
+        let consumer: Consumer<Object> = Consumer.lambda((obj: Object) => {list.add(obj)});
         set.forEach(consumer);
         assert.isTrue(list.get(0).equals(notEqualObj1));
         assert.isTrue(list.get(1).equals(notEqualObj2));

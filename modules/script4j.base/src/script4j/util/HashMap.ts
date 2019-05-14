@@ -375,7 +375,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
                 entry = bucket.get(i);
                 if (this.checkIfKeysAreSimilar(key, keyHashCode, entry.getKey(), entry.getKeyHashCode())) {
                     oldValue = entry.getValue();
-                    bucket.removeByIndex(i);
+                    bucket.removeAt(i);
                     this.currentSize--;
                     break;
                 }
@@ -489,7 +489,7 @@ export class HashMap<K, V> extends AbstractMap<K, V> {
                     throw new IllegalStateError(null);
                 }
                 this.nextWasCalled = false;
-                this.currentBucket.removeByIndex(this.currentEntryIndex);
+                this.currentBucket.removeAt(this.currentEntryIndex);
                 this.map.currentSize--;
                 this.currentEntryIndex--;
                 if (this.currentBucket.isEmpty()) {

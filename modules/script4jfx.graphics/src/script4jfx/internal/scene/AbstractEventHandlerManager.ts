@@ -94,7 +94,7 @@ export abstract class AbstractEventHandlerManager {
     
     public createEventProperty<T extends Event>(eventType: EventType<T>): ObjectProperty<EventHandler<T>>  {
         const prop: ObjectProperty<EventHandler<T>> = new SimpleObjectProperty<EventHandler<T>>(null, this.bean);
-        prop.addListener(ChangeListener.fromFunc((observable: ObservableValue<EventHandler<T>>, 
+        prop.addListener(ChangeListener.lambda((observable: ObservableValue<EventHandler<T>>, 
                     oldHandler: EventHandler<T>, newHandler: EventHandler<T>) => {
                 if (newHandler !== null && oldHandler === null) {
                     this.addEventHandlerByType(eventType, newHandler, false);

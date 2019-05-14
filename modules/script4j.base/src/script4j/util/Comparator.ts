@@ -31,7 +31,7 @@ type ComparatorFunc<T> = (o1: T, o2: T) => number;
 
 export abstract class Comparator<T> {
     
-    public static fromFunc<T>(func: ComparatorFunc<T>): Comparator<T> {
+    public static lambda<T>(func: ComparatorFunc<T>): Comparator<T> {
         return new class extends Comparator<T> {
             
             public compare(o1: T, o2: T): number {
@@ -58,7 +58,7 @@ export abstract class Comparator<T> {
      * This is direct order for those classes that implements Comparable.
      */
     private static readonly NATURAL_ORDER_COMPARATOR: Comparator<Comparable<Object>> = 
-            Comparator.fromFunc<Comparable<Object>>((o1: Comparable<Object>, o2: Comparable<Object>): number => {
+            Comparator.lambda<Comparable<Object>>((o1: Comparable<Object>, o2: Comparable<Object>): number => {
                 return o1.compareTo(o2);
             });    
     

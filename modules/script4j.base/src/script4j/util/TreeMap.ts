@@ -261,7 +261,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
     };    
 
     private readonly comparatorWrapper: Comparator<TreeMap.Entry<K, V>> = 
-            Comparator.fromFunc<TreeMap.Entry<K, V>>((o1: TreeMap.Entry<K, V>, o2: TreeMap.Entry<K, V>): number => {
+            Comparator.lambda<TreeMap.Entry<K, V>>((o1: TreeMap.Entry<K, V>, o2: TreeMap.Entry<K, V>): number => {
                 return this.aComparator.compare(o1.getKey(), o2.getKey());
             });
     
@@ -299,7 +299,7 @@ export class TreeMap<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> 
         if (this.size() === 0) {
             return false;
         }
-        return this.tree.traverseAndTest(Predicate.fromFunc((entry: TreeMap.Entry<K, V>): boolean => {
+        return this.tree.traverseAndTest(Predicate.lambda((entry: TreeMap.Entry<K, V>): boolean => {
             return Objects.equals(entry.getValue(), value);
         }));
     }

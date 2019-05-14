@@ -86,11 +86,11 @@ export abstract class AbstractObservableListBase<E> implements ObservableList<E>
                 + "{list=" + (this.getList() === null ? "null" : this.getList().toString()) + "}";
     }
 
-    public abstract addByIndex(index: number, obj: E): void;
+    public abstract addAt(index: number, obj: E): void;
     
-    public abstract addAllByIndex(index: number, c: Collection<E>): boolean;
+    public abstract addAllAt(index: number, c: Collection<E>): boolean;
 
-    public abstract removeByIndex(index: number): E;
+    public abstract removeAt(index: number): E;
 
     public abstract set(index: number, obj: E): E;
 
@@ -109,7 +109,7 @@ export abstract class AbstractObservableListBase<E> implements ObservableList<E>
     protected abstract getList(): List<E>;
 
     protected fireChangeEvent(event: ListChangeListener.Change<E>) {
-        let consumer: Consumer<ListChangeListener<E>> = Consumer.fromFunc((listener) => {
+        let consumer: Consumer<ListChangeListener<E>> = Consumer.lambda((listener) => {
             listener.onChanged(event);
         });
         this.listeners.forEach(consumer);

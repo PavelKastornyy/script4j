@@ -35,7 +35,7 @@ describe('HandlerTreeTest', () => {
 
     it('addHandler_firstHandlerAsLeaf_branchIsBuilt', () => {
         const tree: HandlerTree = new HandlerTree();
-        const handler: EventHandler<KeyEvent> = EventHandler.fromFunc((e: KeyEvent) => {});
+        const handler: EventHandler<KeyEvent> = EventHandler.lambda((e: KeyEvent) => {});
         tree.addHandler(KeyEvent.KEY_PRESSED, handler, false);
         const root: HandlerTree.Node<Event> = tree.getRoot();
         assert.equal(root.getEventType(), Event.ANY);
@@ -52,7 +52,7 @@ describe('HandlerTreeTest', () => {
     
     it('removeHandler_singularHandler_branchRemoved', () => {
         const tree: HandlerTree = new HandlerTree();
-        const handler: EventHandler<KeyEvent> = EventHandler.fromFunc((e: KeyEvent) => {});
+        const handler: EventHandler<KeyEvent> = EventHandler.lambda((e: KeyEvent) => {});
         tree.addHandler(KeyEvent.KEY_PRESSED, handler, false);
         tree.removeHandler(KeyEvent.KEY_PRESSED, handler);
         assert.equal(tree.getRoot(), null);
@@ -60,7 +60,7 @@ describe('HandlerTreeTest', () => {
     
     it('removeHandler_leafHandler_pieceOfBranchIsRemoved', () => {
         const tree: HandlerTree = new HandlerTree();
-        const handler: EventHandler<KeyEvent> = EventHandler.fromFunc((e: KeyEvent) => {});
+        const handler: EventHandler<KeyEvent> = EventHandler.lambda((e: KeyEvent) => {});
         tree.addHandler(KeyEvent.KEY_PRESSED, handler, false);
         tree.addHandler(InputEvent.ANY, handler, false);
         tree.removeHandler(KeyEvent.KEY_PRESSED, handler);

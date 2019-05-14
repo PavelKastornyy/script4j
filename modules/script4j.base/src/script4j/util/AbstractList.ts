@@ -37,16 +37,16 @@ export abstract class AbstractList<E> extends AbstractCollection<E> implements L
         super();
     }
 
-    public abstract addByIndex(index: number, obj: E): void;
+    public abstract addAt(index: number, obj: E): void;
     
-    public addAllByIndex(index: number, c: Collection<E>): boolean {
+    public addAllAt(index: number, c: Collection<E>): boolean {
         if (index < 0 || index > this.size()) {
             throw new IndexOutOfBoundsError();
         }
         const previousSize = this.size();
         const iterator: Iterator<E> = c.iterator();
         while (iterator.hasNext()) {
-            this.addByIndex(index++, iterator.next());
+            this.addAt(index++, iterator.next());
         }
         if (previousSize !== this.size()) {
             return true;
@@ -57,7 +57,7 @@ export abstract class AbstractList<E> extends AbstractCollection<E> implements L
 
     public abstract get(index: number): E;
 
-    public abstract removeByIndex(index: number): E;
+    public abstract removeAt(index: number): E;
 
     public abstract set(index: number, obj: E): E;
 

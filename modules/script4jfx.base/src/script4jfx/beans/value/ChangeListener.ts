@@ -35,7 +35,7 @@ type ChangeListenerFunc<T> = (observable: ObservableValue<T>, oldValue: T, newVa
 
 export namespace ChangeListener {
     
-    export function fromFunc<T>(func: ChangeListenerFunc<T>): ChangeListener<T> {
+    export function lambda<T>(func: ChangeListenerFunc<T>): ChangeListener<T> {
         return new class implements ChangeListener<T> {
             
             public changed(observable: ObservableValue<T>, oldValue: T, newValue: T): void {

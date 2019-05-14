@@ -134,7 +134,7 @@ export class HandlerTree {
     private collectDown<T extends Event>(node: HandlerTree.Node<T>, handlers: List<EventHandler<T>>, 
             types: List<EventType<T>>, typeIndex: number) {
         if (node.getHandlers() !== null) {
-            handlers.addAllByIndex(0, node.getHandlers());
+            handlers.addAllAt(0, node.getHandlers());
         }
         typeIndex++;
         if (types.size() < typeIndex && node.getChildren() !== null) {
@@ -178,7 +178,7 @@ export class HandlerTree {
             if (types.isEmpty()) {
                 types.add(eventType);
             } else {
-                types.addByIndex(0, eventType);
+                types.addAt(0, eventType);
             }
             eventType = eventType.getSuperType();
         }
@@ -303,7 +303,7 @@ export namespace HandlerTree {
                 this.handlers.add(handler);
             } else {
                 if (asFirst) {
-                    this.handlers.addByIndex(0, handler);
+                    this.handlers.addAt(0, handler);
                 } else {
                     this.handlers.add(handler);
                 }

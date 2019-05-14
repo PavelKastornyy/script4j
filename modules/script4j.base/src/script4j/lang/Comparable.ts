@@ -28,7 +28,7 @@ type ComparableFunc<T> = (o: T) => number;
 
 export abstract class Comparable<T> {
     
-    public static fromFunc<T>(func: ComparableFunc<T>): Comparable<T> {
+    public static lambda<T>(func: ComparableFunc<T>): Comparable<T> {
         return new class extends Comparable<T> {
             
             public compareTo(o1: T): number {

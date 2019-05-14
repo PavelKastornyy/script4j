@@ -31,7 +31,7 @@ import { Class } from 'script4j.base';
 export class Script4JFXBuilderFactory implements BuilderFactory {
     
     getBuilder​(theType: Class<unknown>): Builder<unknown> {
-        return Builder.fromFunc(() => {
+        return Builder.lambda(() => {
             let construc = theType.getConstructor();
             return new construc();
         });

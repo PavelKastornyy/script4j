@@ -40,7 +40,7 @@ export abstract class TextInputControl extends Control {
     
     public constructor() {
         super();
-        this.text.addListener(ChangeListener.fromFunc((observable: ObservableValue<string>, 
+        this.text.addListener(ChangeListener.lambda((observable: ObservableValue<string>, 
                 oldValue: string, newValue: string) => {
             (<TextInputControlSkin<any>> this.getSkin()).setText(newValue);
         }));

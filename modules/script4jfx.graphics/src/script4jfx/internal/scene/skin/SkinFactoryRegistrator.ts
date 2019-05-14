@@ -30,7 +30,7 @@ export class SkinFactoryRegistrator {
     private static hasRegistered: boolean = SkinFactoryRegistrator.register();
     
     private static register(): boolean {
-        HTMLSkinFactoryManager.registerFactory(Pane.class(), HTMLSkinFactory.fromFunc((pane: Pane, element: HTMLElement) => {
+        HTMLSkinFactoryManager.registerFactory(Pane.class(), HTMLSkinFactory.lambda((pane: Pane, element: HTMLElement) => {
             return new PaneSkin(pane, element);
         }));
         return true;

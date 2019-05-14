@@ -39,7 +39,7 @@ type EventHandlerFunc<T extends Event> = (t: T) => void;
 
 export namespace EventHandler {
     
-    export function fromFunc<T extends Event>(func: EventHandlerFunc<T>): EventHandler<T> {
+    export function lambda<T extends Event>(func: EventHandlerFunc<T>): EventHandler<T> {
         return new class implements EventHandler<T> {
             
             public handle(t: T): void {

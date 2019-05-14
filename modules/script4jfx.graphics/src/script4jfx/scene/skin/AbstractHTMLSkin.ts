@@ -64,7 +64,7 @@ export abstract class AbstractHTMLSkin<T extends Node> implements HTMLSkin<T> {
     public initialize(): void {
         //if Node is on Scene then there is link in jquery between the Node and the element.
         //if not, the link is removed. Otherwise all created node will remain in memory.
-        this.sceneListener = ChangeListener.fromFunc((observable: ObservableValue<Scene>, 
+        this.sceneListener = ChangeListener.lambda((observable: ObservableValue<Scene>, 
                 oldScene: Scene, newScene: Scene) => {
             if (newScene !== null) {
                 $(this.element).data(JQueryDataKeys.NODE, this.node);
