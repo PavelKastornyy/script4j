@@ -41,11 +41,11 @@ export interface BiFunction<T,​U,​R> {
 
 }
 
-type BiBunfctionFunc<T, U, R> = (t: T, u: U) => R;
+type BiFunctionFunc<T, U, R> = (t: T, u: U) => R;
 
 export namespace BiFunction {
     
-    export function lambda<T, U, R>(func: BiBunfctionFunc<T, U, R>): BiFunction<T,​U,​R> {
+    export function lambda<T, U, R>(func: BiFunctionFunc<T, U, R>): BiFunction<T,​U,​R> {
         return new class implements BiFunction<T, U, R> {
             
             public apply(t: T, u: U): R {
