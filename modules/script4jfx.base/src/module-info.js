@@ -107,6 +107,7 @@ module.exports = {
         "script4jfx.collections.FXCollections",
         "script4jfx.util.Builder",
         "script4jfx.util.BuilderFactory",
+        "script4jfx.util.Callback",
     ],
 
     export: {
