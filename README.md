@@ -119,6 +119,8 @@ At the same time JPMS module can contain packages, but ES2015 module can't. Beca
 classes with the same name inside one ES2015 module.
 
 ## Code Building
+Please, before code building read the following important [note](#contributing-to-script4j). 
+
 For all commands it is possible to use only `npm run`. To build all:
 ```
 git clone https://github.com/PavelKastornyy/script4j.git
@@ -146,6 +148,12 @@ npm run test-module
 ```
 
 ## Contributing to Script4J
+Script4J is a difficult project, so we need any help from everyone who is interested in it. You can help in many ways:
+
+* Give us any feedback. We need to know your opinion, your comments, your ideas and they can help us a lot.
+* If you find any bug, please, open an issue.
+* If you find the project interesting and need it for your applications create a PR (with tests).
+
 Any help would be greatly appreciated!
 
 ## License
