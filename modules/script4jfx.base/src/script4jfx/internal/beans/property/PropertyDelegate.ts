@@ -96,6 +96,9 @@ export class PropertyDelegate<T> extends ReadOnlyPropertyDelegate<T> {
     }
 
     public set(value: T): void {
+        if (value === undefined) {
+            throw new IllegalArgumentError("Value is undefined");
+        }
         this.currentValue = value;
     }
 
@@ -128,7 +131,8 @@ export class PropertyDelegate<T> extends ReadOnlyPropertyDelegate<T> {
             throw new IllegalArgumentError("Property is already bound to that property");
         }
         //we get that property value, because must be always equal to that property.
-        this.set(this.convertValue(other, other.getValue()));
+        let convertedValue: T = this.convertValue(other, other.getValue());
+        this.set(convertedValue);
         this.doBindBidirectional(other);
         //now we do the same from the side of other property
         let otherDelegate: PropertyDelegate<T> = PropertyDelegate.getDelegate(other);
@@ -212,6 +216,9 @@ export class PropertyDelegate<T> extends ReadOnlyPropertyDelegate<T> {
             } else {
                 return <any> this.getConverter().fromString(<any>value);
             }
+        } else {
+            //if there is no string property at all
+            return value;
         }
     }
 }
