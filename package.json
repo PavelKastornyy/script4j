@@ -17,7 +17,9 @@
         "jsonlint": "1.6.3",
         "rimraf": "2.6.3"
     },
-    "dependencies": {},
+    "dependencies": {
+        "gulp": "4.0.0"
+    },
     "modules": [
         "script4j.base",
         "script4jfx.jquery",

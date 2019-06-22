@@ -16,6 +16,7 @@
         "script4j.base": "file:./../script4j.base"
     },
     "dependencies": {
+        "gulp": "4.0.0",
         "script4j.base": "file:./../script4j.base"
     },
     "scripts": {

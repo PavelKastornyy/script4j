@@ -25,6 +25,7 @@
         "script4jfx.loader": "file:./../script4jfx.loader"
     },
     "dependencies": {
+        "gulp": "4.0.0",
         "script4j.base": "file:./../script4j.base",
         "script4jfx.base": "file:./../script4jfx.base",
         "script4jfx.graphics": "file:./../script4jfx.graphics",
