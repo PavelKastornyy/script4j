@@ -66,8 +66,8 @@ export class ModelWrapper<T> {
         return prop;
     }
     
-    public objectField(getter: Function, setter: Function, defaultValue: Object): ObjectProperty<any> {
-        const prop: ObjectProperty<any> = new SimpleObjectProperty();
+    public objectField<T>(getter: Function, setter: Function, defaultValue: Object): ObjectProperty<T> {
+        const prop: ObjectProperty<T> = new SimpleObjectProperty();
         const field: ModelWrapper.Field<Object> = new ModelWrapper.Field<Object>(prop, getter, setter, defaultValue);
         this.fields.add(field);
         return prop;

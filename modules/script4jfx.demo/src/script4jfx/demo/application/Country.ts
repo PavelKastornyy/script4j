@@ -20,6 +20,7 @@
  */
 
 import 'jquery';
+import { Objects } from 'script4j.base';
 
 export class Country {
     
@@ -27,8 +28,13 @@ export class Country {
     
     private code: string = null;
     
-    public constructor() {
-        //does nothing
+    public constructor(name?: string, code?: string) {
+        if (name !== undefined) {
+            this.name = name;
+        }
+        if (code !== undefined) {
+            this.code = code;
+        }
     }
     
     public setName(name: string): void {
@@ -45,6 +51,23 @@ export class Country {
     
     public getCode(): string {
         return this.code;
+    }
+    
+    public equals(o: Object): boolean {
+        if (o === null) return false;
+        if (o === this) return true;
+        if (!(o instanceof Country)) {
+            return false;
+        }
+        let that: Country = <Country> o;
+        return Objects.equals(this.name, that.name) && Objects.equals(this.code, that.code);
+    }
+
+    public hashCode() {
+        let result: number = 17;
+        result = 31 * result + Objects.hashCode(this.name);
+        result = 31 * result + Objects.hashCode(this.code);
+        return result;
     }
     
     public toString(): string {

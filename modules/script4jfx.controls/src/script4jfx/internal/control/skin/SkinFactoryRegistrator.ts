@@ -27,8 +27,12 @@ import { Button } from './../../../scene/control/Button';
 import { ButtonSkin } from './../../../scene/control/skin/ButtonSkin';
 import { Label } from './../../../scene/control/Label';
 import { LabelSkin } from './../../../scene/control/skin/LabelSkin';
+import { ComboBox } from './../../../scene/control/ComboBox';
+import { ComboBoxBase } from './../../../scene/control/ComboBoxBase';
+import { ComboBoxListViewSkin } from './../../../scene/control/skin/ComboBoxListViewSkin';
 import { HTMLSkinFactoryManager } from 'script4jfx.graphics';
 import { HTMLSkinFactory } from 'script4jfx.graphics';
+import { HTMLSkin } from 'script4jfx.graphics';
 import 'jquery';
 
 export class SkinFactoryRegistrator {
@@ -52,6 +56,11 @@ export class SkinFactoryRegistrator {
                 HTMLSkinFactory.lambda((control: Label, element: HTMLElement) => {
             return new LabelSkin(control, element);
         }));
+        HTMLSkinFactoryManager.registerFactory(ComboBox.class(), 
+                HTMLSkinFactory.lambda((control: ComboBox<any>, element: HTMLElement) => {
+            return <HTMLSkin<ComboBox<any>>><unknown> new ComboBoxListViewSkin<ComboBox<any>>(control, element);
+        }));
+        
         return true;
     }
 }    

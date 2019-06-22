@@ -56,6 +56,13 @@ module.exports = {
         "script4jfx.scene.control.skin.ButtonSkin",
         "script4jfx.scene.control.Label",
         "script4jfx.scene.control.skin.LabelSkin",
+        "script4jfx.scene.control.SelectionModel",
+        "script4jfx.scene.control.SingleSelectionModel",
+        "script4jfx.scene.control.skin.ComboBoxBaseSkin",
+        "script4jfx.scene.control.skin.ComboBoxPopupControl",
+        "script4jfx.scene.control.skin.ComboBoxListViewSkin",
+        "script4jfx.scene.control.ComboBoxBase",
+        "script4jfx.scene.control.ComboBox",
         "script4jfx.internal.control.skin.SkinFactoryRegistrator",
     ],
 

@@ -24,47 +24,18 @@
  *
  */
 
-import { TextInputControl } from './../TextInputControl';
 import { SkinBase } from './../SkinBase';
+import { ComboBoxBase } from './../ComboBoxBase';
 
-export abstract class TextInputControlSkin<T extends TextInputControl> extends SkinBase<T> {
-    
-    public constructor(node: T, element: HTMLElement) {
-        super(node, element);
-    }
-    
-    public initialize(): void {
-        super.initialize();
-        $(this.getElement()).on('input propertychange', ()=> {
-            try {
-                this.setChangeBlocked(true)
-                this.getSkinnable().setText(this.getText());
-            } finally {
-                this.setChangeBlocked(false)
-            }
-        });
-    }
-    
-    public setText(text: string): void {
-        if (!this.isChangeBlocked()) {
-            this.getElement().value = text;
-        }
-    }
-    
+export abstract class ComboBoxBaseSkin<T> extends SkinBase<ComboBoxBase<T>> {
+
     /**
-     * Returns null if there is empty string in input ("").
-     */
-    public getText(): string {
-        const text: string = this.getElement().value;
-        if (text !== "") {
-            return text;
-        } else {
-            return null;
-        }
+     * Creates a new instance of ComboBoxBaseSkin, although note that this instance does not handle any behavior 
+     * / input mappings - this needs to be handled appropriately by subclasses.
+     */    
+    public constructor(control: ComboBoxBase<T>, element: HTMLElement) {
+        super(control, element);
     }
-    
-    public getElement(): HTMLInputElement {
-        return <HTMLInputElement>super.getElement();
-    }
+
 }
 

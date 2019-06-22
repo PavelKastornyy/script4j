@@ -3,15 +3,37 @@
     <head>
         <title>Script4JFX Demo</title>
         <meta charset="UTF-8">
+        <style type="text/css">
+            div {
+                margin: 20px;
+            }
+        </style>
     </head>
     <body>
         <div data-fx-id="pane" id="root" style="padding: 20px; background-color: yellow;">
-            <label data-fx-id="firstNameLabel" for="firstName">First Name:</label>
-            <input data-fx-id="firstNameTextField" type="text" id="firstName">
-            <input data-fx-id="lastNameTextField" type="text">
-            <input data-fx-id="ageTextField" type="text">
-            <textarea data-fx-id="resumeTextArea"></textarea>
-            <button data-fx-id="createButton" type="button">Create</button>
+            <div data-fx-id="pane1">
+                <label data-fx-id="firstNameLabel" for="firstName">First Name:</label>
+                <input data-fx-id="firstNameTextField" type="text" id="firstName">
+            </div>
+            <div data-fx-id="pane2">
+                <label data-fx-id="lastNameLabel" for="lastName">Last Name:</label>
+                <input data-fx-id="lastNameTextField" type="text" id="lastName">
+            </div>
+            <div data-fx-id="pane3">
+                <label data-fx-id="ageLabel" for="age">Age:</label>
+                <input data-fx-id="ageTextField" type="text" id="age">
+            </div>
+            <div data-fx-id="pane4">
+                <label data-fx-id="countryLabel" for="countries">Country:</label>
+                <select data-fx-id="countryComboBox" id="countries"></select>
+            </div>
+            <div data-fx-id="pane5">
+                <label data-fx-id="resumeLabel" for="resume">Resume:</label>
+                <textarea data-fx-id="resumeTextArea" id="resume"></textarea>
+            </div>
+            <div data-fx-id="pane6">
+                <button data-fx-id="createButton" type="button">Create</button>
+            </div>
         </div>        
         <script type="module">
             import { Application } from "./script4jfx.demo-0.1.0.js";

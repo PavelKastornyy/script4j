@@ -21,20 +21,26 @@
 
 import { View } from './../mvvm/View';
 import { PersonViewModel } from './PersonViewModel';
+import { Country } from './Country';
 import { TextField } from 'script4jfx.controls';
 import { TextArea } from 'script4jfx.controls';
 import { Button } from 'script4jfx.controls';
 import { Pane } from 'script4jfx.graphics';
 import { System } from 'script4j.base';
 import { Node } from 'script4jfx.graphics';
+import { Callback } from 'script4jfx.base';
 import { Scene } from 'script4jfx.graphics';
 import { ObservableList } from 'script4jfx.base';
+import { FXCollections } from 'script4jfx.base';
 import { Bindings } from 'script4jfx.base';
 import { NumberStringConverter } from 'script4jfx.base';
 import { EventHandler } from 'script4jfx.base';
+import { ChangeListener } from 'script4jfx.base';
+import { ObservableValue } from 'script4jfx.base';
 import { KeyEvent } from 'script4jfx.graphics';
 import { MouseEvent } from 'script4jfx.graphics';
 import { Label } from 'script4jfx.controls';
+import { ComboBox } from 'script4jfx.controls';
 import { HTML } from 'script4jfx.loader';
 import { HTMLLoader } from 'script4jfx.loader';
 
@@ -59,7 +65,8 @@ export class PersonView implements View {
     @HTML
     private ageTextField: TextField = null;
     
-    //private readonly country...: ... = new ...();
+    @HTML
+    public readonly countryComboBox: ComboBox<Country>;
     
     @HTML
     private readonly resumeTextArea: TextArea = null;
@@ -71,16 +78,28 @@ export class PersonView implements View {
         const htmlLoader: HTMLLoader = new HTMLLoader(rootElement);
         htmlLoader.setController(this);
         htmlLoader.load();
-        this.firstNameTextField.setOnKeyTyped(EventHandler.lambda((event: KeyEvent) => {
-            console.log(event);
-        }));
+//        this.firstNameTextField.setOnKeyTyped(EventHandler.lambda((event: KeyEvent) => {
+//            console.log(event);
+//        }));
+//        this.pane.setOnMouseClicked(EventHandler.lambda((event: MouseEvent) => {
+//            console.log(event);
+//        }));        
         this.scene = new Scene(this.pane);
         this.pane.setStyle("padding: 20px; background-color: yellow");
-        this.pane.setOnMouseClicked(EventHandler.lambda((event: MouseEvent) => {
-            console.log(event);
-        }));
         this.createButton.setOnMouseClicked(EventHandler.lambda((event: MouseEvent) => {
             console.log("Button was clicked:" + this.createButton.getText());
+        }));
+        let countries: ObservableList<Country> = FXCollections.observableArrayList();
+        countries.add(null);
+        countries.add(new Country("Germany", "DE"));
+        countries.add(new Country("Taiwan", "TW"));
+        this.countryComboBox.setItems(countries);
+        this.countryComboBox.setCellFactory(Callback.lambda((country: Country): string => {
+            if (country !== null) {
+                return country.getName();
+            } else {
+                return "";
+            }
         }));
     }
     
@@ -93,6 +112,7 @@ export class PersonView implements View {
         this.lastNameTextField.textProperty().bindBidirectional(viewModel.lastNameProperty());
         Bindings.bindBidirectional(this.ageTextField.textProperty(), viewModel.ageProperty(), 
                 new NumberStringConverter());
+        this.countryComboBox.valueProperty().bindBidirectional(viewModel.countryProperty());
         this.resumeTextArea.textProperty().bindBidirectional(viewModel.resumeProperty());
     }
 }

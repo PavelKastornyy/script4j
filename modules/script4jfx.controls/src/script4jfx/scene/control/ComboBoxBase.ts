@@ -24,47 +24,49 @@
  *
  */
 
-import { TextInputControl } from './../TextInputControl';
-import { SkinBase } from './../SkinBase';
+import { Control } from './Control';
+import { ObjectProperty } from 'script4jfx.base';
+import { SimpleObjectProperty } from 'script4jfx.base';
 
-export abstract class TextInputControlSkin<T extends TextInputControl> extends SkinBase<T> {
+export abstract class ComboBoxBase<T> extends Control {
     
-    public constructor(node: T, element: HTMLElement) {
-        super(node, element);
-    }
+
+    /**
+     * The value of this ComboBox is defined as the selected item if the input is not editable, or if it is editable, 
+     * the most recent user action: either the value input by the user, or the last selected item.
+     */
+    private value: ObjectProperty<T> = new SimpleObjectProperty();
+
     
-    public initialize(): void {
-        super.initialize();
-        $(this.getElement()).on('input propertychange', ()=> {
-            try {
-                this.setChangeBlocked(true)
-                this.getSkinnable().setText(this.getText());
-            } finally {
-                this.setChangeBlocked(false)
-            }
-        });
-    }
-    
-    public setText(text: string): void {
-        if (!this.isChangeBlocked()) {
-            this.getElement().value = text;
-        }
+    /**
+     * Creates a default ComboBoxBase instance.
+     */
+    public constructor() {
+        super();
     }
     
     /**
-     * Returns null if there is empty string in input ("").
+     * The value of this ComboBox is defined as the selected item if the input is not editable, or if it is editable, 
+     * the most recent user action: either the value input by the user, or the last selected item.
      */
-    public getText(): string {
-        const text: string = this.getElement().value;
-        if (text !== "") {
-            return text;
-        } else {
-            return null;
-        }
+    public valueProperty(): ObjectProperty<T> {
+        return this.value
+    }
+
+    
+    /**
+     * Sets the value of the property value.
+     */
+    public setValue​(value: T): void {
+        this.value.set(value);
     }
     
-    public getElement(): HTMLInputElement {
-        return <HTMLInputElement>super.getElement();
+    /**
+     * Gets the value of the property value.
+     */
+    public getValue(): T {
+        return this.value.get();
     }
+    
 }
 

@@ -20,6 +20,7 @@
  */
 
 import { Person } from './application/Person';
+import { Country } from './application/Country';
 import { PersonView } from './application/PersonView';
 import { PersonViewModel } from './application/PersonViewModel';
 import 'jquery';
@@ -46,6 +47,7 @@ export class Application {
             person.setFirstName("Nick");
             person.setLastName("Black");
             person.setAge(30);
+            person.setCountry(new Country("Taiwan", "TW"));
             person.setResume("Good man");
             viewModel.read();
         });

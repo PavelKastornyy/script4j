@@ -23,7 +23,9 @@ import { ViewModel } from './../mvvm/ViewModel';
 import { ModelWrapper } from './../mvvm/ModelWrapper';
 import { StringProperty } from 'script4jfx.base';
 import { NumberProperty } from 'script4jfx.base';
+import { ObjectProperty } from 'script4jfx.base';
 import { Person } from './Person';
+import { Country } from './Country';
 
 export class PersonViewModel implements ViewModel {
     
@@ -44,7 +46,10 @@ export class PersonViewModel implements ViewModel {
             Person.prototype.setAge,
             null);
     
-    //private readonly country...: ... = new ...();
+    private readonly country: ObjectProperty<Country> = this.wrapper.objectField(
+            Person.prototype.getCountry, 
+            Person.prototype.setCountry,
+            null);
     
     private readonly resume: StringProperty = this.wrapper.stringField(
             Person.prototype.getResume, 
@@ -65,6 +70,10 @@ export class PersonViewModel implements ViewModel {
     
     public ageProperty(): NumberProperty {
         return this.age;
+    }
+    
+    public countryProperty(): ObjectProperty<Country> {
+        return this.country;
     }
     
     public resumeProperty(): StringProperty {
