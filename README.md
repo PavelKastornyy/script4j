@@ -1,3 +1,5 @@
+**Important!** This project is veryf difficult and requires a lot of work and time. We will continue it only if the project has 50 stars. So, if you need it star the project!
+
 # Script4J
 Script4J is an implementation of Java SE API and JavaFX API in TypeScript/JavaScript.
 
